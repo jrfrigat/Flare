@@ -7,8 +7,8 @@ namespace Flare.Abstractions;
 /// <code>
 /// [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
 /// // ...
-/// Dialog.Close(editedModel); // confirm with a payload
-/// Dialog.Cancel();           // dismiss
+/// await Dialog.CloseAsync(editedModel); // confirm with a payload
+/// await Dialog.CancelAsync();           // dismiss
 /// </code>
 /// </summary>
 public sealed class FlareDialogInstance
@@ -51,6 +51,9 @@ public sealed class FlareDialogInstance
     /// <summary>The presentation options applied to this dialog.</summary>
     public DialogOptions Options { get; }
 
+    /// <summary>The close guards shared by this handle and its displayed dialog.</summary>
+    public DialogCloseContext CloseContext { get; } = new();
+
     /// <summary>Whether the dialog has already been closed (its result is settled).</summary>
     public bool IsClosed => _closed != 0;
 
@@ -61,26 +64,39 @@ public sealed class FlareDialogInstance
     internal Dictionary<string, object> ComponentParameters =>
         _componentParameters ??= Parameters.ToComponentParameters();
 
-    /// <summary>Closes the dialog, resolving the awaiting caller with <paramref name="result"/>.</summary>
+    /// <summary>Checks the close guards and, if allowed, resolves the caller with <paramref name="result"/>.
+    /// Returns false when vetoed, already closed, or another close request is pending.</summary>
     /// <param name="result">The outcome to return to the caller.</param>
-    public void Close(DialogResult result)
+    /// <returns>True if this request closed the dialog.</returns>
+    public Task<bool> CloseAsync(DialogResult result)
     {
         ArgumentNullException.ThrowIfNull(result);
-        // First close wins; later Close/Cancel calls (e.g. a queued scrim click) are ignored.
-        if (Interlocked.Exchange(ref _closed, 1) != 0)
-            return;
-        _completion.TrySetResult(result);
-        _onClose(this);
+        return IsClosed ? Task.FromResult(false) : CloseContext.TryCloseAsync(
+            DialogCloseReason.Programmatic, Options.BeforeClose,
+            () => ValueTask.FromResult(CompleteClose(result)));
     }
 
-    /// <summary>Closes the dialog with a confirmed result that carries no payload.</summary>
-    public void Close() => Close(DialogResult.Ok());
+    internal bool CompleteClose(DialogResult result)
+    {
+        // First accepted close wins; a queued event cannot replace its result.
+        if (Interlocked.Exchange(ref _closed, 1) != 0)
+            return false;
+        _completion.TrySetResult(result);
+        _onClose(this);
+        return true;
+    }
 
-    /// <summary>Closes the dialog with a confirmed, strongly-typed payload.</summary>
+    /// <summary>Checks the guards and closes with a confirmed result without a payload.
+    /// Returns false if closing is vetoed, pending, or already completed.</summary>
+    public Task<bool> CloseAsync() => CloseAsync(DialogResult.Ok());
+
+    /// <summary>Checks the guards and closes with a strongly-typed payload.
+    /// Returns false if closing is vetoed, pending, or already completed.</summary>
     /// <typeparam name="T">The payload type.</typeparam>
     /// <param name="returnValue">The value to return to the caller.</param>
-    public void Close<T>(T returnValue) => Close(DialogResult.Ok(returnValue));
+    public Task<bool> CloseAsync<T>(T returnValue) => CloseAsync(DialogResult.Ok(returnValue));
 
-    /// <summary>Cancels the dialog, resolving the awaiting caller with a cancelled result.</summary>
-    public void Cancel() => Close(DialogResult.Cancel());
+    /// <summary>Checks the guards and resolves the caller with a cancelled result.
+    /// Returns false if closing is vetoed, pending, or already completed.</summary>
+    public Task<bool> CancelAsync() => CloseAsync(DialogResult.Cancel());
 }

@@ -76,9 +76,7 @@ public class FlareTextInputTests : FlareTestContext
             .AddUnmatched("data-testid", "field"));
 
         var input = cut.Find($"input.{Css.Classes.Input.Control}");
-        Assert.Contains(Css.Classes.Input.Control, input.ClassName);
-        Assert.Contains("custom-control", input.ClassName);
-        Assert.Contains("my-control", input.ClassName);
+        Assert.Equal(Css.Classes.Input.Control + " custom-control my-control", input.ClassName);
         Assert.Equal("color: red", input.GetAttribute("style"));
         Assert.Equal("field", input.GetAttribute("data-testid"));
     }

@@ -42,7 +42,7 @@ public partial class FlareDatePicker
     /// <summary>Predicate that disables specific dates (return true to disable). Applied on top of Min/Max.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
     /// <summary>Culture used for the calendar (day headers, month names, first day of week) and for writing and
-    /// reading the date. Default = CurrentUICulture. The calendar follows the culture's own: Persian months and years
+    /// reading the date. Default = the current formatting culture. The calendar follows the culture's own: Persian months and years
     /// for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write
     /// their own years.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
@@ -155,7 +155,7 @@ public partial class FlareDatePicker
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-datepicker-{Guid.NewGuid():N}");
 
     // The culture on the calendar the picker shows and writes dates on.
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
 
     private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
 
@@ -163,15 +163,13 @@ public partial class FlareDatePicker
 
     // Effective display/parse format (culture short pattern when not set).
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
-    private string _separator => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Normalised numeric mask used for typing + placeholder, with the segments in the culture's own order so
     // year-first cultures (ja-JP, sv-SE, ...) mask and parse too.
-    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _separator);
+    private MaskedInput.DatePatternCache _datePattern;
+    private string _numericPattern => _datePattern.Get(_culture);
     // The field edits digits on a mask unless a custom parser reads the text or the calendar writes letters
     // (Hebrew): then it takes free text and judges it on change.
     private bool _digitEditing => ParseInput is null && CalendarMath.WritesDigits(_culture);
-
-    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     private string DisplayValue => Value.HasValue ? CalendarMath.FormatSafe(Value.Value, _format, _culture) : string.Empty;
 
@@ -185,7 +183,8 @@ public partial class FlareDatePicker
     // The reason the text currently in the field was refused. It stays with that text - and so does
     // aria-invalid - until the user corrects it, commits a valid date or an external value replaces
     // the field, so a rejected entry is shown rather than silently snapped back.
-    private string? _inputError;
+    private string? _inputErrorKey;
+    private string? _inputError => _inputErrorKey is null ? null : CoreText[_inputErrorKey].Value;
     private string? _EffectiveError => _inputError ?? DisplayedErrorText;
     private bool _errorShown => _invalid || _inputError is not null;
     private string? _describedBy => !string.IsNullOrEmpty(_EffectiveError) ? ErrorId : SupportDescribedBy;
@@ -221,12 +220,12 @@ public partial class FlareDatePicker
             if (Value is { } shown) ShowMonthOf(shown);
             _focusedDate = null;
         }
-        if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
+        if (!Equals(Value, _syncedValue) || (!_focused && _inputErrorKey is null && display != _syncedText))
         {
             _syncedValue = Value;
             _syncedText = display;
             _text = _focused && Value.HasValue && _digitEditing ? CalendarMath.FormatSafe(Value.Value, _numericPattern, _culture) : display;
-            _inputError = null; // the text came back from the value, so the refused entry is gone
+            _inputErrorKey = null; // the text came back from the value, so the refused entry is gone
             _editGeneration++;
         }
     }
@@ -320,7 +319,7 @@ public partial class FlareDatePicker
     private async Task SelectDay(DateOnly d)
     {
         if (Disabled || ReadOnly || IsDisabled(d)) return;
-        _inputError = null; // a picked day replaces whatever the field refused
+        _inputErrorKey = null; // a picked day replaces whatever the field refused
         await ValueChanged.InvokeAsync(d);
         NotifyFieldChanged();
         if (AutoClose) await SetOpenAsync(false);
@@ -341,7 +340,7 @@ public partial class FlareDatePicker
     {
         if (Disabled || ReadOnly || !AllowInput) return;
         // The user is correcting the entry: the refused reason belongs to the old text.
-        _inputError = null;
+        _inputErrorKey = null;
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
         // A custom parser or a calendar written in letters reads free text: no mask, and the text is judged on
@@ -360,26 +359,26 @@ public partial class FlareDatePicker
         if (Disabled || ReadOnly || !AllowInput) return;
         _editGeneration++;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
-        if (string.IsNullOrEmpty(raw)) { _inputError = null; _text = raw; await CommitDate(null); return; }
+        if (string.IsNullOrEmpty(raw)) { _inputErrorKey = null; _text = raw; await CommitDate(null); return; }
         if (TryParseDate(raw, out var d))
         {
             if (IsDisabled(d))
             {
                 // A real date the picker will not take (Min/Max/IsDateDisabled): say so and keep the text.
-                _inputError = FlareStrings.DatePicker_Error_Unavailable;
+                _inputErrorKey = "DatePicker_Error_Unavailable";
                 _text = raw;
                 return;
             }
-            _inputError = null;
+            _inputErrorKey = null;
             _text = raw;
             await CommitDate(d);
             return;
         }
         // Incomplete or unparsable text is not committed either, but the entry is not thrown away: the
         // field keeps it and shows why, so the user can correct it in place.
-        _inputError = _looksIncomplete(raw)
-            ? FlareStrings.DatePicker_Error_Incomplete
-            : FlareStrings.DatePicker_Error_Invalid;
+        _inputErrorKey = _looksIncomplete(raw)
+            ? "DatePicker_Error_Incomplete"
+            : "DatePicker_Error_Invalid";
         _text = raw;
     }
 

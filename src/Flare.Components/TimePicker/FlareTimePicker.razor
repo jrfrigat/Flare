@@ -35,7 +35,7 @@
                    readonly="@ReadOnly"
                    required="@Required"
                    aria-required="@(Required ? "true" : null)"
-                   aria-label="@(LabelContent is null ? Label ?? FlareStrings.TimePicker_FieldLabel : null)"
+                   aria-label="@(LabelContent is null ? Label ?? CoreText["TimePicker_FieldLabel"] : null)"
                    aria-invalid="@(_invalid ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"
                    role="@(_isList ? "combobox" : null)"
@@ -54,7 +54,7 @@
                    @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                     disabled="@(Disabled || ReadOnly)" aria-haspopup="@(_isList ? "listbox" : "dialog")" aria-expanded="@(_open ? "true" : "false")"
-                    aria-label="@FlareStrings.TimePicker_Open" @ref="_toggleEl" @onclick="Toggle">
+                    aria-label="@CoreText["TimePicker_Open"]" @ref="_toggleEl" @onclick="Toggle">
                 <FlareIconView Value="@FlareIcons.Schedule" />
             </button>
         </div>
@@ -74,7 +74,7 @@
         {
         @if (!_popup.FromField)
             {
-                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+                <div data-flare-backdrop class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
             }
         <div class="@($"{Css.Classes.Picker.Panel} {Css.Classes.TimePicker.Panel} {(PopupVariant == TimePickerVariant.Dial ? Css.Classes.TimePicker.PanelDial : Css.Classes.TimePicker.PanelDropdown)}")"
              @ref="_panelEl" role="dialog" aria-modal="@(_popup.FromField ? "false" : "true")" aria-label="@_headline"
@@ -111,7 +111,7 @@
                      data-time-locked="@(_locked ? "true" : "false")"
                      data-flare-initial-focus="true"
                      role="group" aria-label="@_headline" aria-activedescendant="@_columnsActiveId">
-                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours" data-time-column="0" data-time-current="@_tempHour">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@CoreText["TimePicker_Hours"]" data-time-column="0" data-time-current="@_tempHour">
                         @for (var h = 0; h < 24; h += _hourStep)
                         {
                             var hour = h;
@@ -122,7 +122,7 @@
                         }
                     </div>
                     <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
-                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Minutes" data-time-column="1" data-time-current="@_tempMinute">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@CoreText["TimePicker_Minutes"]" data-time-column="1" data-time-current="@_tempMinute">
                         @for (var m = 0; m < 60; m += MinuteStep)
                         {
                             var min = m;
@@ -135,7 +135,7 @@
                     @if (ShowSeconds)
                     {
                         <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
-                        <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Seconds" data-time-column="2" data-time-current="@_tempSecond">
+                        <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@CoreText["TimePicker_Seconds"]" data-time-column="2" data-time-current="@_tempSecond">
                             @for (var s = 0; s < 60; s += _secondStep)
                             {
                                 var sec = s;
@@ -154,12 +154,12 @@
                 {
                     <span class="@Css.Classes.TimePicker.ActionsLead">
                         @PickerButtons.Icon(this, ToggleKeyboardEntry,
-                            _keyboardEntry ? FlareStrings.TimePicker_SwitchToDial : FlareStrings.TimePicker_SwitchToKeyboard,
+                            _keyboardEntry ? CoreText["TimePicker_SwitchToDial"] : CoreText["TimePicker_SwitchToKeyboard"],
                             _keyboardEntry ? FlareIcons.Schedule : FlareIcons.Keyboard)
                     </span>
                 }
-                @PickerButtons.Text(this, Close, CancelText ?? FlareStrings.Picker_Cancel)
-                @PickerButtons.Text(this, Confirm, OkText ?? FlareStrings.Picker_Ok, !CanConfirm)
+                @PickerButtons.Text(this, Close, CancelText ?? CoreText["Picker_Cancel"])
+                @PickerButtons.Text(this, Confirm, OkText ?? CoreText["Picker_Ok"], !CanConfirm)
             </div>
         </div>
         }

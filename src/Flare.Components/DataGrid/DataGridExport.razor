@@ -11,7 +11,7 @@
         var primary = Exporters[0];
         <FlareSplitButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm"
                           OnClick="@(_ => ExportAsync(primary))"
-                          MenuAriaLabel="@FlareStrings.DataGrid_MoreExports">
+                          MenuAriaLabel="@CoreText["DataGrid_MoreExports"]">
             <ChildContent>
                 @if (primary.Icon is not null)
                 {

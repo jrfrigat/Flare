@@ -1,15 +1,15 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 @inject TimeProvider TimeProvider
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass()" style="@Style" role="group" aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Input.Label">@Label</label>
+        <span class="@Css.Classes.Input.Label" id="@_labelId">@Label</span>
     }
     @if (ShowPresets)
     {
@@ -31,7 +31,7 @@
         <div class="@Css.Classes.Daterangepicker.Fields">
             <FlareDatePicker Value="@StartDate"
                              ValueChanged="HandleStartChanged"
-                             Label="@(StartLabel ?? FlareStrings.DateRangePicker_StartLabel)"
+                             Label="@(StartLabel ?? CoreText["DateRangePicker_StartLabel"])"
                              ErrorText="@ErrorText"
                              Disabled="@Disabled"
                              ReadOnly="@ReadOnly"
@@ -50,7 +50,7 @@
             <FlareIconView Value="FlareIcons.ArrowForward" Class="@Css.Classes.Daterangepicker.Sep" />
             <FlareDatePicker Value="@EndDate"
                              ValueChanged="HandleEndChanged"
-                             Label="@(EndLabel ?? FlareStrings.DateRangePicker_EndLabel)"
+                             Label="@(EndLabel ?? CoreText["DateRangePicker_EndLabel"])"
                              Disabled="@Disabled"
                              ReadOnly="@ReadOnly"
                              Culture="@_culture"
@@ -71,9 +71,9 @@
     {
         <div class="@Css.Classes.Daterangepicker.Calendar" @onmouseleave="@(() => { _hover = null; })">
             <div class="@Css.Classes.DatePicker.Header">
-                @PickerButtons.Icon(this, PrevMonth, FlareStrings.Calendar_PrevMonth, FlareIcons.ChevronLeft, Disabled || !CanPrev)
+                @PickerButtons.Icon(this, PrevMonth, CoreText["Calendar_PrevMonth"], FlareIcons.ChevronLeft, Disabled || !CanPrev)
                 <span class="@Css.Classes.DatePicker.MonthLabel" aria-live="polite">@HeaderLabel</span>
-                @PickerButtons.Icon(this, NextMonth, FlareStrings.Calendar_NextMonth, FlareIcons.ChevronRight, Disabled || !CanNext)
+                @PickerButtons.Icon(this, NextMonth, CoreText["Calendar_NextMonth"], FlareIcons.ChevronRight, Disabled || !CanNext)
             </div>
             <FlareMonthGrid ViewYear="_view.Year" ViewMonth="_view.Month" Culture="_culture" Today="Today"
                             FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
@@ -101,6 +101,7 @@
 </div>
 
 @code {
+    private readonly string _labelId = $"flare-date-range-{Guid.NewGuid():N}-label";
     /// <summary>Start date of the selected range.</summary>
     [Parameter] public DateOnly? StartDate { get; set; }
     /// <summary>Callback invoked when the start date changes. A range picked in the calendar is published in
@@ -146,7 +147,7 @@
     /// calendar can be browsed while day clicks and presets are ignored.</summary>
     [Parameter] public bool ReadOnly { get; set; }
     /// <summary>Culture for the month names, the first day of week and the fields' format. Default =
-    /// CurrentUICulture, as for <c>FlareDatePicker</c>. The calendar follows the culture's own: Persian months and
+    /// the current formatting culture, as for <c>FlareDatePicker</c>. The calendar follows the culture's own: Persian months and
     /// years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>The calendar to show and write dates on instead of the culture's own, for example a
@@ -186,7 +187,7 @@
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
     // The culture on the calendar the picker shows and writes dates on.
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
     // The month the calendar shows, on the grid's calendar.
     private CalendarMonth _view => CalendarMonth.Create(_gridCalendar, _viewYear, _viewMonth);
@@ -268,7 +269,7 @@
     private bool IsDayUnavailable(DateOnly d) =>
         IsDayDisabled(d) || (_pendingStart is { } p && d != p && !_rules.CanEnd(p, d, ReachOf(p)));
 
-    private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresetsOn(_gridCalendar);
+    private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresetsOn(_gridCalendar, CoreText);
 
     /// <summary>
     /// The built-in quick-range presets (Today, Yesterday, Last 7 / 30 days, This / Last month, This
@@ -278,18 +279,21 @@
     /// access so the localized labels follow the current culture. The months and the year here are Gregorian;
     /// with no <see cref="Presets"/> set, the picker uses the same set on its own calendar (the Persian month for fa-IR).
     /// </summary>
-    public static IReadOnlyList<DateRangePreset> DefaultPresets => DefaultPresetsOn(CalendarMath.Gregorian);
+    public static IReadOnlyList<DateRangePreset> DefaultPresets => DefaultPresetsOn(CalendarMath.Gregorian, PresetText);
+    private static readonly Microsoft.Extensions.Localization.IStringLocalizer<FlareStrings> PresetText =
+        new Flare.Theming.FlareLocalization().GetLocalizer<FlareStrings>();
 
     // The default set with the month and the year of the grid calendar: "this month" is the Persian month for fa-IR.
-    private static IReadOnlyList<DateRangePreset> DefaultPresetsOn(System.Globalization.Calendar c) =>
+    private static IReadOnlyList<DateRangePreset> DefaultPresetsOn(System.Globalization.Calendar c,
+        Microsoft.Extensions.Localization.IStringLocalizer<FlareStrings> CoreText) =>
     [
-        new(FlareStrings.DateRangePicker_Today,      t => (t, t)),
-        new(FlareStrings.DateRangePicker_Yesterday,  t => (t.AddDays(-1), t.AddDays(-1))),
-        new(FlareStrings.DateRangePicker_Last7Days,  t => (t.AddDays(-6), t)),
-        new(FlareStrings.DateRangePicker_Last30Days, t => (t.AddDays(-29), t)),
-        new(FlareStrings.DateRangePicker_ThisMonth,  t => { var m = CalendarMonth.Of(t, c); return (m.Start, m.End); }),
-        new(FlareStrings.DateRangePicker_LastMonth,  t => { var m = CalendarMonth.Of(t, c); var p = m.Prev ?? m; return (p.Start, p.End); }),
-        new(FlareStrings.DateRangePicker_ThisYear,   t => { var m = CalendarMonth.Of(t, c); return (CalendarMonth.Create(c, m.Year, 1).Start, CalendarMonth.Create(c, m.Year, m.MonthsInYear).End); }),
+        new(CoreText["DateRangePicker_Today"],      t => (t, t)),
+        new(CoreText["DateRangePicker_Yesterday"],  t => (t.AddDays(-1), t.AddDays(-1))),
+        new(CoreText["DateRangePicker_Last7Days"],  t => (t.AddDays(-6), t)),
+        new(CoreText["DateRangePicker_Last30Days"], t => (t.AddDays(-29), t)),
+        new(CoreText["DateRangePicker_ThisMonth"],  t => { var m = CalendarMonth.Of(t, c); return (m.Start, m.End); }),
+        new(CoreText["DateRangePicker_LastMonth"],  t => { var m = CalendarMonth.Of(t, c); var p = m.Prev ?? m; return (p.Start, p.End); }),
+        new(CoreText["DateRangePicker_ThisYear"],   t => { var m = CalendarMonth.Of(t, c); return (CalendarMonth.Create(c, m.Year, 1).Start, CalendarMonth.Create(c, m.Year, m.MonthsInYear).End); }),
     ];
 
     protected override void OnParametersSet()

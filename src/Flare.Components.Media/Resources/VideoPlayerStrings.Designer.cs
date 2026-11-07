@@ -8,8 +8,9 @@ namespace Flare.Components.Resources;
 /// <see cref="CultureInfo.CurrentUICulture"/>. The strings ship with the Media package rather than with
 /// the core library, so a player keeps its own wording however the application names things.
 /// </summary>
-public static class VideoPlayerStrings
+public sealed class VideoPlayerStrings
 {
+    private VideoPlayerStrings() { }
     private static readonly ResourceManager ResourceManager =
         new("Flare.Components.Resources.VideoPlayerStrings", typeof(VideoPlayerStrings).Assembly);
 

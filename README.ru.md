@@ -178,7 +178,7 @@ Blazor WebAssembly приносит только те иконки, на кот�
 | **Ввод данных** | 18 | Button, Input, Checkbox, Switch, Radio, Select, Autocomplete, DatePicker, TimePicker, DateRangePicker, NumericField, Slider (одиночный + диапазон), Rating, FileUpload, ColorPicker, TagInput, InputMask, FormBuilder |
 | **Макет** | 11 | Stack, Grid, Col, Container, Hidden, Layout, LayoutAppBar, LayoutDrawer, LayoutContent, Card, Divider |
 | **Навигация** | 11 | AppBar, NavMenu, NavGroup, NavLink, Tabs, Tab, Accordion, Breadcrumb, Pagination, Stepper, Drawer |
-| **Отображение данных** | 14 | DataGrid, Column, Table, VirtualList, InfiniteScroll, TreeView, DataTree, List, Timeline, Chart, Calendar, Kanban, Transfer, Carousel |
+| **Отображение данных** | 16 | DataGrid, Column, Table, VirtualList, InfiniteScroll, TreeView, DataTree, List, Timeline, Chart, Calendar, Gantt, Scheduler, Kanban, Transfer, Carousel |
 | **Обратная связь** | 9 | Dialog, DialogProvider, MessageBoxProvider, Alert, Snackbar, Progress, Skeleton, Tooltip, Overlay |
 | **Дисплей** | 9 | Typography (FlareText), Avatar, Badge, Chip, Icon, Image, Link, Popover, ScrollTop |
 | **Утилиты** | 5 | Menu, MenuItem, SpeedDial, SpeedDialAction, DropZone, RichTextEditor |
@@ -303,8 +303,10 @@ CI запускается при пушах и pull request в `main`: сбор�
 | [getting-started](docs/ru/getting-started.md) - [en](docs/en/getting-started.md) | RU - EN | Установка, DI, стили, первый компонент |
 | [icons](docs/ru/icons.md) - [en](docs/en/icons.md) | RU - EN | Система FlareIcon, встроенный набор, пакеты провайдеров, тримминг |
 | [architecture](docs/ru/architecture.md) - [en](docs/en/architecture.md) | RU - EN | Карта модулей, паттерны компонентов, архитектура тем |
+| [localization](docs/ru/localization.md) - [en](docs/en/localization.md) | RU - EN | Смена языка, отдельное форматирование, переводы приложения |
 | [theme-creation-guide](docs/ru/theme-creation-guide.md) - [en](docs/en/theme-creation-guide.md) | RU - EN | Создание тем: дизайн-токены, палитры, кастомные темы |
 | [component-conventions](docs/ru/component-conventions.md) - [en](docs/en/component-conventions.md) | RU - EN | Конвенции кода компонентов (CSS-токены, единый цвет, XML-доки) |
+| [scheduler](docs/ru/scheduler.md) - [en](docs/en/scheduler.md) | RU - EN | Планирование, оконная загрузка, редактирование, необязательные повторы и токены |
 | [Full API Reference](docs/api/README.md) | EN | Сгенерировано автоматически на основе общедоступных сборок и XML-документации. Содержит подробные технические характеристики всех компонентов. |
 
 ---

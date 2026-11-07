@@ -1,6 +1,6 @@
 @* Requires interactive render mode (not compatible with static SSR). *@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject IScrollService Scroll
 @implements IAsyncDisposable
 
@@ -12,7 +12,7 @@
    and the accessibility tree until it appears, and the browser drops focus from it when it hides. *@
 <button class="@BuildCssClass(_visibleClass)"
         type="button"
-        aria-label="@(FlareStrings.Nav_BackToTop)"
+        aria-label="@(CoreText["Nav_BackToTop"])"
         inert="@(_visible ? null : "")"
         aria-hidden="@(_visible ? null : "true")"
         style="@Style"

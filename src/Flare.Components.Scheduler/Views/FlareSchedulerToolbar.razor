@@ -1,0 +1,45 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareLocalizedComponentBase
+@using Flare.Icons
+
+<FlareStack Row="true" Wrap="true" Class="@BuildCssClass()" Style="@Style" @attributes="AdditionalAttributes">
+    <FlareButton OnClick="() => Context.Commands.NavigateAsync(-1)" AriaLabel="@Text["Previous"].Value">
+        <FlareIconView Value="FlareIcons.ChevronLeft" />
+    </FlareButton>
+    <FlareButton OnClick="Context.Commands.TodayAsync">@Text["Today"].Value</FlareButton>
+    <FlareButton OnClick="() => Context.Commands.NavigateAsync(1)" AriaLabel="@Text["Next"].Value">
+        <FlareIconView Value="FlareIcons.ChevronRight" />
+    </FlareButton>
+    <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@Context.Caption</FlareText>
+    @if (Context.CanEdit)
+    {
+        <FlareButton OnClick="CreateAsync">@Text["Create"].Value</FlareButton>
+        @if (Context.SelectedEvent is { } selected)
+        {
+            <FlareButton OnClick="() => Context.Commands.EditEventAsync(selected)">@Text["Edit"].Value</FlareButton>
+            <FlareButton OnClick="() => Context.Commands.RequestChangeAsync(selected, selected.Data, SchedulerEditAction.Delete)">@Text["Delete"].Value</FlareButton>
+        }
+    }
+    @foreach (var view in Views)
+    {
+        var target = view;
+        <FlareButton OnClick="() => Context.Commands.ShowViewAsync(target)" aria-pressed="@(Context.View == target ? "true" : "false")">@Text[target.ToString()].Value</FlareButton>
+    }
+</FlareStack>
+
+@code {
+    /// <summary>Scheduling snapshot and navigation commands.</summary>
+    [Parameter, EditorRequired] public SchedulerViewContext<TItem> Context { get; set; } = default!;
+    /// <summary>Projections offered by this optional toolbar.</summary>
+    [Parameter] public IReadOnlyList<SchedulerView> Views { get; set; } = Enum.GetValues<SchedulerView>();
+    protected override string ComponentCssClass => Css.Classes.Scheduler.Toolbar;
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> Text => Localizer<SchedulerStrings>();
+    private Task CreateAsync()
+    {
+        if (Context.SelectedSlot is { } selected) return Context.Commands.CreateEventAsync(selected);
+        var slots = SchedulerSlots.ForDate(Context.Date, Context.TimeZone, Context.SlotDuration);
+        var slot = slots.FirstOrDefault(s => TimeOnly.FromDateTime(s.Start.DateTime) >= Context.WorkStart) ?? slots[0];
+        return Context.Commands.CreateEventAsync(new(slot.Start, slot.End));
+    }
+}

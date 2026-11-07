@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <div class="@BuildCssClass(_spark ? Css.Classes.Chart.Sparkline : null, Animate ? Css.Classes.Chart.Animate : null)" style="@Style" @attributes="AdditionalAttributes">
     @if ((Title is not null || _showZoomToolbar) && !_spark)
@@ -13,13 +13,13 @@
             {
                 <div class="@Css.Classes.Chart.Toolbar">
                     <FlareIconButton Icon="@FlareIcons.Add" Size="ButtonSize.Xs" Variant="ButtonVariant.Text"
-                                     AriaLabel="@FlareStrings.Chart_ZoomIn"
+                                     AriaLabel="@CoreText["Chart_ZoomIn"]"
                                      OnClick="@(() => ZoomByAsync(0.6))" />
                     <FlareIconButton Icon="@FlareIcons.Remove" Size="ButtonSize.Xs" Variant="ButtonVariant.Text"
-                                     AriaLabel="@FlareStrings.Chart_ZoomOut"
+                                     AriaLabel="@CoreText["Chart_ZoomOut"]"
                                      OnClick="@(() => ZoomByAsync(1.6))" />
                     <FlareIconButton Icon="@FlareIcons.Refresh" Size="ButtonSize.Xs" Variant="ButtonVariant.Text"
-                                     AriaLabel="@FlareStrings.Chart_ZoomReset"
+                                     AriaLabel="@CoreText["Chart_ZoomReset"]"
                                      Disabled="@(!_zoomed)" OnClick="ResetZoomAsync" />
                 </div>
             }
@@ -74,7 +74,7 @@
             {
                 @if (hit.Shape == HitShape.Rectangle)
                 {
-                    <rect @key="hit.Key" x="@F(hit.X)" y="@F(hit.Y)" width="@F(hit.Width)" height="@F(hit.Height)"
+                    <rect @key="hit.Key" x="@hit.X" y="@hit.Y" width="@hit.Width" height="@hit.Height"
                           fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
                           role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
                           @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
@@ -89,7 +89,7 @@
                 }
                 else
                 {
-                    <circle @key="hit.Key" cx="@F(hit.X)" cy="@F(hit.Y)" r="@F(hit.Radius)"
+                    <circle @key="hit.Key" cx="@hit.X" cy="@hit.Y" r="@hit.Radius"
                             fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
                             role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
                             @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"

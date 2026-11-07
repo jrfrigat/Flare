@@ -35,6 +35,20 @@ public class PickerFormatResyncTests : FlareTestContext
     }
 
     [Fact]
+    public void DatePicker_UsesTheUpdatedMaskOfAMutableCulture()
+    {
+        var culture = new CultureInfo("en-GB");
+        var cut = Render<FlareDatePicker>(p => p.Add(x => x.Culture, culture));
+        Assert.Equal("dd/MM/yyyy", cut.Find("input").GetAttribute("placeholder"));
+
+        culture.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
+        culture.DateTimeFormat.DateSeparator = "-";
+        cut.Render();
+
+        Assert.Equal("yyyy-MM-dd", cut.Find("input").GetAttribute("placeholder"));
+    }
+
+    [Fact]
     public void TimePicker_ShowSeconds_RewritesTheText()
     {
         var cut = Render<FlareTimePicker>(p => p.Add(x => x.Value, new TimeOnly(14, 30, 45)));

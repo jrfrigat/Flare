@@ -13,19 +13,20 @@ A debounced search box that narrows a FlareDataGrid to the rows where any visibl
 | `DebounceMs` | `int` | `250` | Parameter |  | Debounce delay in milliseconds before the filter is applied (default 250). |
 | `Placeholder` | `string?` | `` | Parameter |  | Placeholder text for the search box (defaults to the localized "Search"). |
 | `Size` | `FieldSize` | `FieldSize.Sm` | Parameter |  | Field size of the search box. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Context` | `DataGridContext<TItem>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |
 | `Grid` | `FlareDataGrid<TItem>?` | `` | Parameter |  | The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself. Inherited from `FlareDataGridControl`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
-### `Dispose()`
-
-Unsubscribes from the bound context.
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 
 - `FlareDataGridControl`
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

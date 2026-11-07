@@ -18,7 +18,7 @@ namespace Flare.Components;
 /// No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness
 /// is a token read by the stylesheet.
 /// </remarks>
-public partial class FlareGauge : FlareComponentBase
+public partial class FlareGauge : FlareLocalizedComponentBase
 {
     /// <summary>Zones drawn as coloured bands behind the fill, declared as <see cref="FlareZone"/> children.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -123,26 +123,29 @@ public partial class FlareGauge : FlareComponentBase
         _ => Css.Classes.Gauge.Arc,
     };
 
-    private string Display(double value) => value.ToString(Format, CultureInfo.CurrentCulture);
+    private string Display(double value) => value.ToString(Format, FormattingCulture);
 
     // The bands, ordered and clipped to the scale. A zone with a missing bound collapses and is dropped by
     // the shared collection, which is why the ordering is on the pair rather than on Start alone.
-    private IReadOnlyList<FlareZone> Bands => _zones
+    private IReadOnlyList<FlareZone> Bands => _zones.Count == 0 ? [] : _zones
         .Typed<FlareZone>(nameof(FlareGauge), "<FlareZone Start=\"..\" End=\"..\" /> children")
         .Where(z => z.Start is not null && z.End is not null)
         .OrderBy(z => Math.Min(z.Start!.Value, z.End!.Value))
         .ToList();
 
     // What a screen reader is told the value means: the band it falls in, when the application named one.
-    private string? ValueText
+    private string ValueText(IReadOnlyList<FlareZone> bands)
     {
-        get
+        var value = ClampedValue;
+        var shown = Display(value);
+        for (var i = 0; i < bands.Count; i++)
         {
-            var band = Bands.FirstOrDefault(z =>
-                ClampedValue >= Math.Min(z.Start!.Value, z.End!.Value) &&
-                ClampedValue <= Math.Max(z.Start!.Value, z.End!.Value));
-            var shown = Display(ClampedValue);
-            return band?.Label is { Length: > 0 } name ? $"{shown} ({name})" : shown;
+            var band = bands[i];
+            var start = band.Start!.Value;
+            var end = band.End!.Value;
+            if (value >= Math.Min(start, end) && value <= Math.Max(start, end))
+                return band.Label is { Length: > 0 } name ? $"{shown} ({name})" : shown;
         }
+        return shown;
     }
 }

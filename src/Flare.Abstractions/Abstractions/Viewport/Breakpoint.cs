@@ -5,7 +5,12 @@ namespace Flare.Components;
 /// only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers
 /// on <see cref="BreakpointExtensions"/> rather than being baked into the enum.
 /// <para>Default lower bounds (see <see cref="FlareBreakpoints"/>): Xs 0, Sm 600, Md 960, Lg 1280,
-/// Xl 1920, Xxl 2560 (px). The bounds are configurable per subscription and via <c>FlareOptions</c>.</para>
+/// Xl 1920, Xxl 2560 (px).</para>
+/// <para>Custom bounds apply only to an individual
+/// <see cref="IBrowserViewportService.SubscribeAsync(System.Func{ViewportChange, System.Threading.Tasks.Task}, ViewportSubscribeOptions, System.Threading.CancellationToken)"/>
+/// subscription through <see cref="ViewportSubscribeOptions.Breakpoints"/>.
+/// The breakpoint-only subscriptions, CSS Hidden/Col utilities and MediaQuery helpers keep the default tiers;
+/// there is no global breakpoint-bound setting.</para>
 /// </summary>
 public enum Breakpoint
 {

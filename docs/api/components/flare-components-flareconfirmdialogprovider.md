@@ -11,6 +11,9 @@ Host for the confirmation dialogs raised through IConfirmDialogService. It casca
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Application content that can access the confirm dialog via cascading value. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -30,13 +33,10 @@ Returns: `Task<bool?>`.
 | `confirmLabel` | `string` | — |
 | `cancelLabel` | `string` | — |
 
-### `DisposeAsync()`
-
-Releases modal resources and resolves an unanswered confirmation as dismissed.
-Returns: `ValueTask`.
-
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 @inject IMessageBoxService MessageBoxService
 @inject IOverlayJsService Overlay
 @inject IScrollService Scroll
@@ -7,7 +8,7 @@
 
 @if (MessageBoxService.Current is { } req)
 {
-    <div class="@Css.Classes.Msgbox.Scrim" @onclick="@(() => Respond(req, req.Kind == MessageBoxKind.Alert))">
+    <div data-flare-backdrop class="@Css.Classes.Msgbox.Scrim" @onclick="@(() => Respond(req, req.Kind == MessageBoxKind.Alert))">
         <div class="@Css.Classes.Msgbox.Root" @onclick:stopPropagation="true"
              @onkeydown="@(e => OnKeyDown(req, e))"
              role="@(req.Kind == MessageBoxKind.Alert ? "alertdialog" : "dialog")"
@@ -42,15 +43,17 @@
             <div class="@Css.Classes.Msgbox.Actions">
                 @if (req.Kind != MessageBoxKind.Alert)
                 {
-                    <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="@(() => Respond(req, false))">@req.CancelLabel</button>
+                    <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="@(() => Respond(req, false))">@(req.CancelLabel ?? CoreText[req.Kind == MessageBoxKind.Confirm ? "Dialog_No" : "Dialog_Cancel"].Value)</button>
                 }
-                <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="@(() => Respond(req, true))">@req.ConfirmLabel</button>
+                <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="@(() => Respond(req, true))">@(req.ConfirmLabel ?? CoreText[req.Kind == MessageBoxKind.Confirm ? "Dialog_Yes" : "Dialog_Ok"].Value)</button>
             </div>
         </div>
     </div>
 }
 
 @code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Msgbox.Root;
     private string _value = "";
 
     // Unique IDs prevent aria attribute clashes when multiple dialogs exist in the DOM.

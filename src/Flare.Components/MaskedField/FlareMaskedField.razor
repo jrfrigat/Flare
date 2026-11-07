@@ -38,7 +38,7 @@
             {
                 <button type="button"
                         class="@Css.Classes.Input.Clear"
-                        aria-label="@(FlareStrings.Input_Clear)"
+                        aria-label="@(CoreText["Input_Clear"])"
                         tabindex="-1"
                         @onclick="HandleClear">
                     <span aria-hidden="true">&#x2715;</span>
@@ -117,12 +117,18 @@
             if (InputMode is { Length: > 0 }) return InputMode;
             if (Preset == MaskPreset.Phone) return "tel";
             if (Pattern is not { Length: > 0 } mask) return null;
-            return mask.Any(c => c is 'A' or '*') ? null : "numeric";
+            return mask.AsSpan().IndexOfAny('A', '*') >= 0 ? null : "numeric";
         }
     }
 
-    private string? _derivedPlaceholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>
-        c == '#' || c == 'A' || c == '*' ? '_' : c));
+    private string? _maskPlaceholder;
+    private string? _derivedPlaceholder => Pattern is { } mask
+        ? _maskPlaceholder ??= string.Create(mask.Length, mask, static (output, pattern) =>
+        {
+            for (var i = 0; i < output.Length; i++)
+                output[i] = IsMaskSlot(pattern[i]) ? '_' : pattern[i];
+        })
+        : null;
 
     private string? _lastValue;
     private string? _lastPattern;
@@ -133,6 +139,7 @@
     {
         UpdateFieldIdentifier(For);
         var pattern = Pattern;
+        if (pattern != _lastPattern) _maskPlaceholder = null;
         if (!_hasSyncedParameters || Value != _lastValue || pattern != _lastPattern || AutoApply != _lastAutoApply)
         {
             _hasSyncedParameters = true;
@@ -168,56 +175,69 @@
 
     private string ApplyMask(string input)
     {
-        if (string.IsNullOrEmpty(Pattern)) return input;
-        var raw = ExtractRaw(input);
-        if (raw.Length == 0) return string.Empty;
-        var result = new System.Text.StringBuilder();
-        var ri = 0;
-        foreach (var mc in Pattern) //-V3080 the IsNullOrEmpty(Pattern) guard above ensures Pattern is non-null here
+        var pattern = Pattern;
+        if (string.IsNullOrEmpty(pattern) || input.Length == 0) return input;
+        if (pattern.Length > 128)
         {
-            var isPlaceholder = mc is '#' or 'A' or '*';
-            if (isPlaceholder)
-            {
-                if (ri >= raw.Length) break;
-                var c = raw[ri];
-                var ok = mc switch
-                {
-                    '#' => char.IsDigit(c),
-                    'A' => char.IsLetter(c),
-                    _ => char.IsLetterOrDigit(c),
-                };
-                if (!ok) break;
-                result.Append(c);
-                ri++;
-            }
-            else
-            {
-                result.Append(mc);
-                if (ri < raw.Length && raw[ri] == mc) ri++;
-            }
+            var length = WriteMask(input, pattern, Span<char>.Empty);
+            return string.Create(length, (input, pattern), static (output, state) =>
+                WriteMask(state.input, state.pattern, output));
         }
-        return result.ToString();
+        Span<char> buffer = stackalloc char[pattern.Length];
+        var result = buffer[..WriteMask(input, pattern, buffer)];
+        return result.SequenceEqual(input) ? input : new string(result);
     }
 
-    private string ExtractRaw(string masked)
+    private static int WriteMask(string input, string pattern, Span<char> output)
     {
-        if (string.IsNullOrEmpty(Pattern)) return masked;
-        var result = new System.Text.StringBuilder();
-        var mi = 0;
-        foreach (var c in masked)
+        var source = 0;
+        var extractionSlot = 0;
+        var hasRaw = TryReadRaw(input, pattern, ref source, ref extractionSlot, out var raw);
+        if (!hasRaw) return 0;
+
+        // Read ahead only one character from the unmasked input. The extraction cursor and
+        // the output cursor can be at different literals when the user typed only part of the mask.
+        var written = 0;
+        foreach (var token in pattern)
         {
-            // Skip mask literals not present in the input.
-            var consumedLiteral = false;
-            while (mi < Pattern.Length && Pattern[mi] is not ('#' or 'A' or '*'))
-            {
-                if (c == Pattern[mi]) { mi++; consumedLiteral = true; break; }
-                mi++;
-            }
-            if (consumedLiteral) continue;
-            if (mi >= Pattern.Length) break;
-            result.Append(c);
-            mi++;
+            var isSlot = IsMaskSlot(token);
+            if (isSlot && (!hasRaw || !Accepts(token, raw))) break;
+            if (!output.IsEmpty) output[written] = isSlot ? raw : token;
+            written++;
+            if (hasRaw && (isSlot || token == raw))
+                hasRaw = TryReadRaw(input, pattern, ref source, ref extractionSlot, out raw);
         }
-        return result.ToString();
+        return written;
     }
+
+    private static bool TryReadRaw(string input, string pattern, ref int source, ref int slot, out char value)
+    {
+        while (source < input.Length)
+        {
+            var character = input[source++];
+            var matchedLiteral = false;
+            while (slot < pattern.Length && !IsMaskSlot(pattern[slot]))
+            {
+                if (pattern[slot++] != character) continue;
+                matchedLiteral = true;
+                break;
+            }
+            if (matchedLiteral) continue;
+            if (slot == pattern.Length) break;
+            slot++;
+            value = character;
+            return true;
+        }
+        value = default;
+        return false;
+    }
+
+    private static bool IsMaskSlot(char token) => token is '#' or 'A' or '*';
+
+    private static bool Accepts(char token, char value) => token switch
+    {
+        '#' => char.IsDigit(value),
+        'A' => char.IsLetter(value),
+        _ => char.IsLetterOrDigit(value),
+    };
 }

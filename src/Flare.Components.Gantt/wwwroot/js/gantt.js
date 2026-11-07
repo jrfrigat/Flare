@@ -139,6 +139,7 @@ export function attach(root, dotnet, virtualize, endless) {
         filter(e) {
             const bar = e.target instanceof Element ? e.target.closest(BAR) : null;
             if (!bar || bar.closest('.flare-gantt') !== root) return false;
+            if (e.target.closest('input,textarea,select,[contenteditable="true"],[data-gantt-no-drag]')) return false;
             if (bar.classList.contains('flare-gantt__bar--summary') || bar.classList.contains('flare-gantt__bar--suggested')) return false;
             return bar.closest('.flare-gantt__body')?.dataset.editable === 'true';
         },
@@ -226,7 +227,10 @@ export function attach(root, dotnet, virtualize, endless) {
     // Escape abandons a gesture; Ctrl+arrows on a bar move it, so they must not also scroll the page.
     const onKey = e => {
         if (e.key === 'Escape' && gesture) { gesture.cancelled = true; resetGesture(gesture); return; }
-        if (e.ctrlKey && e.key.startsWith('Arrow') && e.target instanceof Element && e.target.closest(BAR)) e.preventDefault();
+        if (e.ctrlKey && !e.altKey && !e.metaKey && !e.isComposing && e.key.startsWith('Arrow') && e.target instanceof Element) {
+            const bar = e.target.closest(BAR);
+            if (bar && (!bar.hasAttribute('data-gantt-own-interaction') || e.target.matches('[data-flare-edit-keys]'))) e.preventDefault();
+        }
     };
     root.addEventListener('keydown', onKey);
 

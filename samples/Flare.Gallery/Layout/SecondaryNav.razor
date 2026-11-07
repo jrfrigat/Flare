@@ -27,6 +27,10 @@
                 <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Devices" /></IconContent>
                 <ChildContent>@GalleryStrings.MobileShells_Title</ChildContent>
             </FlareNavLink>
+            <FlareNavLink Href="localization">
+                <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Translate" /></IconContent>
+                <ChildContent>@GalleryStrings.Localization_Title</ChildContent>
+            </FlareNavLink>
             <FlareNavLink Href="changelog">
                 <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.History" /></IconContent>
                 <ChildContent>@GalleryStrings.Nav_Changelog</ChildContent>
@@ -36,7 +40,6 @@
         {
             <FlareNavLink Href="theming" Match="NavMatchMode.Exact">@GalleryStrings.Nav_Theming</FlareNavLink>
             <FlareNavLink Href="color">@GalleryStrings.Nav_Color</FlareNavLink>
-            <FlareNavLink Href="custom-theme">Custom Theme</FlareNavLink>
             @* One entry per registered theme that ships a README, so adding a theme package adds its
                mapping page without touching this list. *@
             <FlareNavGroup Label="@GalleryStrings.Nav_ThemeMappings">

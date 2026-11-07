@@ -37,7 +37,7 @@ public partial class FlareMonthGrid
     {
         var changed = PrepareDayStates();
         var header = new HeaderState(_weeks, _culture, AriaLabel, MultiSelectable, ShowWeekNumbers,
-            IsoWeekNumbers, Today, _tabTarget, OnDayHover.HasDelegate, FlareStrings.Picker_Week, FlareStrings.Picker_WeekNumber);
+            IsoWeekNumbers, Today, _tabTarget, OnDayHover.HasDelegate, CoreText["Picker_Week"], CoreText["Picker_WeekNumber"]);
         // Predicates are evaluated before comparison, so a mutable closure still updates the cells.
         // Templates may read arbitrary mutable state and always require a render.
         _skipParameterRender = !changed && header == _headerState && DayContent is null && !_followFocus;

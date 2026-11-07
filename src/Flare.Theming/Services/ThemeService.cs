@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 
@@ -11,6 +12,9 @@ public sealed class ThemeService : IThemeService
     private readonly List<ITheme> _themes = [];
     private readonly List<Palette> _palettes = [];
     private readonly Dictionary<string, string> _customTokens = new();
+    private static readonly IReadOnlyDictionary<string, string> EmptyCustomTokens =
+        new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+    private IReadOnlyDictionary<string, string>? _customTokensSnapshot;
 
     // Cached read-only snapshots of the registered theme/palette lists, rebuilt only when membership
     // changes. Avoids allocating a fresh copy on every Themes/Palettes read -- these are enumerated on
@@ -22,6 +26,9 @@ public sealed class ThemeService : IThemeService
     // a FlareThemeScope) are emitted into the static stylesheet -- not every registered one.
     private readonly HashSet<string> _neededThemeIds = new(StringComparer.Ordinal);
     private readonly HashSet<string> _neededPaletteIds = new(StringComparer.Ordinal);
+    private readonly SemaphoreSlim _staticCssGate = new(1);
+    private long _staticCssRevision;
+    private long _emittedCssRevision = -1;
     private string? _emittedCss;
 
     private ITheme _theme;
@@ -195,38 +202,47 @@ public sealed class ThemeService : IThemeService
             _palette = dynamic;
             _neededPaletteIds.Add(Palette.DynamicId);
             _palettesSnapshot = null;
-            _emittedCss = null; // the dynamic palette colors changed -> force a re-emit
+            _staticCssRevision++;
         }
         await ApplyAsync();
     }
 
     /// <summary>Ensures the class-scoped static stylesheet is present (ClassToggle delivery; no-op otherwise).</summary>
-    public async Task EnsureStaticCssAsync()
+    public Task EnsureStaticCssAsync() => EnsureStaticCssAsync(refresh: true);
+
+    private async Task EnsureStaticCssAsync(bool refresh)
     {
         if (Delivery != ThemeDelivery.ClassToggle) return;
 
-        ITheme[] themesCopy;
-        Palette[] palettesCopy;
-        lock (_lock)
+        await _staticCssGate.WaitAsync();
+        try
         {
-            // The active axes are always part of the static stylesheet. We emit only the "needed"
-            // theme/palette combinations (active + anything a FlareThemeScope asked for via
-            // RequireThemeAssetsAsync) instead of every registered one, so a page using a single
-            // theme keeps a ~10 KB stylesheet rather than one covering all registered palettes.
-            _neededThemeIds.Add(_theme.Id);
-            _neededPaletteIds.Add(_palette.Id);
-            themesCopy = _themes.Where(t => _neededThemeIds.Contains(t.Id)).ToArray();
-            palettesCopy = _palettes.Where(p => _neededPaletteIds.Contains(p.Id)).ToArray();
-        }
+            ITheme[] themesCopy;
+            Palette[] palettesCopy;
+            long revision;
+            lock (_lock)
+            {
+                // The stylesheet covers the active axes and those requested by scopes.
+                if (_neededThemeIds.Add(_theme.Id) | _neededPaletteIds.Add(_palette.Id))
+                    _staticCssRevision++;
+                revision = _staticCssRevision;
+                if (!refresh && revision == _emittedCssRevision) return;
 
-        var css = TokensToCss.Bundle(themesCopy, palettesCopy);
-        lock (_lock)
-        {
-            if (css == _emittedCss) return;   // nothing new to push
+                themesCopy = _themes.Where(t => _neededThemeIds.Contains(t.Id)).ToArray();
+                palettesCopy = _palettes.Where(p => _neededPaletteIds.Contains(p.Id)).ToArray();
+            }
+
+            var css = TokensToCss.Bundle(themesCopy, palettesCopy);
+            if (css != _emittedCss)
+                await _injector.SetStaticCssAsync(css);
+
             _emittedCss = css;
+            _emittedCssRevision = revision;
         }
-
-        await _injector.SetStaticCssAsync(css);
+        finally
+        {
+            _staticCssGate.Release();
+        }
     }
 
     /// <summary>Ensures a specific theme/palette's class-scoped CSS is emitted even when not active.</summary>
@@ -234,23 +250,25 @@ public sealed class ThemeService : IThemeService
     {
         if (Delivery != ThemeDelivery.ClassToggle) return;
 
-        bool changed = false;
+        bool needed;
         lock (_lock)
         {
-            if (themeId is not null && _themes.Any(t => t.Id == themeId))
-                changed |= _neededThemeIds.Add(themeId);
-            if (paletteId is not null && _palettes.Any(p => p.Id == paletteId))
-                changed |= _neededPaletteIds.Add(paletteId);
+            var themeNeeded = themeId is not null && (_neededThemeIds.Contains(themeId) || _themes.Any(t => t.Id == themeId));
+            var paletteNeeded = paletteId is not null && (_neededPaletteIds.Contains(paletteId) || _palettes.Any(p => p.Id == paletteId));
+            needed = themeNeeded || paletteNeeded;
+            var changed = themeNeeded && _neededThemeIds.Add(themeId!);
+            changed |= paletteNeeded && _neededPaletteIds.Add(paletteId!);
+            if (changed) _staticCssRevision++;
         }
 
-        if (changed) await EnsureStaticCssAsync();
+        if (needed) await EnsureStaticCssAsync(refresh: false);
     }
 
     private async Task ApplyAsync()
     {
         if (Delivery == ThemeDelivery.ClassToggle)
         {
-            await EnsureStaticCssAsync();
+            await EnsureStaticCssAsync(refresh: false);
         }
         else
         {
@@ -260,12 +278,7 @@ public sealed class ThemeService : IThemeService
             await _injector.InjectAsync(design, ResolveColors());
         }
 
-        Dictionary<string, string> customCopy;
-        lock (_lock)
-        {
-            customCopy = new Dictionary<string, string>(_customTokens);
-        }
-
+        var customCopy = GetCustomTokens();
         if (customCopy.Count > 0)
             await _injector.SetCustomTokensAsync(customCopy);
         await OnThemeChanged();
@@ -327,6 +340,7 @@ public sealed class ThemeService : IThemeService
         {
             foreach (var (k, val) in delta)
                 _customTokens[k] = val;
+            _customTokensSnapshot = null;
         }
         _ = _injector.SetCustomTokensAsync(delta);
     }
@@ -337,6 +351,7 @@ public sealed class ThemeService : IThemeService
         lock (_lock)
         {
             _customTokens[tokenName] = value;
+            _customTokensSnapshot = null;
         }
         _ = _injector.SetCustomTokensAsync(new Dictionary<string, string> { [tokenName] = value });
     }
@@ -344,12 +359,15 @@ public sealed class ThemeService : IThemeService
     /// <summary>Overrides multiple CSS variables at runtime.</summary>
     public void SetCustomTokens(IReadOnlyDictionary<string, string> tokens)
     {
+        IReadOnlyDictionary<string, string> snapshot;
         lock (_lock)
         {
+            _customTokensSnapshot = null;
             foreach (var (k, v) in tokens)
                 _customTokens[k] = v;
+            snapshot = GetCustomTokensSnapshot();
         }
-        _ = _injector.SetCustomTokensAsync(new Dictionary<string, string>(_customTokens));
+        _ = _injector.SetCustomTokensAsync(snapshot);
     }
 
     /// <summary>Removes a previously set custom token override.</summary>
@@ -357,7 +375,8 @@ public sealed class ThemeService : IThemeService
     {
         lock (_lock)
         {
-            _customTokens.Remove(tokenName);
+            if (_customTokens.Remove(tokenName))
+                _customTokensSnapshot = null;
         }
         _ = _injector.ClearCustomTokensAsync([tokenName]);
     }
@@ -370,6 +389,7 @@ public sealed class ThemeService : IThemeService
         {
             names = _customTokens.Keys.ToArray();
             _customTokens.Clear();
+            _customTokensSnapshot = null;
         }
         _ = _injector.ClearCustomTokensAsync(names);
     }
@@ -377,9 +397,11 @@ public sealed class ThemeService : IThemeService
     /// <summary>Returns all currently active custom token overrides.</summary>
     public IReadOnlyDictionary<string, string> GetCustomTokens()
     {
-        lock (_lock)
-        {
-            return new Dictionary<string, string>(_customTokens);
-        }
+        lock (_lock) return GetCustomTokensSnapshot();
     }
+
+    private IReadOnlyDictionary<string, string> GetCustomTokensSnapshot() =>
+        _customTokensSnapshot ??= _customTokens.Count == 0
+            ? EmptyCustomTokens
+            : new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(_customTokens));
 }

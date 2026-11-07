@@ -224,13 +224,12 @@ else
     // hook and comes first, the caller's Class last, matching the order BuildCssClass uses.
     private string ControlCss()
     {
-        if (string.IsNullOrWhiteSpace(Class) && string.IsNullOrWhiteSpace(ControlClass))
-            return Css.Classes.Input.Control;
-
-        var parts = new List<string>(3) { Css.Classes.Input.Control };
-        if (!string.IsNullOrWhiteSpace(ControlClass)) parts.Add(ControlClass);
-        if (!string.IsNullOrWhiteSpace(Class)) parts.Add(Class);
-        return string.Join(' ', parts);
+        const string root = Css.Classes.Input.Control;
+        if (string.IsNullOrWhiteSpace(ControlClass))
+            return string.IsNullOrWhiteSpace(Class) ? root : string.Concat(root, " ", Class);
+        if (string.IsNullOrWhiteSpace(Class))
+            return string.Concat(root, " ", ControlClass);
+        return string.Concat(root + " ", ControlClass, " ", Class);
     }
 
     /// <summary>The underlying input element, for the parent field to focus it.</summary>

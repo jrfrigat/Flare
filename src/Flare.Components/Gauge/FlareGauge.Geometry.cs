@@ -85,25 +85,6 @@ public partial class FlareGauge
         }
     }
 
-    /// <summary>The whole scale as a stroked arc - the unfilled track.</summary>
-    private string TrackPath
-    {
-        get
-        {
-            var (w, h, cx, cy, r) = Dial;
-            _ = (w, h);
-            var (from, to) = Sweep;
-            return ArcGeometry.Stroke(cx, cy, r, from, to);
-        }
-    }
-
-    /// <summary>The arc between two values - a band.</summary>
-    private string ArcBetween(double start, double end)
-    {
-        var (_, _, cx, cy, r) = Dial;
-        return ArcGeometry.Stroke(cx, cy, r, AngleOf(start), AngleOf(end));
-    }
-
     /// <summary>Degrees to rotate the needle by, given that it is drawn pointing at the scale's start.</summary>
     private double NeedleRotation
     {

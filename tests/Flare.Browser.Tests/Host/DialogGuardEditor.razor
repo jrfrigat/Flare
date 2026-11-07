@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager Navigation
+
+<EditForm EditContext="_editContext">
+    <FlareDialogCloseGuard />
+    <label for="guard-name">Name</label>
+    <InputText id="guard-name" @bind-Value="_model.Name" />
+    <button id="body-close" type="button" @onclick="RequestClose">Close</button>
+    <button id="body-save" type="button" @onclick="Save">Save</button>
+    <button id="body-navigate" type="button" @onclick="Navigate">Navigate</button>
+</EditForm>
+
+@code {
+    [Parameter] public EventCallback Close { get; set; }
+    [CascadingParameter] public FlareDialogInstance? Dialog { get; set; }
+    private readonly FormModel _model = new();
+    private EditContext _editContext = default!;
+    protected override void OnInitialized() => _editContext = new EditContext(_model);
+    private Task RequestClose() => Dialog is null ? Close.InvokeAsync() : Dialog.CancelAsync();
+    private Task Save()
+    {
+        _editContext.MarkAsUnmodified();
+        return Dialog is null ? Close.InvokeAsync() : Dialog.CloseAsync(_model.Name);
+    }
+    private void Navigate() => Navigation.NavigateTo("/dialog-guard/next");
+    private sealed class FormModel { public string Name { get; set; } = "Original"; }
+}

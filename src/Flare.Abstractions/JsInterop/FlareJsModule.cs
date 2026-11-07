@@ -13,7 +13,9 @@ public abstract class FlareJsModule : IAsyncDisposable
 {
     private readonly IJSRuntime _js;
     private readonly string _modulePath;
+    private readonly object _moduleLock = new();
     private Task<IJSObjectReference>? _module;
+    private bool _disposed;
 
     // What JS interop needs to keep of a result type to deserialize it - the same members IJSObjectReference asks for.
     private const DynamicallyAccessedMemberTypes JsonSerialized =
@@ -31,10 +33,13 @@ public abstract class FlareJsModule : IAsyncDisposable
     /// <summary>Imports (once) and returns the module reference; a failed import is retried on the next call.</summary>
     protected Task<IJSObjectReference> ModuleAsync()
     {
-        var module = _module;
-        if (module is null || module.IsFaulted || module.IsCanceled)
-            _module = module = ImportModuleAsync();
-        return module;
+        lock (_moduleLock)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_module is null || _module.IsFaulted || _module.IsCanceled)
+                _module = ImportModuleAsync();
+            return _module;
+        }
     }
 
     private async Task<IJSObjectReference> ImportModuleAsync() =>
@@ -53,10 +58,19 @@ public abstract class FlareJsModule : IAsyncDisposable
     /// <c>base.DisposeAsync()</c>.</summary>
     public virtual async ValueTask DisposeAsync()
     {
-        if (_module is null) return;
+        Task<IJSObjectReference>? pending;
+        lock (_moduleLock)
+        {
+            if (_disposed) return;
+            _disposed = true;
+            pending = _module;
+            _module = null;
+        }
+
+        if (pending is null) return;
         try
         {
-            var module = await _module;
+            var module = await pending;
             await module.DisposeAsync();
         }
         catch (JSDisconnectedException) { }

@@ -47,11 +47,11 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask RemoveButtonGroupCollapseAsync(ElementReference root) => InvokeVoidAsync("removeButtonGroupCollapse", root);
 
     /// <inheritdoc />
-    public ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(DotNetObjectReference<T> dotNetRef) where T : class
-        => InvokeVoidAsync("registerShortcutListener", dotNetRef);
+    public ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("registerShortcutListener", id, dotNetRef);
 
     /// <inheritdoc />
-    public ValueTask RemoveShortcutsAsync() => InvokeVoidAsync("removeShortcutListener");
+    public ValueTask RemoveShortcutsAsync(string id) => InvokeVoidAsync("removeShortcutListener", id);
 
     /// <inheritdoc />
     public ValueTask<bool> SupportsEyeDropperAsync() => InvokeAsync<bool>("supportsEyeDropper");
@@ -72,6 +72,11 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
 
     /// <inheritdoc />
     public ValueTask RegisterTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("registerTreeKeyboard", root);
+
+    /// <inheritdoc />
+    public ValueTask RegisterTreeKeyboardAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(
+        ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("registerTreeKeyboard", root, dotNetRef);
 
     /// <inheritdoc />
     public ValueTask RemoveTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("removeTreeKeyboard", root);

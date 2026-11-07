@@ -57,16 +57,17 @@ public partial class FlareGanttPanel<TRow, TItem>
     private string? _refocus;
     private bool _skipRender;
     private string? _linkFrom;
-    private string? _announcement;
+    private Func<string>? _announcementText;
+    private string? _announcement => _announcementText?.Invoke();
 
     private bool CanEdit => Editable && Gantt is { Compact: false };
 
     /// <inheritdoc />
     protected override bool ShouldRender()
     {
-        if (!_skipRender) return true;
+        var render = !_skipRender || _viewportOnly;
         _skipRender = false;
-        return false;
+        return render;
     }
 
     // A gesture the browser tracked (gantt.js): the bar moved or was resized by whole axis units, possibly into
@@ -77,7 +78,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         var toRow = action == GanttEditAction.Move && AllowRowChange && rowKey is not null && _rows.Any(r => r.Key == rowKey) ? rowKey : bar.RowKey;
         _suppressClick = true;
         await Commit(key, action, Apply(bar.Span, action, units, CoverOf(key)), bar.RowKey, toRow);
-        StateHasChanged();
+        RenderLayout();
     }
 
     // A link the user drew from one bar to another in the browser.
@@ -87,12 +88,13 @@ public partial class FlareGanttPanel<TRow, TItem>
         if (!_bars.TryGetValue(toKey, out var to) || to.IsSummary) return;
         _suppressClick = true;
         await CreateLink(new GanttLink(fromKey, toKey, NewLinkType));
-        StateHasChanged();
+        RenderLayout();
     }
 
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await SyncRowKeyboardAsync();
         // A bar moved to another row from the keyboard is a new element there: give it the focus back.
         if (_refocus is { } key)
         {
@@ -103,7 +105,7 @@ public partial class FlareGanttPanel<TRow, TItem>
 
     private async Task KeyDown(KeyboardEventArgs e, GanttBarLayout<TItem> bar)
     {
-        if (bar.IsSuggested) return;
+        if (bar.IsSuggested || e.AltKey || e.MetaKey) return;
         switch (e.Key)
         {
             case "Enter" or " ":
@@ -115,7 +117,7 @@ public partial class FlareGanttPanel<TRow, TItem>
                 return;
             case "l" or "L" or "\u0434" or "\u0414" when CanEdit && !e.CtrlKey && !bar.IsSummary:
                 _linkFrom = bar.Key;
-                _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkStarted!, bar.Label ?? bar.Key);
+                _announcementText = () => string.Format(Gantt!.Axis.Culture, GanttText["Gantt_LinkStarted"].Value, bar.Label ?? bar.Key);
                 return;
         }
 
@@ -156,8 +158,9 @@ public partial class FlareGanttPanel<TRow, TItem>
         var validation = GanttGraph.Validate(Links ?? [], link);
         if (!validation.IsValid)
         {
-            var message = Gantt!.EffectiveTexts.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key, Gantt.Axis.Culture) ?? "";
-            _announcement = message;
+            _announcementText = () => GanttStrings.Describe(validation,
+                key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key, GanttText) ?? "";
+            var message = _announcement ?? "";
             await OnLinkRejected.InvokeAsync(new GanttLinkRejectedEventArgs(link, validation, message));
             return false;
         }
@@ -165,7 +168,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         await OnLinkCreate.InvokeAsync(args);
         if (args.Cancel) return false;
         // The consumer owns the link data; this is the component's only post-action, and Cancel suppresses it.
-        _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkCreated!,
+        _announcementText = () => string.Format(Gantt!.Axis.Culture, GanttText["Gantt_LinkCreated"].Value,
             _bars.TryGetValue(link.FromKey, out var from) ? from.Label ?? link.FromKey : link.FromKey,
             _bars.TryGetValue(link.ToKey, out var to) ? to.Label ?? link.ToKey : link.ToKey);
         return true;
@@ -201,24 +204,34 @@ public partial class FlareGanttPanel<TRow, TItem>
     private async Task Commit(string key, GanttEditAction action, GanttSpan span, string fromRow, string? toRow)
     {
         var rowChanged = toRow is not null && toRow != fromRow;
-        var spans = new Dictionary<string, GanttSpan>();
+        var spans = ScheduleMode == GanttScheduleMode.Push ? new Dictionary<string, GanttSpan>() : null;
+        var original = span;
         foreach (var item in Items ?? [])
-            if (ItemKey is not null && ItemSpan?.Invoke(item) is { } s) spans.TryAdd(ItemKey(item), s);
-        var original = spans.TryGetValue(key, out var before) ? before : span;
+        {
+            if (ItemKey is null || ItemSpan?.Invoke(item) is not { } itemSpan) continue;
+            var itemKey = ItemKey(item);
+            if (spans is not null) spans.TryAdd(itemKey, itemSpan);
+            else if (itemKey == key)
+            {
+                original = itemSpan;
+                break;
+            }
+        }
+        if (spans is not null && spans.TryGetValue(key, out var before)) original = before;
         if (span == original && !rowChanged) return;
 
-        var cascade = span == original
-            ? new Dictionary<string, GanttSpan>()
-            : GanttGraph.Cascade(spans, Links ?? [], key, span, ScheduleMode);
         var changes = new List<GanttChange> { new(key, span, rowChanged ? toRow : null) };
-        changes.AddRange(cascade.Where(c => c.Key != key).Select(c => new GanttChange(c.Key, c.Value)));
+        if (spans is not null && span != original)
+            foreach (var change in GanttGraph.Cascade(spans, Links ?? [], key, span, ScheduleMode))
+                if (change.Key != key)
+                    changes.Add(new(change.Key, change.Value));
 
         var args = new GanttChangeEventArgs(key, action, changes);
         await OnChange.InvokeAsync(args);
         if (!args.Cancel)
         {
             var label = _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key;
-            _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.Moved!, label, Describe(span));
+            _announcementText = () => string.Format(Gantt!.Axis.Culture, GanttText["Gantt_Moved"].Value, label, Describe(span));
         }
     }
 

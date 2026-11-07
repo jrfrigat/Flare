@@ -53,6 +53,26 @@ public class FlareCalendarTests : FlareTestContext
     }
 
     [Fact]
+    public void EventChangesInTheSameListFollowTheVisibleDayLimit()
+    {
+        var day = new DateOnly(2026, 6, 10);
+        var events = new List<CalendarEvent> { new("First", day), new("Second", day) };
+        var cut = Render<FlareCalendar>(p => p
+            .Add(x => x.ViewDate, day)
+            .Add(x => x.Events, events)
+            .Add(x => x.MaxVisibleEvents, 1));
+        var chip = $".{Css.Classes.Calendar.Event}";
+        Assert.Equal("First", cut.Find(chip).TextContent.Trim());
+
+        events[0] = new CalendarEvent("Changed", day);
+        cut.Render();
+        Assert.Equal("Changed", cut.Find(chip).TextContent.Trim());
+
+        cut.Render(p => p.Add(x => x.MaxVisibleEvents, 2));
+        Assert.Equal(new[] { "Changed", "Second" }, cut.FindAll(chip).Select(x => x.TextContent.Trim()));
+    }
+
+    [Fact]
     public void ClickingDay_RaisesSelectedDateChanged()
     {
         DateOnly? picked = null;

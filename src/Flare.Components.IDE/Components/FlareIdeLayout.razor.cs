@@ -1,8 +1,5 @@
-using Flare.Components.IDE.Services;
 using Flare.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 
 namespace Flare.Components.IDE;
 
@@ -13,7 +10,7 @@ namespace Flare.Components.IDE;
 /// The layout owns each region's collapsed state so a collapsed panel frees its docked space
 /// (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels.
 /// </summary>
-public partial class FlareIdeLayout : FlareComponentBase
+public partial class FlareIdeLayout : FlareLocalizedComponentBase
 {
     /// <summary>Top ribbon area rendered above the menu bar.</summary>
     [Parameter] public RenderFragment? Ribbon { get; set; }
@@ -78,12 +75,9 @@ public partial class FlareIdeLayout : FlareComponentBase
     /// <summary>Smallest size (px) a region can be dragged to. Default 120.</summary>
     [Parameter] public int MinPanelSize { get; set; } = 120;
 
-    [Inject] private IIdeJsService IdeJs { get; set; } = default!;
 
     protected override string ComponentCssClass => Css.Classes.Ide.Layout.Root;
 
-    private ElementReference _rootRef;
-    private DotNetObjectReference<FlareIdeLayout>? _selfRef;
 
     // Live drag-resized sizes (px); null until the user drags, then they override the *Width/*Height params.
     private int? _leftPx;
@@ -102,22 +96,9 @@ public partial class FlareIdeLayout : FlareComponentBase
         _ => false,
     };
 
-    private async Task StartResize(ToolPanelPosition position)
-    {
-        try
-        {
-            _selfRef ??= DotNetObjectReference.Create(this);
-            await IdeJs.StartPanelResizeAsync(_selfRef, _rootRef, position.ToString(), MinPanelSize);
-        }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
-    }
-
-    /// <summary>Invoked from JS during a divider drag with the new region size in pixels.</summary>
+    /// <summary>Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.</summary>
     /// <param name="position">The region being resized.</param>
     /// <param name="sizePx">The new size in pixels.</param>
-    [JSInvokable]
     public void ResizePanel(string position, int sizePx)
     {
         sizePx = Math.Max(MinPanelSize, sizePx);
@@ -128,25 +109,6 @@ public partial class FlareIdeLayout : FlareComponentBase
             default: _leftPx = sizePx; break;
         }
         StateHasChanged();
-    }
-
-    // Keyboard resize on a focused divider (arrow keys; Shift = larger step).
-    private void ResizeStep(ToolPanelPosition position, KeyboardEventArgs e)
-    {
-        var step = e.ShiftKey ? 24 : 8;
-        int Cur(int? px, string fallback) => px ?? ParsePx(fallback, 300);
-        switch (position)
-        {
-            case ToolPanelPosition.Left when e.Key is "ArrowLeft" or "ArrowRight":
-                _leftPx = Math.Max(MinPanelSize, Cur(_leftPx, LeftPanelWidth) + (e.Key == "ArrowRight" ? step : -step));
-                break;
-            case ToolPanelPosition.Right when e.Key is "ArrowLeft" or "ArrowRight":
-                _rightPx = Math.Max(MinPanelSize, Cur(_rightPx, RightPanelWidth) + (e.Key == "ArrowLeft" ? step : -step));
-                break;
-            case ToolPanelPosition.Bottom when e.Key is "ArrowUp" or "ArrowDown":
-                _bottomPx = Math.Max(MinPanelSize, Cur(_bottomPx, BottomPanelHeight) + (e.Key == "ArrowUp" ? step : -step));
-                break;
-        }
     }
 
     // The region's size in pixels for the divider's aria-valuenow: the dragged size, else a "...px" parameter.
@@ -171,13 +133,26 @@ public partial class FlareIdeLayout : FlareComponentBase
         return int.TryParse(s, out var v) ? v : fallback;
     }
 
+    private static string SizeVariable(ToolPanelPosition position) => position switch
+    {
+        ToolPanelPosition.Right => Css.Tokens.Ide.Layout.RightWidth,
+        ToolPanelPosition.Bottom => Css.Tokens.Ide.Layout.BottomHeight,
+        _ => Css.Tokens.Ide.Layout.LeftWidth,
+    };
+
+    private static string SizeTarget(ToolPanelPosition position) => position == ToolPanelPosition.Bottom
+        ? $":scope > .{Css.Classes.Ide.Layout.Bottom}"
+        : $":scope > .{Css.Classes.Ide.Layout.Body} > ." + (position switch
+    {
+        ToolPanelPosition.Right => Css.Classes.Ide.Layout.PanelRight,
+        _ => Css.Classes.Ide.Layout.PanelLeft,
+    });
+
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
     {
-        // The JS service is shared (DI-owned); only release this layout's callback reference.
         _disposed = true;
-        _selfRef?.Dispose();
-        return ValueTask.CompletedTask;
+        return base.DisposeAsync();
     }
 
     // Panels mounted in the layout, in first-registration (markup) order. A region may host several.

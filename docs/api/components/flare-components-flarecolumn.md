@@ -44,10 +44,7 @@ One data column of a FlareDataGrid: what to read from a row, how to display and 
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

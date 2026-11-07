@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* The row joins the shared drag model by attribute, not by wrapper: a div between a ul and its li is
    markup the browser rearranges. What went with the HTML5 handlers - dragstart, dragover, dragleave,
@@ -27,7 +27,7 @@
                     @onclick="ToggleAsync"
                     @onclick:stopPropagation="true"
                     tabindex="-1"
-                    aria-label="@(_expanded ? (FlareStrings.Tree_Collapse) : (FlareStrings.Tree_Expand))">
+                    aria-label="@(_expanded ? (CoreText["Tree_Collapse"]) : (CoreText["Tree_Expand"]))">
                 <FlareIconView Value="@(_expanded ? FlareIcons.ExpandMore : FlareIcons.ChevronRight)" />
             </button>
         }
@@ -177,7 +177,7 @@
             TargetItem = sibling,
             Position = direction < 0 ? TreeDropPosition.Before : TreeDropPosition.After,
         });
-        context.Announce(string.Format(FlareStrings.Drag_Position, position, count));
+        context.Announce("Drag_Position", [position, count]);
         return true;
     }
 

@@ -297,6 +297,25 @@ it('lets Escape reach the dialog again once the popup layer is removed', () => {
     expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });
 
+it('releases Escape when the popup DOM is gone before Server cleanup arrives', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const d = dialog('dialog'); registerDialogEscHandler('dialog', receiver); trapFocus('dialog', d.el);
+    const panel = visible(document.createElement('div'));
+    panel.setAttribute('data-flare-popup-layer', 'popup-1'); d.el.append(panel);
+    const popup = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('popup-1', popup, 'CloseFromEscape');
+
+    key('Escape');
+    expect(popup.invokeMethodAsync).toHaveBeenCalledOnce();
+    expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
+    popup.invokeMethodAsync.mockClear();
+    panel.remove();
+    key('Escape');
+
+    expect(popup.invokeMethodAsync).not.toHaveBeenCalled();
+    expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});
+
 it('sends Escape only to the newest registration of a popup closed and opened again', () => {
     const first = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
     const second = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };

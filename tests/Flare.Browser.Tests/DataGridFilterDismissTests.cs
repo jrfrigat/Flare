@@ -27,7 +27,7 @@ public sealed class DataGridFilterDismissTests(BrowserFixture fixture) : IClassF
         var menu = page.Locator($".{Css.Classes.DataGrid.FilterMenu}");
 
         await firstTrigger.ClickAsync();
-        // Wait until the panel is placed: it is visible a round trip before its dismissal is live.
+        // Placement is measurable before the ready panel accepts interaction.
         await Expect(menu).ToHaveAttributeAsync("data-flare-placed", "");
 
         // A click inside the menu is inside the widget and must not dismiss it - not even on text that

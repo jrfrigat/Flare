@@ -50,13 +50,13 @@
             {
                 <div class="@Css.Classes.DataGrid.ToolbarEnd">
                     <span class="@Css.Classes.DataGrid.BatchCount">
-                        @_batchEditingItems.Count @(FlareStrings.DataGrid_RowsLabel)
+                        @_batchEditingItems.Count @(CoreText["DataGrid_RowsLabel"])
                     </span>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="CancelBatchAsync">
-                        @FlareStrings.DataGrid_Cancel
+                        @CoreText["DataGrid_Cancel"]
                     </FlareButton>
                     <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="SaveBatchAsync">
-                        @FlareStrings.DataGrid_Save
+                        @CoreText["DataGrid_Save"]
                     </FlareButton>
                 </div>
             }
@@ -77,7 +77,7 @@
                 {
                     <FlareProgressCircular Size="TrackSize.Sm" />
                 }
-                <span class="@Css.Classes.DataGrid.LoadingText">@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
+                <span class="@Css.Classes.DataGrid.LoadingText">@(LoadingText ?? CoreText["DataGrid_Loading"])</span>
             </div>
         }
         <table @ref="_tableRef"
@@ -164,6 +164,17 @@
                 }
             </thead>
             @{
+                var bodyColumns = new List<(DataGridColumn<TItem> Column, string CssClass)>(_gridColumns.Count);
+                foreach (var column in _gridColumns)
+                {
+                    if (_hiddenColumns.Contains(column.Key)) continue;
+                    var cellClass = Css.Classes.DataGrid.Td;
+                    if (_tdFrozenClass(column) is { Length: > 0 } frozen) cellClass += " " + frozen;
+                    if (AlignClass(column) is { Length: > 0 } alignment) cellClass += " " + alignment;
+                    bodyColumns.Add((column, cellClass));
+                }
+                var inlineEditEnabled = _inlineEditEnabled;
+
                 // THE data row. Every branch below renders through this one fragment - paged, unpaged,
                 // client-virtual, provider-virtual - so a row is the same row whatever decided which rows
                 // to render. There used to be two renderers, and the second one silently lacked the tree
@@ -177,18 +188,21 @@
                         var item = row.Item;
                         var rowIdx = row.Index;
                         var rowKey = _rowKey(item);
-                        var isEditing = _inlineEditEnabled && _editingItem is not null && ReferenceEquals(_editingItem, item);
+                        var isEditing = inlineEditEnabled && _editingItem is not null && ReferenceEquals(_editingItem, item);
                         var isExpandedDetail = RowDetailTemplate != null && _expandedRows.Contains(rowKey);
+                        var selected = _selection.Contains(item);
+                        var rowClass = string.Concat(Css.Classes.DataGrid.Row,
+                            selected ? " " + Css.Classes.DataGrid.RowSelected : "",
+                            isEditing ? " " + Css.Classes.DataGrid.RowEditing : "",
+                            RowReorderable ? " " + Css.Classes.Drag.Item : "");
+                        if (RowClassFunc?.Invoke(item) is { Length: > 0 } extraClass) rowClass += " " + extraClass;
                     }
                     @* aria-rowindex is 1-based; +2 accounts for the header row and the 1-based offset. *@
                     <tr @key="rowKey"
                         role="row"
                         aria-rowindex="@(_rowIndexOffset + rowIdx + 2)"
-                        aria-selected="@(SelectionMode != SelectionMode.None ? _selection.Contains(item).ToString().ToLowerInvariant() : null)"
-                        class="@Css.Classes.DataGrid.Row @(_selection.Contains(item) ? Css.Classes.DataGrid.RowSelected : "")
-                               @(isEditing ? Css.Classes.DataGrid.RowEditing : "")
-                               @(RowReorderable ? Css.Classes.Drag.Item : "")
-                               @(RowClassFunc?.Invoke(item) ?? "")"
+                        aria-selected="@(SelectionMode == SelectionMode.None ? null : selected ? "true" : "false")"
+                        class="@rowClass"
                         style="@(RowStyleFunc?.Invoke(item))"
                         data-flare-drag="@(RowReorderable ? RowDragId(rowIdx) : null)"
                         data-flare-drag-group="@(RowReorderable ? RowZone : null)"
@@ -199,27 +213,30 @@
                                 <button type="button" class="@Css.Classes.DataGrid.DetailBtn"
                                         @onclick:stopPropagation="true"
                                         @onclick="@(() => ToggleRowDetail(rowKey))"
-                                        aria-expanded="@(isExpandedDetail.ToString().ToLowerInvariant())">
+                                        aria-expanded="@(isExpandedDetail ? "true" : "false")">
                                     <FlareIconView Value="@(isExpandedDetail ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" />
                                 </button>
                             </td>
                         }
                         @if (SelectionMode == SelectionMode.Multiple)
                         {
-                            <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox TValue="bool" Value="@_selection.Contains(item)" ValueChanged="@((bool _) => HandleRowClickAsync(item))" /></td>
+                            <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox TValue="bool" Value="@selected" ValueChanged="@((bool _) => HandleRowClickAsync(item))" /></td>
                         }
-                        @{ var _colIdx = 0; }
-                        @foreach (var col in _gridColumns)
+                        @for (var colIdx = 0; colIdx < bodyColumns.Count; colIdx++)
                         {
-                            @if (_hiddenColumns.Contains(col.Key)) { continue; }
-                            var colIdx = _colIdx++;
+                            var (col, baseClass) = bodyColumns[colIdx];
                             var isFocusCell = _focusRow == rowIdx && _focusCol == colIdx;
-                            var cellRow = rowIdx; var cellCol = colIdx;
-                            <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @(isEditing ? Css.Classes.DataGrid.TdEdit : "") @AlignClass(col) @(InCellRange(rowIdx, colIdx) ? Css.Classes.DataGrid.CellRange : "") @(CellSelection && isFocusCell ? Css.Classes.DataGrid.CellActive : "") @(col.ClassFunc?.Invoke(item) ?? "")"
+                            var cellClass = string.Concat(baseClass,
+                                isEditing ? " " + Css.Classes.DataGrid.TdEdit : "",
+                                InCellRange(rowIdx, colIdx) ? " " + Css.Classes.DataGrid.CellRange : "",
+                                CellSelection && isFocusCell ? " " + Css.Classes.DataGrid.CellActive : "");
+                            if (col.ClassFunc?.Invoke(item) is { Length: > 0 } extraCellClass) cellClass += " " + extraCellClass;
+                            var (mouseDown, mouseEnter) = CellSelection ? CellMouseHandlers(rowIdx, colIdx) : default;
+                            <td role="gridcell" class="@cellClass"
                                 style="@CombineStyle(GetTreeIndentStyle(col, item), col.StyleFunc?.Invoke(item))"
                                 tabindex="@(isFocusCell ? "0" : "-1")"
-                                @onmousedown="@(e => OnCellMouseDown(cellRow, cellCol, e))"
-                                @onmouseenter="@(() => OnCellMouseEnter(cellRow, cellCol))">
+                                @onmousedown="@mouseDown"
+                                @onmouseenter="@mouseEnter">
                                 @if (_treeMode && col == _gridColumns.First() && Tree?.ChildrenSelector?.Invoke(item)?.Any() == true)
                                 {
                                     <span class="@Css.Classes.DataGrid.TreeToggle"
@@ -230,7 +247,7 @@
                                 @RenderCellOrInput(col, item, isEditing)
                             </td>
                         }
-                        @if (_inlineEditEnabled)
+                        @if (inlineEditEnabled)
                         {
                             <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdEditActions" @onclick:stopPropagation="true">
                                 @RenderEditActions(item)
@@ -239,7 +256,7 @@
                     </tr>
                     @if (isExpandedDetail)
                     {
-                        var detailColSpan = _totalColumnCount + 1 + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                        var detailColSpan = _totalColumnCount + 1 + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (inlineEditEnabled ? 1 : 0);
                         <tr class="@Css.Classes.DataGrid.DetailRow">
                             <td colspan="@detailColSpan" class="@Css.Classes.DataGrid.DetailCell">
                                 @RowDetailTemplate!(item)
@@ -326,7 +343,7 @@
                             <tr class="@Css.Classes.DataGrid.PlaceholderRow">
                                 <td colspan="@(moreColSpan == 0 ? 1 : moreColSpan)" class="@Css.Classes.DataGrid.InfiniteMore">
                                     <FlareProgressCircular Size="TrackSize.Xs" />
-                                    <span>@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
+                                    <span>@(LoadingText ?? CoreText["DataGrid_Loading"])</span>
                                 </td>
                             </tr>
                         }
@@ -365,7 +382,7 @@
                         <tr>
                             <td colspan="@(_bandedColumnCount == 0 ? 1 : _bandedColumnCount)" class="@Css.Classes.DataGrid.Empty">
                                 @if (EmptyStateContent is not null) { @EmptyStateContent }
-                                else { <FlareEmptyState Title="@FlareStrings.DataGrid_NoData" Compact="true" /> }
+                                else { <FlareEmptyState Title="@CoreText["DataGrid_NoData"]" Compact="true" /> }
                             </td>
                         </tr>
                     }
@@ -450,7 +467,7 @@
                                 }
                                 else
                                 {
-                                    <FlareEmptyState Title="@FlareStrings.DataGrid_NoData" Compact="true" />
+                                    <FlareEmptyState Title="@CoreText["DataGrid_NoData"]" Compact="true" />
                                 }
                             </td>
                         </tr>
@@ -522,13 +539,13 @@
                               Items="@(ctx.Options ?? DistinctValues(ctx.Key))"
                               Values="@SelectedFilterValues(ctx.Key)"
                               ValuesChanged="@(v => OnSelectFilterChanged(ctx.Key, v))"
-                              Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
+                              Placeholder="@(FilterPlaceholder ?? CoreText["DataGrid_FilterPlaceholder"])"
                               Chips="true" Searchable="true" />
         }
         else if (ctx.Type == ColumnFilterType.Number)
         {
             <FlareField TValue="string" Type="number" Immediate="true" Size="FieldSize.Sm"
-                        Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
+                        Placeholder="@(FilterPlaceholder ?? CoreText["DataGrid_FilterPlaceholder"])"
                         Value="@TypedFilterValue(ctx.Key)"
                         ValueChanged="@(v => OnTypedFilterChanged(ctx.Key, FilterOperator.Equals, v))" />
         }
@@ -541,7 +558,7 @@
         else
         {
             <FlareField TValue="string" Type="text" Immediate="true" Size="FieldSize.Sm"
-                        Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
+                        Placeholder="@(FilterPlaceholder ?? CoreText["DataGrid_FilterPlaceholder"])"
                         Value="@TextFilterValue(ctx.Key)"
                         ValueChanged="@(v => OnFilterInput(ctx.Key, v ?? string.Empty))" />
         }
@@ -607,7 +624,7 @@
                         id="@FilterTriggerId(col.Key)"
                         @ref="_filterTriggerRefs[col.Key]"
                         class="@Css.Classes.DataGrid.FilterTrigger @(filterActive ? Css.Classes.DataGrid.FilterTriggerActive : "")"
-                        aria-label="@FlareStrings.DataGrid_Filter"
+                        aria-label="@CoreText["DataGrid_Filter"]"
                         aria-haspopup="dialog"
                         aria-expanded="@(_filterMenuOpen == col.Key ? "true" : "false")"
                         @onclick="@(() => ToggleFilterMenu(col.Key))">
@@ -619,19 +636,19 @@
                             MatchWidth="false"
                             Class="@Css.Classes.DataGrid.FilterMenu"
                             role="dialog"
-                            aria-label="@FlareStrings.DataGrid_Filter"
+                            aria-label="@CoreText["DataGrid_Filter"]"
                             tabindex="-1"
                             OnDismiss="@(() => CloseFilterMenu(col.Key))">
                     <span class="@Css.Classes.DataGrid.FilterMenuLabel">@col.Title</span>
                     @* Excel-style value checklist: search + (Select all) + the distinct values. *@
                     <div class="@Css.Classes.DataGrid.FilterMenuField">
                         <FlareField TValue="string" Type="search" Size="FieldSize.Sm" Immediate="true"
-                                    Placeholder="@FlareStrings.DataGrid_Search"
+                                    Placeholder="@CoreText["DataGrid_Search"]"
                                     Value="@_filterMenuSearch"
                                     ValueChanged="@(v => _filterMenuSearch = v ?? "")" />
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuList">
-                        <FlareCheckbox TValue="bool" Label="@FlareStrings.DataGrid_SelectAll"
+                        <FlareCheckbox TValue="bool" Label="@CoreText["DataGrid_SelectAll"]"
                                        Value="@MenuAllSelected(col.Key)"
                                        ValueChanged="@((bool _) => ToggleSelectAllMenu(col.Key))" />
                         @foreach (var v in MenuFilterValues(col.Key))
@@ -651,15 +668,15 @@
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuField">
                         <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
-                                    Placeholder="@FlareStrings.DataGrid_FilterValue"
+                                    Placeholder="@CoreText["DataGrid_FilterValue"]"
                                     Value="@_filterMenuValue"
                                     ValueChanged="@(v => _filterMenuValue = v ?? "")" />
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuActions">
                         <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
-                                     OnClick="@(() => ClearFilterMenu(col.Key))">@FlareStrings.DataGrid_ClearFilter</FlareButton>
+                                     OnClick="@(() => ClearFilterMenu(col.Key))">@CoreText["DataGrid_ClearFilter"]</FlareButton>
                         <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm"
-                                     OnClick="@(() => ApplyFilterMenu(col.Key))">@FlareStrings.DataGrid_ApplyFilters</FlareButton>
+                                     OnClick="@(() => ApplyFilterMenu(col.Key))">@CoreText["DataGrid_ApplyFilters"]</FlareButton>
                     </div>
                 </FlarePopup>
             </span>

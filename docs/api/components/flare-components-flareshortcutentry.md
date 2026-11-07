@@ -17,10 +17,7 @@ One keyboard shortcut: a key combination, what it invokes, and the description t
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

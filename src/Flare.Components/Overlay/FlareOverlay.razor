@@ -4,11 +4,11 @@
 
 @if (Open)
 {
-    <div class="@BuildCssClass(_absoluteClass)"
+    <div data-flare-backdrop class="@BuildCssClass(_absoluteClass)"
          style="@_style"
          @onclick="HandleClickAsync"
          @attributes="AdditionalAttributes">
-        <div class="@Css.Classes.Overlay.Scrim" style="@_scrimStyle" aria-hidden="true"
+        <div data-flare-backdrop class="@Css.Classes.Overlay.Scrim" style="@_scrimStyle" aria-hidden="true"
              @onclick="HandleBackdropClickAsync"></div>
         @ChildContent
     </div>

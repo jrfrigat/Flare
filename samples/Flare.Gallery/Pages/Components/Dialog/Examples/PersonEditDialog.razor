@@ -1,19 +1,23 @@
 @inherits LocalizedPage
+@using Microsoft.AspNetCore.Components.Forms
 
 @* A reusable dialog body. It receives its initial values as [Parameter]s and closes itself with a
    typed result through the cascaded FlareDialogInstance - no @bind-Visible plumbing on the caller. *@
-<FlareStack Gap="FlareSpacing.Medium" MinWidth="18rem">
-    <FlareTextField @bind-Value="_name" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
-    <FlareTextField @bind-Value="_email" Label="@GalleryStrings.Dialog_Email" Variant="InputVariant.Outlined" />
-    <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
-        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => Dialog.Cancel())">
-            @GalleryStrings.Dialog_BodyCancel
-        </FlareButton>
-        <FlareButton Variant="ButtonVariant.Filled" OnClick="Save">
-            @GalleryStrings.Dialog_Save
-        </FlareButton>
+<FlareForm Model="_model" OnValidSubmit="Save">
+    <FlareDialogCloseGuard />
+    <FlareStack Gap="FlareSpacing.Medium" MinWidth="18rem">
+        <FlareTextField @bind-Value="_model.Name" For="@(() => _model.Name)" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
+        <FlareTextField @bind-Value="_model.Email" For="@(() => _model.Email)" Label="@GalleryStrings.Dialog_Email" Variant="InputVariant.Outlined" />
+        <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
+            <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => Dialog.CancelAsync())">
+                @GalleryStrings.Dialog_BodyCancel
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Filled" Type="ButtonType.Submit">
+                @GalleryStrings.Dialog_Save
+            </FlareButton>
+        </FlareStack>
     </FlareStack>
-</FlareStack>
+</FlareForm>
 
 @code {
     /// <summary>The live dialog handle, cascaded by FlareDialogProvider. Used to close with a result.</summary>
@@ -25,18 +29,27 @@
     /// <summary>Initial email shown in the editor.</summary>
     [Parameter] public string Email { get; set; } = "";
 
-    private string _name = "";
-    private string _email = "";
+    private readonly EditModel _model = new();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         // Edit working copies so a cancel leaves the caller's values untouched.
-        _name = Name;
-        _email = Email;
+        _model.Name = Name;
+        _model.Email = Email;
     }
 
-    private void Save() => Dialog.Close(new Profile(_name, _email));
+    private async Task Save(EditContext context)
+    {
+        context.MarkAsUnmodified();
+        await Dialog.CloseAsync(new Profile(_model.Name, _model.Email));
+    }
+
+    private sealed class EditModel
+    {
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+    }
 
     /// <summary>The typed payload this dialog returns via DialogResult on save.</summary>
     /// <param name="Name">The edited name.</param>

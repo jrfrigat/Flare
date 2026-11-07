@@ -4,16 +4,8 @@ using Microsoft.AspNetCore.Components.Web;
 namespace Flare.Components.Tests;
 
 /// <summary>
-/// The drop zone gets its drag-and-drop from the browser, not from its own code: the hidden file input
-/// is stretched over the drop area, and a file input takes a dropped file as the DEFAULT ACTION of the
-/// `drop` event. The root used to cancel that event, which killed the drop the component exists to
-/// receive - the zone lit up, stayed lit, and nothing arrived. Nothing in the C# was wrong, which is why
-/// no test saw it: the defect is one attribute, and the only thing that can observe it is the markup.
-///
-/// So these read the rendered attributes. `dragover` and `dragenter` must stay cancelled - without them
-/// the region is not a drop target at all - and `drop` must not be, except on the file list, the one
-/// part of the zone with no input beneath it, where the browser's default is to navigate away to the
-/// dropped file.
+/// The zone cancels native navigation and names the InputFile receiving the shared DOM adapter's
+/// FileList. Browser tests verify real file delivery; these verify the region's navigation protection.
 /// </summary>
 public sealed class FileUploadDropTests : FlareTestContext
 {
@@ -25,14 +17,14 @@ public sealed class FileUploadDropTests : FlareTestContext
         cut.Find($".{Css.Classes.FileUpload.Root}");
 
     [Fact]
-    public void Zone_DoesNotCancelTheDropItsInputHasToReceive()
+    public void Zone_CancelsNativeNavigationAndNamesItsFileInput()
     {
         var root = Root(Render<FlareFileUploadZone>());
 
-        Assert.False(root.HasAttribute(PreventDrop),
-            "The root must not cancel `drop`: the hidden input under it takes the file as that event's "
-            + "default action, so cancelling here throws the drop away and the change that would have "
-            + "followed it never fires.");
+        Assert.True(root.HasAttribute(PreventDrop));
+        var input = root.QuerySelector("input[type=file]")!;
+        Assert.Equal(input.Id, root.GetAttribute("data-flare-file-drop"));
+        Assert.True(input.HasAttribute("data-flare-file-input"));
     }
 
     // The other half of the same contract, and the reason the fix is one attribute and not a deletion.

@@ -65,6 +65,7 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         await page.WaitForFunctionAsync(
             "sel => { const el = document.querySelector(sel); return !!el && parseFloat(getComputedStyle(el).paddingLeft) > 0; }",
             $"#acc .{Css.Classes.Accordion.Header}");
+        await BrowserFonts.WaitAsync(page.Locator("main"));
         return page;
     }
 
@@ -133,6 +134,7 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
 
         await page.GetByRole(AriaRole.Button, new() { Name = "Actions", Exact = true }).ClickAsync();
         await Expect(page.Locator($".{Css.Classes.Menu.Panel}")).ToBeVisibleAsync();
+        await BrowserFonts.WaitAsync(page.Locator($".{Css.Classes.Menu.Panel}"));
 
         var item = page.Locator($".{Css.Classes.Menu.Panel} .{Css.Classes.Menu.Item}").First;
         var label = item.Locator($".{Css.Classes.Menu.ItemLabel}");

@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject Flare.Components.Services.IUiJsService Ui
 @inject Flare.Components.Services.IColorCanvasJsService Canvas
@@ -34,7 +34,7 @@ else
         </button>
         @if (_open)
         {
-            <div class="@Css.Classes.Colorpicker.Panel" @ref="_panelEl" role="dialog" aria-label="@(FlareStrings.ColorPicker_Label)">
+            <div class="@Css.Classes.Colorpicker.Panel" @ref="_panelEl" role="dialog" aria-label="@(CoreText["ColorPicker_Label"])">
                 @RenderPanel()
             </div>
         }
@@ -776,13 +776,13 @@ else
                 __builder.OpenElement(122, "button");
                 __builder.AddAttribute(123, "type", "button");
                 __builder.AddAttribute(124, "class", Css.Classes.Colorpicker.EyedropperBtn);
-                __builder.AddAttribute(125, "title", FlareStrings.ColorPicker_EyeDropperTitle);
+                __builder.AddAttribute(125, "title", CoreText["ColorPicker_EyeDropperTitle"]);
                 __builder.AddAttribute(126, "onclick", EventCallback.Factory.Create(this, OpenEyeDropperAsync));
                     __builder.OpenComponent<FlareIconView>(127);
                     __builder.AddAttribute(128, "Value", FlareIcons.Colorize);
                     __builder.CloseComponent();
                     __builder.OpenElement(130, "span");
-                    __builder.AddContent(131, FlareStrings.ColorPicker_EyeDropperLabel);
+                    __builder.AddContent(131, CoreText["ColorPicker_EyeDropperLabel"]);
                     __builder.CloseElement();
                 __builder.CloseElement();
             __builder.CloseElement();

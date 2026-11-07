@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject Flare.Components.Services.IUiJsService Ui
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
@@ -123,7 +123,7 @@
     private FlareMenu? _menu;
     private int _hiddenCount;
 
-    private string _overflowLabel => OverflowLabel ?? FlareStrings.Aria_MoreActions;
+    private string _overflowLabel => OverflowLabel ?? CoreText["Aria_MoreActions"];
 
     protected override void OnParametersSet() => _context = new(Size, Variant, Color);
 

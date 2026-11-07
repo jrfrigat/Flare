@@ -74,6 +74,138 @@ public class FlareValidationSummaryTests : FlareTestContext
     }
 
     [Fact]
+    public async Task ValidationRendersOnlyFieldsWhoseDisplayedErrorChanged()
+    {
+        var models = Enumerable.Range(0, 80).Select(_ => new Model()).ToArray();
+        var context = new EditContext(models);
+        var messages = new ValidationMessageStore(context);
+        var cut = Render<CascadingValue<EditContext>>(p => p
+            .Add(x => x.Value, context)
+            .AddChildContent(b =>
+            {
+                foreach (var model in models)
+                {
+                    b.OpenComponent<FlareTextField>(0);
+                    b.AddAttribute(1, "For", (Expression<Func<string?>>)(() => model.Name));
+                    b.CloseComponent();
+                }
+            }));
+        var fields = cut.FindComponents<FlareTextField>();
+        var before = fields.Select(field => field.RenderCount).ToArray();
+        int ChangedFieldCount() => fields.Where((field, index) => field.RenderCount > before[index]).Count();
+        var name = new FieldIdentifier(models[0], nameof(Model.Name));
+        messages.Add(name, "Name is required");
+
+        await cut.InvokeAsync(context.NotifyValidationStateChanged);
+
+        Assert.Equal(1, ChangedFieldCount());
+        Assert.Contains("Name is required", fields[0].Markup);
+        var withError = fields[0].RenderCount;
+
+        messages.Add(name, "Another message for the same field");
+        await cut.InvokeAsync(context.NotifyValidationStateChanged);
+
+        Assert.Equal(withError, fields[0].RenderCount);
+        Assert.Equal(1, ChangedFieldCount());
+
+        messages.Clear(name);
+        await cut.InvokeAsync(context.NotifyValidationStateChanged);
+
+        Assert.True(fields[0].RenderCount > withError);
+        Assert.Equal(1, ChangedFieldCount());
+        Assert.DoesNotContain("Name is required", fields[0].Markup);
+    }
+
+    [Fact]
+    public async Task FieldTemplatesCanStillReadFormLevelValidation()
+    {
+        var model = new Model();
+        var context = new EditContext(model);
+        var messages = new ValidationMessageStore(context);
+        RenderFragment label = b => b.AddContent(0, context.GetValidationMessages().FirstOrDefault() ?? "Name");
+        var cut = Render<CascadingValue<EditContext>>(p => p
+            .Add(x => x.Value, context)
+            .AddChildContent(b =>
+            {
+                b.OpenComponent<FlareTextField>(0);
+                b.AddAttribute(1, "For", (Expression<Func<string?>>)(() => model.Name));
+                b.AddAttribute(2, "LabelContent", label);
+                b.CloseComponent();
+            }));
+        Assert.Contains("Name", cut.Markup);
+
+        messages.Add(new FieldIdentifier(model, string.Empty), "Form-level message");
+        await cut.InvokeAsync(context.NotifyValidationStateChanged);
+
+        Assert.Contains("Form-level message", cut.Markup);
+    }
+
+    [Fact]
+    public async Task ReplacingTheContextMovesTheFieldSubscription()
+    {
+        var model = new Model();
+        var original = new EditContext(model);
+        var replacement = new EditContext(model);
+        RenderFragment fieldContent = b =>
+        {
+            b.OpenComponent<FlareTextField>(0);
+            b.AddAttribute(1, "For", (Expression<Func<string?>>)(() => model.Name));
+            b.CloseComponent();
+        };
+        var cut = Render<CascadingValue<EditContext>>(p => p
+            .Add(x => x.Value, original)
+            .AddChildContent(fieldContent));
+        cut.Render(p => p.Add(x => x.Value, replacement).AddChildContent(fieldContent));
+        var field = cut.FindComponent<FlareTextField>();
+        var before = field.RenderCount;
+        new ValidationMessageStore(replacement).Add(new FieldIdentifier(model, nameof(Model.Name)), "Replacement error");
+
+        await cut.InvokeAsync(original.NotifyValidationStateChanged);
+        Assert.Equal(before, field.RenderCount);
+
+        await cut.InvokeAsync(replacement.NotifyValidationStateChanged);
+        Assert.Contains("Replacement error", field.Markup);
+    }
+
+    [Fact]
+    public void RebindingTheFieldReplacesItsSummaryRegistration()
+    {
+        var first = new Model();
+        var second = new Model();
+        var context = new EditContext(first);
+        var registry = new Dictionary<FieldIdentifier, string>();
+        Expression<Func<string?>>? accessor = () => first.Name;
+        RenderFragment content = b =>
+        {
+            b.OpenComponent<CascadingValue<Dictionary<FieldIdentifier, string>>>(0);
+            b.AddAttribute(1, "Value", registry);
+            b.AddAttribute(2, "IsFixed", true);
+            b.AddAttribute(3, "ChildContent", (RenderFragment)(field =>
+            {
+                field.OpenComponent<FlareTextField>(0);
+                field.AddAttribute(1, "For", accessor);
+                field.CloseComponent();
+            }));
+            b.CloseComponent();
+        };
+        var cut = Render<CascadingValue<EditContext>>(p => p
+            .Add(x => x.Value, context).AddChildContent(content));
+        var id = Assert.Single(registry).Value;
+
+        accessor = () => second.Name;
+        cut.Render(p => p.Add(x => x.Value, context).AddChildContent(content));
+
+        var rebound = Assert.Single(registry);
+        Assert.Equal(new FieldIdentifier(second, nameof(Model.Name)), rebound.Key);
+        Assert.Equal(id, rebound.Value);
+
+        accessor = null;
+        cut.Render(p => p.Add(x => x.Value, context).AddChildContent(content));
+
+        Assert.Empty(registry);
+    }
+
+    [Fact]
     public void AMessageForARegisteredFieldLinksToItsControl()
     {
         var model = new Model { Name = null };

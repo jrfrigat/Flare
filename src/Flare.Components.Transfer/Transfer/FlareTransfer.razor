@@ -1,6 +1,11 @@
 @namespace Flare.Components
 @typeparam TItem
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
+
+@{
+    SyncOptions(_srcOptions, _srcId, _source.Count, SelectSourceAt);
+    SyncOptions(_tgtOptions, _tgtId, _target.Count, SelectTargetAt);
+}
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <!-- Source list -->
@@ -18,13 +23,14 @@
              @onkeydown="HandleSourceKeyDown">
             @for (var i = 0; i < _source.Count; i++)
             {
-                var idx = i;
                 var it = _source[i];
-                <div class="@BuildItemClass(_srcSelected.Contains(it), idx == _srcActive)"
-                     id="@($"{_srcId}-opt-{idx}")"
-                     @onclick="@(() => SelectSourceAt(idx))"
+                var selected = _srcSelected.Contains(it);
+                var option = _srcOptions[i];
+                <div class="@BuildItemClass(selected, i == _srcActive)"
+                     id="@option.Id"
+                     @onclick="@option.Select"
                      role="option"
-                     aria-selected="@(_srcSelected.Contains(it) ? "true" : "false")">
+                     aria-selected="@(selected ? "true" : "false")">
                     @ItemText(it)
                 </div>
             }
@@ -36,19 +42,19 @@
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToTarget"
                      Disabled="@(_srcSelected.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveToTarget)">›</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveToTarget"].Value)">›</FlareButton>
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveAllToTarget"
                      Disabled="@(_source.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveAllToTarget)">»</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveAllToTarget"].Value)">»</FlareButton>
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToSource"
                      Disabled="@(_tgtSelected.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveToSource)">‹</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveToSource"].Value)">‹</FlareButton>
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveAllToSource"
                      Disabled="@(_target.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveAllToSource)">«</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveAllToSource"].Value)">«</FlareButton>
     </div>
 
     <!-- Target list -->
@@ -66,13 +72,14 @@
              @onkeydown="HandleTargetKeyDown">
             @for (var i = 0; i < _target.Count; i++)
             {
-                var idx = i;
                 var it = _target[i];
-                <div class="@BuildItemClass(_tgtSelected.Contains(it), idx == _tgtActive)"
-                     id="@($"{_tgtId}-opt-{idx}")"
-                     @onclick="@(() => SelectTargetAt(idx))"
+                var selected = _tgtSelected.Contains(it);
+                var option = _tgtOptions[i];
+                <div class="@BuildItemClass(selected, i == _tgtActive)"
+                     id="@option.Id"
+                     @onclick="@option.Select"
                      role="option"
-                     aria-selected="@(_tgtSelected.Contains(it) ? "true" : "false")">
+                     aria-selected="@(selected ? "true" : "false")">
                     @ItemText(it)
                 </div>
             }
@@ -104,9 +111,24 @@
     private int _tgtActive = -1;
     private readonly string _srcId = "flare-transfer-src-" + Guid.NewGuid().ToString("N")[..8];
     private readonly string _tgtId = "flare-transfer-tgt-" + Guid.NewGuid().ToString("N")[..8];
+    private readonly List<Option> _srcOptions = [];
+    private readonly List<Option> _tgtOptions = [];
 
-    private string? _srcActiveId => _srcActive >= 0 && _srcActive < _source.Count ? $"{_srcId}-opt-{_srcActive}" : null;
-    private string? _tgtActiveId => _tgtActive >= 0 && _tgtActive < _target.Count ? $"{_tgtId}-opt-{_tgtActive}" : null;
+    private readonly record struct Option(string Id, Action Select);
+
+    private string? _srcActiveId => _srcActive >= 0 && _srcActive < _srcOptions.Count ? _srcOptions[_srcActive].Id : null;
+    private string? _tgtActiveId => _tgtActive >= 0 && _tgtActive < _tgtOptions.Count ? _tgtOptions[_tgtActive].Id : null;
+
+    // IDs and click handlers belong to positions. The handler looks up the current item when clicked.
+    private static void SyncOptions(List<Option> options, string listId, int count, Action<int> select)
+    {
+        if (options.Count > count) options.RemoveRange(count, options.Count - count);
+        for (var i = options.Count; i < count; i++)
+        {
+            var index = i;
+            options.Add(new Option($"{listId}-opt-{index}", () => select(index)));
+        }
+    }
 
     protected override void OnParametersSet()
     {
@@ -118,17 +140,18 @@
         if (_tgtActive >= _target.Count) _tgtActive = _target.Count - 1;
     }
 
-    private string ResolvedSourceTitle => SourceTitle ?? FlareStrings.Transfer_SourceTitle;
-    private string ResolvedTargetTitle => TargetTitle ?? FlareStrings.Transfer_TargetTitle;
+    private string ResolvedSourceTitle => SourceTitle ?? CoreText["Transfer_SourceTitle"].Value;
+    private string ResolvedTargetTitle => TargetTitle ?? CoreText["Transfer_TargetTitle"].Value;
 
     private string ItemText(TItem item) => ItemLabel?.Invoke(item) ?? item?.ToString() ?? "";
 
-    private string BuildItemClass(bool selected, bool active) => string.Join(' ', new[]
+    private static string BuildItemClass(bool selected, bool active) => (selected, active) switch
     {
-        Css.Classes.Transfer.Item,
-        selected ? Css.Classes.Transfer.ItemSelected : null,
-        active ? Css.Classes.Transfer.ItemActive : null,
-    }.Where(c => !string.IsNullOrEmpty(c)));
+        (true, true) => Css.Classes.Transfer.Item + " " + Css.Classes.Transfer.ItemSelected + " " + Css.Classes.Transfer.ItemActive,
+        (true, false) => Css.Classes.Transfer.Item + " " + Css.Classes.Transfer.ItemSelected,
+        (false, true) => Css.Classes.Transfer.Item + " " + Css.Classes.Transfer.ItemActive,
+        _ => Css.Classes.Transfer.Item,
+    };
 
     private void ToggleSrcSelect(TItem item) { if (!_srcSelected.Remove(item)) _srcSelected.Add(item); }
     private void ToggleTgtSelect(TItem item) { if (!_tgtSelected.Remove(item)) _tgtSelected.Add(item); }

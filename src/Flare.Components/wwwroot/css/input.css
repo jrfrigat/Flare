@@ -96,6 +96,8 @@
     pointer-events: none;
 }
 
+label.flare-input__label[for] { pointer-events: auto; }
+
 /* Required-field indicator: an asterisk after the label. Child combinator so a form-field wrapper
    (FlareFormField) marks only its OWN label, never a nested field's label. */
 .flare-input--required > .flare-input__label::after {

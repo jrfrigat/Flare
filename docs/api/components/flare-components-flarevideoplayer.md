@@ -23,11 +23,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OnEnded()`
 
 Returns: `void`.
@@ -60,6 +55,7 @@ Returns: `void`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

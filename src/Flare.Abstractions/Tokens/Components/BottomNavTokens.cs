@@ -37,6 +37,11 @@ public sealed record BottomNavTokens
     /// <summary>Label font size.</summary>
     [CssVar(BottomNavField.LabelFontSize)] public string LabelFontSize { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Size);
 
+    /// <summary>Label line-box height as a CSS length, shared with the wrap-mode bar and spacer.
+    /// Defaults to the base label-medium line height. Use root-relative or absolute units so the
+    /// label, bar and spacer resolve the same length.</summary>
+    [CssVar(BottomNavField.LabelLineHeight)] public string LabelLineHeight { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Height);
+
     /// <summary>Inactive label font weight.</summary>
     [CssVar(BottomNavField.LabelFontWeight)] public string LabelFontWeight { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Weight);
 

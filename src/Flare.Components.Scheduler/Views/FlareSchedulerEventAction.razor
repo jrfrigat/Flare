@@ -1,0 +1,24 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<button @ref="_element" type="button" class="@BuildCssClass()" style="@Style" data-scheduler-event="@Context.Occurrence.Identity"
+        aria-label="@(AriaLabel ?? Context.Occurrence.Data.Title)"
+        data-flare-edit-keys="@(Context.View.CanEdit ? "" : null)" aria-pressed="@(Context.IsSelected ? "true" : "false")"
+        @onclick="Context.SelectAsync" @ondblclick="Context.EditAsync" @onkeydown="Context.HandleKeyAsync" @attributes="AdditionalAttributes">
+    @if (ChildContent is not null) { @ChildContent(Context) }
+    else { @Context.Occurrence.Data.Title }
+</button>
+
+@code {
+    /// <summary>Occurrence, selection and standard scheduler commands for this primary action.</summary>
+    [Parameter, EditorRequired] public SchedulerEventContext<TItem> Context { get; set; } = default!;
+    /// <summary>Noninteractive caption content. Place secondary actions alongside this component.</summary>
+    [Parameter] public RenderFragment<SchedulerEventContext<TItem>>? ChildContent { get; set; }
+    /// <summary>Accessible name; null uses the event title, including for an icon-only caption.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    private ElementReference _element;
+    protected override string ComponentCssClass => Css.Classes.Scheduler.EventAction;
+    /// <summary>Restores native focus to the primary event action.</summary>
+    public ValueTask FocusAsync() => _element.FocusAsync();
+}

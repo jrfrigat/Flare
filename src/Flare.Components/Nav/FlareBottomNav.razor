@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* A fixed/sticky bar covers whatever is under it, so it also emits a same-height spacer in the flow.
    That is what stops the last row of content sitting behind the bar, and it costs one empty div rather
@@ -11,14 +11,14 @@
     <div class="@_spacerClass" aria-hidden="true"></div>
 }
 <nav class="@BuildCssClass(_positionClass, _labelsClass)" style="@Style"
-     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? FlareStrings.Nav_BottomNavigation : AriaLabel)"
+     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? CoreText["Nav_BottomNavigation"] : AriaLabel)"
      @attributes="AdditionalAttributes">
     @ChildContent
 </nav>
 
 @code {
-    /// <summary>The <c>FlareBottomNavItem</c> entries rendered inside the bar, laid out with equal
-    /// flex distribution across the available width.</summary>
+    /// <summary>The <c>FlareBottomNavItem</c> entries rendered inside the bar. Single-line mode shares
+    /// width equally; wrap mode distributes width according to the entries' content.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>Accessible label for the navigation landmark, forwarded as <c>aria-label</c>.</summary>
@@ -41,7 +41,8 @@
     /// How an item's label is laid out. <see cref="BottomNavLabelMode.SingleLine"/> (the default) keeps
     /// the theme's bar height and ends a label that does not fit with an ellipsis;
     /// <see cref="BottomNavLabelMode.Wrap"/> gives the label up to two lines and grows the bar, and the
-    /// space it reserves, to the height those lines need. Choose <c>Wrap</c> when labels must stay
+    /// space it reserves, to the height those lines need, sharing width according to caption content.
+    /// Choose <c>Wrap</c> when labels must stay
     /// readable at a large root font size.
     /// </summary>
     [Parameter] public BottomNavLabelMode LabelMode { get; set; } = BottomNavLabelMode.SingleLine;

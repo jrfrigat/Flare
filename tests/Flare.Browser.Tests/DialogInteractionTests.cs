@@ -19,6 +19,9 @@ public sealed class DialogInteractionTests(BrowserFixture fixture) : IClassFixtu
         await page.GotoAsync($"{fixture.BaseUrl}/dialog-audit");
         await page.Locator("#open-dialog").ClickAsync();
         await Expect(page.Locator(Panel)).ToBeVisibleAsync();
+        await BrowserFonts.WaitAsync(page.Locator(Panel));
+        await page.WaitForFunctionAsync("sel => document.querySelector(sel)?.style.touchAction === 'none'",
+            $".{Css.Classes.Dialog.Header}");
         await page.EvaluateAsync<bool>("() => document.fonts.ready.then(() => true)");
         await page.WaitForFunctionAsync(
             "sel => { const el = document.querySelector(sel); return !!el && el.getBoundingClientRect().width > 0; }",

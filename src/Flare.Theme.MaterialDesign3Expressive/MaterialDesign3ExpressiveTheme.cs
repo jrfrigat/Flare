@@ -26,7 +26,9 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
 
     public string Id => ThemeId;
     public string DisplayName => "Material Design 3 Expressive";
-    public DesignTokens Design => MaterialDesign3Tokens.Design with
+    public DesignTokens Design => ExpressiveDesign;
+
+    private static readonly DesignTokens ExpressiveDesign = MaterialDesign3Tokens.Design with
     {
         // THE EXPRESSIVE SIZE RAMP. Baseline M3 has one button - "small", 40dp tall - and the XS/M/L/XL
         // steps arrive with Expressive, which is why they are stated here rather than in the shared

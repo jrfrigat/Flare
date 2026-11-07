@@ -56,7 +56,9 @@ const _popupEscape = (e) => {
 /** Registers an open popup as the topmost Escape layer. Registers replaced ids at the top. */
 export function pushPopupLayer(id, dotNetRef, method) {
     removePopupLayer(id);
-    _popupLayers.push({ id, dotNetRef, method });
+    const panel = [...document.querySelectorAll('[data-flare-popup-layer]')]
+        .find(el => el.getAttribute('data-flare-popup-layer') === id);
+    _popupLayers.push({ id, dotNetRef, method, panel });
     if (!_popupEscAttached) {
         document.addEventListener('keydown', _popupEscape);
         _popupEscAttached = true;
@@ -96,6 +98,13 @@ const _focusedPopupOwner = (e) => {
 // round trip after the dispatch and sees the same state either way.
 const _markEscapeOwner = (e) => {
     if (e.key !== 'Escape') return;
+    // Server rendering can remove the panel before its interop cleanup reaches the browser. A layer
+    // tied to that panel must release the next key immediately; a connected panel still owns Escape
+    // if the application declined its dismissal.
+    for (let i = _popupLayers.length - 1; i >= 0; i--) {
+        const layer = _popupLayers[i];
+        if (layer.panel && !layer.panel.isConnected) removePopupLayer(layer.id);
+    }
     e.flarePopupOwned = _popupLayers.length > 0 || _focusedPopupOwner(e);
 };
 window.addEventListener('keydown', _markEscapeOwner, true);

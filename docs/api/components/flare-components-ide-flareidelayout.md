@@ -38,14 +38,9 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `ResizePanel(string position, int sizePx)`
 
-Invoked from JS during a divider drag with the new region size in pixels.
+Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.
 Returns: `void`.
 
 | Parameter | Type | Description |
@@ -56,6 +51,7 @@ Returns: `void`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

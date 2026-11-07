@@ -6,14 +6,14 @@ namespace Flare.Abstractions;
 /// <summary>An immutable description of a pending confirm/alert dialog request.</summary>
 /// <param name="Title">Dialog title.</param>
 /// <param name="Message">Dialog body message.</param>
-/// <param name="ConfirmLabel">Label for the confirm button.</param>
-/// <param name="CancelLabel">Label for the cancel button.</param>
+/// <param name="ConfirmLabel">Explicit confirm caption; null uses the host's live localized default.</param>
+/// <param name="CancelLabel">Explicit cancel caption; null uses the host's live localized default.</param>
 /// <param name="ShowCancel">Whether the cancel button is shown (false for a pure alert).</param>
 public sealed record DialogRequest(
     string Title,
     string Message,
-    string ConfirmLabel,
-    string CancelLabel,
+    string? ConfirmLabel,
+    string? CancelLabel,
     bool ShowCancel);
 
 /// <summary>
@@ -29,18 +29,18 @@ public interface IDialogService
     /// without an answer (a scrim click, Escape, or navigation to another route).
     /// </summary>
     Task<bool?> ConfirmAsync(string title, string message,
-        string confirmLabel = "OK", string cancelLabel = "Cancel");
+        string? confirmLabel = null, string? cancelLabel = null);
     /// <summary>
     /// Shows an alert dialog with a single close button. Returns when the button is clicked or the dialog
     /// is dismissed (a scrim click, Escape, or navigation to another route).
     /// </summary>
-    Task AlertAsync(string title, string message, string closeLabel = "Close");
+    Task AlertAsync(string title, string message, string? closeLabel = null);
 
     /// <summary>
     /// Opens <typeparamref name="TComponent"/> as a modal dialog body and awaits its result. The
     /// component receives the supplied <paramref name="parameters"/> and a cascaded
-    /// <see cref="FlareDialogInstance"/> it uses to close itself (<c>Dialog.Close(value)</c> /
-    /// <c>Dialog.Cancel()</c>). A dismissed dialog (scrim/Escape) resolves as
+    /// <see cref="FlareDialogInstance"/> it uses to close itself (<c>await Dialog.CloseAsync(value)</c> /
+    /// <c>await Dialog.CancelAsync()</c>). A dismissed dialog (scrim/Escape) resolves as
     /// <see cref="DialogResult.Cancel"/>.
     /// </summary>
     /// <typeparam name="TComponent">The Blazor component rendered as the dialog body.</typeparam>

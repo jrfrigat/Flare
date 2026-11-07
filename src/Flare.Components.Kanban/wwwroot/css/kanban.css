@@ -1,17 +1,17 @@
 .flare-kanban {
     display: flex;
-    gap: var(--flare-spacing-6, 0.75rem);
+    gap: var(--flare-kanban-spacing-6, var(--flare-spacing-6));
     overflow-x: auto;
-    padding-bottom: var(--flare-spacing-4, 0.5rem);
+    padding-bottom: var(--flare-kanban-spacing-4, var(--flare-spacing-4));
     align-items: flex-start;
 }
 
 .flare-kanban__column {
     flex-shrink: 0;
-    width: 240px;
-    background: var(--flare-color-surface-container-low);
-    border-radius: var(--flare-shape-medium);
-    border: 1px solid var(--flare-color-outline-variant);
+    width: calc(var(--flare-kanban-spacing-32, var(--flare-spacing-32)) * 3.75);
+    background: var(--flare-kanban-surface-container-low, var(--flare-color-surface-container-low));
+    border-radius: var(--flare-kanban-shape-medium, var(--flare-shape-medium));
+    border: var(--flare-kanban-border-width, var(--flare-border-width)) var(--flare-kanban-border-style, var(--flare-border-style)) var(--flare-kanban-outline-variant, var(--flare-color-outline-variant));
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -21,30 +21,34 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
-    background: var(--flare-color-surface-container);
+    padding: var(--flare-kanban-spacing-5, var(--flare-spacing-5)) var(--flare-kanban-spacing-6, var(--flare-spacing-6));
+    border-bottom: var(--flare-kanban-border-width, var(--flare-border-width)) var(--flare-kanban-border-style, var(--flare-border-style)) var(--flare-kanban-outline-variant, var(--flare-color-outline-variant));
+    background: var(--flare-kanban-surface-container, var(--flare-color-surface-container));
 }
 
 .flare-kanban__count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 1.25rem;
-    height: 1.25rem;
-    padding: 0 var(--flare-spacing-2, 0.25rem);
-    background: var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-full);
-    font-size: 0.6875rem;
-    color: var(--flare-color-on-surface-variant);
+    min-width: var(--flare-kanban-spacing-10, var(--flare-spacing-10));
+    height: var(--flare-kanban-spacing-10, var(--flare-spacing-10));
+    padding: 0 var(--flare-kanban-spacing-2, var(--flare-spacing-2));
+    background: var(--flare-kanban-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-kanban-shape-full, var(--flare-shape-full));
+    font-size: var(--flare-kanban-typescale-label-small-size, var(--flare-typescale-label-small-size));
+    color: var(--flare-kanban-on-surface-variant, var(--flare-color-on-surface-variant));
+    font-family: var(--flare-kanban-typescale-label-small-font, var(--flare-typescale-label-small-font));
+    font-weight: var(--flare-kanban-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
+    line-height: var(--flare-kanban-typescale-label-small-height, var(--flare-typescale-label-small-height));
+    letter-spacing: var(--flare-kanban-typescale-label-small-spacing, var(--flare-typescale-label-small-spacing));
 }
 
 .flare-kanban__cards {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-4, 0.5rem);
-    padding: var(--flare-spacing-4, 0.5rem);
-    min-height: 3rem;
+    gap: var(--flare-kanban-spacing-4, var(--flare-spacing-4));
+    padding: var(--flare-kanban-spacing-4, var(--flare-spacing-4));
+    min-height: var(--flare-kanban-spacing-24, var(--flare-spacing-24));
 }
 
 /* Virtual: the board's height bounds the columns, and each card list is the scroll container the
@@ -65,37 +69,39 @@
 }
 
 .flare-kanban__card {
-    background: var(--flare-color-surface);
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-small);
-    padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
+    background: var(--flare-kanban-surface, var(--flare-color-surface));
+    border: var(--flare-kanban-border-width, var(--flare-border-width)) var(--flare-kanban-border-style, var(--flare-border-style)) var(--flare-kanban-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-kanban-shape-small, var(--flare-shape-small));
+    padding: var(--flare-kanban-spacing-5, var(--flare-spacing-5)) var(--flare-kanban-spacing-6, var(--flare-spacing-6));
     /* cursor and touch-action come from .flare-draggable now, with the rest of the drag model. */
-    transition: box-shadow var(--flare-motion-duration-state-change),
-                opacity var(--flare-motion-duration-state-change);
+    transition: box-shadow var(--flare-kanban-motion-duration-state-change, var(--flare-motion-duration-state-change)),
+                opacity var(--flare-kanban-motion-duration-state-change, var(--flare-motion-duration-state-change));
     display: flex;
     flex-direction: column;
 }
 
 .flare-kanban__card:hover {
-    box-shadow: var(--flare-elevation-2, 0 2px 6px rgba(0,0,0,.12));
+    box-shadow: var(--flare-kanban-elevation-2, var(--flare-elevation-2));
 }
 
 /* Keyboard focus ring (owned here since Kanban is its own package). */
 .flare-kanban__card:focus-visible {
-    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline: var(--flare-kanban-focus-ring, var(--flare-focus-ring));
     outline-offset: 2px;
 }
 
 .flare-kanban__tag {
     display: inline-block;
-    font-size: 0.625rem;
-    font-weight: 600;
-    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-3, 0.375rem);
-    border-radius: var(--flare-shape-full);
-    background: var(--flare-color-secondary-container);
-    color: var(--flare-color-on-secondary-container);
-    margin-bottom: var(--flare-spacing-3, 0.375rem);
+    font-size: var(--flare-kanban-typescale-label-small-size, var(--flare-typescale-label-small-size));
+    font-weight: var(--flare-kanban-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
+    padding: var(--flare-kanban-spacing-1, var(--flare-spacing-1)) var(--flare-kanban-spacing-3, var(--flare-spacing-3));
+    border-radius: var(--flare-kanban-shape-full, var(--flare-shape-full));
+    background: var(--flare-kanban-secondary-container, var(--flare-color-secondary-container));
+    color: var(--flare-kanban-on-secondary-container, var(--flare-color-on-secondary-container));
+    margin-bottom: var(--flare-kanban-spacing-3, var(--flare-spacing-3));
     align-self: flex-start;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--flare-kanban-typescale-label-small-spacing, var(--flare-typescale-label-small-spacing));
+    font-family: var(--flare-kanban-typescale-label-small-font, var(--flare-typescale-label-small-font));
+    line-height: var(--flare-kanban-typescale-label-small-height, var(--flare-typescale-label-small-height));
 }

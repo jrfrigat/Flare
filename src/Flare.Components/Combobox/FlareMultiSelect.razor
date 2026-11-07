@@ -17,6 +17,7 @@
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
                   Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
+                  LabelFor="@(Searchable ? ComboboxInputAttributes.Id(InputAttributes, _controlId) : null)"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
@@ -66,6 +67,7 @@
             @if (Searchable)
             {
                 <input class="@Css.Classes.Select.Search"
+                       id="@_controlId"
                        @ref="_inputRef"
                        value="@_state.Input"
                        placeholder="@(_selected.Count == 0 ? Placeholder : null)"
@@ -93,7 +95,7 @@
             @if (Clearable && !Disabled && !ReadOnly && _selected.Count > 0)
             {
                 <button type="button" class="@Css.Classes.Autocomplete.Clear"
-                        tabindex="-1" aria-label="@FlareStrings.Input_Clear"
+                        tabindex="-1" aria-label="@CoreText["Input_Clear"]"
                         @onclick="HandleClearAsync" @onclick:stopPropagation="true"
                         @onmousedown:preventDefault="true">
                     <span aria-hidden="true">&#x2715;</span>
@@ -146,14 +148,14 @@
                                       data-checked="@(tri == TriState.All ? "true" : null)"
                                       data-indeterminate="@(tri == TriState.Some ? "true" : null)"
                                       aria-hidden="true"></span>
-                                <span>@FlareStrings.MultiSelect_SelectAll</span>
+                                <span>@CoreText["MultiSelect_SelectAll"]</span>
                             </div>
                         }
                     </HeaderContent>
                     <EmptyContent>
                         @if (Searchable && !string.IsNullOrEmpty(_state.Input))
                         {
-                            <div class="@Css.Classes.Select.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                            <div class="@Css.Classes.Select.Empty" role="status">@(NoResultsText ?? CoreText["Field_NoResults"])</div>
                         }
                     </EmptyContent>
                 </FlareOptionList>

@@ -1,40 +1,44 @@
 .flare-transfer {
     display: flex;
     align-items: stretch;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-transfer-spacing-4, var(--flare-spacing-4));
 }
 
 .flare-transfer__panel {
     flex: 1;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-medium);
+    border: var(--flare-transfer-border-width, var(--flare-border-width)) var(--flare-transfer-border-style, var(--flare-border-style)) var(--flare-transfer-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-transfer-shape-medium, var(--flare-shape-medium));
     overflow: hidden;
-    background: var(--flare-color-surface);
+    background: var(--flare-transfer-surface, var(--flare-color-surface));
     min-width: 0;
 }
 
 .flare-transfer__panel-header {
-    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
-    background: var(--flare-color-surface-container-low);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    padding: var(--flare-transfer-spacing-4, var(--flare-spacing-4)) var(--flare-transfer-spacing-6, var(--flare-spacing-6));
+    background: var(--flare-transfer-surface-container-low, var(--flare-color-surface-container-low));
+    border-bottom: var(--flare-transfer-border-width, var(--flare-border-width)) var(--flare-transfer-border-style, var(--flare-border-style)) var(--flare-transfer-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-transfer__list {
     flex: 1;
     overflow-y: auto;
-    min-height: 120px;
-    max-height: 240px;
+    min-height: calc(var(--flare-transfer-spacing-32, var(--flare-spacing-32)) * 1.875);
+    max-height: calc(var(--flare-transfer-spacing-32, var(--flare-spacing-32)) * 3.75);
 }
 
 .flare-transfer__item {
-    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+    padding: var(--flare-transfer-spacing-4, var(--flare-spacing-4)) var(--flare-transfer-spacing-6, var(--flare-spacing-6));
     cursor: pointer;
-    border-bottom: 1px solid var(--flare-color-outline-variant);
-    font-size: var(--flare-typescale-body-medium-size);
-    color: var(--flare-color-on-surface);
-    transition: background var(--flare-motion-duration-state-change);
+    border-bottom: var(--flare-transfer-border-width, var(--flare-border-width)) var(--flare-transfer-border-style, var(--flare-border-style)) var(--flare-transfer-outline-variant, var(--flare-color-outline-variant));
+    font-size: var(--flare-transfer-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
+    color: var(--flare-transfer-on-surface, var(--flare-color-on-surface));
+    transition: background var(--flare-transfer-motion-duration-state-change, var(--flare-motion-duration-state-change));
+    font-family: var(--flare-transfer-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-transfer-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-transfer-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-transfer-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-transfer__item:last-child {
@@ -42,25 +46,25 @@
 }
 
 .flare-transfer__item:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+    background: color-mix(in srgb, var(--flare-transfer-on-surface, var(--flare-color-on-surface)) 8%, transparent);
 }
 
 .flare-transfer__list:focus .flare-transfer__item--active {
-    outline: var(--flare-focus-ring);
+    outline: var(--flare-transfer-focus-ring, var(--flare-focus-ring));
     outline-offset: -2px;
 }
 
 .flare-transfer__item--selected {
-    background: color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface));
-    color: var(--flare-color-primary);
+    background: color-mix(in srgb, var(--flare-transfer-primary, var(--flare-color-primary)) 16%, var(--flare-transfer-surface, var(--flare-color-surface)));
+    color: var(--flare-transfer-primary, var(--flare-color-primary));
 }
 
 .flare-transfer__controls {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: var(--flare-spacing-3, 0.375rem);
-    padding: 0 var(--flare-spacing-2, 0.25rem);
+    gap: var(--flare-transfer-spacing-3, var(--flare-spacing-3));
+    padding: 0 var(--flare-transfer-spacing-2, var(--flare-spacing-2));
 }
 
 /*
@@ -69,7 +73,7 @@
     rename here would have dropped the ring with nothing failing. They travel with the component now.
 */
 .flare-transfer__item:focus-visible {
-    outline: var(--flare-focus-ring);
+    outline: var(--flare-transfer-focus-ring, var(--flare-focus-ring));
     outline-offset: 2px;
 }
 
@@ -77,6 +81,6 @@
     /* A row is as wide as its list, so only its HEIGHT is the minimum-size question. Measured at
        375px before the rule: 36px. */
     .flare-transfer__item {
-        min-block-size: var(--flare-touch-target-min);
+        min-block-size: var(--flare-transfer-touch-target-min, var(--flare-touch-target-min));
     }
 }

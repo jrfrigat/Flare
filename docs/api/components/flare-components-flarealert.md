@@ -25,14 +25,11 @@
 
 ## Methods
 
-### `Dispose()`
-
-Marks the component gone so a pending exit delay cannot call back into a removed parent.
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

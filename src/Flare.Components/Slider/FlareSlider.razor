@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Linq.Expressions
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
@@ -8,7 +8,7 @@
     @if (LabelContent is not null || !string.IsNullOrEmpty(Label) || (ShowValue && Range))
     {
         <div class="@Css.Classes.Slider.LabelRow">
-            <label id="@_labelId" class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
+            <span id="@_labelId" class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</span>
             @if (ShowValue)
             {
                 <span class="@Css.Classes.Slider.Value">@_displayText</span>
@@ -294,8 +294,8 @@
     private string? _invalidAttr => string.IsNullOrEmpty(_displayedError) ? null : "true";
     private string _lowLabelledBy => _hasVisibleLabel ? $"{_labelId} {_lowEndpointId}" : _lowEndpointId;
     private string _highLabelledBy => _hasVisibleLabel ? $"{_labelId} {_highEndpointId}" : _highEndpointId;
-    private string _lowEndpointWord => RangeStartLabel ?? FlareStrings.Slider_Minimum;
-    private string _highEndpointWord => RangeEndLabel ?? FlareStrings.Slider_Maximum;
+    private string _lowEndpointWord => RangeStartLabel ?? CoreText["Slider_Minimum"];
+    private string _highEndpointWord => RangeEndLabel ?? CoreText["Slider_Maximum"];
     private string _lowEndpointText => _hasVisibleLabel ? _lowEndpointWord : $"{AriaLabel} {_lowEndpointWord}".Trim();
     private string _highEndpointText => _hasVisibleLabel ? _highEndpointWord : $"{AriaLabel} {_highEndpointWord}".Trim();
 
@@ -457,8 +457,8 @@
         }
     }
 
-    private string _lowText => _effLow.ToString(Format ?? "G", CultureInfo.CurrentCulture);
-    private string _highText => _effHigh.ToString(Format ?? "G", CultureInfo.CurrentCulture);
+    private string _lowText => _effLow.ToString(Format ?? "G", FormattingCulture);
+    private string _highText => _effHigh.ToString(Format ?? "G", FormattingCulture);
     private string _displayText => Range ? $"{_lowText} - {_highText}" : _lowText;
     private string _valueAttr => _effLow.ToString(CultureInfo.InvariantCulture);
     private string _valueEndAttr => _effHigh.ToString(CultureInfo.InvariantCulture);

@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web
@@ -14,10 +14,10 @@
 <div class="@Css.Classes.ClockDial.DialTop">
     <div class="@Css.Classes.ClockDial.TimeFields">
         <button type="button" class="@Css.Classes.ClockDial.TimeField @(_mode == DialMode.Hour ? Css.Classes.ClockDial.TimeFieldActive : "")"
-                aria-label="@FlareStrings.TimePicker_Hours" aria-pressed="@(_mode == DialMode.Hour ? "true" : "false")" @onclick="@(() => _mode = DialMode.Hour)">@_hourFieldText</button>
+                aria-label="@CoreText["TimePicker_Hours"]" aria-pressed="@(_mode == DialMode.Hour ? "true" : "false")" @onclick="@(() => _mode = DialMode.Hour)">@_hourFieldText</button>
         <span class="@Css.Classes.ClockDial.TimeFieldsSep">:</span>
         <button type="button" class="@Css.Classes.ClockDial.TimeField @(_mode == DialMode.Minute ? Css.Classes.ClockDial.TimeFieldActive : "")"
-                aria-label="@FlareStrings.TimePicker_Minutes" aria-pressed="@(_mode == DialMode.Minute ? "true" : "false")" @onclick="@(() => _mode = DialMode.Minute)">@Minute.ToString("00")</button>
+                aria-label="@CoreText["TimePicker_Minutes"]" aria-pressed="@(_mode == DialMode.Minute ? "true" : "false")" @onclick="@(() => _mode = DialMode.Minute)">@Minute.ToString("00")</button>
     </div>
     @if (!Is24Hour)
     {
@@ -33,7 +33,7 @@
 <div class="@Css.Classes.ClockDial.Dial" role="slider" tabindex="0" @ref="_dial"
      data-flare-initial-focus="true"
      aria-valuetext="@_valueText"
-     aria-label="@(_mode == DialMode.Hour ? FlareStrings.TimePicker_Hours : FlareStrings.TimePicker_Minutes)"
+     aria-label="@(_mode == DialMode.Hour ? CoreText["TimePicker_Hours"] : CoreText["TimePicker_Minutes"])"
      aria-valuemin="@(_mode == DialMode.Hour && !Is24Hour ? 1 : 0)"
      aria-valuemax="@(_mode == DialMode.Hour ? (Is24Hour ? 23 : 12) : 59)"
      aria-valuenow="@(_mode == DialMode.Hour ? (Is24Hour ? Hour : _displayHour) : Minute)"
@@ -62,7 +62,7 @@
     [Parameter] public EventCallback<int> MinuteSelected { get; set; }
     /// <summary>24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.</summary>
     [Parameter] public bool Is24Hour { get; set; }
-    /// <summary>Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture.</summary>
+    /// <summary>Culture for the AM/PM designators of the 12-hour dial. Default = the current formatting culture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Moves keyboard focus onto the dial when it first renders. Default true; a host that keeps focus
     /// elsewhere - a field the user goes on typing in - sets it false and calls <see cref="FocusAsync"/> later.</summary>
@@ -166,8 +166,8 @@
     private bool _isPm => Hour >= 12;
     private bool _innerHour => Is24Hour && (Hour == 0 || Hour >= 13);
     private string _hourFieldText => Is24Hour ? Hour.ToString("00") : _displayHour.ToString("00");
-    private string _amText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.AMDesignator, "AM");
-    private string _pmText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.PMDesignator, "PM");
+    private string _amText => Nz((Culture ?? FormattingCulture).DateTimeFormat.AMDesignator, "AM");
+    private string _pmText => Nz((Culture ?? FormattingCulture).DateTimeFormat.PMDesignator, "PM");
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 

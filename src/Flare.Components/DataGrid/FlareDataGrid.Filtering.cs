@@ -309,7 +309,7 @@ public partial class FlareDataGrid<TItem>
         return Items.Select(i => sel(i)?.ToString() ?? "")
             .Where(s => s.Length > 0)
             .Distinct()
-            .OrderBy(s => s, StringComparer.CurrentCultureIgnoreCase);
+            .OrderBy(s => s, StringComparer.Create(FormattingCulture, true));
     }
 
     // Resolve a column value selector by its filter key (sort key or title).

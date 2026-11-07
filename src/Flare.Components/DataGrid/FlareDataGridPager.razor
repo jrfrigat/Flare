@@ -50,5 +50,5 @@
 
     // Presentation overrides fall back to the grid's values (so the built-in pager keeps working).
     private IReadOnlyList<int> _options => RowsPerPageOptions ?? Owner?.RowsPerPageOptions ?? [];
-    private string _label => RowsLabel ?? Owner?.Grid?.RowsLabel ?? FlareStrings.DataGrid_RowsLabel;
+    private string _label => RowsLabel ?? Owner?.Grid?.RowsLabel ?? CoreText["DataGrid_RowsLabel"];
 }

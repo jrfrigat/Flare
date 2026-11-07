@@ -7,7 +7,7 @@
    contains the text (case-insensitive). Place it in the grid's ToolbarContent or anywhere, bound via
    Context or Grid. Debounced. *@
 <FlareField TValue="string" Type="search" Size="@Size" Immediate="true"
-            Placeholder="@(Placeholder ?? FlareStrings.DataGrid_Search)"
+            Placeholder="@(Placeholder ?? CoreText["DataGrid_Search"])"
             Value="@_text" ValueChanged="OnChanged" />
 
 @code {

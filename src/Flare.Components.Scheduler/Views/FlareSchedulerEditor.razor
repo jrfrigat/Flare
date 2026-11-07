@@ -1,0 +1,118 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareLocalizedComponentBase
+
+@if (ChildContent is { } template) { @template(Context) }
+else
+{
+    <FlareStack Class="@BuildCssClass()" Style="@Style" @attributes="AdditionalAttributes">
+        @if (!Context.ScopeOnly)
+        {
+            <FlareTextField Disabled="_saving" Label="@SchedulerText["Title"].Value" Value="@Context.Draft.Title" ValueChanged="v => Context.Draft = Context.Draft with { Title = v ?? string.Empty }" />
+            <FlareCheckbox Disabled="_saving" TValue="bool" Label="@SchedulerText["AllDay"].Value" @bind-Value="_allDay" />
+            @if (_allDay)
+            {
+                <FlareDatePicker Disabled="_saving" Label="@SchedulerText["Start"].Value" @bind-Value="_firstDay" Culture="Context.Culture" />
+                <FlareDatePicker Disabled="_saving" Label="@SchedulerText["End"].Value" @bind-Value="_endDay" Culture="Context.Culture" />
+            }
+            else
+            {
+                <FlareDateTimePicker Disabled="_saving" Label="@SchedulerText["Start"].Value" @bind-Value="_start" Culture="Context.Culture" />
+                <FlareDateTimePicker Disabled="_saving" Label="@SchedulerText["End"].Value" @bind-Value="_end" Culture="Context.Culture" />
+            }
+            <FlareTextField Disabled="_saving" Label="@SchedulerText["Description"].Value" Value="@Context.Draft.Description" ValueChanged="v => Context.Draft = Context.Draft with { Description = v }" />
+            @if (Context.Resources.Count > 0)
+            {
+                <FlareSelect Disabled="_saving" TValue="string" Label="@SchedulerText["Resource"].Value" Items="Context.Resources.Select(r => r.Key)"
+                             NullOption="@SchedulerText["Unassigned"].Value" Value="@Context.Draft.ResourceKey"
+                             ValueChanged="v => Context.Draft = Context.Draft with { ResourceKey = v }"
+                             ItemLabel="key => Context.Resources.FirstOrDefault(r => r.Key == key)?.Title ?? key" />
+            }
+        }
+        @if (Context.IsRecurring)
+        {
+            <FlareSelect Disabled="_saving" TValue="SchedulerEditScope" Label="@SchedulerText["Scope"].Value" @bind-Value="Context.Scope"
+                         Items="Enum.GetValues<SchedulerEditScope>()" ItemLabel="ScopeLabel" />
+        }
+        @if (_message is not null) { <FlareText role="alert">@_message</FlareText> }
+        <FlareStack Row="true" Justify="FlareJustifyContent.End">
+            <FlareButton OnClick="Context.CancelAsync" Disabled="_saving">@SchedulerText["Cancel"].Value</FlareButton>
+            <FlareButton OnClick="() => SaveAsync()" Disabled="_saving" Variant="ButtonVariant.Filled">
+                @(Context.Action == SchedulerEditAction.Delete ? SchedulerText["Delete"].Value : SchedulerText["Save"].Value)
+            </FlareButton>
+        </FlareStack>
+    </FlareStack>
+}
+
+@code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
+    /// <summary>Editor working copy and persistence commands.</summary>
+    [Parameter, EditorRequired] public SchedulerEditContext<TItem> Context { get; set; } = default!;
+    /// <summary>Replaces the standard fields and actions while retaining the independent session.</summary>
+    [Parameter] public RenderFragment<SchedulerEditContext<TItem>>? ChildContent { get; set; }
+    private bool _allDay;
+    private bool _saving => Context.IsSaving;
+    private SchedulerEditContext<TItem>? _initialized;
+    private DateOnly? _firstDay, _endDay;
+    private DateTimeOffset? _start, _end;
+    private string? _message => Context.Status switch
+    {
+        SchedulerEditStatus.Invalid => SchedulerText["Invalid"].Value,
+        SchedulerEditStatus.Refused => SchedulerText["Cancelled"].Value,
+        SchedulerEditStatus.Failed => SchedulerText["SaveError"].Value,
+        _ => null
+    };
+    protected override string ComponentCssClass => Css.Classes.Scheduler.Editor;
+    protected override void OnParametersSet()
+    {
+        if (_initialized == Context) return;
+        if (_initialized is not null) _initialized.Changed -= Refresh;
+        _initialized = Context;
+        Context.Changed += Refresh;
+        var data = Context.Draft;
+        _allDay = data.AllDay is not null;
+        var span = data.AllDay is { } days ? SchedulerClock.Window(days, Context.TimeZone) : null;
+        _start = TimeZoneInfo.ConvertTime(span?.Start ?? data.Start, Context.TimeZone);
+        _end = TimeZoneInfo.ConvertTime(span?.End ?? data.End, Context.TimeZone);
+        _firstDay = data.AllDay?.Start ?? DateOnly.FromDateTime(_start.Value.DateTime);
+        _endDay = data.AllDay?.End ?? _firstDay.Value.AddDays(1);
+
+    }
+    private string ScopeLabel(SchedulerEditScope scope) => scope switch
+    {
+        SchedulerEditScope.Following => SchedulerText["Following"].Value,
+        SchedulerEditScope.Series => SchedulerText["Series"].Value,
+        _ => SchedulerText["Occurrence"].Value
+    };
+    private async Task<bool> SaveAsync()
+    {
+        if (_saving || Context.IsClosed) return false;
+        if (!Context.ScopeOnly && ChildContent is null)
+        {
+            try
+            {
+                if (_allDay)
+                {
+                    if (_firstDay is not { } start || _endDay is not { } end || end <= start) throw new ArgumentException();
+                    Context.Draft = Context.Draft with { AllDay = new(start, end) };
+                }
+                else
+                {
+                    if (_start is not { } start || _end is not { } end) throw new ArgumentException();
+                    DateTimeOffset Resolve(DateTimeOffset value) => SchedulerClock.At(DateOnly.FromDateTime(value.DateTime),
+                        TimeOnly.FromDateTime(value.DateTime), Context.TimeZone, value.Offset);
+                    Context.Draft = Context.Draft with { AllDay = null, Start = Resolve(start), End = Resolve(end) };
+                }
+            }
+            catch (ArgumentException) { Context.RejectValidation(); return false; }
+        }
+        return await Context.SaveAsync();
+    }
+    private void Refresh() => _ = InvokeAsync(StateHasChanged);
+    /// <summary>Releases the session subscription without discarding its draft.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        if (_initialized is not null) _initialized.Changed -= Refresh;
+        await base.DisposeAsync();
+    }
+}

@@ -2,6 +2,29 @@ namespace Flare.Components.Tests;
 
 public class ChartBoundaryTests : FlareTestContext
 {
+    [Fact]
+    public void CosmeticUpdateKeepsSvgWhileInPlaceChangesRedrawIt()
+    {
+        double[] values = [1, 2, 3];
+        string[] labels = ["A", "B", "C"];
+        var data = new ChartData([new ChartSeries("Series", values)], labels);
+        var cut = Render<FlareChart>(p => p.Add(x => x.Data, data).Add(x => x.YMax, 10d));
+        var region = cut.FindComponent<ChartRenderRegion>();
+        var revision = region.Instance.Revision;
+        var drawing = Geometry(cut);
+
+        cut.Render(p => p.Add(x => x.Class, "chart-updated"));
+        Assert.Equal(revision, region.Instance.Revision);
+        Assert.Equal(drawing, Geometry(cut));
+
+        values[1] = 7;
+        labels[1] = "Edited";
+        cut.Render(p => p.Add(x => x.Data, data));
+        Assert.True(region.Instance.Revision > revision);
+        Assert.NotEqual(drawing, Geometry(cut));
+        Assert.Contains("Edited", cut.Markup);
+    }
+
     private static ChartData Data(double middle) => new([new ChartSeries("Series", [1, middle, 3])], ["A", "B", "C"]);
 
     private static string Geometry(IRenderedComponent<FlareChart> cut) => string.Join("|",

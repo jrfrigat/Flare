@@ -49,11 +49,43 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `CancelAsync(string id)`
+
+Cancels one file by its Id. A file that already finished is left alone.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | The queue entry to cancel. |
+
+### `RemoveAsync(string id)`
+
+Drops a file from the list. A transfer still in flight is cancelled first: the row is going away, so leaving its request running would spend the user's bandwidth on bytes nothing will report.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | The queue entry to remove. |
+
+### `RetryAsync(string id)`
+
+Puts a failed or cancelled file back in the queue and runs it again.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | The queue entry to retry. |
+
+### `UploadAsync()`
+
+Runs the queue: every file still queued is sent through Uploader, at most Concurrency at a time. Returns when nothing is left in flight. Safe to call again after a failure - it picks up whatever is still queued and skips what already finished. Requests made during a run are drained before the all-completed callback.
+Returns: `Task`.
+
 
 ## Inheritance
 
 - `FlareFileUploadBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

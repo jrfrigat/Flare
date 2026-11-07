@@ -5,6 +5,17 @@ namespace Flare.Components.Tests;
 
 public class FlareMenuTests : FlareTestContext
 {
+    [Theory]
+    [InlineData(MenuAnchor.BottomLeft, MenuAnchor.BottomStart, 0)]
+    [InlineData(MenuAnchor.BottomRight, MenuAnchor.BottomEnd, 1)]
+    [InlineData(MenuAnchor.TopLeft, MenuAnchor.TopStart, 2)]
+    [InlineData(MenuAnchor.TopRight, MenuAnchor.TopEnd, 3)]
+    public void PhysicalNamesKeepTheirLogicalValues(MenuAnchor compatibility, MenuAnchor logical, int value)
+    {
+        Assert.Equal(value, (int)compatibility);
+        Assert.Equal(logical, compatibility);
+    }
+
     // The activator slot is a template: the menu hands it the ARIA a menu button has to carry. These
     // tests only need something clickable in the wrapper, so they ignore the context they are given -
     // FlareMenuActivatorAriaTests is where the attributes themselves are checked.

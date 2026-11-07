@@ -34,8 +34,15 @@ public static class BarcodeEncoder
     /// </remarks>
     public static Symbol? TryEncode(string? value, BarcodeSymbology symbology, out string? error)
     {
+        var symbol = TryEncodeDetailed(value, symbology, out var failure);
+        error = failure?.InvariantMessage;
+        return symbol;
+    }
+
+    internal static Symbol? TryEncodeDetailed(string? value, BarcodeSymbology symbology, out BarcodeEncodingError? error)
+    {
         error = null;
-        if (string.IsNullOrEmpty(value)) { error = "The value is empty."; return null; }
+        if (string.IsNullOrEmpty(value)) { error = new(BarcodeFailure.Empty); return null; }
 
         try
         {
@@ -53,7 +60,7 @@ public static class BarcodeEncoder
         }
         catch (Exception ex)
         {
-            error = ex.Message;
+            error = new(BarcodeFailure.Unexpected, ex.Message);
             return null;
         }
     }
@@ -85,12 +92,12 @@ public static class BarcodeEncoder
     private const int Code128CodeB = 100;
     private const int Code128CodeC = 99;
 
-    private static Symbol? Code128(string value, out string? error)
+    private static Symbol? Code128(string value, out BarcodeEncodingError? error)
     {
         error = null;
         foreach (var c in value)
         {
-            if (c > 127) { error = $"Code 128 encodes ASCII only; '{c}' is outside it."; return null; }
+            if (c > 127) { error = new(BarcodeFailure.AsciiOnly, c); return null; }
         }
 
         var codes = new List<int>();
@@ -179,13 +186,13 @@ public static class BarcodeEncoder
     ];
 
     // EAN-8's left half is all-L; only the right half differs, so it needs no parity table.
-    private static Symbol? Ean(string value, int length, out string? error)
+    private static Symbol? Ean(string value, int length, out BarcodeEncodingError? error)
     {
         error = null;
         var digits = value.Where(char.IsAsciiDigit).ToArray();
         if (digits.Length != value.Length)
         {
-            error = "Only digits can be encoded in this symbology.";
+            error = new(BarcodeFailure.DigitsOnly);
             return null;
         }
 
@@ -194,7 +201,7 @@ public static class BarcodeEncoder
         if (body.Length == length) body = body[..^1];
         if (body.Length != length - 1)
         {
-            error = $"Expected {length - 1} digits (or {length} with the check digit), got {digits.Length}.";
+            error = new(BarcodeFailure.DigitCount, length - 1, length, digits.Length);
             return null;
         }
 
@@ -265,7 +272,7 @@ public static class BarcodeEncoder
         "121212111", "121211121", "121112121", "111212121", "121121112",
     ];
 
-    private static Symbol? Code39(string value, out string? error)
+    private static Symbol? Code39(string value, out BarcodeEncodingError? error)
     {
         error = null;
         var text = value.ToUpperInvariant();
@@ -273,7 +280,7 @@ public static class BarcodeEncoder
         {
             if (Code39Alphabet.IndexOf(c) < 0 || c == '*')
             {
-                error = $"Code 39 cannot encode '{c}'.";
+                error = new(BarcodeFailure.Code39Character, c);
                 return null;
             }
         }
@@ -300,17 +307,17 @@ public static class BarcodeEncoder
         "11221", "21112", "12112", "22111", "11212", "21211", "12211", "11122", "21121", "12121",
     ];
 
-    private static Symbol? Itf14(string value, out string? error)
+    private static Symbol? Itf14(string value, out BarcodeEncodingError? error)
     {
         error = null;
         var digits = value.Where(char.IsAsciiDigit).ToArray();
-        if (digits.Length != value.Length) { error = "ITF-14 encodes digits only."; return null; }
+        if (digits.Length != value.Length) { error = new(BarcodeFailure.ItfDigitsOnly); return null; }
 
         var body = new string(digits);
         if (body.Length == 14) body = body[..^1];
         if (body.Length != 13)
         {
-            error = $"Expected 13 digits (or 14 with the check digit), got {digits.Length}.";
+            error = new(BarcodeFailure.DigitCount, 13, 14, digits.Length);
             return null;
         }
 
@@ -343,19 +350,19 @@ public static class BarcodeEncoder
         "1122121", "1212112", "1112122", "1112221",
     ];
 
-    private static Symbol? Codabar(string value, out string? error)
+    private static Symbol? Codabar(string value, out BarcodeEncodingError? error)
     {
         error = null;
         var text = value.ToUpperInvariant();
         if (text.Length < 3 || !char.IsAsciiLetter(text[0]) || !char.IsAsciiLetter(text[^1]))
         {
-            error = "Codabar needs a start and stop letter A-D around the data.";
+            error = new(BarcodeFailure.CodabarDelimiters);
             return null;
         }
 
         foreach (var c in text)
         {
-            if (CodabarAlphabet.IndexOf(c) < 0) { error = $"Codabar cannot encode '{c}'."; return null; }
+            if (CodabarAlphabet.IndexOf(c) < 0) { error = new(BarcodeFailure.CodabarCharacter, c); return null; }
         }
 
         var elements = new List<int>();

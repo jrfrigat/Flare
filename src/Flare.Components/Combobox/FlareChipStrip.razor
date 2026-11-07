@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @typeparam TItem
 
 @* The removable-chip strip shared by FlareMultiSelect and FlareTagField, so the selected-values chips are
@@ -24,7 +24,7 @@
             {
                 <button type="button"
                         class="@Css.Classes.Multiselect.ChipRemove"
-                        aria-label="@RemoveLabel"
+                        aria-label="@(RemoveLabel ?? CoreText["Input_Clear"])"
                         @onclick="@(() => OnRemove.InvokeAsync(it))"
                         @onclick:stopPropagation="true"
                         @onmousedown:preventDefault="true">&#x2715;</button>
@@ -50,7 +50,7 @@
     [Parameter] public bool ReadOnly { get; set; }
 
     /// <summary>Accessible label for the remove button.</summary>
-    [Parameter] public string RemoveLabel { get; set; } = FlareStrings.Input_Clear;
+    [Parameter] public string? RemoveLabel { get; set; }
 
     /// <summary>Invoked with the item whose chip remove button was activated.</summary>
     [Parameter] public EventCallback<TItem> OnRemove { get; set; }

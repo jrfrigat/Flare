@@ -105,11 +105,6 @@ Returns: `Task`.
 | `delta` | `double` | The wheel's vertical delta. |
 | `x` | `double` | The anchor's horizontal position in SVG viewBox units. |
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `ResetDomain()`
 
 Forgets the range StickyDomain is holding, so the next update sizes the value axis from the data alone. For when the caller knows the scale has changed for good.
@@ -118,6 +113,7 @@ Returns: `void`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

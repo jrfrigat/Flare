@@ -168,12 +168,19 @@ internal sealed class ComponentExtractor
     private List<MethodDoc> ExtractMethods(Type type)
     {
         var result = new List<MethodDoc>();
+        var signatures = new HashSet<string>(StringComparer.Ordinal);
+        var methods = new List<MethodInfo>();
+        for (var owner = type; owner is not null && owner != typeof(object)
+            && owner.FullName != BaseTypeName && owner.FullName != ComponentBaseTypeName; owner = owner.BaseType)
+            methods.AddRange(owner.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
 
-        foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+        foreach (var method in methods)
         {
-            if (method.IsSpecialName || method.Name == "BuildRenderTree")
+            if (method.IsSpecialName || method.Name is "BuildRenderTree" or "SetParametersAsync")
                 continue;
-            if (method.DeclaringType?.FullName == BaseTypeName)
+            if (method.GetParameters().Length == 0 && method.Name is "Dispose" or "DisposeAsync")
+                continue;
+            if (!signatures.Add(DocId.MethodSignature(method)))
                 continue;
 
             var doc = _docs.ForMethod(method);
@@ -198,14 +205,15 @@ internal sealed class ComponentExtractor
                 Parameters: parameters));
         }
 
-        return result.OrderBy(m => m.Name, StringComparer.Ordinal).ToList();
+        return result.OrderBy(m => m.Name, StringComparer.Ordinal).ThenBy(m => m.Signature, StringComparer.Ordinal).ToList();
     }
 
     private static string BuildSignature(MethodInfo method)
     {
         var paramText = method.GetParameters()
             .Select(p => $"{TypeNameFormatter.Format(p.ParameterType)} {p.Name}");
-        return $"{method.Name}({string.Join(", ", paramText)})";
+        var generic = method.IsGenericMethod ? "<" + string.Join(", ", method.GetGenericArguments().Select(x => x.Name)) + ">" : "";
+        return $"{method.Name}{generic}({string.Join(", ", paramText)})";
     }
 
     private string? ReadDefault(Type type, PropertyInfo prop, bool isEventCallback)

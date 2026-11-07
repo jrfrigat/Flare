@@ -9,25 +9,15 @@
    drag state, same default upload glyph + label + accept hint - down to being demoed on this very page
    beside it. ChildContent and MaxFileSize came across from it.
 
-   On the root's drag handlers: `dragover`/`dragenter` MUST be cancelled - without it the region is not
-   a drop target at all. `drop` must NOT be, WHILE THE ZONE CAN ACCEPT ONE. The hidden input below covers
-   the drop area and takes the dropped file as that event's DEFAULT ACTION, so cancelling it here killed
-   the drop this component exists to receive, and with it the `change` that was the only path to
-   HandleDropAsync - which is also why the highlight stayed lit afterwards.
-
-   Disabled inverts exactly that: the input is rendered `disabled` and a disabled file input takes no
-   dropped file, so there is no default action left to protect - and an uncancelled drop nobody consumes
-   is a navigation away from the application to the dropped file. The two halves are one decision and are
-   written here once: the zone stays a drop target, and refuses the file itself while disabled.
-
-   The list region, the one part with no input beneath it, cancels its own drop (see
-   FlareUploadFileList); nothing else here has a browser default worth stopping. *@
+   Native file drops are cancelled so they cannot navigate away. The shared DOM adapter forwards their
+   FileList to this InputFile and raises its normal change event. Disabled zones and the list refuse it. *@
 <div class="@BuildCssClass(_draggingClass, _disabledClass)"
+     data-flare-file-drop="@InputId"
      style="@Style"
-     aria-label="@(AriaLabel ?? FlareStrings.DropZone_Label)"
+     aria-label="@(AriaLabel ?? CoreText["DropZone_Label"])"
      @ondragover:preventDefault="true"
      @ondragenter:preventDefault="true"
-     @ondrop:preventDefault="Disabled"
+     @ondrop:preventDefault="true"
      @ondragover="StartDragging"
      @ondragleave="@(() => _isDragging = false)"
      @ondrop="@(() => _isDragging = false)"
@@ -48,14 +38,15 @@
                 {
                     <FlareIconView Value="FlareIcons.UploadFile" Class="@Css.Classes.FileUpload.Icon" />
                 }
-                <span class="@Css.Classes.FileUpload.Primary">@(_isDragging ? FlareStrings.DropZone_DropFiles : (DropText ?? FlareStrings.FileUpload_DropText))</span>
+                <span class="@Css.Classes.FileUpload.Primary">@(_isDragging ? CoreText["DropZone_DropFiles"] : (DropText ?? CoreText["FileUpload_DropText"]))</span>
                 @if (!string.IsNullOrEmpty(Accept))
                 {
-                    <span class="@Css.Classes.FileUpload.Hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+                    <span class="@Css.Classes.FileUpload.Hint">@(CoreText["FileUpload_Accepted"]) @Accept</span>
                 }
             }
         </label>
         <InputFile id="@InputId"
+                   data-flare-file-input
                    class="@Css.Classes.FileUpload.Input"
                    accept="@Accept"
                    multiple="@Multiple"

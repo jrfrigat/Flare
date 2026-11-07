@@ -49,7 +49,7 @@ builder.Services.AddFlareGantt();
 ## Компоненты
 
 - `FlareGantt` - общая ось: `Range`, `Scale`, `UnitWidth`, `RowHeight`, `BarInset`, `SideWidth`, `Culture`,
-  `NonWorking`, общие `Markers` и `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`, `Texts`,
+  `NonWorking`, общие `Markers` и `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`,
   `FillWidth`, `Virtualize` (рисует только строки и колонки рядом с видимой частью), `Endless` + `@bind-Range`,
   `ResizableSide` + `SideWidthChanged` (край колонки - `FlareSplitter`), `ScrollTo(момент)`.
 - `FlareGanttPanel<TRow, TItem>` - одна проекция. Панели на одной оси делят шкалу, прокрутку и выбор по ключу
@@ -72,9 +72,11 @@ builder.Services.AddFlareGantt();
 
 ## Оформление и тексты
 
-- Все оформление - переменные `--flare-gantt-*`. `gantt.css` объявляет каждую со значением по умолчанию из
-  семантических токенов `--flare-*` (например, `--flare-gantt-radius: var(--flare-shape-medium)`). Те же переменные
-  на `.flare-gantt` меняют весь график, на классе Kind - один вид:
+- Все переменные `--flare-gantt-*` используют базовые семантические токены в месте использования.
+  Теме не нужны специальные значения Gantt. Передайте
+  `new GanttTokens { BarBg = "..." }.FlattenTokens()` в `IThemeService.SetCustomTokens` или
+  `DesignTokens.Extended` (пространство расширения `Flare.Theming`). Переопределения наследуются и могут
+  задаваться на родительском элементе. На классе Kind можно изменить один вид:
 
 ```css
 .flare-gantt--kind-waiting {
@@ -83,15 +85,17 @@ builder.Services.AddFlareGantt();
 }
 ```
 
-- Тексты берутся из ресурсов пакета (английский и русский) в культуре графика `Culture`. Любой можно заменить:
-  `Texts="new GanttTexts { Moved = ... }"`; остальные остаются.
+- Подписи, сообщения о зависимостях и объявления берутся из EN/RU ресурсов через `GanttStrings` и
+  `CultureInfo.CurrentUICulture`, как в остальных компонентах Flare. Для неподдерживаемых языков используется
+  английский. `Culture` графика независимо управляет датами и шкалой. `GanttStrings.Describe` форматирует
+  сообщения проверки зависимостей. Прежние `Texts`, `EffectiveTexts` и `GanttTexts` удалены.
 
 ## Переход с инкубатора Alva
 
-Пакет вырос в репозитории Alva. Отличия от той копии: обязателен `AddFlareGantt()`; `GanttTexts` - необязательные
-замены вместо целых наборов `English`/`Russian`; колонку шапок меняет `FlareSplitter` (кнопок «уже/шире/сброс»
+Пакет вырос в репозитории Alva. Отличия от той копии: обязателен `AddFlareGantt()`; тексты используют
+текущую UI-культуру приложения; колонку шапок меняет `FlareSplitter` (кнопок «уже/шире/сброс»
 больше нет, сброс - Home или двойной щелчок, `SideWidthChanged` сообщает пиксели); уход указателя с графика больше
-не отменяет перетаскивание (отменяет Escape); каждая переменная `--flare-gantt-*` объявлена один раз на графике со значением по умолчанию из семантических токенов,
-а не запасным значением в каждом месте использования.
+не отменяет перетаскивание (отменяет Escape); настройки оформления наследуются от темы,
+а базовые значения используются в каждом месте обращения к токену.
 
 Репозиторий и документация: https://github.com/jrfrigat/Flare  -  лицензия MIT.

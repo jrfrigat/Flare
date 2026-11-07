@@ -63,13 +63,38 @@ A single-line text field. Convenience over FlareField for the common string case
 
 ## Methods
 
-This component exposes no documented public methods.
+### `BlurAsync()`
+
+Removes keyboard focus from the field.
+Returns: `ValueTask`.
+
+### `FocusAsync()`
+
+Sets keyboard focus to this field's control.
+Returns: `ValueTask`.
+
+### `SelectAsync()`
+
+Selects (highlights) all the text in the field.
+Returns: `ValueTask`.
+
+### `SelectRangeAsync(int start, int end)`
+
+Focuses the field and selects the character range [start, end).
+Returns: `ValueTask`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `start` | `int` | — |
+| `end` | `int` | — |
+
 
 ## Inheritance
 
 - `FlareField`
 - `FlareEditableFieldBase`
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

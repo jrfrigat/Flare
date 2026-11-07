@@ -46,6 +46,7 @@ public partial class FlarePopup
     private readonly AnchoredLayer _layer = new();
     private DotNetObjectReference<FlarePopup>? _selfRef;
     private bool _registered;
+    private bool _ready;
     private Task? _pendingSync;
     private bool _requestedOpen;
     private bool _requestedMatchWidth;
@@ -55,6 +56,13 @@ public partial class FlarePopup
 
     /// <summary>The panel element, for callers that need to measure or focus it.</summary>
     public ElementReference Panel => _panel;
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (!Open || !_requestedOpen) _ready = false;
+    }
 
     /// <inheritdoc />
     protected override Task OnAfterRenderAsync(bool firstRender)
@@ -105,6 +113,11 @@ public partial class FlarePopup
                 // The open popup owns Escape while it is registered, so a dialog around it stays open.
                 await Overlay.PushPopupLayerAsync(_id, _selfRef, nameof(DismissFromJs));
                 _registered = true;
+                if (!_disposed && generation == _syncGeneration && Open)
+                {
+                    _ready = true;
+                    StateHasChanged();
+                }
             }
             else
             {

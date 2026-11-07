@@ -8,26 +8,36 @@
    two cannot disagree. TValue is bool for an ordinary checkbox and bool? for a tri-state one, where
    null is the indeterminate state - the third state is the value, not a separate flag beside it. *@
 
-<label class="@BuildCssClass(_stateClass, _colorClass, _sizeClass, _labelClass, _iconClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
+@{
+    var labelId = _hasLabel ? $"{ControlId}-label" : null;
+    var error = _displayedError;
+    var errorId = error is not null ? $"{ControlId}-err" : null;
+    var indeterminate = _indeterminate;
+    var isChecked = _checked;
+    var indicatorClass = indeterminate
+        ? Css.Classes.Checkbox.Indicator + " " + Css.Classes.Checkbox.IndicatorIndeterminate
+        : Css.Classes.Checkbox.Indicator + " ";
+}
+<label class="@CheckboxCssClass(error, indeterminate)" style="@_inlineStyle" @attributes="AdditionalAttributes">
     <span class="@Css.Classes.Checkbox.Container">
         <input class="@Css.Classes.Checkbox.Input"
                @attributes="InputAttributes"
                type="checkbox"
-               aria-checked="@(_indeterminate ? "mixed" : (_checked ? "true" : "false"))"
-               aria-labelledby="@(_hasLabel ? _labelTextId : null)"
-               aria-describedby="@(_displayedError is null ? null : _errorId)"
-               aria-invalid="@(_displayedError is null ? null : "true")"
-               checked="@_checked"
+               aria-checked="@(indeterminate ? "mixed" : (isChecked ? "true" : "false"))"
+               aria-labelledby="@labelId"
+               aria-describedby="@errorId"
+               aria-invalid="@(error is null ? null : "true")"
+               checked="@isChecked"
                disabled="@Disabled"
                @onchange="HandleChange" />
-        <span class="@Css.Classes.Checkbox.Indicator @(_indeterminate ? Css.Classes.Checkbox.IndicatorIndeterminate : "")" aria-hidden="true">
+        <span class="@indicatorClass" aria-hidden="true">
             @if (_hasIcons)
             {
-                @if (_indeterminate)
+                @if (indeterminate)
                 {
                     @IndeterminateIcon
                 }
-                else if (_checked)
+                else if (isChecked)
                 {
                     @CheckedIcon
                 }
@@ -38,13 +48,13 @@
             }
         </span>
     </span>
-    @if (_hasLabel)
+    @if (labelId is not null)
     {
-        <span id="@_labelTextId" class="@Css.Classes.Checkbox.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
+        <span id="@labelId" class="@Css.Classes.Checkbox.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
     }
-    @if (!string.IsNullOrEmpty(_displayedError))
+    @if (!string.IsNullOrEmpty(error))
     {
-        <span id="@_errorId" class="@Css.Classes.Checkbox.ErrorMsg" role="alert">@_displayedError</span>
+        <span id="@errorId" class="@Css.Classes.Checkbox.ErrorMsg" role="alert">@error</span>
     }
 </label>
 
@@ -110,9 +120,8 @@
 
     protected override string ComponentCssClass => Css.Classes.Checkbox.Root;
 
-    private readonly string _controlId = $"flare-checkbox-{Guid.NewGuid():N}";
-    private string _labelTextId => $"{_controlId}-label";
-    private string _errorId => $"{_controlId}-err";
+    private string? _controlId;
+    private string ControlId => _controlId ??= $"flare-checkbox-{Guid.NewGuid():N}";
     private bool _hasLabel => ChildContent is not null || !string.IsNullOrEmpty(Label);
 
     private string _colorClass => Color.CssClass ?? string.Empty;
@@ -176,10 +185,25 @@
 
     private string? _displayedError => ErrorText ?? _validationError;
 
-    private string _stateClass =>
+    private string CheckboxCssClass(string? error, bool indeterminate)
+    {
+        var state = StateClass(error, indeterminate);
+        var color = _colorClass;
+        var size = _sizeClass;
+        var label = _labelClass;
+        var icon = _iconClass;
+
+        if (state.Length == 0 && color.Length == 0 && size == Css.Classes.Checkbox.SizeMd
+            && label.Length == 0 && icon.Length == 0 && string.IsNullOrWhiteSpace(Class))
+            return Css.Classes.Checkbox.Root + " " + Css.Classes.Checkbox.SizeMd;
+
+        return BuildCssClassFromModifiers([state, color, size, label, icon]);
+    }
+
+    private string StateClass(string? error, bool indeterminate) =>
         Disabled ? Css.Classes.Checkbox.Disabled :
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Checkbox.Error :
-        _indeterminate ? Css.Classes.Checkbox.Indeterminate : string.Empty;
+        !string.IsNullOrEmpty(error) ? Css.Classes.Checkbox.Error :
+        indeterminate ? Css.Classes.Checkbox.Indeterminate : string.Empty;
 
     private async Task HandleChange(ChangeEventArgs e)
     {

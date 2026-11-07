@@ -1,0 +1,51 @@
+@page "/localization-test"
+@inject IFlareLocalization Locale
+@using Flare.Components.Resources
+
+<FlareLocalizationProvider>
+<FlareThemeProvider>
+    <button id="ru" @onclick='() => SetUI("ru")'>Russian</button>
+    <button id="en" @onclick='() => SetUI("en")'>English</button>
+    <button id="fr" @onclick='() => SetUI("fr")'>French</button>
+    <button id="format" @onclick='() => Locale.SetCulture(CultureInfo.GetCultureInfo("de-DE"), Locale.UICulture)'>German format</button>
+    <output id="ui">@Locale.UICulture.Name</output>
+    <FlareNumericField TValue="decimal" id="number" Value="1234.5m" Format="N2" Label="Number" />
+    <FlareNumericField TValue="decimal" id="explicit" Value="1234.5m" Format="N2" Culture="@(CultureInfo.GetCultureInfo("en-US"))" Label="Explicit" />
+    <button id="open" @onclick="() => _editor = true">Editor</button>
+    <button id="dynamic" @onclick="() => _dynamic = !_dynamic">Dynamic</button>
+    @if (_dynamic)
+    {
+        <div id="dynamic-picker"><FlareDatePicker Inline /></div>
+    }
+    <FlarePopover Trigger="PopoverTrigger.Click" @bind-Open="_popup">
+        <AnchorContent><span id="popup-open">Calendar popup</span></AnchorContent>
+        <ChildContent>
+            <div id="locale-popup">
+                <FlareCalendar ViewDate="_month" ViewDateChanged="x => _month = x" />
+                <button id="popup-language" @onclick="Cycle">Switch language</button>
+            </div>
+        </ChildContent>
+    </FlarePopover>
+    <FlareDialog @bind-Visible="_editor" Title='@(Locale.GetLocalizer<FlareStrings>()["Dialog_Confirm"].Value)'>
+        <ChildContent>
+            <div @onkeydown="OnKey">
+                <FlareField TValue="string" id="draft" Label="Draft" @bind-Value="_draft" Immediate />
+            </div>
+        </ChildContent>
+    </FlareDialog>
+</FlareThemeProvider>
+</FlareLocalizationProvider>
+
+@code {
+    [SupplyParameterFromQuery(Name = "ui")] public string? InitialUI { get; set; }
+    private bool _editor, _dynamic, _popup;
+    private string? _draft;
+    private DateOnly _month = new(2026, 11, 1);
+    protected override void OnInitialized() => Locale.SetCulture(CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo(InitialUI ?? "en"));
+    private void SetUI(string code) => Locale.SetCulture(Locale.Culture, CultureInfo.GetCultureInfo(code));
+    private void Cycle() => SetUI(Locale.UICulture.TwoLetterISOLanguageName == "en" ? "ru" : Locale.UICulture.TwoLetterISOLanguageName == "ru" ? "fr" : "en");
+    private void OnKey(KeyboardEventArgs e)
+    {
+        if (e.CtrlKey && e.AltKey && e.Key.Equals("l", StringComparison.OrdinalIgnoreCase)) Cycle();
+    }
+}

@@ -23,6 +23,17 @@
     background: var(--flare-splitter-hover-color);
 }
 
+/* A narrow visual gutter keeps a finger-sized hit area without consuming extra layout space. */
+.flare-splitter::before {
+    content: "";
+    position: absolute;
+    inset: 0 min(0px, calc((100% - 24px) / 2));
+}
+
+.flare-splitter--vertical::before {
+    inset: min(0px, calc((100% - 24px) / 2)) 0;
+}
+
 /* Keyboard focus draws the theme's focus ring, as on every other control; the hover tint alone looks
    the same as a mouse passing over and vanishes in a theme with no tint. The ring sits inside the
    handle because the handle spans the full height of a container that usually clips its overflow. */

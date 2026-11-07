@@ -12,7 +12,7 @@
 		<PublishTrimmed>true</PublishTrimmed>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 		<!--
-			The Gallery only ships English + Russian. We keep the full ICU dataset (it includes the
+			The Gallery ships English/Russian and partial French consumer overrides. We keep the full ICU dataset (it includes the
 			ru-RU calendar/number formats the DataGrid/date components rely on) but drop the legacy
 			BlazorWebAssemblyI18NMode=All code-page tables, which are only needed for non-Unicode
 			encodings and add weight for nothing here.
@@ -35,6 +35,8 @@
 		<ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Kanban\Flare.Components.Kanban.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Gantt\Flare.Components.Gantt.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.Scheduler\Flare.Components.Scheduler.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.Scheduler.Ical\Flare.Components.Scheduler.Ical.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Query\Flare.Components.Query.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Media\Flare.Components.Media.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Barcode\Flare.Components.Barcode.csproj" />

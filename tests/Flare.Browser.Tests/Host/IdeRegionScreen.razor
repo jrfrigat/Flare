@@ -20,5 +20,13 @@
                 <FlareToolPanel Title="Properties" Position="ToolPanelPosition.Right"><p>Name</p></FlareToolPanel>
             </RightToolPanel>
         </FlareIdeLayout>
+        <FlareIdeLayout id="resize" Height="500px" LeftPanelWidth="180px" RightPanelWidth="18rem" BottomPanelHeight="160px">
+            <LeftToolPanel><FlareToolPanel Title="Left" Position="ToolPanelPosition.Left" /></LeftToolPanel>
+            <RightToolPanel><FlareToolPanel Title="Right" Position="ToolPanelPosition.Right" /></RightToolPanel>
+            <BottomPanel><FlareToolPanel Title="Bottom" Position="ToolPanelPosition.Bottom" /></BottomPanel>
+            <ChildContent><button id="rerender" @onclick="() => _renders++">Render @_renders</button></ChildContent>
+        </FlareIdeLayout>
     </main>
 </FlareThemeProvider>
+
+@code { private int _renders; }

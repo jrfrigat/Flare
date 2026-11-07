@@ -21,11 +21,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OnVisibilityChanged(bool visible)`
 
 Invoked by the IntersectionObserver when the wrapper enters or leaves the viewport.

@@ -1,0 +1,34 @@
+@using Flare.Components.Gantt
+@using Flare.Theming
+@using static global::Flare.Css.Tokens.Vars
+@inject IThemeService Theme
+@implements IDisposable
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText>@GalleryStrings.Gantt_TokensHint</FlareText>
+    <FlareSwitch Label="@GalleryStrings.Gantt_CustomTokens" Value="_enabled" ValueChanged="SetTokens" />
+    <GanttMiniDemo />
+</FlareStack>
+
+@code {
+    private bool _enabled;
+    private ThemeTokenPreview? _preview;
+    private void SetTokens(bool enabled)
+    {
+        _enabled = enabled;
+        _preview?.Dispose();
+        _preview = null;
+        if (!enabled) return;
+        var values = CssVarMap.FlattenTokens(new GanttTokens
+        {
+            BarBg = Var(global::Flare.Css.Tokens.Color.Tertiary),
+            BarFg = Var(global::Flare.Css.Tokens.Color.OnTertiary),
+            BarRadius = Var(global::Flare.Css.Tokens.Shape.ExtraLarge)
+        });
+        var keys = new[] { global::Flare.Css.Tokens.Gantt.Vars.BarBg, global::Flare.Css.Tokens.Gantt.Vars.BarFg,
+            global::Flare.Css.Tokens.Gantt.Vars.BarRadius };
+        _preview = new(Theme);
+        _preview.Apply(values.Where(p => keys.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value));
+    }
+    public void Dispose() => _preview?.Dispose();
+}

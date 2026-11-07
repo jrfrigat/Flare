@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 @implements IConfirmDialogService
 @implements IAsyncDisposable
 @inject IOverlayJsService Overlay
@@ -8,7 +9,7 @@
     @ChildContent
     @if (_current is { } request)
     {
-        <div class="@Css.Classes.Confirmdialog.Backdrop" @onclick="@(() => Respond(request, false))">
+        <div data-flare-backdrop class="@Css.Classes.Confirmdialog.Backdrop" @onclick="@(() => Respond(request, false))">
             <div class="@Css.Classes.Confirmdialog.Root" @onclick:stopPropagation="true"
                  role="alertdialog" aria-modal="true"
                  aria-labelledby="@_titleId"
@@ -21,9 +22,9 @@
                 <div class="@Css.Classes.Confirmdialog.Body" id="@_bodyId">@request.Message</div>
                 <div class="@Css.Classes.Confirmdialog.Footer">
                     <button type="button" class="@Css.Classes.Confirmdialog.Btn @Css.Classes.Confirmdialog.BtnCancel"
-                            @onclick="@(() => Respond(request, false))">@request.CancelLabel</button>
+                            @onclick="@(() => Respond(request, false))">@(request.CancelLabel ?? CoreText["Dialog_Cancel"].Value)</button>
                     <button type="button" class="@Css.Classes.Confirmdialog.Btn @Css.Classes.Confirmdialog.BtnConfirm"
-                            @onclick="@(() => Respond(request, true))">@request.ConfirmLabel</button>
+                            @onclick="@(() => Respond(request, true))">@(request.ConfirmLabel ?? CoreText["Dialog_Confirm"].Value)</button>
                 </div>
             </div>
         </div>
@@ -31,11 +32,13 @@
 </CascadingValue>
 
 @code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Confirmdialog.Root;
     /// <summary>Application content that can access the confirm dialog via cascading value.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    private sealed record ConfirmRequest(string Title, string Message, string ConfirmLabel,
-        string CancelLabel, TaskCompletionSource<bool?> Completion);
+    private sealed record ConfirmRequest(string Title, string Message, string? ConfirmLabel,
+        string? CancelLabel, TaskCompletionSource<bool?> Completion);
     private readonly Queue<ConfirmRequest> _pending = new();
     private ConfirmRequest? _current => _pending.TryPeek(out var request) ? request : null;
     private ConfirmRequest? _focusedRequest;
@@ -57,8 +60,7 @@
     {
         if (_disposed) return Task.FromResult<bool?>(null);
         var completion = new TaskCompletionSource<bool?>(TaskCreationOptions.RunContinuationsAsynchronously);
-        var request = new ConfirmRequest(title, message, confirmLabel ?? FlareStrings.Dialog_Confirm,
-            cancelLabel ?? FlareStrings.Dialog_Cancel, completion);
+        var request = new ConfirmRequest(title, message, confirmLabel, cancelLabel, completion);
         _ = InvokeAsync(() =>
         {
             if (_disposed) { completion.TrySetResult(null); return; }
@@ -131,7 +133,7 @@
     }
 
     /// <summary>Releases modal resources and resolves an unanswered confirmation as dismissed.</summary>
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         if (_disposed) return;
         _disposed = true;

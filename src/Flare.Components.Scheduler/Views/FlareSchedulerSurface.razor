@@ -1,0 +1,78 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareSchedulerViewBase<TItem>
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
+
+<div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style"
+     aria-label="@(Context.AriaLabel ?? Text["Schedule"].Value)" @attributes="AdditionalAttributes"
+     data-flare-focus-target="@(Context.Focus.Identity is not null ? "[data-scheduler-focus-entry]" : null)">
+    @if (Header is not null) { @Header(Context) }
+    <div class="@Css.Classes.Scheduler.Body" aria-busy="@(Context.IsLoading ? "true" : "false")"
+         data-flare-focus-target="[data-scheduler-focus-entry]">
+        @if (Context.IsLoading)
+        {
+            @if (LoadingTemplate is not null) { @LoadingTemplate(Context) }
+            else { <div role="status" class="@Css.Classes.Scheduler.Status">@Text["Loading"].Value</div> }
+        }
+        else if (Context.Error is not null)
+        {
+            @if (ErrorTemplate is not null) { @ErrorTemplate(Context) }
+            else { <div role="alert" class="@Css.Classes.Scheduler.Status">@Text["LoadError"].Value</div> }
+        }
+        else if (ChildContent is not null) { @ChildContent(Context) }
+        else if (Context.Occurrences.Count == 0 && EmptyTemplate is not null) { @EmptyTemplate(Context) }
+        else
+        {
+            @switch (Context.View)
+            {
+                case SchedulerView.Month:
+                case SchedulerView.Year:
+                    <FlareSchedulerCalendar TItem="TItem" Context="Context" EventTemplate="EventTemplate" />
+                    break;
+                case SchedulerView.Agenda:
+                    <FlareSchedulerAgenda TItem="TItem" Context="Context" EventTemplate="EventTemplate" />
+                    break;
+                case SchedulerView.Timeline:
+                    <FlareSchedulerTimeline TItem="TItem" Context="Context" EventTemplate="EventTemplate" />
+                    break;
+                default:
+                    <FlareSchedulerTimeGrid TItem="TItem" Context="Context" EventTemplate="EventTemplate" />
+                    break;
+            }
+        }
+    </div>
+    @if (Footer is not null) { @Footer(Context) }
+    <div class="@Css.Classes.Visually.Hidden" role="status" aria-live="polite">@Context.Announcement</div>
+</div>
+
+@code {
+    /// <summary>Optional navigation or other content before the active view. No toolbar is imposed.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? Header { get; set; }
+    /// <summary>Optional content after the active view.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? Footer { get; set; }
+    /// <summary>Replaces the view switch; mount any independent projection or custom layout.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? ChildContent { get; set; }
+    /// <summary>Presentation while the window is being loaded.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? LoadingTemplate { get; set; }
+    /// <summary>Presentation of a failed load, including access to the exception and reload command.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? ErrorTemplate { get; set; }
+    /// <summary>Optional replacement for an empty window. Null keeps the empty view selectable.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? EmptyTemplate { get; set; }
+    private bool _keyboardRegistered;
+    private ElementReference _root;
+    protected override string ComponentCssClass => Css.Classes.Scheduler.Root;
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> Text => Localizer<SchedulerStrings>();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root); _keyboardRegistered = true; }
+    }
+    /// <summary>Releases the shared focus-boundary listener.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        await base.DisposeAsync();
+    }
+}

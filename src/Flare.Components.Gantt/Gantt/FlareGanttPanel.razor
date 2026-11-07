@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @typeparam TRow
 @typeparam TItem
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @{ Layout(); var gantt = Gantt!; var width = GanttFormat.Px(gantt.Width); }
 
 <section class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
@@ -10,7 +10,8 @@
         <div class="@Css.Classes.Gantt.PanelHeader">@Header</div>
     }
     <div class="@Css.Classes.Gantt.Body" role="@(_isTree ? "treegrid" : "grid")" aria-label="@AriaLabel" data-panel="@_id" style="height:@GanttFormat.Px(_height)"
-         data-editable="@(CanEdit ? "true" : null)" data-row-change="@(CanEdit && AllowRowChange ? "true" : null)">
+         data-editable="@(CanEdit ? "true" : null)" data-row-change="@(CanEdit && AllowRowChange ? "true" : null)"
+         @ref="_rowKeyboardRoot" aria-rowcount="@_rows.Count" data-flare-tree-offset="@RowFocusOffset">
         @* Behind the rows: unit grid, non-working time and panel-wide regions. *@
         <div class="@Css.Classes.Gantt.Overlay" style="width:@width" aria-hidden="true">
             @foreach (var span in gantt.NonWorkingSpans.Where(gantt.InView))
@@ -39,9 +40,13 @@
         }
         @foreach (var row in drawn)
         {
-            var rowClass = string.Join(' ', new[] { Css.Classes.Gantt.Row, row.HasChildren ? Css.Classes.Gantt.RowParent : "", RowClass?.Invoke(row.Row) ?? "" }.Where(c => c.Length > 0));
+            var rootClass = row.HasChildren ? Css.Classes.Gantt.Row + " " + Css.Classes.Gantt.RowParent : Css.Classes.Gantt.Row;
+            var extraClass = RowClass?.Invoke(row.Row);
+            var rowClass = string.IsNullOrEmpty(extraClass) ? rootClass : string.Concat(rootClass, " ", extraClass);
             <div @key="row.Key" class="@rowClass" role="row" data-row="@row.Key" aria-level="@(_isTree ? (int?)(row.Depth + 1) : null)"
-                 aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)">
+                 aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)"
+                 data-flare-tree-index="@row.Index" aria-rowindex="@(row.Index + 1)" tabindex="@(row.Key == _activeRowKey ? 0 : -1)"
+                 @onfocus="() => _activeRowKey = row.Key">
                 @if (!gantt.Compact)
                 {
                     <div class="@Css.Classes.Gantt.Side" role="rowheader" style="--_depth:@row.Depth">
@@ -49,7 +54,7 @@
                         {
                             var key = row.Key;
                             <button type="button" class="@(row.Expanded ? $"{Css.Classes.Gantt.Toggle} {Css.Classes.Gantt.ToggleExpanded}" : Css.Classes.Gantt.Toggle)"
-                                    aria-label="@(row.Expanded ? gantt.EffectiveTexts.Collapse : gantt.EffectiveTexts.Expand)" @onclick="() => Toggle(key)"></button>
+                                    tabindex="-1" aria-label="@(row.Expanded ? GanttText["Gantt_Collapse"].Value : GanttText["Gantt_Expand"].Value)" @onclick="() => Toggle(key)"></button>
                         }
                         else if (_isTree)
                         {
@@ -155,6 +160,7 @@
 </section>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<GanttStrings> GanttText => Localizer<GanttStrings>();
     // A bar with its tooltip when the consumer gave one.
     private RenderFragment RenderSlot(GanttBarLayout<TItem> bar) => __builder =>
     {
@@ -174,10 +180,13 @@
     private RenderFragment RenderBar(GanttBarLayout<TItem> bar) => __builder =>
     {
         var progress = bar.Progress is { } p ? Math.Clamp(p, 0, 1) : (double?)null;
+        var interactive = ItemInteractionTemplate is not null && bar.Item is not null && !bar.IsSummary && !bar.IsSuggested;
         <div class="@BarClass(bar)" data-kind="@bar.Kind" data-key="@bar.Key"
-             role="@(bar.IsSuggested ? null : "button")" tabindex="@(bar.IsSuggested ? null : "0")"
-             aria-label="@AriaFor(bar)" aria-pressed="@(bar.IsSuggested ? null : (Gantt!.Selected == bar.Key ? "true" : "false"))"
-             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="() => Activate(bar)" @onkeydown="e => KeyDown(e, bar)">
+             role="@(bar.IsSuggested ? null : interactive ? "group" : "button")" tabindex="@(bar.IsSuggested ? null : interactive ? "-1" : "0")"
+             aria-label="@AriaFor(bar)" aria-pressed="@(bar.IsSuggested || interactive ? null : (Gantt!.Selected == bar.Key ? "true" : "false"))"
+             data-gantt-own-interaction="@(interactive ? "" : null)"
+             data-flare-focus-target="@(interactive ? "button:not(:disabled),[href],input:not(:disabled),[tabindex='0']" : null)"
+             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="async () => { if (!interactive) await Activate(bar); }" @onkeydown="async e => { if (!interactive) await KeyDown(e, bar); }">
             @if (CanEdit && !bar.IsSummary && !bar.IsSuggested)
             {
                 @* The gesture itself is the browser's (gantt.js): these only mark where a press starts it. *@
@@ -199,7 +208,11 @@
                 <div class="@Css.Classes.Gantt.Progress" style="width:@(GanttFormat.Number(fill * 100))%"></div>
             }
             <div class="@Css.Classes.Gantt.BarContent">
-                @if (ItemTemplate is not null && bar.Item is { } item && !bar.IsSummary)
+                @if (ItemInteractionTemplate is not null && bar.Item is { } interactiveItem && !bar.IsSummary)
+                {
+                    @ItemInteractionTemplate(new(interactiveItem, () => Activate(bar), e => KeyDown(e, bar)))
+                }
+                else if (ItemTemplate is not null && bar.Item is { } item && !bar.IsSummary)
                 {
                     @ItemTemplate(item)
                 }

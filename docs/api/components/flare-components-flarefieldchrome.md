@@ -21,8 +21,8 @@
 | `HelperText` | `string?` | `` | Parameter |  | Helper text shown below the field when there is no error. |
 | `Invalid` | `bool` | `false` | Parameter |  | Invalid/error state; emits the shared flare-input--error modifier. |
 | `Label` | `string?` | `` | Parameter |  | The field label text; omitted when null/empty or when FloatingLabel (the field renders its own floating label inside the well). Ignored when LabelContent is set. |
-| `LabelContent` | `RenderFragment?` | `` | Parameter |  | Markup rendered in the label element instead of Label. |
-| `LabelFor` | `string?` | `` | Parameter |  | The for target of the label (the input id), for real-input fields; null for div triggers. |
+| `LabelContent` | `RenderFragment?` | `` | Parameter |  | Markup rendered in the caption instead of Label. |
+| `LabelFor` | `string?` | `` | Parameter |  | The native control id for a label's for. When absent, renders a span caption; non-native controls reference its LabelId through aria-labelledby. |
 | `LabelId` | `string?` | `` | Parameter |  | The label element id (for aria-labelledby from a div trigger). |
 | `ReadOnly` | `bool` | `false` | Parameter |  | Read-only state; forwarded by fields to their control (the frame draws no read-only chrome). |
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl), emitted as the shared size modifier class. |

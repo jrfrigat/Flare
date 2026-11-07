@@ -31,8 +31,8 @@
                 background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
-/* Hover hangs off the WRAP, not the zone. The input covers the zone (that is what carries the browser's
-   own drag-and-drop), so the pointer is never over the label - :hover on it would never fire. The wrap is
+/* Hover hangs off the WRAP, not the zone. The input covers the zone as the native picker target,
+   so the pointer is never over the label - :hover on it would never fire. The wrap is
    an ancestor of the input, so hovering the input lights it. The old dropzone.css put :hover on its root
    for the same reason; a straight port onto the label silently lost it. */
 .flare-file-upload__drop-wrap:hover .flare-file-upload__zone {
@@ -126,8 +126,8 @@
    always blockified to `block` anyway.) */
 .flare-file-upload--button .flare-file-upload__drop-wrap { display: flex; }
 
-/* The button does NOT overlay itself with the input. The zone has to - that overlay is what gives it the
-   browser's drag-and-drop - but a button only needs a click, and <label for> already delivers that. While
+/* The button does NOT overlay itself with the input. The zone uses an input overlay as its picker target,
+   but a button only needs a click, and <label for> already delivers that. While
    the input covered it, the pointer landed on the input instead of the label, so the button had no hover,
    no press and no state layer at all: everything .flare-btn draws through :hover/:active was unreachable.
    Hidden rather than display:none so it stays focusable and reachable by assistive tech. */

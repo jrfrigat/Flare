@@ -57,8 +57,9 @@ Returns: `ValueTask`.
 Decreases the value by Step (default 1), clamped to Min/Max.
 Returns: `Task`.
 
-### `DisposeAsync()`
+### `FocusAsync()`
 
+Sets keyboard focus to this field's control.
 Returns: `ValueTask`.
 
 ### `Increment()`
@@ -76,6 +77,7 @@ Returns: `ValueTask`.
 
 - `FlareEditableFieldBase`
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

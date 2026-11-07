@@ -1,5 +1,5 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <div class="@Css.Classes.Ide.ToolPanel.Root @BuildCssClass(_positionClass, _collapsedClass)"
      style="@_rootStyle"
@@ -17,7 +17,7 @@
         }
         <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
                      OnClick="@ToggleCollapsed"
-                     AriaLabel="@(Collapsed ? IdeStrings.ToolPanelExpand : IdeStrings.ToolPanelCollapse)">
+                     AriaLabel="@(Collapsed ? IdeText["ToolPanel_Expand"].Value : IdeText["ToolPanel_Collapse"].Value)">
             <FlareIconView Value="@(Collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandLess)" Size="1rem" />
         </FlareButton>
     </div>

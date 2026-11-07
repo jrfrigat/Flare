@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="_content/Flare.Components.Carousel/css/carousel.css" />
     <link rel="stylesheet" href="_content/Flare.Components.Kanban/css/kanban.css" />
     <link rel="stylesheet" href="_content/Flare.Components.Gantt/css/gantt.css" />
+    <link rel="stylesheet" href="_content/Flare.Components.Scheduler/css/scheduler.css" />
     <link rel="stylesheet" href="_content/Flare.Components.Query/css/query-builder.css" />
     <link rel="stylesheet" href="_content/Flare.Components.Barcode/css/barcode.css" />
     <link rel="stylesheet" href="_content/Flare.Components.QrCode/css/qrcode.css" />
@@ -38,7 +39,6 @@
     <link rel="stylesheet" href="_content/Flare.Components.IDE/css/flare-ide.css" />
 
     <link rel="stylesheet" href="css/app.css" />
-    <link href="Flare.Gallery.styles.css" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/png" href="favicon.png" />
 
@@ -82,21 +82,21 @@
     </div>
 
     <!--
-        Start Blazor with an explicit applicationCulture so the matching satellite resource assembly
-        (e.g. ru/Flare.Gallery.resources.wasm) is part of the initial boot download and present before
-        first paint - otherwise the runtime picks satellites by navigator.language, and a user whose
-        browser is English but who chose Russian would flash untranslated text on a cold load.
-        Priority mirrors LanguageService: saved choice (localStorage 'blazorCulture') -> browser
-        language -> English. Only en/ru are shipped.
+        Formatting follows the saved preference or browser locale. Load satellite resources before
+        rendering so changing the UI language needs no network lookup or full-page reload.
     -->
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js" autostart="false"></script>
     <script>
         (function () {
+            window.flareGalleryBrowserLanguage = function () { return navigator.language; };
             var stored = null;
-            try { stored = localStorage.getItem('blazorCulture'); } catch (e) { }
-            var lang = (stored || navigator.language || 'en').toLowerCase();
-            var culture = lang.indexOf('ru') === 0 ? 'ru' : 'en';
-            Blazor.start({ applicationCulture: culture });
+            try { stored = localStorage.getItem('blazorFormattingCulture'); } catch (e) { }
+            var culture = stored || navigator.language || 'en-US';
+            try {
+                if (!Intl.DateTimeFormat.supportedLocalesOf(culture).length) culture = navigator.language || 'en-US';
+            } catch (e) { culture = navigator.language || 'en-US'; }
+            Blazor.start({ applicationCulture: culture,
+                configureRuntime: runtime => runtime.withConfig({ loadAllSatelliteResources: true }) });
         })();
     </script>
 </body>

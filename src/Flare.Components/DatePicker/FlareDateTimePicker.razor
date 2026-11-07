@@ -46,7 +46,7 @@
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
-                        aria-label="@FlareStrings.DateTimePicker_Open" @ref="_toggleEl" @onclick="TogglePanel">
+                        aria-label="@CoreText["DateTimePicker_Open"]" @ref="_toggleEl" @onclick="TogglePanel">
                     <FlareIconView Value="@FlareIcons.CalendarClock" />
                 </button>
             }
@@ -55,10 +55,10 @@
         {
         @if (!_popup.FromField && !Inline)
             {
-                <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
+                <div data-flare-backdrop class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
             }
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null) @(Inline ? Css.Classes.Picker.PanelInline : null)"
-             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
+             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@CoreText["DateTimePicker_Open"]" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             @if (_panels)
             {
@@ -71,7 +71,7 @@
             }
             else
             {
-                <div class="@Css.Classes.DateTimePicker.Tabs" role="tablist" aria-label="@FlareStrings.DateTimePicker_Tabs"
+                <div class="@Css.Classes.DateTimePicker.Tabs" role="tablist" aria-label="@CoreText["DateTimePicker_Tabs"]"
                      @onkeydown="HandleTabKeyDown">
                     @for (var i = 0; i < 2; i++)
                     {
@@ -79,7 +79,7 @@
                         <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == tab ? Css.Classes.DateTimePicker.TabActive : "")"
                                 type="button" role="tab" id="@TabId(tab)" aria-selected="@(_activeTab == tab ? "true" : "false")"
                                 aria-controls="@TabPanelId" tabindex="@(_activeTab == tab ? 0 : -1)"
-                                @ref="_tabRefs[tab]" @onclick="() => _activeTab = tab">@(tab == 0 ? FlareStrings.DateTimePicker_DateTab : FlareStrings.DateTimePicker_TimeTab)</button>
+                                @ref="_tabRefs[tab]" @onclick="() => _activeTab = tab">@(tab == 0 ? CoreText["DateTimePicker_DateTab"] : CoreText["DateTimePicker_TimeTab"])</button>
                     }
                 </div>
                 <div role="tabpanel" id="@TabPanelId" aria-labelledby="@TabId(_activeTab)">
@@ -96,9 +96,9 @@
     // Calendar pane (nav + headers + grid) - reused by Tabs and Panels.
     private RenderFragment _calendar => @<text>
         <div class="@Css.Classes.DateTimePicker.Nav">
-            @PickerButtons.Icon(this, PrevMonth, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft)
+            @PickerButtons.Icon(this, PrevMonth, CoreText["Picker_Previous"], FlareIcons.ChevronLeft)
             <span class="@Css.Classes.DateTimePicker.NavLabel" aria-live="polite">@_viewLabel</span>
-            @PickerButtons.Icon(this, NextMonth, FlareStrings.Picker_Next, FlareIcons.ChevronRight)
+            @PickerButtons.Icon(this, NextMonth, CoreText["Picker_Next"], FlareIcons.ChevronRight)
         </div>
         <FlareMonthGrid @ref="_grid" ViewYear="_viewMonth.Year" ViewMonth="_viewMonth.Month" Culture="_culture" Today="Today"
                         FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
@@ -118,11 +118,11 @@
         @if (TimeVariant == TimePickerVariant.Dial && (_panels || _activeTab == 1))
         {
             @PickerButtons.Icon(this, ToggleKeyboardEntry,
-                _keyboardEntry ? FlareStrings.TimePicker_SwitchToDial : FlareStrings.TimePicker_SwitchToKeyboard,
+                _keyboardEntry ? CoreText["TimePicker_SwitchToDial"] : CoreText["TimePicker_SwitchToKeyboard"],
                 _keyboardEntry ? FlareIcons.Schedule : FlareIcons.Keyboard, _locked)
         }
-        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@_locked" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
-        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(!CanConfirm)" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
+        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@_locked" @onclick="Clear" @onclick:stopPropagation>@(CoreText["Picker_Clear"])</button>
+        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(!CanConfirm)" @onclick="Confirm" @onclick:stopPropagation>@(CoreText["Picker_Ok"])</button>
     </div>;
 
     private RenderFragment _time => @<text>
@@ -150,7 +150,7 @@
                              OnSelect="SelectListTime"
                              Class="@Css.Classes.DateTimePicker.TimeList"
                              tabindex="0"
-                             aria-label="@FlareStrings.TimePicker_FieldLabel"
+                             aria-label="@CoreText["TimePicker_FieldLabel"]"
                              aria-activedescendant="@TimeListActiveId"
                              @onkeydown="HandleTimeListKeyDown" />
         }
@@ -158,17 +158,17 @@
         {
             <div class="@Css.Classes.DateTimePicker.Time">
                 <input type="number" min="0" max="23" step="@_hourStep" class="@Css.Classes.DateTimePicker.TimeInput"
-                       aria-label="@FlareStrings.TimePicker_Hours"
+                       aria-label="@CoreText["TimePicker_Hours"]"
                        value="@_hour" @onchange="e => SetHour(e.Value?.ToString())" />
                 <span>:</span>
                 <input type="number" min="0" max="59" step="@_minuteStep" class="@Css.Classes.DateTimePicker.TimeInput"
-                       aria-label="@FlareStrings.TimePicker_Minutes"
+                       aria-label="@CoreText["TimePicker_Minutes"]"
                        value="@_minute" @onchange="e => SetMinute(e.Value?.ToString())" />
                 @if (ShowSeconds)
                 {
                     <span>:</span>
                     <input type="number" min="0" max="59" class="@Css.Classes.DateTimePicker.TimeInput"
-                           aria-label="@FlareStrings.TimePicker_Seconds"
+                           aria-label="@CoreText["TimePicker_Seconds"]"
                            value="@_second" @onchange="e => SetSecond(e.Value?.ToString())" />
                 }
             </div>

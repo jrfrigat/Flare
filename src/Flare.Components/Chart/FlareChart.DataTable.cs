@@ -13,7 +13,7 @@ public partial class FlareChart
         builder.OpenComponent<FlareTable<object>>(2);
         builder.AddAttribute(3, nameof(FlareTable<object>.Class), Css.Classes.Chart.Table);
         builder.AddAttribute(4, nameof(FlareTable<object>.Caption),
-            string.IsNullOrWhiteSpace(Title) ? FlareStrings.Chart_TableCaption : Title);
+            string.IsNullOrWhiteSpace(Title) ? CoreText["Chart_TableCaption"] : Title);
         builder.AddAttribute(5, nameof(FlareTable<object>.ChildContent), RenderTableContent());
         builder.CloseComponent();
         builder.CloseElement();
@@ -28,15 +28,15 @@ public partial class FlareChart
         builder.OpenElement(seq++, "tr");
         if (points)
         {
-            TableHeader(builder, ref seq, FlareStrings.Chart_TableSeries, "col");
-            TableHeader(builder, ref seq, FlareStrings.Chart_TablePoint, "col");
-            TableHeader(builder, ref seq, FlareStrings.Chart_TableX, "col");
-            TableHeader(builder, ref seq, FlareStrings.Chart_TableY, "col");
-            if (_bubble) TableHeader(builder, ref seq, FlareStrings.Chart_TableWeight, "col");
+            TableHeader(builder, ref seq, CoreText["Chart_TableSeries"], "col");
+            TableHeader(builder, ref seq, CoreText["Chart_TablePoint"], "col");
+            TableHeader(builder, ref seq, CoreText["Chart_TableX"], "col");
+            TableHeader(builder, ref seq, CoreText["Chart_TableY"], "col");
+            if (_bubble) TableHeader(builder, ref seq, CoreText["Chart_TableWeight"], "col");
         }
         else
         {
-            TableHeader(builder, ref seq, FlareStrings.Chart_TableCategory, "col");
+            TableHeader(builder, ref seq, CoreText["Chart_TableCategory"], "col");
             foreach (var s in series) TableHeader(builder, ref seq, s.Label, "col");
         }
         builder.CloseElement();
@@ -48,7 +48,7 @@ public partial class FlareChart
             builder.OpenElement(seq++, "tr");
             builder.OpenElement(seq++, "td");
             builder.AddAttribute(seq++, "colspan", points ? (_bubble ? 5 : 4) : series.Count + 1);
-            builder.AddContent(seq++, FlareStrings.Chart_TableEmpty);
+            builder.AddContent(seq++, CoreText["Chart_TableEmpty"]);
             builder.CloseElement();
             builder.CloseElement();
         }
@@ -64,7 +64,7 @@ public partial class FlareChart
             builder.OpenElement(seq++, "tr");
             TableHeader(builder, ref seq, labels is { } l && r < l.Count ? l[r] : (r + 1).ToString(_inv), "row");
             foreach (var s in series)
-                TableCell(builder, ref seq, r < s.Values.Count ? TableNumber(s.Values[r]) : FlareStrings.Chart_TableMissing);
+                TableCell(builder, ref seq, r < s.Values.Count ? TableNumber(s.Values[r]) : CoreText["Chart_TableMissing"]);
             builder.CloseElement();
         }
         return rows;
@@ -92,8 +92,8 @@ public partial class FlareChart
         return rows;
     }
 
-    private static string TableNumber(double value) =>
-        double.IsFinite(value) ? value.ToString(_inv) : FlareStrings.Chart_TableMissing;
+    private string TableNumber(double value) =>
+        double.IsFinite(value) ? value.ToString(FormattingCulture) : CoreText["Chart_TableMissing"].Value;
 
     private static void TableHeader(RenderTreeBuilder builder, ref int seq, string text, string scope)
     {

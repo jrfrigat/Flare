@@ -45,14 +45,12 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

@@ -27,6 +27,12 @@ public class IdeLayoutResizerTests : FlareTestContext
         .Add(x => x.MinPanelSize, 150));
 
     [Fact]
+    public void DockedRegionsUseSharedSplitters()
+    {
+        Assert.Equal(2, RenderLayout().FindComponents<FlareSplitter>().Count);
+    }
+
+    [Fact]
     public void Divider_HasALocalizedNameAndItsSizeAsValue()
     {
         var left = RenderLayout().FindAll("[role=separator]")[0];
@@ -34,7 +40,6 @@ public class IdeLayoutResizerTests : FlareTestContext
         Assert.Equal(FlareStrings.Splitter_Resize, left.GetAttribute("aria-label"));
         Assert.Equal("300", left.GetAttribute("aria-valuenow"));
         Assert.Equal("150", left.GetAttribute("aria-valuemin"));
-        Assert.Equal("300 px", left.GetAttribute("aria-valuetext"));
     }
 
     [Fact]
@@ -47,22 +52,25 @@ public class IdeLayoutResizerTests : FlareTestContext
     }
 
     [Fact]
-    public void KeyboardResize_UpdatesTheValue()
+    public async Task SharedSplitterCallback_UpdatesTheValue()
     {
         var cut = RenderLayout();
 
-        cut.FindAll("[role=separator]")[0].KeyDown(new KeyboardEventArgs { Key = "ArrowRight" });
+        await cut.InvokeAsync(() => cut.FindComponents<FlareSplitter>()[0].Instance.OnSplitChanged("308px"));
 
         Assert.Equal("308", cut.FindAll("[role=separator]")[0].GetAttribute("aria-valuenow"));
     }
 
     [Fact]
-    public void PointerDown_StartsTheDrag()
+    public void SharedSplitters_PreserveMeasuredLengthsAndDirections()
     {
         var cut = RenderLayout();
 
-        cut.FindAll("[role=separator]")[0].PointerDown();
-
-        Assert.Contains(JSInterop.Invocations, i => i.Identifier == "startPanelResize");
+        var handles = cut.FindComponents<FlareSplitter>();
+        Assert.False(handles[0].Instance.Reverse);
+        Assert.True(handles[1].Instance.Reverse);
+        Assert.NotNull(handles[1].Instance.ValueTarget);
+        Assert.Equal(8, handles[0].Instance.KeyboardStep);
+        Assert.Equal(24, handles[0].Instance.KeyboardLargeStep);
     }
 }

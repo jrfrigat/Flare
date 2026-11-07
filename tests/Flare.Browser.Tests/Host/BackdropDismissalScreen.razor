@@ -1,0 +1,48 @@
+@page "/backdrop-dismissal"
+@inject IDialogService Dialogs
+@inject IMessageBoxService MessageBox
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    @foreach (var kind in new[] { "dialog", "sheet", "confirm", "alert", "prompt", "provider", "drawer", "overlay" })
+    {
+        <button id="open-@kind" @onclick="() => Open(kind)">@kind</button>
+    }
+    <button id="sync" @onclick="() => _sync++">@_sync</button>
+    <output id="active">@_active</output>
+    <FlareDialog Visible="@(_active is "dialog" or "sheet")" VisibleChanged="Dismiss"
+                 Title="Editor" Position="@(_active == "sheet" ? DialogPosition.Bottom : DialogPosition.Center)">
+        <textarea id="editor">Select this text and move outside the dialog.</textarea>
+    </FlareDialog>
+    <FlareDrawer Open="@(_active == "drawer")" OpenChanged="Dismiss">
+        <textarea id="drawer-editor">Select this text and move outside the drawer.</textarea>
+    </FlareDrawer>
+    <FlareOverlay Open="@(_active == "overlay")" OnClick="DismissOverlay">
+        <textarea id="overlay-editor">Select this text and move outside the overlay content.</textarea>
+    </FlareOverlay>
+    <FlareDialogProvider />
+    <FlareMessageBoxProvider />
+    <FlareConfirmDialogProvider @ref="_confirm" />
+</FlareThemeProvider>
+
+@code {
+    private string? _active;
+    private int _sync;
+    private FlareConfirmDialogProvider _confirm = default!;
+
+    private async Task Open(string kind)
+    {
+        _active = kind;
+        switch (kind)
+        {
+            case "confirm": await Dialogs.ConfirmAsync("Confirm", "Select this text and move outside."); break;
+            case "alert": await MessageBox.AlertAsync("Alert", "Select this text and move outside."); break;
+            case "prompt": await MessageBox.PromptAsync("Prompt", "Name", "Select this text"); break;
+            case "provider": await _confirm.ConfirmAsync("Provider", "Select this text and move outside."); break;
+            default: return;
+        }
+        _active = null;
+    }
+
+    private void Dismiss(bool visible) { if (!visible) _active = null; }
+    private void DismissOverlay() => _active = null;
+}

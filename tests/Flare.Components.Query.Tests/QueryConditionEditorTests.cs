@@ -9,6 +9,24 @@ namespace Flare.Components.Tests;
 /// </summary>
 public class QueryConditionEditorTests : FlareTestContext
 {
+    [Theory]
+    [InlineData("en-US", "contains")]
+    [InlineData("ru-RU", "\u0441\u043e\u0434\u0435\u0440\u0436\u0438\u0442")]
+    public void OperatorCaption_FollowsTheUiCulture(string cultureName, string expected)
+    {
+        var previous = System.Globalization.CultureInfo.CurrentUICulture;
+        try
+        {
+            System.Globalization.CultureInfo.CurrentUICulture = new(cultureName);
+            var (cut, _) = Render();
+            Assert.Contains(expected, cut.Find($".{Flare.Css.Classes.QueryBuilder.CellOp}").TextContent);
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentUICulture = previous;
+        }
+    }
+
     private static readonly QuerySchema Schema = new(
     [
         new QueryEntity("requests", "Requests",
@@ -37,6 +55,25 @@ public class QueryConditionEditorTests : FlareTestContext
 
     private static readonly QueryChoices Choices = QueryChoices.For(
         QueryBuilder.From(Schema, "requests", "r").Select("r", "route").CountRows("total").Build(), Schema);
+
+    [Fact]
+    public void CustomOperatorCaptions_ReachNestedNodes_AndUpdateWithTheLabels()
+    {
+        var group = new QueryConditionGroupDraft();
+        var nested = new QueryConditionGroupDraft();
+        nested.Conditions.Add(new() { Alias = "r", Field = "route", Operator = QueryOperator.Contains, Value = "x" });
+        group.Groups.Add(nested);
+        var labels = QueryBuilderLabels.For(new("en-US")) with { OperatorContains = "custom caption" };
+        var cut = Render<QueryConditionEditor>(p => p.Add(x => x.Group, group)
+            .Add(x => x.Schema, Schema).Add(x => x.Choices, Choices).Add(x => x.Labels, labels));
+        Assert.Contains("custom caption", cut.Find($".{Flare.Css.Classes.QueryBuilder.CellOp}").TextContent);
+
+        cut.Render(p => p.Add(x => x.Labels, QueryBuilderLabels.For(new("ru-RU"))));
+        Assert.Contains("\u0441\u043e\u0434\u0435\u0440\u0436\u0438\u0442", cut.Find($".{Flare.Css.Classes.QueryBuilder.CellOp}").TextContent);
+        var select = cut.FindComponent<FlareSelect<QueryOperator>>().Instance;
+        Assert.Equal("=", select.ItemLabel!(QueryOperator.Equals));
+        Assert.Equal(">=", select.ItemLabel(QueryOperator.GreaterThanOrEqual));
+    }
 
     private int _changes;
 

@@ -5,6 +5,9 @@ import { listen, registry } from './flare-dom.js';
 // Every Flare application loads this module for theming, so it is the entry point that gives the
 // page-wide link-button Space handler a guaranteed installation.
 import './flare-link-button.js';
+import './flare-backdrop.js';
+import './flare-focus-proxy.js';
+import './flare-file-upload.js';
 
 export function setCssVariables(vars) {
     const root = document.documentElement;

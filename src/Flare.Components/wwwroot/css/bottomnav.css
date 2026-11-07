@@ -2,13 +2,6 @@
    Mobile bottom-navigation bar (FlareBottomNav / FlareBottomNavItem). Static by default - the
    consumer's layout places it - with Position="Fixed"/"Sticky" pinning it, safe-area inset included.
 */
-/* The label's line box. The wrap mode derives the bar's height from the same number, so the two can
-   never drift apart. It is stated on the modifier too, because the spacer carries only the modifier. */
-.flare-bottom-nav,
-.flare-bottom-nav--labels-wrap {
-  --_bottom-nav-label-line-height: 1.15;
-}
-
 .flare-bottom-nav {
   /* The bar's total height, published so the spacer (and any consumer layout) can reserve exactly it. */
   --_bottom-nav-total-height: calc(
@@ -53,7 +46,7 @@
 .flare-bottom-nav--labels-wrap {
   --_bottom-nav-total-height: max(
       calc(var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding)),
-      calc(2 * var(--_bottom-nav-label-line-height) * var(--flare-bottom-nav-label-font-size)
+      calc(2 * var(--flare-bottom-nav-label-line-height)
           + var(--flare-bottom-nav-item-gap)
           + var(--flare-bottom-nav-indicator-size)
           + 2 * var(--flare-spacing-3)
@@ -70,6 +63,12 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+}
+
+/* A long caption needs a larger share than a short one at enlarged text sizes. Equal zero bases
+   can force an ordinary caption onto a clipped third line even when its neighbours have room. */
+.flare-bottom-nav--labels-wrap .flare-bottom-nav-item {
+  flex-basis: auto;
 }
 
 /* Each item shares the bar equally. */
@@ -124,7 +123,7 @@
   font-family: var(--flare-typescale-label-medium-font);
   font-size: var(--flare-bottom-nav-label-font-size);
   font-weight: var(--flare-bottom-nav-label-font-weight);
-  line-height: var(--_bottom-nav-label-line-height);
+  line-height: var(--flare-bottom-nav-label-line-height);
 }
 
 .flare-bottom-nav-item--active {

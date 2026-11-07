@@ -36,4 +36,13 @@
   <data name="Query_Ascending" xml:space="preserve"><value>Ascending</value></data>
   <data name="Query_Descending" xml:space="preserve"><value>Descending</value></data>
   <data name="Query_SchemaMissing" xml:space="preserve"><value>A schema is required.</value></data>
+  <data name="Query_OperatorContains" xml:space="preserve"><value>contains</value></data>
+  <data name="Query_OperatorStartsWith" xml:space="preserve"><value>starts with</value></data>
+  <data name="Query_OperatorEndsWith" xml:space="preserve"><value>ends with</value></data>
+  <data name="Query_OperatorBetween" xml:space="preserve"><value>between</value></data>
+  <data name="Query_OperatorNotBetween" xml:space="preserve"><value>not between</value></data>
+  <data name="Query_OperatorIn" xml:space="preserve"><value>in</value></data>
+  <data name="Query_OperatorNotIn" xml:space="preserve"><value>not in</value></data>
+  <data name="Query_OperatorIsNull" xml:space="preserve"><value>is empty</value></data>
+  <data name="Query_OperatorIsNotNull" xml:space="preserve"><value>is not empty</value></data>
 </root>

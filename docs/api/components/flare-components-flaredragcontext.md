@@ -11,6 +11,7 @@
 | `CanDrop` | `Func<TPayload, string, bool>?` | `` | Parameter |  | Whether a payload may be dropped in a given target, asked once per drag for every zone declared as a FlareDropZone. A zone that says no never lights up and cannot receive the drop. Use it for what only the caller knows: a column is full, a card is locked. Accepts says the same thing per zone; both must agree. Zones a component declares as markup are NOT asked - the context cannot enumerate them, only the browser can. Refuse those by naming them in RefusedTargets. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The content that declares the draggables and drop zones. |
 | `Group` | `string?` | `` | Parameter |  | Default group for the draggables and zones beneath this context. Items only see zones of their own group, so one context can hold two unrelated sets of things. |
+| `ItemOrder` | `Func<string, IReadOnlyList<DragZoneOrder>>?` | `` | Parameter |  | Full item order per zone for a group, including virtualized items absent from the DOM. When omitted, keyboard reordering uses the rendered DOM order. The host must also resolve unrendered payloads through ResolveItem. |
 | `KeyboardReorder` | `bool` | `true` | Parameter |  | Whether FlareDraggable items can be reordered from the keyboard: space picks one up, the arrows move it, space drops it, escape cancels. On by default - an item that only a pointer can move is a control half the readers cannot use. It makes every item a tab stop, which is right for a board and wrong for a list of a thousand; turn it off there and give the list its own roving focus. Items a host component renders itself (a data grid's rows, a tree's nodes) are not covered - their keys already mean something. |
 | `OnDragEnd` | `EventCallback` | `` | Callback |  | Raised when a drag finishes, whether it landed or not - after OnDrop when it did. This is where a hint put up in OnDragStart comes down. |
 | `OnDragStart` | `EventCallback<TPayload>` | `` | Callback |  | Raised when an item is picked up, before it has moved anywhere. Free: the browser already asks which targets accept the item, and this rides on that call. |
@@ -22,11 +23,6 @@
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
-
-### `DisposeAsync()`
-
-Detaches the context's pointer gesture.
-Returns: `ValueTask`.
 
 ### `OnDragEndAsync()`
 
@@ -55,9 +51,19 @@ Returns: `Task`.
 | `edge` | `string` | Where the drop landed relative to the item under the pointer. |
 | `overId` | `string` | The id of the item under the pointer, when there was one. |
 
+### `OnKeyboardReorderAsync(string key)`
+
+Handles a keyboard move while virtualization has removed the original focused item.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | The pressed key; only reorder keys are handled. |
+
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

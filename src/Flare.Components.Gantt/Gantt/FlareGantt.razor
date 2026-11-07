@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 @using Microsoft.JSInterop
 @using Flare.Components.Gantt.Services
@@ -16,29 +16,31 @@
                     @Corner
                 </div>
             }
-            <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)" aria-hidden="true">
-                @if (_major.Count > 0)
-                {
-                    <div class="@($"{Css.Classes.Gantt.ScaleRow} {Css.Classes.Gantt.ScaleRowMajor}")">
-                        @foreach (var tick in _major.Where(InView))
-                        {
-                            <div class="@Css.Classes.Gantt.Tick" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">@tick.Label</div>
-                        }
-                    </div>
-                }
-                <div class="@Css.Classes.Gantt.ScaleRow">
-                    @foreach (var tick in _ticks.Where(InView))
+            @RenderScale(@<text>
+                <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)" aria-hidden="true">
+                    @if (_major.Count > 0)
                     {
-                        <div class="@TickClass(tick)" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">
-                            <span>@tick.Label</span>
-                            @if (tick.Caption is not null)
+                        <div class="@($"{Css.Classes.Gantt.ScaleRow} {Css.Classes.Gantt.ScaleRowMajor}")">
+                            @foreach (var tick in _major.Where(InView))
                             {
-                                <span class="@Css.Classes.Gantt.TickCaption">@tick.Caption</span>
+                                <div class="@Css.Classes.Gantt.Tick" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">@tick.Label</div>
                             }
                         </div>
                     }
+                    <div class="@Css.Classes.Gantt.ScaleRow">
+                        @foreach (var tick in _ticks.Where(InView))
+                        {
+                            <div class="@TickClass(tick)" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">
+                                <span>@tick.Label</span>
+                                @if (tick.Caption is not null)
+                                {
+                                    <span class="@Css.Classes.Gantt.TickCaption">@tick.Caption</span>
+                                }
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
+            </text>)
         </div>
         <CascadingValue Value="this" IsFixed="true">
             @ChildContent
@@ -52,11 +54,12 @@
                        Value="@SideEffectivePixels" DefaultValue="@(ParseLength(_sideDefault ?? DefaultSideWidth ?? SideWidth))"
                        ValueVariable="--_gantt-side" ValueScope="@($".{Css.Classes.Gantt.Root}")"
                        MinSize="@Pixels(MinSidePixels)" MaxSize="@Pixels(MaxSidePixels)"
-                       AriaLabel="@EffectiveTexts.ResizeSide" OnSizeChanged="SideChanged" />
+                       AriaLabel="@GanttText["Gantt_ResizeSide"].Value" OnSizeChanged="SideChanged" />
     }
 </div>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<GanttStrings> GanttText => Localizer<GanttStrings>();
     /// <summary>Visible time.</summary>
     [Parameter, EditorRequired] public GanttSpan Range { get; set; }
 
@@ -154,9 +157,6 @@
     /// <summary>The panels.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Texts to replace in announcements, refusals and labels; every text not set here comes from the package resources in <see cref="Culture"/>.</summary>
-    [Parameter] public GanttTexts? Texts { get; set; }
-
     /// <summary>Accessible name of the whole timeline.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
@@ -170,6 +170,7 @@
     private string? _selected;
     private string? _selectedParameter;
     private ElementReference _root;
+    private GanttScaleRegion? _scaleRegion;
     private IGanttView? _browser;
     // The flags the attached script was given; a change means the script has to be attached again.
     private bool? _jsVirtualize;
@@ -201,12 +202,6 @@
     /// <summary>Width of the time area in pixels.</summary>
     public double Width => Axis.Units * EffectiveUnitWidth;
 
-    /// <summary>The texts in use.</summary>
-    public GanttTexts EffectiveTexts => _texts ??= (Texts ?? new GanttTexts()).Over(Axis.Culture);
-
-    // Resolved once per parameter change: a tree row reads its toggle label on every render.
-    private GanttTexts? _texts;
-
     /// <summary>The selected item key.</summary>
     public string? Selected => _selected;
 
@@ -229,7 +224,7 @@
         if (Endless && (moment < Range.Start || moment >= Range.End))
         {
             var reach = Math.Max(1, Math.Ceiling(2 * (_view?.Width ?? _available) / EffectiveUnitWidth));
-            var probe = new GanttAxis(new GanttSpan(Min(Range.Start, moment), Max(Range.End, moment.AddTicks(1))), Scale, Culture);
+            var probe = new GanttAxis(new GanttSpan(Min(Range.Start, moment), Max(Range.End, moment.AddTicks(1))), Scale, Culture ?? FormattingCulture);
             _pendingScroll = moment;
             await Request(new GanttSpan(Min(Range.Start, probe.UnitOf(moment).Start), Max(Range.End, probe.UnitOf(probe.At(probe.Offset(moment) + reach)).End)));
             return;
@@ -302,7 +297,7 @@
         {
             _visible[panels[i]] = (from[i], to[i]);
             foreach (var panel in _panels.ToArray())
-                if (panel.Id == panels[i] && panel.Uncovered(from[i], to[i])) panel.Refresh();
+                if (panel.Id == panels[i] && panel.Uncovered(from[i], to[i])) panel.RefreshViewport();
         }
     }
 
@@ -318,11 +313,20 @@
         if (Virtualize && width > 0 && (_drawn is not { } drawn || left < drawn.From + width / 2 || left + width > drawn.To - width / 2))
         {
             _drawn = (left - width, left + 2 * width);
-            StateHasChanged();
-            Refresh();
+            // Scrolling changes what is drawn within the axis and panels, not their parameters.
+            _scaleRegion?.Refresh();
+            foreach (var panel in _panels.ToArray()) panel.RefreshViewport();
         }
         if (Endless) await Grow(left, width);
     }
+
+    private RenderFragment RenderScale(RenderFragment content) => builder =>
+    {
+        builder.OpenComponent<GanttScaleRegion>(0);
+        builder.AddAttribute(1, nameof(GanttScaleRegion.ChildContent), content);
+        builder.AddComponentReferenceCapture(2, instance => _scaleRegion = (GanttScaleRegion)instance);
+        builder.CloseComponent();
+    };
 
     /// <summary>True when the stretch from <paramref name="left"/> to <paramref name="right"/> pixels is among the drawn columns.</summary>
     internal bool InView(double left, double right) => !Virtualize
@@ -446,8 +450,7 @@
         // double click, instead of the value the chart happened to mount with.
         _sideDefault = DefaultSideWidth ?? SideWidth;
         var before = Axis;
-        _texts = null;
-        Axis = new GanttAxis(Range, Scale, Culture);
+        Axis = new GanttAxis(Range, Scale, Culture ?? FormattingCulture);
         if (_lastRange is { } last && last != Range)
         {
             // The axis grew on the left: everything moved right by the added width; the scroll follows after rendering.

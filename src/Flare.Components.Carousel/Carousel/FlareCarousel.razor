@@ -1,13 +1,13 @@
 @namespace Flare.Components
 @typeparam TItem
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
 @* Keyboard navigation is registered by flare-carousel.js: a key from the root or from one of the
    carousel's own controls moves the slides, a key from a field or editor inside a slide stays there. *@
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"
-     role="region" aria-roledescription="carousel" aria-label="@(FlareStrings.Carousel_Label)"
+     role="region" aria-roledescription="@CoreText["Carousel_RoleDescription"].Value" aria-label="@(CoreText["Carousel_Label"].Value)"
      tabindex="0"
      @ref="_root"
      @onmouseenter="PauseAutoPlay"
@@ -34,14 +34,14 @@
         <button type="button" class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowPrev"
                 data-flare-carousel-control
                 @onclick="Prev"
-                aria-label="@(FlareStrings.Carousel_Prev)"
+                aria-label="@(CoreText["Carousel_Prev"].Value)"
                 disabled="@(!Loop && _current == 0)">
             <FlareIconView Value="@FlareIcons.ChevronLeft" />
         </button>
         <button type="button" class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowNext"
                 data-flare-carousel-control
                 @onclick="Next"
-                aria-label="@(FlareStrings.Carousel_Next)"
+                aria-label="@(CoreText["Carousel_Next"].Value)"
                 disabled="@(!Loop && _current >= _count - 1)">
             <FlareIconView Value="@FlareIcons.ChevronRight" />
         </button>
@@ -58,7 +58,7 @@
                         @onclick="@(() => GoTo(idx))"
                         role="tab"
                         aria-selected="@(_current == idx ? "true" : "false")"
-                        aria-label="@(string.Format(FlareStrings.Carousel_GoToSlide, idx + 1))">
+                        aria-label="@(string.Format(CoreText["Carousel_GoToSlide"].Value, idx + 1))">
                 </button>
             }
         </div>

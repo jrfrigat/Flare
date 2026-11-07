@@ -1,5 +1,7 @@
 using System.Globalization;
-using System.Resources;
+using Flare.Components.Resources;
+using Flare.Theming;
+using Microsoft.Extensions.Localization;
 
 namespace Flare.Components;
 
@@ -15,9 +17,6 @@ public sealed record QueryBuilderLabels
     private const string AndToken = "AND";
     private const string OrToken = "OR";
 
-    private static readonly ResourceManager Resources =
-        new("Flare.Components.Resources.QueryStrings", typeof(QueryBuilderLabels).Assembly);
-
     /// <summary>The set used when a host supplies none, worded in the current UI culture.</summary>
     public static QueryBuilderLabels Default => For(CultureInfo.CurrentUICulture);
 
@@ -25,48 +24,63 @@ public sealed record QueryBuilderLabels
     /// Every caption from the package's resources in <paramref name="culture"/>. The AND and OR
     /// connectors are syntax tokens and stay the same in every culture.
     /// </summary>
-    public static QueryBuilderLabels For(CultureInfo culture) => new()
+    public static QueryBuilderLabels For(CultureInfo culture)
     {
-        Source = Text("Query_Source", culture),
-        Columns = Text("Query_Columns", culture),
-        Filter = Text("Query_Filter", culture),
-        GroupFilter = Text("Query_GroupFilter", culture),
-        Options = Text("Query_Options", culture),
-        Problems = Text("Query_Problems", culture),
-        AddJoin = Text("Query_AddJoin", culture),
-        AddColumn = Text("Query_AddColumn", culture),
-        Submit = Text("Query_Submit", culture),
-        Remove = Text("Query_Remove", culture),
-        Value = Text("Query_Value", culture),
-        Aggregate = Text("Query_Aggregate", culture),
-        Period = Text("Query_Period", culture),
-        OutputName = Text("Query_OutputName", culture),
-        Group = Text("Query_Group", culture),
-        Sort = Text("Query_Sort", culture),
-        Alias = Text("Query_Alias", culture),
-        Relation = Text("Query_Relation", culture),
-        JoinKind = Text("Query_JoinKind", culture),
-        Distinct = Text("Query_Distinct", culture),
-        Limit = Text("Query_Limit", culture),
-        Offset = Text("Query_Offset", culture),
-        None = Text("Query_None", culture),
-        NoProblems = Text("Query_NoProblems", culture),
+        var context = new FlareLocalization();
+        context.SetCulture(culture);
+        return From(context.GetLocalizer<QueryStrings>());
+    }
+
+    /// <summary>Builds a caption snapshot from the application's standard localizer and resource fallback.</summary>
+    /// <param name="text">Live query-resource localizer; create a new snapshot when its culture changes.</param>
+    public static QueryBuilderLabels From(IStringLocalizer<QueryStrings> text) => new()
+    {
+        Source = text["Query_Source"].Value,
+        Columns = text["Query_Columns"].Value,
+        Filter = text["Query_Filter"].Value,
+        GroupFilter = text["Query_GroupFilter"].Value,
+        Options = text["Query_Options"].Value,
+        Problems = text["Query_Problems"].Value,
+        AddJoin = text["Query_AddJoin"].Value,
+        AddColumn = text["Query_AddColumn"].Value,
+        Submit = text["Query_Submit"].Value,
+        Remove = text["Query_Remove"].Value,
+        Value = text["Query_Value"].Value,
+        Aggregate = text["Query_Aggregate"].Value,
+        Period = text["Query_Period"].Value,
+        OutputName = text["Query_OutputName"].Value,
+        Group = text["Query_Group"].Value,
+        Sort = text["Query_Sort"].Value,
+        Alias = text["Query_Alias"].Value,
+        Relation = text["Query_Relation"].Value,
+        JoinKind = text["Query_JoinKind"].Value,
+        Distinct = text["Query_Distinct"].Value,
+        Limit = text["Query_Limit"].Value,
+        Offset = text["Query_Offset"].Value,
+        None = text["Query_None"].Value,
+        NoProblems = text["Query_NoProblems"].Value,
         And = AndToken,
         Or = OrToken,
-        AddCondition = Text("Query_AddCondition", culture),
-        AddGroup = Text("Query_AddGroup", culture),
-        ValueHint = Text("Query_ValueHint", culture),
-        ValuesHint = Text("Query_ValuesHint", culture),
-        Relative = Text("Query_Relative", culture),
-        Ascending = Text("Query_Ascending", culture),
-        Descending = Text("Query_Descending", culture),
-        SchemaMissing = Text("Query_SchemaMissing", culture),
+        AddCondition = text["Query_AddCondition"].Value,
+        AddGroup = text["Query_AddGroup"].Value,
+        ValueHint = text["Query_ValueHint"].Value,
+        ValuesHint = text["Query_ValuesHint"].Value,
+        Relative = text["Query_Relative"].Value,
+        Ascending = text["Query_Ascending"].Value,
+        Descending = text["Query_Descending"].Value,
+        SchemaMissing = text["Query_SchemaMissing"].Value,
+        OperatorContains = text["Query_OperatorContains"].Value,
+        OperatorStartsWith = text["Query_OperatorStartsWith"].Value,
+        OperatorEndsWith = text["Query_OperatorEndsWith"].Value,
+        OperatorBetween = text["Query_OperatorBetween"].Value,
+        OperatorNotBetween = text["Query_OperatorNotBetween"].Value,
+        OperatorIn = text["Query_OperatorIn"].Value,
+        OperatorNotIn = text["Query_OperatorNotIn"].Value,
+        OperatorIsNull = text["Query_OperatorIsNull"].Value,
+        OperatorIsNotNull = text["Query_OperatorIsNotNull"].Value,
     };
 
-    private static string Text(string key, CultureInfo culture) =>
-        Resources.GetString(key, culture) ?? key;
-
-    /// <summary>Heading of the section choosing what the query draws from.</summary>
+ /// <summary>Heading of the section choosing what the query draws from.</summary>
     public string Source { get; init; } = "Source";
 
     /// <summary>Heading of the column grid.</summary>
@@ -167,4 +181,31 @@ public sealed record QueryBuilderLabels
 
     /// <summary>Shown in place of the designer when no schema was supplied.</summary>
     public string SchemaMissing { get; init; } = "A schema is required.";
+
+    /// <summary>Caption for the contains condition operator.</summary>
+    public string OperatorContains { get; init; } = "contains";
+
+    /// <summary>Caption for the starts with condition operator.</summary>
+    public string OperatorStartsWith { get; init; } = "starts with";
+
+    /// <summary>Caption for the ends with condition operator.</summary>
+    public string OperatorEndsWith { get; init; } = "ends with";
+
+    /// <summary>Caption for the between condition operator.</summary>
+    public string OperatorBetween { get; init; } = "between";
+
+    /// <summary>Caption for the not between condition operator.</summary>
+    public string OperatorNotBetween { get; init; } = "not between";
+
+    /// <summary>Caption for the in condition operator.</summary>
+    public string OperatorIn { get; init; } = "in";
+
+    /// <summary>Caption for the not in condition operator.</summary>
+    public string OperatorNotIn { get; init; } = "not in";
+
+    /// <summary>Caption for the is empty condition operator.</summary>
+    public string OperatorIsNull { get; init; } = "is empty";
+
+    /// <summary>Caption for the is not empty condition operator.</summary>
+    public string OperatorIsNotNull { get; init; } = "is not empty";
 }

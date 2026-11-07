@@ -19,10 +19,6 @@ The root every Flare app is wrapped in: it cascades the active theme to every co
 
 ## Methods
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
 ### `OnAccentColorChanged()`
 
 Invoked from JS when the window regains focus, in case the OS accent color changed.

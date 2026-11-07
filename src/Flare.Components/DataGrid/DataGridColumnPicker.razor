@@ -5,9 +5,9 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@Css.Classes.DataGrid.ColumnPickerWrap" @ref="_wrapRef">
-    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@FlareStrings.DataGrid_ToggleColumns">
+    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@CoreText["DataGrid_ToggleColumns"]">
         <LeadingIcon><FlareIconView Value="FlareIcons.ViewColumn" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
-        <ChildContent>@(Label ?? FlareStrings.DataGrid_ColumnsLabel)</ChildContent>
+        <ChildContent>@(Label ?? CoreText["DataGrid_ColumnsLabel"])</ChildContent>
     </FlareButton>
     @if (_open)
     {
@@ -21,7 +21,7 @@
                 </div>
             }
         </div>
-        <div class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
+        <div data-flare-backdrop class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
     }
 </div>
 
@@ -92,8 +92,9 @@
 
     /// <summary>Releases the panel's placement listeners and the Escape layer.</summary>
     /// <returns>A task that completes when the layer has been released.</returns>
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
+        await base.DisposeAsync();
         if (_escapeLayerRegistered)
         {
             try { await Overlay.RemovePopupLayerAsync(_escapeLayerId); }

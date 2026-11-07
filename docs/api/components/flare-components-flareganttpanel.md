@@ -23,6 +23,7 @@ One projection on the shared axis of a FlareGantt: rows (a list or a tree) and t
 | `ItemCover` | `Func<TItem, GanttSpan?>?` | `` | Parameter |  | The span an item must keep covering, such as the work of a parent's children: resizing stops at its edges. Null, or a null result, leaves the item free. |
 | `ItemDropAccepts` | `Func<object?, bool>?` | `` | Parameter |  | Which payloads the bar zones of ItemDropGroup take; null takes every payload of the group. |
 | `ItemDropGroup` | `string?` | `` | Parameter |  | Drag group of an outside FlareDragContext whose payloads can be dropped onto an item itself. When set, every bar that is neither a summary nor a suggestion becomes a drop zone whose target is Format. While a drag is on, whatever in a track does not take the payload lets the pointer through to the zones beneath it, so a payload only the units take still lands on a unit covered by a bar. |
+| `ItemInteractionTemplate` | `RenderFragment<GanttItemContext<TItem>>?` | `` | Parameter |  | Replaces item interaction content inside the geometry and gesture boundary. Own activation or use its standard commands; the item bar becomes a group. Mark secondary actions with data-gantt-no-drag to exclude them from pointer gestures. |
 | `ItemKey` | `Func<TItem, string>?` | `` | Parameter |  | Unique key of an item; shared across panels so that selection links projections. |
 | `ItemKind` | `Func<TItem, string?>?` | `` | Parameter |  | Kind key of an item, rendered as a CSS modifier and data-kind. |
 | `ItemLabel` | `Func<TItem, string?>?` | `` | Parameter |  | Accessible name and default text of an item; the key when null. |
@@ -64,19 +65,25 @@ One projection on the shared axis of a FlareGantt: rows (a list or a tree) and t
 Collapses every tree row.
 Returns: `void`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `ExpandAll()`
 
 Expands every tree row.
 Returns: `void`.
 
+### `HandleTreeKeyAsync(int index, string key)`
+
+Navigates a panel's visible rows without taking keys from controls inside a row.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `index` | `int` | Index in the flattened visible row list. |
+| `key` | `string` | An arrow, Home, End or Space key. |
+
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

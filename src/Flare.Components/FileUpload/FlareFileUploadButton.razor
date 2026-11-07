@@ -40,7 +40,7 @@
                     }
                     else
                     {
-                        @(Text ?? FlareStrings.FileUpload_ButtonText)
+                        @(Text ?? CoreText["FileUpload_ButtonText"])
                     }
                 </span>
                 @if (!Loading && TrailingIcon is not null)
@@ -50,6 +50,7 @@
             }
         </label>
         <InputFile id="@InputId"
+                   data-flare-file-input
                    class="@Css.Classes.FileUpload.Input"
                    accept="@Accept"
                    multiple="@Multiple"

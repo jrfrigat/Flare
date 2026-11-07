@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Capabilities` | `IQueryCapabilities?` | `` | Parameter |  | What the query is ultimately going to run on. Setting it narrows every list the designer offers to what that target can actually express - a backend with no set operators stops offering "is one of", one that cannot keep unmatched rows stops offering an outer join. Null offers everything the schema allows. |
-| `Labels` | `QueryBuilderLabels` | `` | Parameter |  | Every caption the designer shows. |
+| `Labels` | `QueryBuilderLabels?` | `` | Parameter |  | Every caption the designer shows. |
 | `OnSubmit` | `EventCallback<QuerySpec>` | `` | Callback |  | Raised when the query is submitted. Never fires while the query has problems. |
 | `Schema` | `QuerySchema?` | `` | Parameter | Yes | The entities, relations and functions a query may use. Required. |
 | `ShowSubmit` | `bool` | `true` | Parameter |  | Whether the submit button is shown. |
@@ -26,6 +26,7 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

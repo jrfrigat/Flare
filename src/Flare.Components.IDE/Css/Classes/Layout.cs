@@ -18,8 +18,6 @@ public static class Layout
     public const string Rail = "flare-ide-layout__rail";
     public const string RailTitle = "flare-ide-layout__rail-title";
     public const string Resizer = "flare-ide-layout__resizer";
-    public const string ResizerCol = "flare-ide-layout__resizer--col";
-    public const string ResizerRow = "flare-ide-layout__resizer--row";
     public const string Ribbon = "flare-ide-layout__ribbon";
     public const string StatusBar = "flare-ide-layout__statusbar";
 }

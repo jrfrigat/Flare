@@ -1,10 +1,39 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests;
 
 public class FlareListTests : FlareTestContext
 {
+    [Fact]
+    public void VirtualizeUsesALiveIndexedViewOfReadOnlyItems()
+    {
+        var source = new List<int> { 1, 2, 3 };
+        var cut = Render<FlareList<int>>(p => p
+            .Add(x => x.Virtual, true)
+            .Add(x => x.Items, new ReadOnlyRows(source)));
+        var child = cut.FindComponent<Virtualize<int>>();
+        var view = Assert.IsAssignableFrom<IList<int>>(child.Instance.Items);
+
+        source[1] = 20;
+        source.Add(4);
+        Assert.Equal(20, view[1]);
+        Assert.Equal(4, view.Count);
+
+        int[] replacement = [5, 6];
+        cut.Render(p => p.Add(x => x.Items, replacement));
+        Assert.Same(replacement, child.Instance.Items);
+    }
+
+    private sealed class ReadOnlyRows(List<int> rows) : IReadOnlyList<int>
+    {
+        public int Count => rows.Count;
+        public int this[int index] => rows[index];
+        public IEnumerator<int> GetEnumerator() => rows.GetEnumerator();
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
     [Fact]
     public void RendersRootUl()
     {

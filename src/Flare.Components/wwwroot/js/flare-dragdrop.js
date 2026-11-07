@@ -17,6 +17,7 @@
 
 import { registry } from './flare-dom.js';
 import { startDrag } from './flare-drag.js';
+import { bindKeyboardDrag, showKeyboardHint, endKeyboardHint } from './flare-drag-keyboard.js';
 
 const ITEM = '[data-flare-drag]';
 const ZONE = '[data-flare-drop]';
@@ -224,6 +225,7 @@ function _autoScroll(x, y) {
 export function registerDragContext(root, dotNetRef) {
     if (!root) return;
     let drag = null;
+    const offKeyboard = bindKeyboardDrag(root, dotNetRef);
 
     // Space on a focused control is the control's, never the page's - so it never scrolls under a
     // draggable. The arrows stay the page's until an item is actually picked up, which the model says
@@ -377,7 +379,7 @@ export function registerDragContext(root, dotNetRef) {
         },
     });
 
-    _contexts.keep(root, () => { cleanup(); off(); root.removeEventListener('keydown', onRootKey); hideDropHint(root); });
+    _contexts.keep(root, () => { cleanup(); off(); offKeyboard(); root.removeEventListener('keydown', onRootKey); hideDropHint(root); });
 }
 
 export function removeDragContext(root) {
@@ -389,31 +391,41 @@ export function removeDragContext(root) {
 // rather than found under a cursor.
 const _hints = new Map();   // context root -> indicator element
 
-export function showDropHint(root, targetId, index, sourceId) {
+export function showDropHint(root, targetId, index, sourceId, overId) {
     if (!root) return;
+    if (arguments.length > 4) {
+        showKeyboardHint(root, targetId, index, sourceId, overId,
+            (zone, anchor, after) => drawDropHint(root, zone, anchor, after),
+            () => { const node = _hints.get(root); if (node) node.hidden = true; });
+        return;
+    }
     const zoneEl = root.querySelector(`[data-flare-drop="${CSS.escape(targetId)}"]`);
     if (!zoneEl) return hideDropHint(root);
 
     const items = _ownItems(zoneEl).filter(el => el.dataset.flareDrag !== sourceId);
-    const row = _isRow(zoneEl, items);
     const at = Math.max(0, Math.min(index, items.length));
 
     // Past the last item there is no item to sit beside, so the line goes after the last one.
     const anchorEl = at < items.length ? items[at] : items[items.length - 1];
     if (!anchorEl) return hideDropHint(root);
 
+    anchorEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    drawDropHint(root, zoneEl, anchorEl, at >= items.length);
+}
+
+function drawDropHint(root, zone, anchor, after) {
     let node = _hints.get(root);
     if (!node) { node = _makeIndicator(); _hints.set(root, node); }
     _placeIndicator(node, {
-        edge: at < items.length ? 'before' : 'after',
-        overEl: anchorEl,
-        hitEl: _hitBox(anchorEl),
-        row,
+        edge: after ? 'after' : 'before',
+        overEl: anchor,
+        hitEl: _hitBox(anchor),
+        row: _isRow(zone, _ownItems(zone)),
     });
-    anchorEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
 
 export function hideDropHint(root) {
+    endKeyboardHint(root);
     const node = _hints.get(root);
     if (!node) return;
     node.remove();

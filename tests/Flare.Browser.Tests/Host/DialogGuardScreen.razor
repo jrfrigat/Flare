@@ -1,0 +1,19 @@
+@page "/dialog-guard"
+@page "/dialog-guard/next"
+@inject IDialogService Dialogs
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <button id="open-inline" @onclick="() => _visible = true">Inline</button>
+    <button id="open-service" @onclick="OpenService">Service</button>
+    <FlareDialog @ref="_inline" @bind-Visible="_visible" Title="Inline editor" ShowCloseButton="true">
+        <DialogGuardEditor Close="() => _inline.CloseAsync()" />
+    </FlareDialog>
+    <FlareDialogProvider />
+</FlareThemeProvider>
+
+@code {
+    private bool _visible;
+    private FlareDialog _inline = default!;
+    private void OpenService() => Dialogs.Show<DialogGuardEditor>("Service editor",
+        options: new DialogOptions { ShowCloseButton = true });
+}

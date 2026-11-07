@@ -59,6 +59,8 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
 
     /// <summary>Content inside a bar; the label when null.</summary>
     [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+    /// <summary>Replaces item interaction content inside the geometry and gesture boundary. Own activation or use its standard commands; the item bar becomes a group. Mark secondary actions with data-gantt-no-drag to exclude them from pointer gestures.</summary>
+    [Parameter] public RenderFragment<GanttItemContext<TItem>>? ItemInteractionTemplate { get; set; }
 
     /// <summary>Rich tooltip of a bar, shown in a popover on hover and focus.</summary>
     [Parameter] public RenderFragment<TItem>? ItemTooltip { get; set; }
@@ -117,12 +119,19 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
 
     private List<GanttRowLayout<TRow, TItem>> _rows = [];
     private List<GanttRowLayout<TRow, TItem>> _drawnRows = [];
-    private List<GanttLinkLayout> _links = [];
+    private readonly List<GanttRowLayout<TRow, TItem>> _windowRows = [];
+    private readonly HashSet<string> _windowKeys = [];
+    private bool _viewportOnly;
+    private bool _hasLayout;
+    private readonly List<GanttLinkLayout> _links = [];
     private List<GanttRegion> _panelRegions = [];
     private List<GanttMarker> _panelMarkers = [];
-    private HashSet<string> _critical = [];
-    private bool _criticalDirty = true;
-    private Dictionary<string, GanttBarLayout<TItem>> _bars = [];
+    private readonly List<GanttLink> _layoutLinks = [];
+    private readonly List<GanttLink> _criticalLinks = [];
+    private readonly Dictionary<string, GanttSpan> _criticalSpans = [];
+    private static readonly IReadOnlySet<string> EmptyCritical = new HashSet<string>();
+    private IReadOnlySet<string> _critical = EmptyCritical;
+    private readonly Dictionary<string, GanttBarLayout<TItem>> _bars = [];
     private double _height;
     private bool _isTree;
 
@@ -134,20 +143,27 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     }
 
     /// <inheritdoc />
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        // Any parameter push can change the graph the critical path is computed from; scrolling cannot.
-        _criticalDirty = true;
-    }
+    protected override void OnParametersSet() => _viewportOnly = false;
 
     /// <summary>Expands every tree row.</summary>
-    public void ExpandAll() { _expanded.Clear(); _expandAll = true; _criticalDirty = true; StateHasChanged(); }
+    public void ExpandAll() { _expanded.Clear(); _expandAll = true; RenderLayout(); }
 
     /// <summary>Collapses every tree row.</summary>
-    public void CollapseAll() { _expanded.Clear(); _expandAll = false; _criticalDirty = true; StateHasChanged(); }
+    public void CollapseAll() { _expanded.Clear(); _expandAll = false; RenderLayout(); }
 
-    void IGanttPanel.Refresh() => InvokeAsync(StateHasChanged);
+    void IGanttPanel.Refresh() => InvokeAsync(RenderLayout);
+
+    void IGanttPanel.RefreshViewport() => InvokeAsync(() =>
+    {
+        _viewportOnly = _hasLayout;
+        StateHasChanged();
+    });
+
+    private void RenderLayout()
+    {
+        _viewportOnly = false;
+        StateHasChanged();
+    }
 
     string IGanttPanel.Id => _id;
 
@@ -164,75 +180,122 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     private List<GanttRowLayout<TRow, TItem>> DrawnRows()
     {
         _spacer = 0;
+        _windowRows.Clear();
+        _windowKeys.Clear();
         if (!Gantt!.Virtualize) return _rows;
         var (from, to) = Gantt.VisibleOf(_id) ?? (0, FirstScreen);
         var margin = Math.Max(600, to - from);
         _keepFrom = from - margin / 2;
         _keepTo = to + margin / 2;
-        var drawn = _rows.Where(r => r.Top + r.Height > from - margin && r.Top < to + margin).ToList();
-        _spacer = drawn.Count > 0 ? drawn[0].Top : 0;
-        return drawn;
+        foreach (var row in _rows)
+        {
+            if (!(row.Top + row.Height > from - margin && row.Top < to + margin)) continue;
+            _windowRows.Add(row);
+            _windowKeys.Add(row.Key);
+        }
+        _spacer = _windowRows.Count > 0 ? _windowRows[0].Top : 0;
+        return _windowRows;
     }
 
     private bool IsExpanded(string key) => _expanded.TryGetValue(key, out var value) ? value : _expandAll ?? ExpandedByDefault;
 
     private void Toggle(string key)
     {
+        _viewportOnly = false;
         _expanded[key] = !IsExpanded(key);
-        _criticalDirty = true;
     }
 
-    // Everything the markup draws is computed here, from the parameters and the axis, on every render.
     private void Layout()
     {
+        if (!_viewportOnly) BuildLayout();
+        _viewportOnly = false;
+        _hasLayout = true;
+        ProjectViewport();
+    }
+
+    private void BuildLayout()
+    {
         var gantt = Gantt!;
-        // Every row's descendants, hidden ones included, for the summary bars; the visible rows come from the
-        // tree walk every tree-shaped Flare view shares.
-        var descendants = new Dictionary<string, List<string>>();
+        var rows = new List<GanttRowLayout<TRow, TItem>>();
+        Dictionary<string, List<string>>? descendants = null;
         _isTree = false;
-        var visible = TreeFlattener.Flatten(Rows ?? [], row => RowChildren?.Invoke(row), row => IsExpanded(RowKey(row)), (row, ancestors) =>
+        if (RowChildren is { } children)
         {
-            var key = RowKey(row);
-            descendants[key] = [];
-            if (ancestors.Count > 0) _isTree = true;
-            foreach (var ancestor in ancestors) descendants[RowKey(ancestor)].Add(key);
-        });
-        var rows = visible.Select(n => new GanttRowLayout<TRow, TItem>
+            // Only summary bars need a walk through collapsed descendants.
+            if (RollupParents) descendants = [];
+            var visible = TreeFlattener.Flatten(Rows ?? [], children, row => IsExpanded(RowKey(row)),
+                descendants is null ? null : (row, ancestors) =>
+                {
+                    var key = RowKey(row);
+                    descendants[key] = [];
+                    foreach (var ancestor in ancestors) descendants[RowKey(ancestor)].Add(key);
+                });
+            rows.EnsureCapacity(visible.Count);
+            foreach (var node in visible)
+            {
+                _isTree |= node.HasChildren;
+                rows.Add(new()
+                {
+                    Index = rows.Count, Key = RowKey(node.Item), Row = node.Item, Depth = node.Depth,
+                    HasChildren = node.HasChildren, Expanded = node.HasChildren && node.IsExpanded,
+                });
+            }
+        }
+        else
         {
-            Key = RowKey(n.Item), Row = n.Item, Depth = n.Depth, HasChildren = n.HasChildren, Expanded = n.HasChildren && n.IsExpanded,
-        }).ToList();
+            var roots = Rows ?? [];
+            if (roots.TryGetNonEnumeratedCount(out var count)) rows.EnsureCapacity(count);
+            foreach (var row in roots)
+                rows.Add(new() { Index = rows.Count, Key = RowKey(row), Row = row });
+        }
 
         var byKey = rows.ToDictionary(r => r.Key);
-        var items = (Items ?? []).Where(i => ItemKey is not null && ItemRow is not null && ItemSpan?.Invoke(i) is not null).ToList();
-        string RowOf(TItem i) => ItemRow!(i);
-        GanttSpan SpanOf(TItem i) => ItemSpan!(i)!.Value;
-        var itemsByRow = items.GroupBy(RowOf).ToDictionary(g => g.Key, g => g.ToList());
-
-        foreach (var row in rows)
+        var suggested = Suggested;
+        List<TItem>? suggestedItems = suggested is null ? null : [];
+        Dictionary<string, List<(TItem Item, GanttSpan Span)>>? summaryItems = descendants is null ? null : [];
+        if (ItemKey is { } keyOf && ItemRow is { } rowOf && ItemSpan is { } spanOf)
         {
-            if (itemsByRow.TryGetValue(row.Key, out var own))
-                foreach (var item in own)
+            foreach (var item in Items ?? [])
+            {
+                if (spanOf(item) is not { } span) continue;
+                var rowKey = rowOf(item);
+                suggestedItems?.Add(item);
+                if (summaryItems is not null)
+                {
+                    if (!summaryItems.TryGetValue(rowKey, out var group))
+                        summaryItems.Add(rowKey, group = []);
+                    group.Add((item, span));
+                }
+                if (byKey.TryGetValue(rowKey, out var row))
+                {
+                    var key = keyOf(item);
                     row.Bars.Add(new GanttBarLayout<TItem>
                     {
-                        Key = ItemKey!(item), RowKey = row.Key, Item = item, Span = SpanOf(item),
-                        Kind = ItemKind?.Invoke(item), Label = ItemLabel?.Invoke(item) ?? ItemKey!(item),
+                        Key = key, RowKey = row.Key, Item = item, Span = span,
+                        Kind = ItemKind?.Invoke(item), Label = ItemLabel?.Invoke(item) ?? key,
                         Segments = ItemSegments?.Invoke(item)?.ToList() ?? [], Progress = ItemProgress?.Invoke(item)
                     });
-            else if (RollupParents && row.HasChildren)
+                }
+            }
+        }
+        if (summaryItems is not null)
+        {
+            foreach (var row in rows)
             {
-                var under = descendants[row.Key].SelectMany(k => itemsByRow.TryGetValue(k, out var list) ? list : []).ToList();
-                if (GanttRollup.Span(under.Select(i => ItemSpan!(i)!.Value)) is { } span)
+                if (!row.HasChildren || row.Bars.Count > 0) continue;
+                var under = descendants![row.Key].SelectMany(k => summaryItems.TryGetValue(k, out var group) ? group : []).ToList();
+                if (GanttRollup.Span(under.Select(i => i.Span)) is { } span)
                     row.Bars.Add(new GanttBarLayout<TItem>
                     {
                         Key = row.Key, RowKey = row.Key, Span = span, Kind = SummaryKind, IsSummary = true, Label = null,
-                        Progress = ItemProgress is null ? null : GanttRollup.Progress(under.Select(i => (ItemSpan!(i)!.Value, ItemProgress(i) ?? 0)))
+                        Progress = ItemProgress is null ? null : GanttRollup.Progress(under.Select(i => (i.Span, ItemProgress(i.Item) ?? 0)))
                     });
             }
         }
 
-        foreach (var change in Suggested ?? [])
+        foreach (var change in suggested ?? [])
         {
-            var source = items.FirstOrDefault(i => ItemKey!(i) == change.ItemKey);
+            var source = suggestedItems!.FirstOrDefault(i => ItemKey!(i) == change.ItemKey);
             var rowKey = change.RowKey ?? (source is null ? null : ItemRow!(source));
             if (rowKey is null || !byKey.TryGetValue(rowKey, out var target)) continue;
             target.Bars.Add(new GanttBarLayout<TItem>
@@ -252,17 +315,17 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         var top = 0d;
         var lane = gantt.RowHeight;
         var inset = Math.Min(gantt.BarInset, lane / 2 - 1);
-        _bars = [];
+        _bars.Clear();
         foreach (var row in rows)
         {
-            var layout = GanttLanes.Assign(row.Bars.Select((b, i) => (i, b.Span)));
+            var layout = row.Bars.Count > 1 ? GanttLanes.Assign(row.Bars.Select((b, i) => (i, b.Span))) : null;
             row.LanesTop = row.Cells.Count > 0 ? lane : 0;
             row.Top = top;
-            row.Height = row.LanesTop + layout.Count * lane;
+            row.Height = row.LanesTop + (layout?.Count ?? 1) * lane;
             for (var i = 0; i < row.Bars.Count; i++)
             {
                 var bar = row.Bars[i];
-                bar.Lane = layout.Lanes[i];
+                bar.Lane = layout is null ? 0 : layout.Lanes[i];
                 var x = gantt.X(bar.Span.Start);
                 var width = Math.Max(2, gantt.X(bar.Span.End) - x);
                 var y = row.LanesTop + bar.Lane * lane + inset;
@@ -275,31 +338,59 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         _height = top;
         _rows = rows;
 
-        // The visible window is decided once per render: the markup draws these rows, and only the links whose two
-        // ends sit in them are routed. A link to a row outside the window would not be visible anyway.
+        _layoutLinks.Clear();
+        if (ShowCriticalPath && Links is { } links)
+            _layoutLinks.AddRange(links);
+        UpdateCriticalPath();
+    }
+
+    private void ProjectViewport()
+    {
+        var gantt = Gantt!;
         _drawnRows = DrawnRows();
-        var drawnKeys = gantt.Virtualize ? _drawnRows.Select(r => r.Key).ToHashSet() : null;
-
-        var links = (Links ?? []).Where(l => LinkTypes is null || LinkTypes.Contains(l.Type)).ToList();
-        if (ShowCriticalPath)
+        if (_rowFocusKey is null && !_drawnRows.Any(row => row.Key == _activeRowKey))
+            _activeRowKey = _drawnRows.FirstOrDefault()?.Key;
+        _links.Clear();
+        foreach (var link in ShowCriticalPath ? _layoutLinks : Links ?? [])
         {
-            if (_criticalDirty)
-            {
-                _critical = [.. GanttGraph.CriticalPath(_bars.Values.Where(b => !b.IsSummary).ToDictionary(b => b.Key, b => b.Span), Links ?? [])];
-                _criticalDirty = false;
-            }
+            if (LinkTypes is not null && !LinkTypes.Contains(link.Type)) continue;
+            if (!_bars.TryGetValue(link.FromKey, out var from) || !_bars.TryGetValue(link.ToKey, out var to)) continue;
+            if (gantt.Virtualize && (!_windowKeys.Contains(from.RowKey) || !_windowKeys.Contains(to.RowKey))) continue;
+            _links.Add(new(link, GanttRouting.Path(from.Box, to.Box, link.Type, gantt.LinkGap),
+                ShowCriticalPath && _critical.Contains(link.FromKey) && _critical.Contains(link.ToKey)));
         }
-        else
+    }
+
+    private void UpdateCriticalPath()
+    {
+        if (!ShowCriticalPath)
         {
-            _critical.Clear();
+            _criticalSpans.Clear();
+            _criticalLinks.Clear();
+            _critical = EmptyCritical;
+            return;
         }
 
-        _links = [.. links
-            .Where(l => _bars.ContainsKey(l.FromKey) && _bars.ContainsKey(l.ToKey)
-                && (drawnKeys is null
-                    || (drawnKeys.Contains(_bars[l.FromKey].RowKey) && drawnKeys.Contains(_bars[l.ToKey].RowKey))))
-            .Select(l => new GanttLinkLayout(l, GanttRouting.Path(_bars[l.FromKey].Box, _bars[l.ToKey].Box, l.Type, gantt.LinkGap),
-                _critical.Contains(l.FromKey) && _critical.Contains(l.ToKey)))];
+        // Compare the projected spans and edge values. The application can mutate its sources
+        // in place, while a scroll or cosmetic render leaves this graph unchanged.
+        var changed = !_layoutLinks.SequenceEqual(_criticalLinks);
+        var count = 0;
+        foreach (var bar in _bars.Values)
+        {
+            if (bar.IsSummary) continue;
+            count++;
+            if (!_criticalSpans.TryGetValue(bar.Key, out var span) || span != bar.Span)
+                changed = true;
+        }
+        if (!changed && count == _criticalSpans.Count) return;
+
+        _criticalSpans.Clear();
+        foreach (var bar in _bars.Values)
+            if (!bar.IsSummary)
+                _criticalSpans.Add(bar.Key, bar.Span);
+        _criticalLinks.Clear();
+        _criticalLinks.AddRange(_layoutLinks);
+        _critical = GanttGraph.CriticalPath(_criticalSpans, _criticalLinks);
     }
 
     private string BarClass(GanttBarLayout<TItem> bar)
@@ -309,7 +400,7 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         if (bar.IsSuggested) classes.Add(Css.Classes.Gantt.BarSuggested);
         if (_linkFrom == bar.Key) classes.Add(Css.Classes.Gantt.BarLinkSource);
         if (!bar.IsSuggested && Gantt!.Selected == bar.Key) classes.Add(Css.Classes.Gantt.BarSelected);
-        if (_critical.Contains(bar.Key)) classes.Add(Css.Classes.Gantt.BarCritical);
+        if (ShowCriticalPath && _critical.Contains(bar.Key)) classes.Add(Css.Classes.Gantt.BarCritical);
         return string.Join(' ', classes.Where(c => c.Length > 0));
     }
 
@@ -348,9 +439,10 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     }
 
     /// <inheritdoc />
-    public override ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         Gantt?.Unregister(this);
-        return base.DisposeAsync();
+        await DisposeRowKeyboardAsync();
+        await base.DisposeAsync();
     }
 }

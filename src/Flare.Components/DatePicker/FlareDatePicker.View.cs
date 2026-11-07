@@ -12,7 +12,7 @@ public partial class FlareDatePicker
     private FlareMonthYearGrid? _viewGrid;
     private ElementReference _viewHeaderEl;
     private bool _focusPickedView;
-    private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled);
+    private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled, () => CoreText);
 
     private PickerView _calView { get => _views.View; set => _views.View = value; }
     private int _viewYear => _views.Year;

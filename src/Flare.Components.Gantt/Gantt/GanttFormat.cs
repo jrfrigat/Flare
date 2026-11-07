@@ -18,6 +18,9 @@ internal interface IGanttPanel
     /// <summary>Re-renders the panel, for example after the selection changed.</summary>
     void Refresh();
 
+    /// <summary>Updates the drawn window using the current row layout.</summary>
+    void RefreshViewport();
+
     /// <summary>The panel's id, which its body carries as <c>data-panel</c> for the browser to report what is visible.</summary>
     string Id { get; }
 

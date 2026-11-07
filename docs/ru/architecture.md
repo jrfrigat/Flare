@@ -67,7 +67,8 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 - `JsInterop/` - `FlareJsModule`, общая база для типизированных JS-interop сервисов.
 - `Security/` - чистые утилиты `HtmlSanitizer` / `CssValidator` (internal).
 
-**NuGet:** `Flare.Abstractions` - зависит только от `Microsoft.AspNetCore.Components.Web`.
+**NuGet:** `Flare.Abstractions` - зависит от `Microsoft.AspNetCore.Components.Web` и
+`Microsoft.Extensions.Localization.Abstractions` для стандартного контракта localizer.
 
 ### Flare.Theming  (Кольцо 1 - движок)
 **Назначение.** Движок тем - сервисы приложения, превращающие модель токенов в готовую тему. Зависит
@@ -75,6 +76,9 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 - `Services/` - `ThemeService`, `ScopedThemeService`, `TokensToCss`, `CssVarMap`, `FlareBootstrap`.
 - `Palettes/` - `DefaultPaletteGenerator`, `PaletteFactory`. `Color/` - `ColorMath`, `FlareColor`,
   `FlareColorResolver`. `Builders/`, `Serialization/` - `FlareThemeBuilder`, `ThemeJsonSerializer`.
+- `Localization/` - scoped `FlareLocalization`: стандартные localizers приложения поверх ресурсов
+  пакетов, отдельные культуры UI/форматирования, без JS и глобального состояния пользователя.
+  Ядро не знает ключи независимых пакетов. См. [Локализация](localization.md).
 
 **NuGet:** `Flare.Theming` - зависит от `Flare.Abstractions`.
 

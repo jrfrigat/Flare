@@ -35,7 +35,7 @@ public class DialogServiceComponentTests
         service.OnStateChanged += () => stateChanges++;
 
         var reference = service.Show<TestDialogBody>("Edit");
-        reference.Instance.Close("payload-42");
+        await reference.Instance.CloseAsync("payload-42");
 
         var result = await reference.Result;
         Assert.False(result.Cancelled);
@@ -50,7 +50,7 @@ public class DialogServiceComponentTests
         var service = new DialogService();
 
         var reference = service.Show<TestDialogBody>("Edit");
-        reference.Cancel();
+        await reference.CancelAsync();
 
         var result = await reference.Result;
         Assert.True(result.Cancelled);
@@ -64,8 +64,8 @@ public class DialogServiceComponentTests
         var service = new DialogService();
 
         var reference = service.Show<TestDialogBody>("Edit");
-        reference.Instance.Close("first");
-        reference.Instance.Cancel(); // should be a no-op
+        await reference.Instance.CloseAsync("first");
+        await reference.Instance.CancelAsync(); // should be a no-op
 
         var result = await reference.Result;
         Assert.False(result.Cancelled);
@@ -81,14 +81,14 @@ public class DialogServiceComponentTests
         var task = service.ShowAsync<TestDialogBody>("Edit");
         Assert.False(task.IsCompleted);
 
-        service.OpenDialogs[0].Close("done");
+        await service.OpenDialogs[0].CloseAsync("done");
 
         var result = await task;
         Assert.Equal("done", result.GetData<string>());
     }
 
     [Fact]
-    public void Show_MultipleDialogs_StackInOrder()
+    public async Task Show_MultipleDialogs_StackInOrder()
     {
         var service = new DialogService();
 
@@ -99,10 +99,10 @@ public class DialogServiceComponentTests
         Assert.Equal("First", service.OpenDialogs[0].Title);
         Assert.Equal("Second", service.OpenDialogs[1].Title);
 
-        first.Cancel();
+        await first.CancelAsync();
         Assert.Single(service.OpenDialogs);
         Assert.Equal("Second", service.OpenDialogs[0].Title);
-        second.Cancel();
+        await second.CancelAsync();
         Assert.Empty(service.OpenDialogs);
     }
 

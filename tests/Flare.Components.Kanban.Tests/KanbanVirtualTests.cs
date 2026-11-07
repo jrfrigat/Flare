@@ -7,6 +7,21 @@ namespace Flare.Components.Tests;
 /// </summary>
 public sealed class KanbanVirtualTests : FlareTestContext
 {
+    [Fact]
+    public async Task KeyboardOrderCoversUnrenderedCardsAndAnnouncesTheColumnPosition()
+    {
+        IReadOnlyList<KanbanCard>? changed = null;
+        var cut = RenderBoard(true, cards => changed = cards);
+        var context = cut.FindComponent<FlareDragContext<KanbanCard>>();
+        Assert.Equal(500, context.Instance.ItemOrder!("kanban")[0].Items.Count);
+        cut.Find("[data-flare-drag='t0']").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = " " });
+        for (var i = 0; i < 299; i++)
+            await cut.InvokeAsync(() => context.Instance.OnKeyboardReorderAsync("ArrowDown"));
+        Assert.Contains("Position 300 of 500.", cut.Find("[role=status]").TextContent);
+        await cut.InvokeAsync(() => context.Instance.OnKeyboardReorderAsync(" "));
+        Assert.Equal("t0", Column(changed!, "todo")[299]);
+    }
+
     private static readonly KanbanColumn[] _columns =
     [
         new("todo", "To do"),

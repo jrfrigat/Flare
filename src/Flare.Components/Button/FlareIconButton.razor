@@ -92,7 +92,15 @@
         _ => string.Empty,
     };
 
-    private string _composedClass => string.Join(' ', new[] { _edgeClass, Class }.Where(s => !string.IsNullOrEmpty(s)));
+    private string _composedClass
+    {
+        get
+        {
+            var edge = _edgeClass;
+            if (edge.Length == 0) return Class ?? string.Empty;
+            return string.IsNullOrEmpty(Class) ? edge : string.Concat(edge, " ", Class);
+        }
+    }
 
     /// <summary>Sets keyboard focus to the underlying button.</summary>
     public ValueTask FocusAsync() => _button?.FocusAsync() ?? ValueTask.CompletedTask;

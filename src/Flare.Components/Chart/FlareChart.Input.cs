@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Flare.Components.Services;
 using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
@@ -16,6 +17,7 @@ public partial class FlareChart
     private double _focusX, _focusY;
     private List<ChartHit> _renderedHits = [];
     private long _hitsRevision = -1;
+    private CategoryHitLayout? _categoryHitLayout;
 
     private RenderFragment RenderRegion(RenderFragment content) => builder =>
     {
@@ -27,7 +29,9 @@ public partial class FlareChart
 
     private enum HitShape { Rectangle, Path, Circle }
     private sealed record ChartHit(string Key, int Index, string Text, HitShape Shape,
-        double X = 0, double Y = 0, double Width = 0, double Height = 0, double Radius = 0, string? Path = null);
+        string? X = null, string? Y = null, string? Width = null, string? Height = null, string? Radius = null, string? Path = null);
+    private readonly record struct CategoryHitLayout(bool Horizontal, int Points, ChartZoom View,
+        int Left, int Top, int Width, int Height);
 
     private List<ChartHit> RenderedHits()
     {
@@ -49,26 +53,47 @@ public partial class FlareChart
 
     private List<ChartHit> BuildHitZones()
     {
+        var previousLayout = _categoryHitLayout;
+        _categoryHitLayout = null;
         var hits = new List<ChartHit>();
         if (_spark || Data is null) return hits;
         if (Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar or ChartType.Combo)
         {
             bool horizontal = Horizontal && Type == ChartType.Bar;
+            var layout = new CategoryHitLayout(horizontal, _pts, _view, _padL, _padT, _plotW, _plotH);
+            var previousHits = layout == previousLayout ? _renderedHits : null;
+            _categoryHitLayout = layout;
+            if (previousHits is not null) hits.EnsureCapacity(previousHits.Count);
+            var previousIndex = 0;
+            var rowHeight = layout.Height / (double)Math.Max(1, layout.Points);
+            var top = F(layout.Top);
+            var height = F(horizontal ? rowHeight : layout.Height);
             var categories = horizontal
-                ? Enumerable.Range(0, _pts).Select(i => (Index: i, XLeft: (double)_padL, Width: (double)_plotW, XCenter: 0d))
+                ? Enumerable.Range(0, layout.Points).Select(i => (Index: i, XLeft: (double)layout.Left, Width: (double)layout.Width, XCenter: 0d))
                 : _categories;
             foreach (var category in categories)
             {
                 var text = CategoryDescription(category.Index);
                 if (text is null) continue;
-                double left = Math.Max(_padL, category.XLeft);
-                double right = Math.Min(_padL + _plotW, category.XLeft + category.Width);
+                // Both lists are in index order. Reuse SVG attributes for a surviving category,
+                // and rebuild its text from the current values, labels and series visibility.
+                if (previousHits is not null)
+                {
+                    while (previousIndex < previousHits.Count && previousHits[previousIndex].Index < category.Index)
+                        previousIndex++;
+                    if (previousIndex < previousHits.Count && previousHits[previousIndex].Index == category.Index)
+                    {
+                        var previous = previousHits[previousIndex++];
+                        hits.Add(previous.Text == text ? previous : previous with { Text = text });
+                        continue;
+                    }
+                }
+                double left = Math.Max(layout.Left, category.XLeft);
+                double right = Math.Min(layout.Left + layout.Width, category.XLeft + category.Width);
                 if (right <= left) continue;
-                double rowHeight = _plotH / (double)Math.Max(1, _pts);
                 hits.Add(new($"category:{category.Index}", category.Index, text, HitShape.Rectangle,
-                    left,
-                    horizontal ? _padT + category.Index * rowHeight : _padT,
-                    right - left, horizontal ? rowHeight : _plotH));
+                    F(left), horizontal ? F(layout.Top + category.Index * rowHeight) : top,
+                    F(right - left), height));
             }
         }
         else if (Type is ChartType.Pie or ChartType.Donut)
@@ -102,10 +127,10 @@ public partial class FlareChart
                 if (point.Value.X < _view.From || point.Value.X > _view.To
                     || point.Y < _padT || point.Y > _padT + _plotH) continue;
                 var text = string.Create(_inv,
-                    $"{Data.Series[point.Series].Label}\n{FlareStrings.Chart_TablePoint}: {point.Index + 1}\n{FlareStrings.Chart_TableX}: {point.Value.X:G4}\n{FlareStrings.Chart_TableY}: {point.Value.Y:G4}");
-                if (_bubble) text += $"\n{FlareStrings.Chart_TableWeight}: {TableNumber(point.Value.R)}";
+                    $"{Data.Series[point.Series].Label}\n{CoreText["Chart_TablePoint"]}: {point.Index + 1}\n{CoreText["Chart_TableX"]}: {point.Value.X:G4}\n{CoreText["Chart_TableY"]}: {point.Value.Y:G4}");
+                if (_bubble) text += $"\n{CoreText["Chart_TableWeight"]}: {TableNumber(point.Value.R)}";
                 hits.Add(new($"point:{point.Series}:{point.Index}", point.Index, text, HitShape.Circle,
-                    point.X, point.Y, Radius: point.Radius));
+                    F(point.X), F(point.Y), Radius: F(point.Radius)));
             }
         }
         else if (_cellLayout is { } cells)
@@ -116,7 +141,7 @@ public partial class FlareChart
                 var label = Data.Labels is { } labels && cell.Column < labels.Count ? labels[cell.Column] : (cell.Column + 1).ToString(_inv);
                 var text = string.Create(_inv, $"{label}\n{Data.Series[cell.Series].Label}: {cell.Value:G4}");
                 hits.Add(new($"cell:{cell.Series}:{cell.Column}", cell.Column, text, HitShape.Rectangle,
-                    cell.X, cell.Y, cell.Width, cell.Height));
+                    F(cell.X), F(cell.Y), F(cell.Width), F(cell.Height)));
             }
         }
         return hits;
@@ -124,12 +149,33 @@ public partial class FlareChart
 
     private string? CategoryDescription(int index)
     {
-        if (Data is null) return null;
-        var present = Data.Series.Where((s, i) => !IsHidden(i) && (Type != ChartType.Radar || s.Values.Count >= 3)
-            && index < s.Values.Count && !IsGap(s.Values[index])).ToList();
-        if (present.Count == 0) return null;
-        var label = Data.Labels is { } labels && index < labels.Count ? labels[index] : index.ToString(_inv);
-        return $"{label}\n{string.Join("\n", present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}")))}";
+        if (Data is not { } data) return null;
+        var text = new DefaultInterpolatedStringHandler(0, 0, _inv, stackalloc char[256]);
+        var hasValue = false;
+        for (var i = 0; i < data.Series.Count; i++)
+        {
+            if (IsHidden(i)) continue;
+            var series = data.Series[i];
+            var values = series.Values;
+            if (index >= values.Count || Type == ChartType.Radar && values.Count < 3) continue;
+            var value = values[index];
+            if (IsGap(value)) continue;
+
+            if (!hasValue)
+            {
+                if (data.Labels is { } labels && index < labels.Count)
+                    text.AppendFormatted(labels[index]);
+                else
+                    text.AppendFormatted(index);
+                hasValue = true;
+            }
+
+            text.AppendLiteral("\n");
+            text.AppendFormatted(series.Label);
+            text.AppendLiteral(": ");
+            text.AppendFormatted(value, "G4");
+        }
+        return hasValue ? text.ToStringAndClear() : null;
     }
 
     private void ShowHit(ChartHit hit, MouseEventArgs e)

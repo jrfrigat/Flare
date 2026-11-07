@@ -8,6 +8,55 @@ namespace Flare.Browser.Tests;
 /// </summary>
 public sealed class IdeRegionPanelsTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SharedSplittersResizeAllRegionsAndKeepSizesAfterRerender(bool touch)
+    {
+        await using var context = await fixture.Browser.NewContextAsync(new() { HasTouch = touch });
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/ide-region");
+        var handles = page.Locator($"#resize .{Css.Classes.Splitter.Root}");
+        await Expect(handles).ToHaveCountAsync(3);
+        await ListenerWait.ForAsync(page, $"#resize .{Css.Classes.Splitter.Root}", "keydown");
+        var left = page.Locator($"#resize .{Css.Classes.Ide.Layout.PanelLeft}");
+        var right = page.Locator($"#resize .{Css.Classes.Ide.Layout.PanelRight}");
+        var bottom = page.Locator($"#resize .{Css.Classes.Ide.Layout.Bottom}");
+        await handles.Nth(0).FocusAsync();
+        await page.Keyboard.PressAsync("ArrowRight");
+        await Expect(left).ToHaveCSSAsync("width", "188px");
+        var rightBefore = (await right.BoundingBoxAsync())!.Width;
+        await handles.Nth(1).FocusAsync();
+        await page.Keyboard.PressAsync("Shift+ArrowLeft");
+        await Expect(right).ToHaveCSSAsync("width", $"{rightBefore + 24}px");
+        await handles.Nth(2).FocusAsync();
+        await page.Keyboard.PressAsync("ArrowUp");
+        await Expect(bottom).ToHaveCSSAsync("height", "168px");
+        await handles.Nth(2).ScrollIntoViewIfNeededAsync();
+        var box = (await handles.Nth(2).BoundingBoxAsync())!;
+        var x = box.X + box.Width / 2;
+        var y = box.Y + box.Height / 2;
+        if (touch)
+        {
+            var cdp = await context.NewCDPSessionAsync(page);
+            await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchStart", ["touchPoints"] = new[] { new { x, y } } });
+            await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchMove", ["touchPoints"] = new[] { new { x, y = y - 32 } } });
+            await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchEnd", ["touchPoints"] = Array.Empty<object>() });
+        }
+        else
+        {
+            await page.Mouse.MoveAsync(x, y);
+            await page.Mouse.DownAsync();
+            await page.Mouse.MoveAsync(x, y - 32, new() { Steps = 6 });
+            await page.Mouse.UpAsync();
+        }
+        await Expect(bottom).ToHaveCSSAsync("height", "200px");
+        await page.Locator("#rerender").ClickAsync();
+        await Expect(bottom).ToHaveCSSAsync("height", "200px");
+        await Expect(left).ToHaveCSSAsync("width", "188px");
+        await Expect(handles.Nth(2)).ToHaveAttributeAsync("aria-valuenow", "200");
+    }
+
     [Fact]
     public async Task TwoPanels_ShareTheRegion_AndScrollOnTheirOwn()
     {

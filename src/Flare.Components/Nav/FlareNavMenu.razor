@@ -1,8 +1,8 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <nav class="@BuildCssClass(_noScrollbarClass, _railClass, _railLabeledClass, _framedClass)" style="@Style"
-     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? (FlareStrings.Nav_Navigation) : AriaLabel)"
+     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? (CoreText["Nav_Navigation"]) : AriaLabel)"
      @attributes="AdditionalAttributes">
     @if (_framed)
     {

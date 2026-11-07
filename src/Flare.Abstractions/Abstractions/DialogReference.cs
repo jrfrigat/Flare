@@ -19,10 +19,12 @@ public sealed class DialogReference
     /// <summary>Completes when the dialog closes, with the user's <see cref="DialogResult"/>.</summary>
     public Task<DialogResult> Result => _instance.ResultTask;
 
-    /// <summary>Programmatically closes the dialog with the given result.</summary>
+    /// <summary>Checks the close guards and closes with the given result. Returns false when
+    /// vetoed, already closed, or another close request is pending.</summary>
     /// <param name="result">The outcome to resolve the dialog with.</param>
-    public void Close(DialogResult result) => _instance.Close(result);
+    public Task<bool> CloseAsync(DialogResult result) => _instance.CloseAsync(result);
 
-    /// <summary>Programmatically cancels (dismisses) the dialog.</summary>
-    public void Cancel() => _instance.Cancel();
+    /// <summary>Checks the close guards and cancels the dialog. Returns false when
+    /// vetoed, already closed, or another close request is pending.</summary>
+    public Task<bool> CancelAsync() => _instance.CancelAsync();
 }

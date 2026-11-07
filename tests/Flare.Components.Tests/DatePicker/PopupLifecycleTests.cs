@@ -9,6 +9,25 @@ public class PopupLifecycleTests : FlareTestContext
         new OverlayJsService(new RemoteOverlayRuntime(JSInterop.JSRuntime)));
 
     [Theory]
+    [InlineData("positionAnchoredPanel")]
+    [InlineData("registerDismiss")]
+    [InlineData("pushPopupLayer")]
+    public async Task OpeningStaysHiddenUntilDismissalAndEscapeAreReady(string operation)
+    {
+        var module = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        module.Mode = JSRuntimeMode.Loose;
+        var pending = module.SetupVoid(operation, _ => true);
+        var cut = Render<ObservedPopup>(p => p.Add(x => x.Open, true).Add(x => x.Style, "color:red"));
+        var sync = cut.Instance.LastSync;
+        var hiddenWhilePending = cut.Find("div").HasAttribute("data-flare-popup-pending");
+        pending.SetVoidResult();
+        await sync.WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken);
+        Assert.True(hiddenWhilePending);
+        cut.WaitForAssertion(() => Assert.False(cut.Find("div").HasAttribute("data-flare-popup-pending")));
+        cut.WaitForAssertion(() => Assert.Equal("color:red", cut.Find("div").GetAttribute("style")));
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public async Task RerenderDuringInterop_RegistersOnce(bool delayDismiss)

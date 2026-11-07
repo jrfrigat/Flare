@@ -16,8 +16,11 @@ Page navigation for a FlareDataGrid, placed wherever the layout wants it rather 
 | `ShowFirstLast` | `bool` | `false` | Parameter |  | Shows first/last jump buttons in addition to prev/next. |
 | `SiblingCount` | `int` | `2` | Parameter |  | How many page buttons to show on each side of the current page (passed to the pagination control). |
 | `Size` | `PaginationSize` | `PaginationSize.Md` | Parameter |  | Visual size of the pagination control. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Context` | `DataGridContext<TItem>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |
 | `Grid` | `FlareDataGrid<TItem>?` | `` | Parameter |  | The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself. Inherited from `FlareDataGridControl`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -26,5 +29,7 @@ This component exposes no documented public methods.
 ## Inheritance
 
 - `FlareDataGridControl`
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

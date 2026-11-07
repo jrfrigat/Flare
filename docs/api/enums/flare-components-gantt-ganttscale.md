@@ -20,3 +20,4 @@ Step of the time axis.
 ## Used by components
 
 - `FlareGantt`
+- `FlareSchedulerTimeline`

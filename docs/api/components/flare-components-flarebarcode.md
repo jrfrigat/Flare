@@ -12,7 +12,7 @@
 | `Format` | `string?` | `` | Parameter |  | Composite format applied to the human-readable line, with the encoded text as {0}. Null prints the text as encoded. |
 | `Height` | `double` | `60` | Parameter |  | Bar height in pixels. Default 60. |
 | `ModuleWidth` | `double` | `2` | Parameter |  | Width of one module in pixels - the narrowest bar. Default 2. Below 1 most scanners stop reading, so a label meant to be printed wants 2 or more. |
-| `OnInvalid` | `EventCallback<string>` | `` | Callback |  | Raised once per distinct failure when the value cannot be encoded. The component renders the fallback either way. |
+| `OnInvalid` | `EventCallback<string>` | `` | Callback |  | Raised once per distinct failure when the value cannot be encoded. The component renders the fallback either way. Receives a neutral diagnostic; the visible reason follows the localizer. |
 | `Quiet` | `int` | `10` | Parameter |  | Blank margin on each side, in modules. Default 10, which is the minimum the symbologies specify: without it a scanner cannot tell where the symbol begins. |
 | `ShowText` | `bool` | `true` | Parameter |  | Prints the human-readable line under the bars, including any computed check digit. Default true. |
 | `Symbology` | `BarcodeSymbology` | `BarcodeSymbology.Code128` | Parameter |  | Which symbology to encode in. Default Code128. |
@@ -28,6 +28,7 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

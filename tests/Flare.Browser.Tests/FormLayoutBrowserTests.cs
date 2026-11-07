@@ -25,6 +25,7 @@ public sealed class FormLayoutBrowserTests(BrowserFixture fixture) : IClassFixtu
         await page.WaitForFunctionAsync(
             "token => getComputedStyle(document.querySelector('#form-root')).getPropertyValue(token).trim().length > 0",
             Css.Tokens.FormField.HorizontalColumns);
+        await BrowserFonts.WaitAsync(page.Locator("#form-root"));
         return page;
     }
 
@@ -92,9 +93,8 @@ public sealed class FormLayoutBrowserTests(BrowserFixture fixture) : IClassFixtu
         var page = await OpenAsync(context);
         var regular = await GapAsync(page);
 
-        await page.GotoAsync($"{fixture.BaseUrl}/form?dense=true");
-        await Expect(page.Locator("#submit")).ToBeVisibleAsync();
-        var dense = await GapAsync(page);
+        var densePage = await OpenAsync(context, "?dense=true");
+        var dense = await GapAsync(densePage);
 
         Assert.True(dense < regular, $"dense gap {dense} should be smaller than {regular}");
     }

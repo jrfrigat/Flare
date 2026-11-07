@@ -1,12 +1,12 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 
 @* The layout cascades itself so hosted FlareToolPanel components can route their collapse to it.
    A collapsed (or auto-hidden) region renders only a thin rail and frees its docked space.
    Docked, expanded regions get a drag-resize divider between them and the document. *@
 <CascadingValue Value="this">
-    <div class="@Css.Classes.Ide.Layout.Root" style="@_rootStyle" @ref="_rootRef" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.Layout.Root" style="@_rootStyle" @attributes="AdditionalAttributes">
         @if (Ribbon is not null)
         {
             <div class="@Css.Classes.Ide.Layout.Ribbon">
@@ -87,21 +87,17 @@
 </CascadingValue>
 
 @code {
-    private RenderFragment RenderResizer(ToolPanelPosition position) =>@<div
-        class="@Css.Classes.Ide.Layout.Resizer @(position == ToolPanelPosition.Bottom ? Css.Classes.Ide.Layout.ResizerRow : Css.Classes.Ide.Layout.ResizerCol)"
-        role="separator"
-        tabindex="0"
-        aria-orientation="@(position == ToolPanelPosition.Bottom ? "horizontal" : "vertical")"
-        aria-label="@Flare.Components.Resources.FlareStrings.Splitter_Resize"
-        aria-valuenow="@SizePx(position)"
-        aria-valuemin="@(SizePx(position) is null ? null : MinPanelSize)"
-        aria-valuetext="@(SizePx(position) is { } px ? $"{px} px" : null)"
-        @onpointerdown="@(() => StartResize(position))"
-        @onpointerdown:preventDefault="true"
-        @onkeydown="@(e => ResizeStep(position, e))"></div>;
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
+    private RenderFragment RenderResizer(ToolPanelPosition position) =>@<FlareSplitter
+        Class="@Css.Classes.Ide.Layout.Resizer"
+        Orientation="@(position == ToolPanelPosition.Bottom ? FlareSplitter.SplitterOrientation.Vertical : FlareSplitter.SplitterOrientation.Horizontal)"
+        Value="@SizePx(position)" ValueTarget="@SizeTarget(position)" ValueVariable="@SizeVariable(position)"
+        ValueScope="@($".{Css.Classes.Ide.Layout.Root}")" Reverse="@(position != ToolPanelPosition.Left)"
+        MinSize="@($"{MinPanelSize}px")" MaxSize="85%" KeyboardStep="8" KeyboardLargeStep="24"
+        OnSizeChanged="@(size => ResizePanel(position.ToString(), ParsePx(size, MinPanelSize)))" />;
 
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@Css.Classes.Ide.Layout.Rail"
-            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeStrings.LayoutExpandPanel">
+            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value">
         <FlareIconView Value="RailIcon(position)" />
         @foreach (var title in TitlesOf(position))
         {

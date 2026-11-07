@@ -20,11 +20,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `TriggerLoad()`
 
 Returns: `Task`.

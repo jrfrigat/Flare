@@ -18,6 +18,7 @@
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(_state.IsOpen ? Css.Classes.Select.Open : null)"
                   Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
+                  LabelFor="@(Searchable ? ComboboxInputAttributes.Id(InputAttributes, _controlId) : null)"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
@@ -64,6 +65,7 @@
             @if (Searchable)
             {
                 <input class="@Css.Classes.Select.Search"
+                       id="@_controlId"
                        style="@(!_editing ? "flex:0;width:0;min-width:0;padding:0" : null)"
                        @ref="_inputRef"
                        value="@_state.Input"
@@ -91,7 +93,7 @@
             @if (Clearable && !Disabled && !ReadOnly && Current is not null)
             {
                 <button type="button" class="@Css.Classes.Autocomplete.Clear"
-                        tabindex="-1" aria-label="@FlareStrings.Input_Clear"
+                        tabindex="-1" aria-label="@CoreText["Input_Clear"]"
                         @onclick="HandleClearAsync" @onclick:stopPropagation="true"
                         @onmousedown:preventDefault="true">
                     <span aria-hidden="true">&#x2715;</span>
@@ -134,7 +136,7 @@
                     <EmptyContent>
                         @if (Searchable && !string.IsNullOrEmpty(_state.Input))
                         {
-                            <div class="@Css.Classes.Select.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                            <div class="@Css.Classes.Select.Empty" role="status">@(NoResultsText ?? CoreText["Field_NoResults"])</div>
                         }
                     </EmptyContent>
                 </FlareOptionList>

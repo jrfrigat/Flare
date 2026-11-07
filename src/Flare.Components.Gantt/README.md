@@ -49,7 +49,7 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 ## Components
 
 - `FlareGantt` - the shared axis: `Range`, `Scale`, `UnitWidth`, `RowHeight`, `BarInset`, `SideWidth`, `Culture`,
-  `NonWorking`, chart-wide `Markers` and `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`, `Texts`,
+  `NonWorking`, chart-wide `Markers` and `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`,
   `FillWidth`, `Virtualize` (draws only the rows and columns near the view), `Endless` + `@bind-Range`,
   `ResizableSide` + `SideWidthChanged` (the column edge is a `FlareSplitter`), `ScrollTo(moment)`.
 - `FlareGanttPanel<TRow, TItem>` - one projection. Any number of panels share the axis, the scroll and the
@@ -72,9 +72,10 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 
 ## Look and texts
 
-- Every look is a `--flare-gantt-*` variable that `gantt.css` declares with a default built from the semantic
-  `--flare-*` tokens (for example `--flare-gantt-radius: var(--flare-shape-medium)`). Set the same variables on
-  `.flare-gantt` to restyle the whole chart, or on a kind's class to restyle one kind:
+- Every `--flare-gantt-*` override falls back to semantic base tokens at its point of use. A theme needs no
+  Gantt-specific values. Use `new GanttTokens { BarBg = "..." }.FlattenTokens()` with
+  `IThemeService.SetCustomTokens` or `DesignTokens.Extended` (extension namespace `Flare.Theming`). Overrides
+  inherit normally, so they can also be scoped to a parent. Set them on a kind's class to restyle one kind:
 
 ```css
 .flare-gantt--kind-waiting {
@@ -83,16 +84,17 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 }
 ```
 
-- Texts come from the package resources (English and Russian) in the chart's `Culture`. Replace any of them with
-  `Texts="new GanttTexts { Moved = ... }"`; the rest stay.
+- Labels, dependency messages and announcements come from EN/RU resources through `GanttStrings` and
+  `CultureInfo.CurrentUICulture`, like other Flare components. Unsupported UI languages fall back to English.
+  The chart's `Culture` controls dates and axis formatting independently. `GanttStrings.Describe` formats
+  dependency validation messages. The former `Texts`, `EffectiveTexts` and `GanttTexts` API is removed.
 
 ## Coming from the Alva incubator
 
 The package grew in the Alva repository. Differences from that copy:
-`AddFlareGantt()` is required; `GanttTexts` holds optional overrides instead of whole `English`/`Russian` sets;
+`AddFlareGantt()` is required; UI texts use the application's current UI culture;
 the row-header column is resized with `FlareSplitter` (the narrower/wider/reset buttons are gone, Home or a double
 click resets, and `SideWidthChanged` reports pixels); leaving the chart no longer cancels a drag (Escape does);
-every `--flare-gantt-*` variable is declared once on the chart with a default from the semantic tokens instead of a
-fallback at each use.
+design overrides inherit from the theme and have semantic base-token fallbacks at each use.
 
 Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

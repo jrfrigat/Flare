@@ -14,7 +14,7 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the time input after the first render (best-effort). Only one field per page should set this. |
 | `CancelText` | `string?` | `` | Parameter |  | Cancel button text. When null, falls back to the localized "Cancel". |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the picker popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the 12/24-hour default and the AM/PM designators. Default = the current formatting culture. |
 | `For` | `Expression<Func<TimeOnly?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
 | `Headline` | `string?` | `` | Parameter |  | Headline shown at the top of the picker popup. When null, falls back to the localized default. |
 | `HourStep` | `int` | `1` | Parameter |  | Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1. The dial and typed entry keep their hour: a 12-hour dial's cells are discrete values 1-12, and a stepped grid there would produce an hour of zero. |
@@ -58,10 +58,6 @@ Returns: `Task`.
 Closes the picker popup.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
 ### `FocusAsync()`
 
 Sets keyboard focus to the time input.
@@ -81,6 +77,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

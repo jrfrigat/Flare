@@ -1,37 +1,37 @@
 @* Requires interactive render mode (not compatible with static SSR). *@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Rte.Toolbar">
         @if (ShowHeadings)
         {
-            <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H1"))" title="@FlareStrings.RTE_Heading1" aria-label="@FlareStrings.RTE_Heading1" disabled="@ReadOnly">
+            <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H1"))" title="@CoreText["RTE_Heading1"].Value" aria-label="@CoreText["RTE_Heading1"].Value" disabled="@ReadOnly">
                 <span style="font-size:.85rem;font-weight:700;">H1</span>
             </button>
-            <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H2"))" title="@FlareStrings.RTE_Heading2" aria-label="@FlareStrings.RTE_Heading2" disabled="@ReadOnly">
+            <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H2"))" title="@CoreText["RTE_Heading2"].Value" aria-label="@CoreText["RTE_Heading2"].Value" disabled="@ReadOnly">
                 <span style="font-size:.85rem;font-weight:700;">H2</span>
             </button>
-            <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H3"))" title="@FlareStrings.RTE_Heading3" aria-label="@FlareStrings.RTE_Heading3" disabled="@ReadOnly">
+            <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H3"))" title="@CoreText["RTE_Heading3"].Value" aria-label="@CoreText["RTE_Heading3"].Value" disabled="@ReadOnly">
                 <span style="font-size:.85rem;font-weight:700;">H3</span>
             </button>
             <div class="@Css.Classes.Rte.Separator"></div>
         }
-        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("bold"))" title="@FlareStrings.RTE_Bold" aria-label="@FlareStrings.RTE_Bold" disabled="@ReadOnly">
+        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("bold"))" title="@CoreText["RTE_Bold"].Value" aria-label="@CoreText["RTE_Bold"].Value" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatBold" />
         </button>
-        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("italic"))" title="@FlareStrings.RTE_Italic" aria-label="@FlareStrings.RTE_Italic" disabled="@ReadOnly">
+        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("italic"))" title="@CoreText["RTE_Italic"].Value" aria-label="@CoreText["RTE_Italic"].Value" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatItalic" />
         </button>
-        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("underline"))" title="@FlareStrings.RTE_Underline" aria-label="@FlareStrings.RTE_Underline" disabled="@ReadOnly">
+        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("underline"))" title="@CoreText["RTE_Underline"].Value" aria-label="@CoreText["RTE_Underline"].Value" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatUnderlined" />
         </button>
         <div class="@Css.Classes.Rte.Separator"></div>
-        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("insertUnorderedList"))" title="@FlareStrings.RTE_BulletList" aria-label="@FlareStrings.RTE_BulletList" disabled="@ReadOnly">
+        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("insertUnorderedList"))" title="@CoreText["RTE_BulletList"].Value" aria-label="@CoreText["RTE_BulletList"].Value" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatListBulleted" />
         </button>
-        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("insertOrderedList"))" title="@FlareStrings.RTE_NumberedList" aria-label="@FlareStrings.RTE_NumberedList" disabled="@ReadOnly">
+        <button type="button" class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("insertOrderedList"))" title="@CoreText["RTE_NumberedList"].Value" aria-label="@CoreText["RTE_NumberedList"].Value" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatListNumbered" />
         </button>
         @if (ShowLink)
@@ -39,7 +39,7 @@
             <div class="@Css.Classes.Rte.Separator"></div>
             <button type="button" class="@Css.Classes.Rte.Tool @(_showLinkInput ? Css.Classes.Rte.ToolActive : "")"
                     @onclick="ToggleLinkInput"
-                    title="@FlareStrings.RTE_InsertLink" aria-label="@FlareStrings.RTE_InsertLink" disabled="@ReadOnly">
+                    title="@CoreText["RTE_InsertLink"].Value" aria-label="@CoreText["RTE_InsertLink"].Value" disabled="@ReadOnly">
                 <FlareIconView Value="@FlareIcons.Link" />
             </button>
             @if (_showLinkInput)
@@ -48,10 +48,10 @@
                     <input class="@Css.Classes.Rte.LinkInput"
                            type="url"
                            placeholder="https://..."
-                           aria-label="@FlareStrings.RTE_LinkUrl"
+                           aria-label="@CoreText["RTE_LinkUrl"].Value"
                            @bind="_linkUrl"
                            @onkeydown="HandleLinkKeyDown" />
-                    <button type="button" class="@Css.Classes.Rte.Tool" @onclick="InsertLinkAsync" title="@FlareStrings.RTE_ApplyLink" aria-label="@FlareStrings.RTE_ApplyLink">
+                    <button type="button" class="@Css.Classes.Rte.Tool" @onclick="InsertLinkAsync" title="@CoreText["RTE_ApplyLink"].Value" aria-label="@CoreText["RTE_ApplyLink"].Value">
                         <FlareIconView Value="@FlareIcons.Check" />
                     </button>
                 </div>
@@ -71,10 +71,10 @@
          class="@Css.Classes.Rte.Content"
          role="textbox"
          aria-multiline="true"
-         aria-label="@(Label ?? FlareStrings.RTE_Label)"
+         aria-label="@(Label ?? CoreText["RTE_Label"].Value)"
          contenteditable="@(ReadOnly ? "false" : "true")"
          aria-readonly="@(ReadOnly ? "true" : "false")"
-         data-placeholder="@(Placeholder ?? FlareStrings.RTE_Placeholder)"
+         data-placeholder="@(Placeholder ?? CoreText["RTE_Placeholder"].Value)"
          style="@_minHeightStyle">
     </div>
 </div>

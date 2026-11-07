@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -29,12 +30,12 @@ internal static class PickerButtons
     /// The header of a picker popup: previous, the view label that cycles the calendar view, and next.
     /// <paramref name="captureHeader"/> receives the label button when a picker focuses it after a switch.
     /// </summary>
-    public static RenderFragment Header(object receiver, string label, string hint, Action onPrev, Action onNext, Action onSwitch,
+    public static RenderFragment Header(object receiver, IStringLocalizer<FlareStrings> text, string label, string hint, Action onPrev, Action onNext, Action onSwitch,
         bool canPrev, bool canNext, Action<ElementReference>? captureHeader = null) => b =>
     {
         b.OpenElement(0, "div");
         b.AddAttribute(1, "class", Css.Classes.DatePicker.Header);
-        b.AddContent(2, Icon(receiver, onPrev, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, !canPrev));
+        b.AddContent(2, Icon(receiver, onPrev, text["Picker_Previous"], FlareIcons.ChevronLeft, !canPrev));
         b.OpenElement(3, "button");
         b.AddAttribute(4, "class", $"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}");
         b.AddAttribute(5, "type", "button");
@@ -45,7 +46,7 @@ internal static class PickerButtons
         if (captureHeader is not null) b.AddElementReferenceCapture(10, captureHeader);
         b.AddContent(11, label);
         b.CloseElement();
-        b.AddContent(12, Icon(receiver, onNext, FlareStrings.Picker_Next, FlareIcons.ChevronRight, !canNext));
+        b.AddContent(12, Icon(receiver, onNext, text["Picker_Next"], FlareIcons.ChevronRight, !canNext));
         b.CloseElement();
     };
 

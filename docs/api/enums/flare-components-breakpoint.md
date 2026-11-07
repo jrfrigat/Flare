@@ -4,7 +4,7 @@
 
 `Flare.Components.Breakpoint`
 
-A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). The bounds are configurable per subscription and via FlareOptions.
+A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). Custom bounds apply only to an individual SubscribeAsync subscription through Breakpoints. The breakpoint-only subscriptions, CSS Hidden/Col utilities and MediaQuery helpers keep the default tiers; there is no global breakpoint-bound setting.
 
 ## Values
 

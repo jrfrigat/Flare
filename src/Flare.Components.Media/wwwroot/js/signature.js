@@ -6,6 +6,7 @@ export function init(padId, canvasEl, dotNetRef) {
         ctx,
         canvasEl,
         dotNetRef,
+        strokeColor: 'var(--flare-media-on-surface, var(--flare-color-on-surface))',
         baseWidth: 2.0,
         pressureSensitive: true,
         drawing: false,
@@ -27,6 +28,7 @@ export function init(padId, canvasEl, dotNetRef) {
     }
 
     function startDraw(e) {
+        ctx.strokeStyle = resolveColor(canvasEl, state.strokeColor);
         e.preventDefault();
         if (canvasEl.setPointerCapture) {
             try { canvasEl.setPointerCapture(e.pointerId); } catch { /* ignore */ }
@@ -101,6 +103,7 @@ function resolveColor(canvasEl, color) {
 export function setStrokeStyle(padId, color, lineWidth, pressureSensitive) {
     const pad = pads.get(padId);
     if (!pad) return;
+    pad.strokeColor = color;
     pad.ctx.strokeStyle = resolveColor(pad.canvasEl, color);
     pad.baseWidth = lineWidth;
     pad.ctx.lineWidth = lineWidth;

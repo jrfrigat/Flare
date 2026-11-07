@@ -1,0 +1,31 @@
+@using Flare.Components.Kanban
+@using Flare.Theming
+@using static global::Flare.Css.Tokens.Vars
+@inject IThemeService Theme
+@implements IDisposable
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareSwitch Label="@GalleryStrings.Kanban_CustomTokens" Value="_enabled" ValueChanged="SetTokens" />
+    <KanbanReadOnlyDemo />
+</FlareStack>
+
+@code {
+    private bool _enabled;
+    private ThemeTokenPreview? _preview;
+    private void SetTokens(bool enabled)
+    {
+        _enabled = enabled;
+        _preview?.Dispose();
+        _preview = null;
+        if (!enabled) return;
+        var values = CssVarMap.FlattenTokens(new KanbanTokens
+        {
+            Surface = Var(global::Flare.Css.Tokens.Color.SurfaceContainerHigh),
+            ShapeSmall = Var(global::Flare.Css.Tokens.Shape.Large)
+        });
+        var keys = new[] { global::Flare.Css.Tokens.Kanban.Vars.Surface, global::Flare.Css.Tokens.Kanban.Vars.ShapeSmall };
+        _preview = new(Theme);
+        _preview.Apply(values.Where(p => keys.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value));
+    }
+    public void Dispose() => _preview?.Dispose();
+}

@@ -8,7 +8,8 @@
 
 @if (Visible)
 {
-    <div class="@_scrimClass" @onclick="HandleScrimClick">
+    <CascadingValue Value="ActiveCloseContext">
+    <div data-flare-backdrop class="@_scrimClass" @onclick="HandleScrimClick">
         <div class="@BuildCssClass(_sizeClass, _positionClass, _draggableClass, _fillClass, _hasCloseClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
              @attributes="AdditionalAttributes"
              role="dialog" aria-modal="true" tabindex="-1"
@@ -23,7 +24,7 @@
             }
             @if (ShowCloseButton)
             {
-                <button type="button" class="@Css.Classes.Dialog.CloseButton" aria-label="@FlareStrings.Dialog_Close"
+                <button type="button" class="@Css.Classes.Dialog.CloseButton" aria-label="@CoreText["Dialog_Close"]"
                         @onclick="HandleCloseButton">
                     <FlareIconView Value="FlareIcons.Close" />
                 </button>
@@ -38,7 +39,7 @@
                      @ref="_headerEl"
                      tabindex="@(Draggable ? "0" : null)"
                      role="@(Draggable ? "group" : null)"
-                     aria-label="@(Draggable ? FlareStrings.Dialog_Move : null)">
+                     aria-label="@(Draggable ? CoreText["Dialog_Move"].Value : null)">
                     @if (!string.IsNullOrEmpty(Title))
                     {
                         <h2 class="@Css.Classes.Dialog.Title" id="@_titleId">@Title</h2>
@@ -63,13 +64,17 @@
                 @* Focusable and named: the pointer gesture has a keyboard twin (arrow keys resize), so a
                    user without a pointer is not locked out of the feature. *@
                 <div class="@Css.Classes.Dialog.Resizer" @ref="_resizerEl" role="separator"
-                     tabindex="0" aria-label="@FlareStrings.Dialog_Resize"></div>
+                     tabindex="0" aria-label="@CoreText["Dialog_Resize"]"></div>
             }
         </div>
     </div>
+    </CascadingValue>
 }
 
 @code {
+    [CascadingParameter] private FlareLocalizationState? Localization { get; set; }
+    private Microsoft.Extensions.Localization.IStringLocalizer<FlareStrings> CoreText =>
+        (Localization?.Context ?? FlareLocalizationState.Ambient).GetLocalizer<FlareStrings>();
     /// <summary>Controls whether the dialog is shown.</summary>
     [Parameter] public bool Visible { get; set; }
     /// <summary>Callback raised when visibility should change.</summary>
@@ -99,10 +104,13 @@
     [Parameter] public bool Draggable { get; set; }
     /// <summary>Lets the user resize the dialog from a bottom-right gripper.</summary>
     [Parameter] public bool Resizable { get; set; }
-    /// <summary>Optional guard consulted before a scrim / Escape / close-button dismissal. Return
+    /// <summary>Optional guard consulted before UI, programmatic or internal-navigation closure. Return
     /// <see langword="true"/> to allow the close or <see langword="false"/> to veto it (e.g. to keep the
     /// dialog open while there are unsaved changes).</summary>
     [Parameter] public Func<DialogCloseReason, ValueTask<bool>>? BeforeClose { get; set; }
+    /// <summary>Shares registered close guards with a service handle. Null creates a context owned
+    /// by this dialog. Descendants receive the active context as a cascading value.</summary>
+    [Parameter] public DialogCloseContext? CloseContext { get; set; }
     /// <summary>Maximum width of the dialog.</summary>
     [Parameter] public DialogSize Size { get; set; } = DialogSize.Md;
     /// <summary>Where the dialog is anchored. <see cref="DialogPosition.Bottom"/> renders a slide-up bottom sheet.</summary>
@@ -154,16 +162,27 @@
     // open registers the trap, the Escape handler and the scroll lock after the close is over.
     private readonly SemaphoreSlim _modalSync = new(1, 1);
     private bool _disposed;
+    private readonly DialogCloseContext _ownedCloseContext = new();
+    private DialogCloseContext ActiveCloseContext => CloseContext ?? _ownedCloseContext;
+    private IDisposable? _navigationRegistration;
+    private bool _parametersVisible;
+    private int _visibilityVersion;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         Navigation.LocationChanged += HandleLocationChanged;
+        _navigationRegistration = Navigation.RegisterLocationChangingHandler(HandleLocationChangingAsync);
     }
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        if (_parametersVisible != Visible)
+        {
+            _parametersVisible = Visible;
+            _visibilityVersion++;
+        }
         _sizeClass = Size switch
         {
             DialogSize.Xs         => Css.Classes.Dialog.SizeXs,
@@ -314,26 +333,47 @@
 
     private Task HandleCloseButton() => TryCloseAsync(DialogCloseReason.CloseButton);
 
-    // Consults the BeforeClose guard (if any) before dismissing; a false result vetoes the close.
-    private async Task TryCloseAsync(DialogCloseReason reason)
+    /// <summary>Checks the close guards before requesting visibility false. Returns false when
+    /// hidden, disposed, vetoed, or another close request is pending. Changing Visible directly
+    /// bypasses the guards because the parent owns that state.</summary>
+    public Task<bool> CloseAsync() => TryCloseAsync(DialogCloseReason.Programmatic);
+
+    private Task<bool> TryCloseAsync(DialogCloseReason reason)
     {
-        if (BeforeClose is not null && !await BeforeClose(reason))
-            return;
-        await VisibleChanged.InvokeAsync(false);
+        if (_disposed || !Visible) return Task.FromResult(false);
+        var version = _visibilityVersion;
+        var context = ActiveCloseContext;
+        return context.TryCloseAsync(reason, BeforeClose, async () =>
+        {
+            if (_disposed || !Visible || version != _visibilityVersion || !ReferenceEquals(context, ActiveCloseContext)) return false;
+            await VisibleChanged.InvokeAsync(false);
+            return true;
+        });
     }
 
-    // Auto-dismiss on navigation (opt-out via CloseOnNavigation); navigation cannot be vetoed, so the
-    // BeforeClose guard is not consulted here.
+    private async ValueTask HandleLocationChangingAsync(Microsoft.AspNetCore.Components.Routing.LocationChangingContext context)
+    {
+        if (_disposed || !Visible || !CloseOnNavigation) return;
+        var version = _visibilityVersion;
+        var closeContext = ActiveCloseContext;
+        var allowed = await closeContext.TryCloseAsync(DialogCloseReason.Navigation, BeforeClose,
+            () => ValueTask.FromResult(!_disposed && Visible && version == _visibilityVersion
+                && ReferenceEquals(closeContext, ActiveCloseContext)), context.CancellationToken);
+        if (!allowed) context.PreventNavigation();
+    }
+
+    // Close only after navigation actually commits: another handler may still veto it.
     private void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         => InvokeAsync(async () =>
         {
-            if (Visible && CloseOnNavigation)
+            if (!_disposed && Visible && CloseOnNavigation)
                 await VisibleChanged.InvokeAsync(false);
         });
 
     public override async ValueTask DisposeAsync()
     {
         _disposed = true;
+        _navigationRegistration?.Dispose();
         Navigation.LocationChanged -= HandleLocationChanged;
         // A queued OnAfterRenderAsync must not register anything after this point; wait for the one in flight and
         // release whatever it or an earlier open acquired.

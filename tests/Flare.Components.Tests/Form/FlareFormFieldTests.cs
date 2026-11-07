@@ -16,7 +16,9 @@ public class FlareFormFieldTests : FlareTestContext
     public void LabelRenderedWhenSet()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Email"));
-        Assert.NotEmpty(cut.FindAll($"label.{Css.Classes.Input.Label}"));
+        Assert.NotEmpty(cut.FindAll($"span.{Css.Classes.Input.Label}"));
+        Assert.Empty(cut.FindAll("label"));
+        Assert.Equal(cut.Find("span").Id, cut.Find("[role=group]").GetAttribute("aria-labelledby"));
         Assert.Contains("Email", cut.Markup);
     }
 

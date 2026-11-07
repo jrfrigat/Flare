@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @typeparam TModel where TModel : new()
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Reflection
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
@@ -13,10 +13,10 @@
             </div>
         }
         <div class="@Css.Classes.Formbuilder.Actions">
-            <FlareButton Type="@ButtonType.Submit" Variant="ButtonVariant.Filled">@(SubmitLabel ?? FlareStrings.FormBuilder_Submit)</FlareButton>
+            <FlareButton Type="@ButtonType.Submit" Variant="ButtonVariant.Filled">@(SubmitLabel ?? CoreText["FormBuilder_Submit"])</FlareButton>
             @if (ShowReset)
             {
-                <FlareButton Type="@ButtonType.Reset" Variant="ButtonVariant.Outlined" OnClick="ResetForm">@(ResetLabel ?? FlareStrings.FormBuilder_Reset)</FlareButton>
+                <FlareButton Type="@ButtonType.Reset" Variant="ButtonVariant.Outlined" OnClick="ResetForm">@(ResetLabel ?? CoreText["FormBuilder_Reset"])</FlareButton>
             }
         </div>
     </EditForm>

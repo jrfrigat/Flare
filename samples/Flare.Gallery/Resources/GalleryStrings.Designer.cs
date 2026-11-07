@@ -4474,6 +4474,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("FileUpload_DropZoneCustom", resourceCulture);
             }
         }
+
+        /// <summary>Localized avatar upload title.</summary>
+        public static string FileUpload_AvatarTitle => ResourceManager.GetString("FileUpload_AvatarTitle", resourceCulture);
+
+        /// <summary>Localized formats, exact size limit and rejection feedback hint.</summary>
+        public static string FileUpload_AvatarHint => ResourceManager.GetString("FileUpload_AvatarHint", resourceCulture);
+
+        /// <summary>Localized selected avatar file name format.</summary>
+        public static string FileUpload_AvatarSelected => ResourceManager.GetString("FileUpload_AvatarSelected", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Multiple.
@@ -14371,5 +14380,153 @@ namespace Flare.Gallery.Resources {
         public static string StepDemo_LongLabel { get { return ResourceManager.GetString("StepDemo_LongLabel", resourceCulture); } }
         /// <summary>LongUnbrokenStepLabelForNarrowContainers</summary>
         public static string StepDemo_LongWord { get { return ResourceManager.GetString("StepDemo_LongWord", resourceCulture); } }
+        /// <summary>Protect unsaved changes</summary>
+        public static string Dialog_CloseGuard { get { return ResourceManager.GetString("Dialog_CloseGuard", resourceCulture); } }
+        /// <summary>Edit with close protection</summary>
+        public static string Dialog_CloseGuardOpen { get { return ResourceManager.GetString("Dialog_CloseGuardOpen", resourceCulture); } }
+        /// <summary>Instructions for editing, saving and discarding changes in the protected dialog.</summary>
+        public static string Dialog_CloseGuardHint { get { return ResourceManager.GetString("Dialog_CloseGuardHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Title { get { return ResourceManager.GetString("Scheduler_Title", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Subtitle { get { return ResourceManager.GetString("Scheduler_Subtitle", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Interactive { get { return ResourceManager.GetString("Scheduler_Interactive", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_InteractiveHint { get { return ResourceManager.GetString("Scheduler_InteractiveHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_CustomView { get { return ResourceManager.GetString("Scheduler_CustomView", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_CustomViewHint { get { return ResourceManager.GetString("Scheduler_CustomViewHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_CustomTokens { get { return ResourceManager.GetString("Scheduler_CustomTokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Provider { get { return ResourceManager.GetString("Scheduler_Provider", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_ProviderHint { get { return ResourceManager.GetString("Scheduler_ProviderHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_ProviderStatus { get { return ResourceManager.GetString("Scheduler_ProviderStatus", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Recurrence { get { return ResourceManager.GetString("Scheduler_Recurrence", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_RecurrenceHint { get { return ResourceManager.GetString("Scheduler_RecurrenceHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Planning { get { return ResourceManager.GetString("Scheduler_Planning", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Review { get { return ResourceManager.GetString("Scheduler_Review", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Conference { get { return ResourceManager.GetString("Scheduler_Conference", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Standup { get { return ResourceManager.GetString("Scheduler_Standup", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_RoomA { get { return ResourceManager.GetString("Scheduler_RoomA", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_RoomB { get { return ResourceManager.GetString("Scheduler_RoomB", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Saved { get { return ResourceManager.GetString("Scheduler_Saved", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Gantt_Tokens { get { return ResourceManager.GetString("Gantt_Tokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Gantt_TokensHint { get { return ResourceManager.GetString("Gantt_TokensHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Gantt_CustomTokens { get { return ResourceManager.GetString("Gantt_CustomTokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Kanban_Tokens { get { return ResourceManager.GetString("Kanban_Tokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Kanban_CustomTokens { get { return ResourceManager.GetString("Kanban_CustomTokens", resourceCulture); } }
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Title => ResourceManager.GetString("Localization_Title", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Description => ResourceManager.GetString("Localization_Description", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Format => ResourceManager.GetString("Localization_Format", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Cultures => ResourceManager.GetString("Localization_Cultures", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Overrides => ResourceManager.GetString("Localization_Overrides", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Number => ResourceManager.GetString("Localization_Number", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Explicit => ResourceManager.GetString("Localization_Explicit", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Date => ResourceManager.GetString("Localization_Date", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_OpenEditor => ResourceManager.GetString("Localization_OpenEditor", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_OpenPopup => ResourceManager.GetString("Localization_OpenPopup", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Cycle => ResourceManager.GetString("Localization_Cycle", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Editor => ResourceManager.GetString("Localization_Editor", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Draft => ResourceManager.GetString("Localization_Draft", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Shortcut => ResourceManager.GetString("Localization_Shortcut", resourceCulture);
+        /// <summary>Localized heading and page title for a missing route.</summary>
+        public static string NotFound_Title => ResourceManager.GetString("NotFound_Title", resourceCulture);
+        /// <summary>Localized explanation for a missing route.</summary>
+        public static string NotFound_Message => ResourceManager.GetString("NotFound_Message", resourceCulture);
+        /// <summary>Calendar workspace and right drawer</summary>
+        public static string Scheduler_Workspace { get { return ResourceManager.GetString("Scheduler_Workspace", resourceCulture); } }
+        /// <summary>Build the page from a mini-calendar, calendar filters, a custom header and an event drawer. Calendar identity is application data, separate from resources.</summary>
+        public static string Scheduler_WorkspaceHint { get { return ResourceManager.GetString("Scheduler_WorkspaceHint", resourceCulture); } }
+        /// <summary>Quick create and a full inline form</summary>
+        public static string Scheduler_Inline { get { return ResourceManager.GetString("Scheduler_Inline", resourceCulture); } }
+        /// <summary>Start with a compact form and expand it without replacing the draft. The form lives on this page; business fields and persistence belong to the application.</summary>
+        public static string Scheduler_InlineHint { get { return ResourceManager.GetString("Scheduler_InlineHint", resourceCulture); } }
+        /// <summary>New event</summary>
+        public static string Scheduler_NewEvent { get { return ResourceManager.GetString("Scheduler_NewEvent", resourceCulture); } }
+        /// <summary>My calendars</summary>
+        public static string Scheduler_Calendars { get { return ResourceManager.GetString("Scheduler_Calendars", resourceCulture); } }
+        /// <summary>Work</summary>
+        public static string Scheduler_WorkCalendar { get { return ResourceManager.GetString("Scheduler_WorkCalendar", resourceCulture); } }
+        /// <summary>Personal</summary>
+        public static string Scheduler_PersonalCalendar { get { return ResourceManager.GetString("Scheduler_PersonalCalendar", resourceCulture); } }
+        /// <summary>Personal appointment</summary>
+        public static string Scheduler_PersonalEvent { get { return ResourceManager.GetString("Scheduler_PersonalEvent", resourceCulture); } }
+        /// <summary>Selected event</summary>
+        public static string Scheduler_Preview { get { return ResourceManager.GetString("Scheduler_Preview", resourceCulture); } }
+        /// <summary>Calendar</summary>
+        public static string Scheduler_Calendar { get { return ResourceManager.GetString("Scheduler_Calendar", resourceCulture); } }
+        /// <summary>Request or project code</summary>
+        public static string Scheduler_BusinessCode { get { return ResourceManager.GetString("Scheduler_BusinessCode", resourceCulture); } }
+        /// <summary>Previous period</summary>
+        public static string Scheduler_Previous { get { return ResourceManager.GetString("Scheduler_Previous", resourceCulture); } }
+        /// <summary>Next period</summary>
+        public static string Scheduler_Next { get { return ResourceManager.GetString("Scheduler_Next", resourceCulture); } }
+        /// <summary>Today</summary>
+        public static string Scheduler_Today { get { return ResourceManager.GetString("Scheduler_Today", resourceCulture); } }
+        /// <summary>View</summary>
+        public static string Scheduler_View { get { return ResourceManager.GetString("Scheduler_View", resourceCulture); } }
+        /// <summary>Day</summary>
+        public static string Scheduler_Day { get { return ResourceManager.GetString("Scheduler_Day", resourceCulture); } }
+        /// <summary>Week</summary>
+        public static string Scheduler_Week { get { return ResourceManager.GetString("Scheduler_Week", resourceCulture); } }
+        /// <summary>Month</summary>
+        public static string Scheduler_Month { get { return ResourceManager.GetString("Scheduler_Month", resourceCulture); } }
+        /// <summary>Agenda</summary>
+        public static string Scheduler_Agenda { get { return ResourceManager.GetString("Scheduler_Agenda", resourceCulture); } }
+        /// <summary>Event details</summary>
+        public static string Scheduler_EventDetails { get { return ResourceManager.GetString("Scheduler_EventDetails", resourceCulture); } }
+        /// <summary>Quick create</summary>
+        public static string Scheduler_QuickCreate { get { return ResourceManager.GetString("Scheduler_QuickCreate", resourceCulture); } }
+        /// <summary>Full form</summary>
+        public static string Scheduler_FullForm { get { return ResourceManager.GetString("Scheduler_FullForm", resourceCulture); } }
+        /// <summary>Title</summary>
+        public static string Scheduler_EventTitle { get { return ResourceManager.GetString("Scheduler_EventTitle", resourceCulture); } }
+        /// <summary>All day</summary>
+        public static string Scheduler_AllDay { get { return ResourceManager.GetString("Scheduler_AllDay", resourceCulture); } }
+        /// <summary>Save</summary>
+        public static string Scheduler_Save { get { return ResourceManager.GetString("Scheduler_Save", resourceCulture); } }
+        /// <summary>Cancel</summary>
+        public static string Scheduler_Cancel { get { return ResourceManager.GetString("Scheduler_Cancel", resourceCulture); } }
+        /// <summary>Refuse save to keep the draft</summary>
+        public static string Scheduler_RefuseSave { get { return ResourceManager.GetString("Scheduler_RefuseSave", resourceCulture); } }
+        /// <summary>The event was not saved. Check the values or allow saving, then try again. Your draft is retained.</summary>
+        public static string Scheduler_SaveRetained { get { return ResourceManager.GetString("Scheduler_SaveRetained", resourceCulture); } }
+        /// <summary>More events</summary>
+        public static string Scheduler_MoreEvents { get { return ResourceManager.GetString("Scheduler_MoreEvents", resourceCulture); } }
+        /// <summary>Close</summary>
+        public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
     }
 }

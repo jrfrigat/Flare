@@ -27,11 +27,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OnTabNavigation(string key, bool rtl)`
 
 Activates and focuses the available tab addressed by an orientation-aware navigation key.

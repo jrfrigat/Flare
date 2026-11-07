@@ -14,7 +14,7 @@
         @ChildContent
         @* Scrim: dims the content and closes any floating drawer on tap. Hidden by CSS unless a
            drawer is currently a floating overlay, so it never blocks clicks otherwise. *@
-        <div class="@Css.Classes.Layout.Scrim" @onclick="OnScrimClickAsync" aria-hidden="true"></div>
+        <div data-flare-backdrop class="@Css.Classes.Layout.Scrim" @onclick="OnScrimClickAsync" aria-hidden="true"></div>
     </div>
 </CascadingValue>
 

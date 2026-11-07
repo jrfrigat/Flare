@@ -346,10 +346,14 @@ The dialog body closes itself through a cascaded `FlareDialogInstance`:
     [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
     [Parameter] public Person Person { get; set; } = default!;
 
-    private void Save()   => Dialog.Close(_edited); // confirm with a typed payload
-    private void Cancel() => Dialog.Cancel();        // dismiss
+    private Task Save()   => Dialog.CloseAsync(_edited); // confirm with a typed payload
+    private Task Cancel() => Dialog.CancelAsync();       // dismiss
 }
 ```
+
+For forms, add `FlareDialogCloseGuard` to confirm discarding edits. See
+[Protecting unsaved changes in dialogs](dialog-close-guards.md) for save/reset examples, custom
+confirmation, navigation, and migration from the synchronous close API.
 
 ---
 
@@ -424,4 +428,5 @@ every row must be in the DOM for the browser's own find or for printing.
 
 - [Architecture](architecture.md) - modules, tokens and services in detail
 - [Theme creation](theme-creation-guide.md) - design tokens, palettes, custom themes
+- [Scheduler](scheduler.md) - event models, windowed loading, editing and optional recurrence
 - [Gallery](https://jrfrigat.github.io/Flare/) - live examples of every component

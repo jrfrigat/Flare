@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using Microsoft.AspNetCore.Components.Routing
 @inject NavigationManager Nav
 @inject Flare.Components.Services.IUiJsService Ui
@@ -86,11 +86,15 @@
     {
         if (!IsDirty) return;
 
-        var confirmed = await Dialogs.ConfirmAsync(
-            Title ?? FlareStrings.NavGuard_Title,
-            Message ?? FlareStrings.NavGuard_Message,
-            LeaveLabel ?? FlareStrings.NavGuard_Leave,
-            StayLabel ?? FlareStrings.NavGuard_Stay);
+        var result = await Dialogs.ShowAsync<DialogCloseConfirmation>(null,
+            new DialogParameters().Add(nameof(DialogCloseConfirmation.Message), Message!)
+                .Add(nameof(DialogCloseConfirmation.ConfirmLabel), LeaveLabel!)
+                .Add(nameof(DialogCloseConfirmation.CancelLabel), StayLabel!)
+                .Add(nameof(DialogCloseConfirmation.MessageKey), "NavGuard_Message")
+                .Add(nameof(DialogCloseConfirmation.ConfirmKey), "NavGuard_Leave")
+                .Add(nameof(DialogCloseConfirmation.CancelKey), "NavGuard_Stay"),
+            new DialogOptions { TitleProvider = () => Title ?? CoreText["NavGuard_Title"].Value, CloseOnNavigation = false });
+        var confirmed = !result.Cancelled;
 
         // Dismissing with Escape is not consent to lose the work, so only an explicit yes proceeds.
         if (confirmed == true)

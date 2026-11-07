@@ -3,10 +3,37 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.52.0] - 2026-10-25
+## [0.53.0] - 2026-11-07
 
 ### Added
 
+- Scheduler views, navigation and event editing can be composed independently. The default composition still provides a surface, toolbar and dialog. Custom layouts can use an inline form, drawer or dialog with the same edit session. The shared all-day band supports multi-day events and configurable overflow.
+
+### Breaking changes
+
+- Scheduler customization moves from root parameters to the components that render the views, toolbar and editor. View event templates receive `SchedulerEventContext<TItem>`. Selecting a time slot and creating an event are separate actions. The all-day lane token is now `AllDayRowHeight`. See the [Scheduler upgrade guide](https://github.com/jrfrigat/Flare/blob/main/docs/en/scheduler.md#upgrading-from-0520).
+
+### Changed
+
+- Components share flattened theme tokens, and unchanged theme inputs reuse their generated CSS. Semantic colors reuse their CSS class strings.
+- Plain `FlareText` renders without managed allocations after warm-up, including when it inherits typography. Buttons and checkboxes allocate less during rendering and updates. Checkboxes without a label or error retain less memory.
+- Built-in fields with standard validation output refresh when their displayed error changes. In a Chromium WebAssembly benchmark with 80 fields, one edit that produced a new validation error allocated about 80% less. Date and time pickers, `FlareNumericField` and `FlareMaskedField` allocate less during text entry.
+- Tables reuse grouping buffers, and DataGrid builds fewer temporary objects for rows and cells. Virtual lists read `IReadOnlyList<T>` items without copying the entire source. Transfer and Kanban allocate less when updating their items or moving them.
+- Charts reuse drawing and category hit geometry when its inputs match. Gantt reuses row layout during scrolling, and gauges reuse scale marks when only the reading changes. Calendar reuses its month data, and Scheduler allocates less when switching views or editing events.
+
+### Fixed
+
+- Flare packages accept .NET 10 Blazor and localization dependencies from 10.0.0 onward, so applications can keep their chosen 10.0.x patch.
+- Concurrent JS module requests share a single import. A viewport subscription is released if its initial callback fails. Fields detach from the previous `EditContext` when the context changes.
+
+## [0.52.0] - 2026-11-05
+
+### Added
+
+- Scoped live localization through `IFlareLocalization` and `FlareLocalizationProvider`: standard `IStringLocalizer<T>` application overrides, partial additional languages and separate UI/format cultures across core and add-on packages. Gallery demonstrates switching without reload while preserving open editors and popups; the EN/RU localization guide covers hosting and migration.
+- `Flare.Components.Scheduler` provides seven calendar views, windowed providers over application models, resources, templates and cancellable editing. It composes Calendar, Gantt and the shared drag/resize controls. Backend occurrences work without an RFC dependency; `Flare.Components.Scheduler.Ical` adds optional bounded local recurrence. See the EN/RU Scheduler guide and Gallery examples.
+- `CssVarMap.FlattenTokens` maps independent `[CssVar]` records into the normal theme token map, without a core dependency on component packages. Gantt and the other add-ons expose typed override records.
+- `FlareDialogCloseGuard` confirms discarding unsaved changes, using the surrounding `EditContext` or an explicit flag, localized default text, and optional custom labels or confirmation handler. `DialogCloseContext` lets content register its own guards. Gallery examples and the EN/RU dialog guide cover editing, saving, cancelling and navigation.
 - `FlareEmptyState.HeadingLevel` sets the level of the title's heading, 1 to 6, so an empty state right under a page's `h1` can be an `h2` and the outline skips no level; the default stays 3 and the title looks the same at every level.
 - `TabsTokens.InactiveHoverColor` (`--flare-tabs-inactive-hover-color`) colors an inactive tab's label and icon under the pointer; it defaults to the resting inactive color, and Material Design 3 Expressive sets on-surface as its spec asks.
 - `ListTokens.ItemRadiusHover`, `ItemRadiusFocus`, `ItemRadiusPressed` and `ItemRadiusSelected` give a list row its shape per state; each defaults to the resting `ItemRadius`. Material Design 3 Expressive rows now rest at 4dp, round to 12dp under the pointer and to 16dp when focused, pressed or selected, as its spec asks.
@@ -14,10 +41,27 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- Gallery's obsolete custom-theme editor and its navigation/search entries have been removed. The library's theme APIs and customization examples remain available.
+- Add-on component tokens now fall back to semantic base tokens where used, and inherit `DesignTokens.Extended` or theme-service overrides. Themes need no add-on-specific values. QR and barcode scan colors retain their scan-safe defaults.
+- **Breaking:** IDE resizing uses `FlareSplitter`; remove direct `IIdeJsService`/`IdeJsService` and `flare-ide.js` usages. `AddFlareIde` remains compatible; shared interaction services come from `AddFlare`. Theme customizations targeting the removed private IDE resizer classes should use Splitter tokens.
+- **Breaking:** Replace `FlareGantt.Texts`, `EffectiveTexts` and `GanttTexts` with standard application localizers for `GanttStrings`. Captions and announcements follow the scoped UI culture; `GanttStrings.Describe` accepts an optional localizer. Date/number defaults follow the formatting culture, with explicit component `Culture` taking priority. Null dialog/IDE captions and QueryBuilder `Labels` select live resource defaults; explicit strings remain application-owned. See the localization migration guide.
+
+- **Breaking:** replace `FlareDialogInstance` and `DialogReference` `Close`/`Cancel` calls with awaited `CloseAsync`/`CancelAsync`. They now consult `BeforeClose` and registered guards, return whether closure was accepted, and retain the first accepted result. Inline dialogs expose `CloseAsync`; internal navigation uses the same guards through the new `Programmatic` and `Navigation` close reasons.
 - The add-on packages (Barcode, Carousel, Gantt, IDE, Kanban, Media, QrCode, Query, RichTextEditor, Transfer) are marked trimmable, so a WebAssembly app publishing with trimming drops what it does not use from them as it already did from the core; in the Gallery, which uses all ten, they shrink from 166 KB to 156 KB compressed.
 
 ### Fixed
 
+- BottomNav wrap mode shares width according to caption content so five destinations remain readable at 200% text. `BottomNavTokens.LabelLineHeight` defaults to the base label-medium typography and controls the label, expanded bar and pinned spacer together.
+- Link buttons prevent Space from scrolling the page even when disabled or when the key repeats, without activating a disabled button or dispatching duplicate clicks.
+- After a Select popup closes inside a dialog or drawer, the next Escape reaches its parent immediately, including the Server interval before popup-layer cleanup completes.
+- The API reference includes inherited component commands, including FileUpload upload/cancel/retry/remove and field focus methods. Generic signatures and inherited XML comments resolve correctly, overridden/hidden methods appear once, and framework/lifecycle methods stay out of the command list.
+- Gallery's missing-route page follows the selected language and provides a localized page title.
+- Shortcuts dispatch only to their owning component, isolating Server circuits. Multiple and nested scopes keep working when another scope is removed or its keys change. Custom `IUiJsService` adapters must now accept the owner id in shortcut registration/removal; the static `FlareShortcutEntry.HandleKeyDown` entry point has been removed.
+- Field captions now use native label associations or appropriate ARIA/group names. Select, MultiSelect, TagField, Slider and DateRangePicker no longer emit unassociated labels; native field labels can be clicked to focus their controls.
+- FileUpload prevents file-drop navigation and forwards dropped files through the regular InputFile pipeline. Queued progress no longer renders an invalid attribute, selecting the same file again works, retries requested during an active queue run are processed, and removed/disposed queued work is not uploaded.
+- Gallery no longer requests the nonexistent scoped stylesheet `Flare.Gallery.styles.css`.
+- Calendar indexes its events once per parameter update, including the twelve-month view. SignaturePad resolves semantic stroke colors against the current theme for every new stroke and applies changed stroke parameters after rendering.
+- Dialogs, sheets, confirm/alert/prompt windows, drawers, overlays and other backdrop surfaces require both press and release on the same backdrop before dismissing. Selecting text or dragging from content onto the backdrop no longer closes the surface.
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.
 - `FlareDataGrid`'s status region states the new row count when the page hands it another `Items` list, as it does after a column filter, instead of keeping the count from before; the first render and an unchanged count announce nothing.
 - `FlareTabs` with `HeaderStart`/`HeaderEnd` no longer flips its end zone between lines on a narrow screen: the scroll arrows and the tab bar now share one item of the row, so showing the arrows only takes room from the bar instead of pushing the end zone onto the next line, which then made room, hid the arrows and pulled the zone back.

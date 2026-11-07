@@ -46,7 +46,7 @@
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
-                        aria-label="@(FlareStrings.DatePicker_Open)" @ref="_toggleEl" @onclick="Toggle">
+                        aria-label="@(CoreText["DatePicker_Open"])" @ref="_toggleEl" @onclick="Toggle">
                     <FlareIconView Value="@FlareIcons.CalendarMonth" />
                 </button>
             }
@@ -56,7 +56,7 @@
         {
             @if (!_popup.FromField)
             {
-                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+                <div data-flare-backdrop class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
             }
         }
         @if (_open || Inline || PreRenderCalendar)
@@ -65,7 +65,7 @@
              style="@(!_open && !Inline ? "display:none" : null)"
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
-            @PickerButtons.Header(this, HeaderLabel, ViewSwitchHint, PrevView, NextView, CycleCalendarView,
+            @PickerButtons.Header(this, CoreText, HeaderLabel, ViewSwitchHint, PrevView, NextView, CycleCalendarView,
                 !(Disabled || !CanPrev), !(Disabled || !CanNext), r => _viewHeaderEl = r)
 
             @if (_calView == PickerView.Day)
@@ -93,11 +93,11 @@
             <div class="@Css.Classes.DatePicker.Footer">
                 @if (ShowClearButton)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? CoreText["Picker_Clear"])</button>
                 }
                 @if (ShowTodayButton)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@Disabled" @onclick="GoToToday" @onclick:stopPropagation>@(TodayText ?? FlareStrings.DatePicker_Today)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@Disabled" @onclick="GoToToday" @onclick:stopPropagation>@(TodayText ?? CoreText["DatePicker_Today"])</button>
                 }
             </div>
         </div>

@@ -74,13 +74,34 @@ public sealed class FlareText : FlareSpacedBase
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, _safeElement);
-        builder.AddAttribute(1, "class", BuildCssClass(_scaleClass, Color.CssClass, _weightClass, _alignClass, _monoClass, _transformClass, _clampClass));
+        builder.AddAttribute(1, "class", TextCssClass);
         if (_inlineStyle is not null)
             builder.AddAttribute(2, "style", _inlineStyle);
         if (AdditionalAttributes is not null)
             builder.AddMultipleAttributes(4, AdditionalAttributes);
         builder.AddContent(5, ChildContent);
         builder.CloseElement();
+    }
+
+    private string TextCssClass
+    {
+        get
+        {
+            var scale = _scaleClass;
+            var color = Color.CssClass;
+            var weight = _weightClass;
+            var align = _alignClass;
+            var mono = _monoClass;
+            var transform = _transformClass;
+            var clamp = _clampClass;
+
+            if (scale == Css.Classes.Text.BodyMedium && color is null && weight is null
+                && align is null && mono is null && transform is null && clamp is null
+                && string.IsNullOrWhiteSpace(Class))
+                return Css.Classes.Text.Root + " " + Css.Classes.Text.BodyMedium;
+
+            return BuildCssClassFromModifiers([scale, color, weight, align, mono, transform, clamp]);
+        }
     }
 
     // Text always paints a scale, so an unset Typo falls back to body-medium here rather than in the map.

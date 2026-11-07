@@ -6,6 +6,9 @@ namespace Flare.Abstractions;
 /// </summary>
 public sealed class DialogOptions
 {
+    /// <summary>Resolves the header on each render, for example from a live localizer. Overrides the
+    /// title passed to Show. Return null for a header-less dialog; no network work should run here.</summary>
+    public Func<string?>? TitleProvider { get; set; }
     /// <summary>The maximum-width preset. Defaults to <see cref="DialogSize.Md"/>.</summary>
     public DialogSize Size { get; set; } = DialogSize.Md;
 
@@ -68,9 +71,10 @@ public sealed class DialogOptions
     public bool Resizable { get; set; }
 
     /// <summary>
-    /// Optional guard consulted before a scrim / Escape / close-button dismissal. Return
+    /// Optional guard consulted before any UI, handle or internal-navigation close request. Return
     /// <see langword="true"/> to allow the close or <see langword="false"/> to veto it (e.g. to keep the
-    /// dialog open while there are unsaved changes). A programmatic close via the dialog handle bypasses it.
+    /// dialog open while there are unsaved changes). External navigation and page reloads require
+    /// a browser unload guard.
     /// </summary>
     public Func<DialogCloseReason, ValueTask<bool>>? BeforeClose { get; set; }
 

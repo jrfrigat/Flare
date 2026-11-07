@@ -1,22 +1,23 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* The spreadsheet formula bar (Excel): a "name box" showing the active cell reference, an fx marker,
    and the cell/formula editor. Built on base FlareField so it themes with everything else. *@
 <div class="@Css.Classes.Ide.FormulaBar.Root" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Ide.FormulaBar.NameBox">
         <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
-                    Value="@CellRef" ValueChanged="OnCellRefChanged" AriaLabel="@NameBoxLabel" />
+                    Value="@CellRef" ValueChanged="OnCellRefChanged" AriaLabel="@EffectiveNameBoxLabel" />
     </div>
     <span class="@Css.Classes.Ide.FormulaBar.Fx" aria-hidden="true">fx</span>
     <div class="@Css.Classes.Ide.FormulaBar.Input">
         <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
                     Value="@Value" ValueChanged="OnValueChanged"
-                    Placeholder="@Placeholder" AriaLabel="@FormulaLabel" />
+                    Placeholder="@Placeholder" AriaLabel="@EffectiveFormulaLabel" />
     </div>
 </div>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     /// <summary>The active cell reference shown in the name box (e.g. "A1").</summary>
     [Parameter] public string? CellRef { get; set; }
 
@@ -33,10 +34,12 @@
     [Parameter] public string? Placeholder { get; set; }
 
     /// <summary>Accessible label for the name box; defaults to the package's localized text.</summary>
-    [Parameter] public string NameBoxLabel { get; set; } = IdeStrings.FormulaBarNameBox;
+    [Parameter] public string? NameBoxLabel { get; set; }
+    private string EffectiveNameBoxLabel => NameBoxLabel ?? IdeText["FormulaBar_NameBox"].Value;
 
     /// <summary>Accessible label for the formula editor; defaults to the package's localized text.</summary>
-    [Parameter] public string FormulaLabel { get; set; } = IdeStrings.FormulaBarFormula;
+    [Parameter] public string? FormulaLabel { get; set; }
+    private string EffectiveFormulaLabel => FormulaLabel ?? IdeText["FormulaBar_Formula"].Value;
 
     private async Task OnCellRefChanged(string? value) => await CellRefChanged.InvokeAsync(value);
     private async Task OnValueChanged(string? value) => await ValueChanged.InvokeAsync(value);

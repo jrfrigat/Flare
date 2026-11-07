@@ -1332,6 +1332,15 @@
   <data name="FileUpload_DropZoneCustom" xml:space="preserve">
     <value>Drop Zone - custom content</value>
   </data>
+  <data name="FileUpload_AvatarTitle" xml:space="preserve">
+    <value>Upload avatar</value>
+  </data>
+  <data name="FileUpload_AvatarHint" xml:space="preserve">
+    <value>JPG, PNG, GIF or WebP, up to 5 MB (5,242,880 bytes). Larger files are rejected with a message below.</value>
+  </data>
+  <data name="FileUpload_AvatarSelected" xml:space="preserve">
+    <value>Selected: {0}</value>
+  </data>
   <data name="FileUpload_Multiple" xml:space="preserve">
     <value>Multiple</value>
   </data>
@@ -4825,4 +4834,84 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Dialog_OpenTextOnly" xml:space="preserve"><value>Open a text-only dialog</value></data>
   <data name="Dialog_OpenEmpty" xml:space="preserve"><value>Open an empty dialog</value></data>
   <data name="Dialog_EmptyFocusHint" xml:space="preserve"><value>Open with Enter. Tab and Shift+Tab keep focus inside the panel, even without buttons. Escape closes it and returns focus to the opener.</value></data>
+  <data name="Dialog_CloseGuard" xml:space="preserve">
+    <value>Protect unsaved changes</value>
+  </data>
+  <data name="Dialog_CloseGuardOpen" xml:space="preserve">
+    <value>Edit with close protection</value>
+  </data>
+  <data name="Dialog_CloseGuardHint" xml:space="preserve">
+    <value>Edit the name, then press Escape, click the backdrop, close button or Cancel. Keep editing preserves your input; Discard changes closes without saving. Save updates the name and closes immediately. An unchanged form closes without a prompt.</value>
+  </data>
+  <data name="Scheduler_Title" xml:space="preserve"><value>Scheduler</value></data>
+  <data name="Scheduler_Subtitle" xml:space="preserve"><value>Calendar planning with your own event model, windowed providers and reusable views.</value></data>
+  <data name="Scheduler_Interactive" xml:space="preserve"><value>Views and editing</value></data>
+  <data name="Scheduler_InteractiveHint" xml:space="preserve"><value>Select a slot to create an event. Drag its handle to move it, resize the bottom edge, or use F2, Delete and Ctrl+arrows. The application applies the proposed changes.</value></data>
+  <data name="Scheduler_CustomView" xml:space="preserve"><value>Use a custom view</value></data>
+  <data name="Scheduler_CustomViewHint" xml:space="preserve"><value>A custom projection composes the shared agenda with application content.</value></data>
+  <data name="Scheduler_CustomTokens" xml:space="preserve"><value>Customize scheduler tokens</value></data>
+  <data name="Scheduler_Provider" xml:space="preserve"><value>Windowed provider</value></data>
+  <data name="Scheduler_ProviderHint" xml:space="preserve"><value>The source represents 50,000 events and returns only the visible window. Recurring occurrences arrive ready from the backend.</value></data>
+  <data name="Scheduler_ProviderStatus" xml:space="preserve"><value>{0:N0} events in the source; {1:N0} returned for {2:d} - {3:d}.</value></data>
+  <data name="Scheduler_Recurrence" xml:space="preserve"><value>Optional local recurrence</value></data>
+  <data name="Scheduler_RecurrenceHint" xml:space="preserve"><value>This example opts into the Ical adapter. A backend can supply ready occurrences to the ordinary scheduler.</value></data>
+  <data name="Scheduler_Planning" xml:space="preserve"><value>Planning session</value></data>
+  <data name="Scheduler_Review" xml:space="preserve"><value>Design review</value></data>
+  <data name="Scheduler_Conference" xml:space="preserve"><value>Conference</value></data>
+  <data name="Scheduler_Standup" xml:space="preserve"><value>Daily stand-up</value></data>
+  <data name="Scheduler_RoomA" xml:space="preserve"><value>Studio</value></data>
+  <data name="Scheduler_RoomB" xml:space="preserve"><value>Meeting room</value></data>
+  <data name="Scheduler_Saved" xml:space="preserve"><value>Change applied: {0}.</value></data>
+  <data name="Gantt_Tokens" xml:space="preserve"><value>Theme token overrides</value></data>
+  <data name="Gantt_TokensHint" xml:space="preserve"><value>The chart uses base theme tokens by default. This switch applies an independent token record through the standard theme service.</value></data>
+  <data name="Gantt_CustomTokens" xml:space="preserve"><value>Use custom Gantt tokens</value></data>
+  <data name="Kanban_Tokens" xml:space="preserve"><value>Theme token overrides</value></data>
+  <data name="Kanban_CustomTokens" xml:space="preserve"><value>Use custom Kanban tokens</value></data>
+  <data name="Localization_Title" xml:space="preserve"><value>Localization</value></data>
+  <data name="Localization_Description" xml:space="preserve"><value>Change interface language without reloading. Dates and numbers follow a separate formatting culture; open editors keep their data.</value></data>
+  <data name="Localization_Format" xml:space="preserve"><value>Formatting culture</value></data>
+  <data name="Localization_Cultures" xml:space="preserve"><value>UI: {0}; formatting: {1}</value></data>
+  <data name="Localization_Overrides" xml:space="preserve"><value>The application supplies partial French resources and overrides the Russian Clear caption. Missing keys keep the built-in translations.</value></data>
+  <data name="Localization_Number" xml:space="preserve"><value>Context formatting</value></data>
+  <data name="Localization_Explicit" xml:space="preserve"><value>Explicit en-US culture</value></data>
+  <data name="Localization_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Localization_OpenEditor" xml:space="preserve"><value>Open editor</value></data>
+  <data name="Localization_OpenPopup" xml:space="preserve"><value>Open calendar popup</value></data>
+  <data name="Localization_Cycle" xml:space="preserve"><value>Switch UI language</value></data>
+  <data name="Localization_Editor" xml:space="preserve"><value>Unsaved editor</value></data>
+  <data name="Localization_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Localization_Shortcut" xml:space="preserve"><value>Type a draft, then press Ctrl+Alt+L to change language while keeping the caret.</value></data>
+  <data name="NotFound_Title" xml:space="preserve"><value>Not Found</value></data>
+  <data name="NotFound_Message" xml:space="preserve"><value>Sorry, the content you are looking for does not exist.</value></data>
+  <data name="Scheduler_Workspace" xml:space="preserve"><value>Calendar workspace and right drawer</value></data>
+  <data name="Scheduler_WorkspaceHint" xml:space="preserve"><value>Build the page from a mini-calendar, calendar filters, a custom header and an event drawer. Calendar identity is application data, separate from resources.</value></data>
+  <data name="Scheduler_Inline" xml:space="preserve"><value>Quick create and a full inline form</value></data>
+  <data name="Scheduler_InlineHint" xml:space="preserve"><value>Start with a compact form and expand it without replacing the draft. The form lives on this page; business fields and persistence belong to the application.</value></data>
+  <data name="Scheduler_NewEvent" xml:space="preserve"><value>New event</value></data>
+  <data name="Scheduler_Calendars" xml:space="preserve"><value>My calendars</value></data>
+  <data name="Scheduler_WorkCalendar" xml:space="preserve"><value>Work</value></data>
+  <data name="Scheduler_PersonalCalendar" xml:space="preserve"><value>Personal</value></data>
+  <data name="Scheduler_PersonalEvent" xml:space="preserve"><value>Personal appointment</value></data>
+  <data name="Scheduler_Preview" xml:space="preserve"><value>Selected event</value></data>
+  <data name="Scheduler_Calendar" xml:space="preserve"><value>Calendar</value></data>
+  <data name="Scheduler_BusinessCode" xml:space="preserve"><value>Request or project code</value></data>
+  <data name="Scheduler_Previous" xml:space="preserve"><value>Previous period</value></data>
+  <data name="Scheduler_Next" xml:space="preserve"><value>Next period</value></data>
+  <data name="Scheduler_Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Scheduler_View" xml:space="preserve"><value>View</value></data>
+  <data name="Scheduler_Day" xml:space="preserve"><value>Day</value></data>
+  <data name="Scheduler_Week" xml:space="preserve"><value>Week</value></data>
+  <data name="Scheduler_Month" xml:space="preserve"><value>Month</value></data>
+  <data name="Scheduler_Agenda" xml:space="preserve"><value>Agenda</value></data>
+  <data name="Scheduler_EventDetails" xml:space="preserve"><value>Event details</value></data>
+  <data name="Scheduler_QuickCreate" xml:space="preserve"><value>Quick create</value></data>
+  <data name="Scheduler_FullForm" xml:space="preserve"><value>Full form</value></data>
+  <data name="Scheduler_EventTitle" xml:space="preserve"><value>Title</value></data>
+  <data name="Scheduler_AllDay" xml:space="preserve"><value>All day</value></data>
+  <data name="Scheduler_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Scheduler_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Scheduler_RefuseSave" xml:space="preserve"><value>Refuse save to keep the draft</value></data>
+  <data name="Scheduler_SaveRetained" xml:space="preserve"><value>The event was not saved. Check the values or allow saving, then try again. Your draft is retained.</value></data>
+  <data name="Scheduler_MoreEvents" xml:space="preserve"><value>More events</value></data>
+  <data name="Scheduler_Close" xml:space="preserve"><value>Close</value></data>
 </root>

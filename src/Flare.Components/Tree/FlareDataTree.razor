@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @typeparam TItem
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject Flare.Components.Services.IUiJsService Ui
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 
@@ -28,7 +28,7 @@
                         @onclick="@(() => ToggleAsync(node))"
                         @onclick:stopPropagation="true"
                         disabled="@node.IsLoading"
-                        aria-label="@(node.IsExpanded ? (FlareStrings.Tree_Collapse) : (FlareStrings.Tree_Expand))">
+                        aria-label="@(node.IsExpanded ? (CoreText["Tree_Collapse"]) : (CoreText["Tree_Expand"]))">
                     <FlareIconView Value="@(node.IsLoading ? FlareIcons.Refresh : node.IsExpanded ? FlareIcons.ExpandMore : FlareIcons.ChevronRight)" />
                 </button>
             }

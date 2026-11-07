@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
@@ -16,7 +17,7 @@
 <div class="@Css.Classes.Picker.DayHeaders @(ShowWeekNumbers ? Css.Classes.Picker.DayHeadersWeeks : null)" role="row">
     @if (ShowWeekNumbers)
     {
-        <span class="@Css.Classes.Picker.WeekNum" role="columnheader" aria-label="@FlareStrings.Picker_Week"></span>
+        <span class="@Css.Classes.Picker.WeekNum" role="columnheader" aria-label="@CoreText["Picker_Week"]"></span>
     }
     @{ var dayNames = DayNames(); var dayIndex = 0; }
     @foreach (var h in CalendarMath.DayHeaders(_culture, _firstDayOfWeek))
@@ -39,7 +40,7 @@
                 {
                     var weekNo = IsoWeekNumbers ? ISOWeek.GetWeekOfYear(a.ToDateTime(TimeOnly.MinValue)) : CalendarMath.WeekOfYear(a, _culture, _firstDayOfWeek);
                     <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
-                          aria-label="@string.Format(FlareStrings.Picker_WeekNumber, weekNo)">
+                          aria-label="@string.Format(CoreText["Picker_WeekNumber"], weekNo)">
                         @weekNo
                     </span>
                 }
@@ -80,6 +81,8 @@
 </div>
 
 @code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
     /// <summary>The year of the displayed month, numbered on the grid's calendar: 1405 on the Persian calendar,
     /// the Gregorian year for Gregorian, Thai Buddhist and Japanese cultures.</summary>
     [Parameter, EditorRequired] public int ViewYear { get; set; }
@@ -135,7 +138,7 @@
     [Parameter] public EventCallback<DateOnly> FocusedDateChanged { get; set; }
 
     // The culture on the calendar the grid is drawn on.
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
 
     // The day of month on the grid's calendar: 11 for 3 October 2026 on the Persian one.

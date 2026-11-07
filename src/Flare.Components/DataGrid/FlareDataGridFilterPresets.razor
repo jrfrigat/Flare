@@ -18,7 +18,7 @@
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Sm;
 
     private string _selected = "";
-    private string _noFilter => FlareStrings.DataGrid_NoFilter;
+    private string _noFilter => CoreText["DataGrid_NoFilter"];
 
     // The "(No filter)" clear entry first, then the preset names.
     private List<string> _options =>

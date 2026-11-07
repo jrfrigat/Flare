@@ -1332,6 +1332,15 @@
   <data name="FileUpload_DropZoneCustom" xml:space="preserve">
     <value>Зона перетаскивания - свое содержимое</value>
   </data>
+  <data name="FileUpload_AvatarTitle" xml:space="preserve">
+    <value>Загрузить аватар</value>
+  </data>
+  <data name="FileUpload_AvatarHint" xml:space="preserve">
+    <value>JPG, PNG, GIF или WebP до 5 МБ (5 242 880 байт). Для файлов большего размера ниже появится сообщение об отказе.</value>
+  </data>
+  <data name="FileUpload_AvatarSelected" xml:space="preserve">
+    <value>Выбран файл: {0}</value>
+  </data>
   <data name="FileUpload_Multiple" xml:space="preserve">
     <value>Множественный выбор</value>
   </data>
@@ -4825,4 +4834,84 @@
   <data name="Dialog_OpenTextOnly" xml:space="preserve"><value>Открыть текстовый диалог</value></data>
   <data name="Dialog_OpenEmpty" xml:space="preserve"><value>Открыть пустой диалог</value></data>
   <data name="Dialog_EmptyFocusHint" xml:space="preserve"><value>Откройте клавишей Enter. Tab и Shift+Tab удерживают фокус внутри панели, даже без кнопок. Escape закрывает ее и возвращает фокус к кнопке открытия.</value></data>
+  <data name="Dialog_CloseGuard" xml:space="preserve">
+    <value>Защита несохраненных изменений</value>
+  </data>
+  <data name="Dialog_CloseGuardOpen" xml:space="preserve">
+    <value>Редактировать с защитой закрытия</value>
+  </data>
+  <data name="Dialog_CloseGuardHint" xml:space="preserve">
+    <value>Измените имя, затем нажмите Escape, фон, крестик или «Отмена». «Продолжить редактирование» сохраняет ввод, «Отменить изменения» закрывает окно без сохранения. «Сохранить» обновляет имя и сразу закрывает окно. Неизмененная форма закрывается без вопроса.</value>
+  </data>
+  <data name="Scheduler_Title" xml:space="preserve"><value>Планировщик</value></data>
+  <data name="Scheduler_Subtitle" xml:space="preserve"><value>Календарное планирование с вашей моделью событий, загрузкой видимого диапазона и переиспользуемыми видами.</value></data>
+  <data name="Scheduler_Interactive" xml:space="preserve"><value>Виды и редактирование</value></data>
+  <data name="Scheduler_InteractiveHint" xml:space="preserve"><value>Выберите интервал для создания события. Переносите его за ручку, меняйте длительность нижним краем или используйте F2, Delete и Ctrl+стрелки. Приложение применяет предложенные изменения.</value></data>
+  <data name="Scheduler_CustomView" xml:space="preserve"><value>Использовать свой вид</value></data>
+  <data name="Scheduler_CustomViewHint" xml:space="preserve"><value>Свой вид объединяет готовую повестку с содержимым приложения.</value></data>
+  <data name="Scheduler_CustomTokens" xml:space="preserve"><value>Переопределить токены планировщика</value></data>
+  <data name="Scheduler_Provider" xml:space="preserve"><value>Загрузка видимого диапазона</value></data>
+  <data name="Scheduler_ProviderHint" xml:space="preserve"><value>Источник представляет 50 000 событий и возвращает только видимый диапазон. Экземпляры повторяющихся событий уже подготовлены сервером.</value></data>
+  <data name="Scheduler_ProviderStatus" xml:space="preserve"><value>В источнике {0:N0} событий; получено {1:N0} за {2:d} - {3:d}.</value></data>
+  <data name="Scheduler_Recurrence" xml:space="preserve"><value>Необязательное локальное повторение</value></data>
+  <data name="Scheduler_RecurrenceHint" xml:space="preserve"><value>Этот пример явно подключает адаптер Ical. Обычный планировщик может получать готовые экземпляры от сервера.</value></data>
+  <data name="Scheduler_Planning" xml:space="preserve"><value>Планирование</value></data>
+  <data name="Scheduler_Review" xml:space="preserve"><value>Обсуждение дизайна</value></data>
+  <data name="Scheduler_Conference" xml:space="preserve"><value>Конференция</value></data>
+  <data name="Scheduler_Standup" xml:space="preserve"><value>Ежедневная встреча</value></data>
+  <data name="Scheduler_RoomA" xml:space="preserve"><value>Студия</value></data>
+  <data name="Scheduler_RoomB" xml:space="preserve"><value>Переговорная</value></data>
+  <data name="Scheduler_Saved" xml:space="preserve"><value>Изменение применено: {0}.</value></data>
+  <data name="Gantt_Tokens" xml:space="preserve"><value>Переопределение токенов темы</value></data>
+  <data name="Gantt_TokensHint" xml:space="preserve"><value>По умолчанию график использует базовые токены темы. Переключатель применяет независимую запись токенов через стандартный сервис темы.</value></data>
+  <data name="Gantt_CustomTokens" xml:space="preserve"><value>Переопределить токены Gantt</value></data>
+  <data name="Kanban_Tokens" xml:space="preserve"><value>Переопределение токенов темы</value></data>
+  <data name="Kanban_CustomTokens" xml:space="preserve"><value>Переопределить токены Kanban</value></data>
+  <data name="Localization_Title" xml:space="preserve"><value>Локализация</value></data>
+  <data name="Localization_Description" xml:space="preserve"><value>Меняйте язык интерфейса без перезагрузки. Даты и числа используют отдельную культуру форматирования; открытые редакторы сохраняют данные.</value></data>
+  <data name="Localization_Format" xml:space="preserve"><value>Культура форматирования</value></data>
+  <data name="Localization_Cultures" xml:space="preserve"><value>Интерфейс: {0}; форматирование: {1}</value></data>
+  <data name="Localization_Overrides" xml:space="preserve"><value>Приложение добавляет частичный французский перевод и переопределяет русскую подпись очистки. Остальные ключи сохраняют встроенные переводы.</value></data>
+  <data name="Localization_Number" xml:space="preserve"><value>Форматирование по контексту</value></data>
+  <data name="Localization_Explicit" xml:space="preserve"><value>Явная культура en-US</value></data>
+  <data name="Localization_Date" xml:space="preserve"><value>Дата</value></data>
+  <data name="Localization_OpenEditor" xml:space="preserve"><value>Открыть редактор</value></data>
+  <data name="Localization_OpenPopup" xml:space="preserve"><value>Открыть календарь в popup</value></data>
+  <data name="Localization_Cycle" xml:space="preserve"><value>Сменить язык интерфейса</value></data>
+  <data name="Localization_Editor" xml:space="preserve"><value>Несохраненный редактор</value></data>
+  <data name="Localization_Draft" xml:space="preserve"><value>Черновик</value></data>
+  <data name="Localization_Shortcut" xml:space="preserve"><value>Введите черновик и нажмите Ctrl+Alt+L, чтобы сменить язык, сохранив положение курсора.</value></data>
+  <data name="NotFound_Title" xml:space="preserve"><value>Страница не найдена</value></data>
+  <data name="NotFound_Message" xml:space="preserve"><value>К сожалению, запрошенная страница не существует.</value></data>
+  <data name="Scheduler_Workspace" xml:space="preserve"><value>Календари и правая панель</value></data>
+  <data name="Scheduler_WorkspaceHint" xml:space="preserve"><value>Соберите страницу из мини-календаря, фильтров, своей шапки и панели события. Календарь хранится в модели приложения отдельно от ресурсов.</value></data>
+  <data name="Scheduler_Inline" xml:space="preserve"><value>Быстрое создание и полная inline-форма</value></data>
+  <data name="Scheduler_InlineHint" xml:space="preserve"><value>Начните с короткой формы и раскройте ее без замены черновика. Форма остается на странице; бизнес-поля и сохранение принадлежат приложению.</value></data>
+  <data name="Scheduler_NewEvent" xml:space="preserve"><value>Новое событие</value></data>
+  <data name="Scheduler_Calendars" xml:space="preserve"><value>Мои календари</value></data>
+  <data name="Scheduler_WorkCalendar" xml:space="preserve"><value>Рабочий</value></data>
+  <data name="Scheduler_PersonalCalendar" xml:space="preserve"><value>Личный</value></data>
+  <data name="Scheduler_PersonalEvent" xml:space="preserve"><value>Личная встреча</value></data>
+  <data name="Scheduler_Preview" xml:space="preserve"><value>Выбранное событие</value></data>
+  <data name="Scheduler_Calendar" xml:space="preserve"><value>Календарь</value></data>
+  <data name="Scheduler_BusinessCode" xml:space="preserve"><value>Код заявки или проекта</value></data>
+  <data name="Scheduler_Previous" xml:space="preserve"><value>Предыдущий период</value></data>
+  <data name="Scheduler_Next" xml:space="preserve"><value>Следующий период</value></data>
+  <data name="Scheduler_Today" xml:space="preserve"><value>Сегодня</value></data>
+  <data name="Scheduler_View" xml:space="preserve"><value>Вид</value></data>
+  <data name="Scheduler_Day" xml:space="preserve"><value>День</value></data>
+  <data name="Scheduler_Week" xml:space="preserve"><value>Неделя</value></data>
+  <data name="Scheduler_Month" xml:space="preserve"><value>Месяц</value></data>
+  <data name="Scheduler_Agenda" xml:space="preserve"><value>Повестка</value></data>
+  <data name="Scheduler_EventDetails" xml:space="preserve"><value>Параметры события</value></data>
+  <data name="Scheduler_QuickCreate" xml:space="preserve"><value>Быстрое создание</value></data>
+  <data name="Scheduler_FullForm" xml:space="preserve"><value>Полная форма</value></data>
+  <data name="Scheduler_EventTitle" xml:space="preserve"><value>Название</value></data>
+  <data name="Scheduler_AllDay" xml:space="preserve"><value>Весь день</value></data>
+  <data name="Scheduler_Save" xml:space="preserve"><value>Сохранить</value></data>
+  <data name="Scheduler_Cancel" xml:space="preserve"><value>Отмена</value></data>
+  <data name="Scheduler_RefuseSave" xml:space="preserve"><value>Отклонить сохранение и оставить черновик</value></data>
+  <data name="Scheduler_SaveRetained" xml:space="preserve"><value>Событие не сохранено. Проверьте поля или разрешите сохранение и повторите попытку. Черновик сохранен.</value></data>
+  <data name="Scheduler_MoreEvents" xml:space="preserve"><value>Остальные события</value></data>
+  <data name="Scheduler_Close" xml:space="preserve"><value>Закрыть</value></data>
 </root>

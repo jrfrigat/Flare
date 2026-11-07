@@ -319,6 +319,14 @@ public sealed class ComboboxState<TItem>
 /// </summary>
 internal static class ComboboxInputAttributes
 {
+    internal static string Id(IReadOnlyDictionary<string, object>? attributes, string fallback)
+    {
+        if (attributes is not null)
+            foreach (var (name, value) in attributes)
+                if (name.Equals("id", StringComparison.OrdinalIgnoreCase)) return value?.ToString() ?? fallback;
+        return fallback;
+    }
+
     private static readonly HashSet<string> _owned = new(StringComparer.OrdinalIgnoreCase)
     {
         "role", "aria-haspopup", "aria-expanded", "aria-controls", "aria-activedescendant",

@@ -48,6 +48,20 @@ public class FlareMaskedFieldTests : FlareTestContext
     }
 
     [Fact]
+    public void LongMaskWritesOnlyTheTextForTheEnteredSlots()
+    {
+        var prefix = new string('-', 256);
+        string? value = null;
+        var cut = Render<FlareMaskedField>(p => p
+            .Add(x => x.Mask, prefix + "##")
+            .Add(x => x.ValueChanged, (string? text) => value = text));
+
+        cut.Find("input").Input("1");
+
+        Assert.Equal(prefix + "1", value);
+    }
+
+    [Fact]
     public void ParenLeadingMask_FirstDigit_AppearsWithLiteral()
     {
         // The same class of bug affected any leading literal, e.g. the classic

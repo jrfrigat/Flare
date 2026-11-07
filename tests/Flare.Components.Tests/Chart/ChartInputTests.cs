@@ -79,6 +79,28 @@ public class ChartInputTests : FlareTestContext
     }
 
     [Fact]
+    public async Task ReplacingCategoriesUpdatesHitLabelsAndAppendingUpdatesTheirGeometry()
+    {
+        var cut = Render<FlareChart>(p => p.Add(x => x.Data, Data).Add(x => x.Fluid, false));
+        const string hit = "[data-flare-chart-hit='category:0']";
+        var width = cut.Find(hit).GetAttribute("width");
+        await cut.Instance.ChartHitFocused("category:0", 100, 100);
+
+        cut.Render(p => p.Add(x => x.Data, new ChartData([new("First", [7, 8, double.NaN])], ["D", "E", "F"])));
+
+        Assert.Equal(width, cut.Find(hit).GetAttribute("width"));
+        Assert.Contains("First: 7", cut.Find(hit).GetAttribute("aria-label"));
+        Assert.Contains("First: 7", cut.Find("[role=tooltip]").TextContent);
+        Assert.Single(cut.FindAll("[data-flare-chart-hit='category:1']"));
+        Assert.Empty(cut.FindAll("[data-flare-chart-hit='category:2']"));
+
+        cut.Render(p => p.Add(x => x.Data, new ChartData([new("First", [7, 8, 9, 10])], ["D", "E", "F", "G"])));
+
+        Assert.NotEqual(width, cut.Find(hit).GetAttribute("width"));
+        Assert.Equal(4, cut.FindAll("[data-flare-chart-hit]").Count);
+    }
+
+    [Fact]
     public void HiddenAndSparklineDataHaveNoOperableHits()
     {
         var cut = Render<FlareChart>(p => p.Add(x => x.Data, Data));

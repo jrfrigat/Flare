@@ -59,7 +59,7 @@ public partial class FlareDateTimePicker
     /// <summary>Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the
     /// calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture for the calendar and for writing and reading the value. Default = CurrentUICulture. The
+    /// <summary>Culture for the calendar and for writing and reading the value. Default = the current formatting culture. The
     /// calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist
     /// and Japanese cultures keep the Gregorian months and write their own years.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
@@ -185,7 +185,7 @@ public partial class FlareDateTimePicker
 
     // A calendar whose months are not the Gregorian grid's is swapped for Gregorian.
     // The culture on the calendar the picker shows and writes dates on.
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
     // The month the date pane shows, on the grid's calendar.
     private CalendarMonth _viewMonth => CalendarMonth.Of(_viewDate, _gridCalendar);
@@ -195,16 +195,15 @@ public partial class FlareDateTimePicker
     private string _format => string.IsNullOrEmpty(DateTimeFormat)
         ? $"{_culture.DateTimeFormat.ShortDatePattern} {(ShowSeconds ? _culture.DateTimeFormat.LongTimePattern : _culture.DateTimeFormat.ShortTimePattern)}"
         : DateTimeFormat;
-    private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Date segments in the culture's own order, so year-first cultures mask and parse too.
-    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + (ShowSeconds ? " HH:mm:ss" : " HH:mm");
+    private MaskedInput.DatePatternCache _datePattern;
+    private string _timeSuffix => ShowSeconds ? " HH:mm:ss" : " HH:mm";
+    private string _numericPattern => _datePattern.Get(_culture, _timeSuffix);
     // A format that shows the offset (z, K) edits it too, after the time: "15.10.2026 14:30 +05:00".
     private bool _editsOffset => _format.Contains('z') || _format.Contains('K');
-    private string _editPattern => _editsOffset ? _numericPattern + " zzz" : _numericPattern;
+    private string _editPattern => _datePattern.Get(_culture, _timeSuffix, _editsOffset);
     // Length of a complete edit: "zzz" renders as the 6 characters "+05:00".
     private int _editLength => _numericPattern.Length + (_editsOffset ? 7 : 0);
-
-    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     // Layout: Auto resolves to Panels on >= md (960px) viewports, Tabs otherwise.
     private DateTimeVariant _effectiveVariant => Mode switch

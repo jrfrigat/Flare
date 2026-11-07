@@ -10,8 +10,9 @@
 | --- | --- | --- | --- | --- | --- |
 | `ActionsContent` | `RenderFragment?` | `` | Parameter |  | Action buttons rendered in the dialog footer. |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible name for a header-less dialog (rendered as aria-label when Title is empty). Ignored when a title is present, since the title labels the dialog. |
-| `BeforeClose` | `Func<DialogCloseReason, ValueTask<bool>>?` | `` | Parameter |  | Optional guard consulted before a scrim / Escape / close-button dismissal. Return true to allow the close or false to veto it (e.g. to keep the dialog open while there are unsaved changes). |
+| `BeforeClose` | `Func<DialogCloseReason, ValueTask<bool>>?` | `` | Parameter |  | Optional guard consulted before UI, programmatic or internal-navigation closure. Return true to allow the close or false to veto it (e.g. to keep the dialog open while there are unsaved changes). |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main body content rendered inside the dialog. |
+| `CloseContext` | `DialogCloseContext?` | `` | Parameter |  | Shares registered close guards with a service handle. Null creates a context owned by this dialog. Descendants receive the active context as a cascading value. |
 | `CloseOnEsc` | `bool` | `true` | Parameter |  | Closes the dialog when the Escape key is pressed. |
 | `CloseOnNavigation` | `bool` | `true` | Parameter |  | Dismisses the dialog automatically when the app navigates to a new route. Default true. |
 | `CloseOnScrimClick` | `bool` | `true` | Parameter |  | Closes the dialog when the scrim backdrop is clicked. |
@@ -35,14 +36,14 @@
 
 ## Methods
 
+### `CloseAsync()`
+
+Checks the close guards before requesting visibility false. Returns false when hidden, disposed, vetoed, or another close request is pending. Changing Visible directly bypasses the guards because the parent owns that state.
+Returns: `Task<bool>`.
+
 ### `CloseFromEsc()`
 
 Returns: `Task`.
-
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
 
 
 ## Inheritance

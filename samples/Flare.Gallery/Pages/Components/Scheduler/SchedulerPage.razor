@@ -1,0 +1,15 @@
+@page "/components/scheduler"
+@inherits LocalizedPage
+@using System.Globalization
+
+<PageTitle>@GalleryStrings.Scheduler_Title - Flare</PageTitle>
+<GalleryPageTitle Api="FlareScheduler" Package="Flare.Components.Scheduler">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Scheduler_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Scheduler_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Scheduler_Interactive" DemoType="typeof(Examples.SchedulerViewsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Scheduler_Workspace" DemoType="typeof(Examples.SchedulerWorkspaceDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Scheduler_Inline" DemoType="typeof(Examples.SchedulerInlineDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Scheduler_Provider" DemoType="typeof(Examples.SchedulerProviderDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Scheduler_Recurrence" DemoType="typeof(Examples.SchedulerRecurrenceDemo)" />

@@ -37,6 +37,14 @@ public interface IDragDropJsService : IAsyncDisposable
     /// </summary>
     ValueTask ShowDropHintAsync(ElementReference root, string targetId, int index, string sourceId);
 
+    /// <summary>
+    /// Shows a model-order keyboard slot beside <paramref name="overId"/>, or at the zone's end when
+    /// null. A virtualized list declares its full count through <c>data-flare-virtual-count</c> so the
+    /// browser can reveal an unrendered slot. Existing adapters fall back to the rendered-order hint.
+    /// </summary>
+    ValueTask ShowDropHintAsync(ElementReference root, string targetId, int index, string sourceId, string? overId)
+        => ShowDropHintAsync(root, targetId, index, sourceId);
+
     /// <summary>Removes the keyboard reorder's insertion line.</summary>
     ValueTask HideDropHintAsync(ElementReference root);
 }

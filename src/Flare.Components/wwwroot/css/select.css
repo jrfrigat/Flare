@@ -1,5 +1,10 @@
 /* Root column layout comes from the shared field-family root (input.css). */
 
+/* Keep placement measurable, but do not expose a popup before dismissal and Escape are registered. */
+[data-flare-popup-pending] {
+    visibility: hidden !important;
+}
+
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error
    classes (see input.css); the select only styles its combobox trigger and dropdown below. */
 

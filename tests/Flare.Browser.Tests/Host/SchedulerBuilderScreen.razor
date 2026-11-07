@@ -1,0 +1,112 @@
+@page "/scheduler-builder"
+@using Flare.Components.Scheduler
+@inject IFlareLocalization Locale
+
+<FlareLocalizationProvider>
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <button id="reject" @onclick="() => _reject = !_reject">Refuse</button>
+    <button id="error" @onclick="() => _error = true">Fail once</button>
+    <button id="slow" @onclick="() => _slow = !_slow">Slow</button>
+    <button id="rtl" @onclick="() => _rtl = !_rtl">RTL</button>
+    <button id="timeline" @onclick="() => _view = SchedulerView.Timeline">Timeline</button>
+    <button id="external-more" @onclick="() => _externalMore = !_externalMore">External overflow</button>
+    <div id="builder" dir="@(_rtl ? "rtl" : "ltr")">
+    <FlareScheduler @ref="_source" TItem="SchedulerEventData" Events="_events" Mapping="SchedulerMappings.EventData"
+                    Date="_date" View="_view" TimeZone="TimeZoneInfo.Utc" Culture="@(CultureInfo.GetCultureInfo("en-GB"))"
+                    Editable OnChange="Change" OnEditRequested="_ => _requests++" OnEventSelected="OpenEvent">
+        <ChildContent Context="schedule">
+            <FlareSchedulerSurface TItem="SchedulerEventData" Context="schedule" Style="height:700px;--flare-scheduler-slot-height:40px;">
+                <Header Context="navigation">
+                    <button id="create" @onclick="() => navigation.Commands.CreateEventAsync(new(_start, _start.AddHours(1)))">New</button>
+                    <button id="next" @onclick="() => navigation.Commands.NavigateAsync(1)">Next</button>
+                </Header>
+                <ChildContent Context="view">
+                    @if (view.View == SchedulerView.Timeline)
+                    {
+                        <FlareSchedulerTimeline TItem="SchedulerEventData" Context="view" EventTemplate="EventBody" />
+                    }
+                    else
+                    {
+                        <FlareSchedulerTimeGrid TItem="SchedulerEventData" Context="view" EventTemplate="EventBody">
+                            <AllDayTemplate Context="band">
+                                <FlareSchedulerAllDay TItem="SchedulerEventData" Context="band.View" Dates="band.Dates" MaxRows="1" OnOverflow="ShowMore" />
+                            </AllDayTemplate>
+                        </FlareSchedulerTimeGrid>
+                    }
+                </ChildContent>
+            </FlareSchedulerSurface>
+            @if (schedule.Edit is { } edit)
+            {
+                <FlareDrawer Open="true" OpenChanged="open => open ? Task.CompletedTask : edit.CancelAsync()" Anchor="DrawerAnchor.Right"
+                             Width="min(30rem,100vw)" ContentPadding="FlareSpacing.Medium" CloseOnEsc="@(!edit.IsSaving)" CloseOnScrimClick="@(!edit.IsSaving)" AriaLabel="Custom event">
+                    <div id="editor" @onkeydown="EditKeys">
+                        <button id="language" @onclick="Cycle">Language</button>
+                        <button id="editor-reject" @onclick="() => _reject = !_reject">Refuse</button>
+                        <button id="editor-error" @onclick="() => _error = true">Fail once</button>
+                        <button id="editor-slow" @onclick="() => _slow = !_slow">Slow</button>
+                        <FlareSchedulerEditor TItem="SchedulerEventData" Context="edit" />
+                    </div>
+                </FlareDrawer>
+            }
+            else if (_overflow is { } more)
+            {
+                <FlareDrawer Open="true" OpenChanged="open => { if (!open) _overflow = null; }" Anchor="DrawerAnchor.Right" AriaLabel="Hidden events">
+                    <div id="hidden-events">@string.Join(",", more.Occurrences.Select(o => o.Identity))</div>
+                    <button id="close-more" @onclick="() => _overflow = null">Close</button>
+                </FlareDrawer>
+            }
+            <output id="date">@schedule.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</output>
+        </ChildContent>
+    </FlareScheduler>
+    </div>
+    <FlareScheduler TItem="SchedulerEventData" Mapping="SchedulerMappings.EventData" Date="_date" View="SchedulerView.Agenda">
+        <ChildContent Context="other"><output id="other-date">@other.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</output></ChildContent>
+    </FlareScheduler>
+    <output id="requests">@_requests</output>
+    <output id="submissions">@_submissions</output>
+    <output id="change">@_change</output>
+    <output id="original">@_events.First(e => e.Key == "one").Title</output>
+</FlareThemeProvider>
+</FlareLocalizationProvider>
+
+@code {
+    private readonly DateOnly _date = new(2026, 11, 4);
+    private readonly DateTimeOffset _start = new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero);
+    private SchedulerView _view = SchedulerView.Week;
+    private FlareScheduler<SchedulerEventData>? _source;
+    private bool _reject, _error, _slow, _rtl, _externalMore;
+    private int _requests, _submissions;
+    private string _change = "";
+    private SchedulerAllDayOverflow<SchedulerEventData>? _overflow;
+    private List<SchedulerEventData> _events = [];
+    protected override void OnInitialized()
+    {
+        Locale.SetCulture(CultureInfo.GetCultureInfo("en-GB"), CultureInfo.GetCultureInfo("en"));
+        _events = [new() { Key = "one", Title = "Planning", Start = _start, End = _start.AddHours(1) }];
+        for (var i = 0; i < 4; i++) _events.Add(new() { Key = $"day-{i}", Title = $"All-day {i}", AllDay = new(_date, _date.AddDays(2)) });
+    }
+    private RenderFragment<SchedulerEventContext<SchedulerEventData>> EventBody => item => @<div>
+        <button data-primary="@item.Occurrence.Identity" data-flare-edit-keys @onclick="item.SelectAsync" @onkeydown="item.HandleKeyAsync">@item.Occurrence.Data.Title</button>
+        <button data-secondary="@item.Occurrence.Identity" data-gantt-no-drag @onclick="item.EditAsync">Details</button>
+    </div>;
+    private Task OpenEvent(SchedulerOccurrence<SchedulerEventData> occurrence) => _source!.EditEventAsync(occurrence);
+    private async Task ShowMore(SchedulerAllDayOverflow<SchedulerEventData> more)
+    {
+        if (_externalMore) _overflow = more;
+        else await more.ShowAsync();
+    }
+    private void Cycle() => Locale.SetCulture(Locale.Culture, CultureInfo.GetCultureInfo(Locale.UICulture.TwoLetterISOLanguageName == "en" ? "ru" : "en"));
+    private void EditKeys(KeyboardEventArgs e) { if (e.CtrlKey && e.AltKey && e.Key.Equals("l", StringComparison.OrdinalIgnoreCase)) Cycle(); }
+    private async Task Change(SchedulerChangeEventArgs<SchedulerEventData> change)
+    {
+        _submissions++;
+        if (_slow) await Task.Delay(500);
+        if (_error) { _error = false; throw new InvalidOperationException("Persistence unavailable"); }
+        change.Cancel = _reject;
+        _change = $"{change.Action}:{change.Data.Start:HH:mm}-{change.Data.End:HH:mm}:{change.Scope}:{change.Cancel}";
+        if (change.Cancel) return;
+        if (change.Action == SchedulerEditAction.Delete) _events = _events.Where(e => e.Key != change.Data.Key).ToList();
+        else if (change.Action == SchedulerEditAction.Create) _events = [.. _events, change.Data];
+        else _events = _events.Select(e => e.Key == change.Data.Key ? change.Data : e).ToList();
+    }
+}

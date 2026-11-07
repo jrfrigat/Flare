@@ -1,0 +1,23 @@
+@page "/field-labels"
+
+<FlareThemeProvider />
+<button id="mode" @onclick="() => _searchable = !_searchable">Mode</button>
+<button id="rename" @onclick="Rename">Rename</button>
+<button id="readonly" @onclick="() => _readOnly = !_readOnly">Read only</button>
+<FlareTextField Label="Name" />
+<FlareTextField Label="Name" />
+<FlareSelect TValue="string" Label="@_caption" Searchable="_searchable" Items="_items" />
+<FlareMultiSelect TValue="string" Label="Choices" Searchable="_searchable" Items="_items" />
+<FlareCombobox TValue="string" Label="Editable" Items="_items" />
+<FlareTagField TValue="string" Label="Tags" ReadOnly="_readOnly" />
+<FlareSlider Label="Budget" Range="true" />
+<FlareDateRangePicker Label="Booking" />
+<FlareFormField Label="Contact"><FlareTextField Label="Email" /></FlareFormField>
+<FlareColorCustomizer />
+
+@code {
+    private bool _searchable, _readOnly;
+    private string _caption = "Choice";
+    private readonly string[] _items = ["One", "Two"];
+    private void Rename() => _caption = "Destination";
+}

@@ -17,6 +17,7 @@
                   Invalid="@(!string.IsNullOrEmpty(_displayedError))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
+                  LabelFor="@ComboboxInputAttributes.Id(InputAttributes, _controlId)"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
@@ -49,7 +50,7 @@
             @if (Clearable && !Disabled && !ReadOnly && (Current is not null || !string.IsNullOrEmpty(_state.Input)))
             {
                 <button type="button" class="@Css.Classes.Autocomplete.Clear"
-                        tabindex="-1" aria-label="@FlareStrings.Input_Clear"
+                        tabindex="-1" aria-label="@CoreText["Input_Clear"]"
                         @onmousedown:preventDefault="true" @onclick="HandleClearAsync">
                     <span aria-hidden="true">&#x2715;</span>
                 </button>
@@ -67,7 +68,7 @@
                    input (which would dismiss the popup before the click landed). *@
                 <button type="button" class="@Css.Classes.Autocomplete.Icon"
                         tabindex="-1"
-                        aria-label="@FlareStrings.Aria_ToggleList"
+                        aria-label="@CoreText["Aria_ToggleList"]"
                         aria-expanded="@(_state.IsOpen ? "true" : "false")"
                         aria-controls="@(_state.IsOpen ? _listboxId : null)"
                         disabled="@(Disabled || ReadOnly)"
@@ -99,7 +100,7 @@
                     <EmptyContent>
                         @if (!_searching && !string.IsNullOrEmpty(_state.Input))
                         {
-                            <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                            <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? CoreText["Field_NoResults"])</div>
                         }
                     </EmptyContent>
                 </FlareOptionList>

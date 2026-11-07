@@ -76,6 +76,9 @@
   <data name="DataGrid_RowsLabel" xml:space="preserve"><value>Rows:</value></data>
 
   <!-- Dialog / ConfirmDialog -->
+  <data name="Dialog_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Carousel_RoleDescription" xml:space="preserve"><value>carousel</value></data>
+  <data name="Dialog_No" xml:space="preserve"><value>No</value></data>
   <data name="Dialog_Confirm" xml:space="preserve"><value>Confirm</value></data>
   <data name="Dialog_Cancel" xml:space="preserve"><value>Cancel</value></data>
   <data name="Dialog_Ok" xml:space="preserve"><value>OK</value></data>
@@ -342,4 +345,17 @@
   <data name="Kanban_CardCount_Few" xml:space="preserve"><value>{0} cards</value></data>
   <data name="Kanban_CardCount_Many" xml:space="preserve"><value>{0} cards</value></data>
   <data name="QrCode_Label" xml:space="preserve"><value>QR code for: {0}</value></data>
+  <data name="DialogGuard_Title" xml:space="preserve"><value>Discard unsaved changes?</value></data>
+  <data name="DialogGuard_Message" xml:space="preserve"><value>Your changes have not been saved. Close this dialog and discard them?</value></data>
+  <data name="DialogGuard_Discard" xml:space="preserve"><value>Discard changes</value></data>
+  <data name="DialogGuard_KeepEditing" xml:space="preserve"><value>Keep editing</value></data>
+  <data name="Barcode_Error_Empty" xml:space="preserve"><value>The value is empty.</value></data>
+  <data name="Barcode_Error_AsciiOnly" xml:space="preserve"><value>Code 128 encodes ASCII only; '{0}' is outside it.</value></data>
+  <data name="Barcode_Error_DigitsOnly" xml:space="preserve"><value>Only digits can be encoded in this symbology.</value></data>
+  <data name="Barcode_Error_DigitCount" xml:space="preserve"><value>Expected {0} digits (or {1} with the check digit), got {2}.</value></data>
+  <data name="Barcode_Error_Code39Character" xml:space="preserve"><value>Code 39 cannot encode '{0}'.</value></data>
+  <data name="Barcode_Error_ItfDigitsOnly" xml:space="preserve"><value>ITF-14 encodes digits only.</value></data>
+  <data name="Barcode_Error_CodabarDelimiters" xml:space="preserve"><value>Codabar needs a start and stop letter A-D around the data.</value></data>
+  <data name="Barcode_Error_CodabarCharacter" xml:space="preserve"><value>Codabar cannot encode '{0}'.</value></data>
+  <data name="Barcode_Error_Unexpected" xml:space="preserve"><value>Cannot encode this value</value></data>
 </root>

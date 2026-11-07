@@ -1,18 +1,18 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web
 @inject Flare.Components.Services.IElementJsService ElementJs
 
 @* Keyboard entry of the time picker popup: the hour and minute as text fields labelled below, plus AM/PM on
    a 12-hour clock. The keyboard counterpart of FlareClockDial; the host switches between the two. *@
-<div class="@Css.Classes.TimeEntry.Root" role="group" aria-label="@FlareStrings.TimePicker_EnterTime">
+<div class="@Css.Classes.TimeEntry.Root" role="group" aria-label="@CoreText["TimePicker_EnterTime"]">
     <div class="@Css.Classes.TimeEntry.Field">
         <input @ref="_hourEl" id="@($"{_id}-h")" class="@InputClass(_hourInvalid)"
                type="text" inputmode="numeric" maxlength="2" autocomplete="off" value="@_hourText"
                aria-invalid="@(_hourInvalid ? "true" : null)"
                @oninput="OnHourInput" @onblur="OnHourBlur" @onkeyup="OnKey" />
-        <label class="@Css.Classes.TimeEntry.Label" for="@($"{_id}-h")">@FlareStrings.TimePicker_Hour</label>
+        <label class="@Css.Classes.TimeEntry.Label" for="@($"{_id}-h")">@CoreText["TimePicker_Hour"]</label>
     </div>
     <span class="@Css.Classes.ClockDial.TimeFieldsSep" aria-hidden="true">:</span>
     <div class="@Css.Classes.TimeEntry.Field">
@@ -20,7 +20,7 @@
                type="text" inputmode="numeric" maxlength="2" autocomplete="off" value="@_minuteText"
                aria-invalid="@(_minuteInvalid ? "true" : null)"
                @oninput="OnMinuteInput" @onblur="OnMinuteBlur" @onkeyup="OnKey" />
-        <label class="@Css.Classes.TimeEntry.Label" for="@($"{_id}-m")">@FlareStrings.TimePicker_Minute</label>
+        <label class="@Css.Classes.TimeEntry.Label" for="@($"{_id}-m")">@CoreText["TimePicker_Minute"]</label>
     </div>
     @if (!Is24Hour)
     {
@@ -44,7 +44,7 @@
     [Parameter] public EventCallback<int> MinuteChanged { get; set; }
     /// <summary>24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false.</summary>
     [Parameter] public bool Is24Hour { get; set; }
-    /// <summary>Culture for the AM/PM designators of the 12-hour entry. Default = CurrentUICulture.</summary>
+    /// <summary>Culture for the AM/PM designators of the 12-hour entry. Default = the current formatting culture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Raised when Enter is pressed in a field, so the host can confirm the time.</summary>
     [Parameter] public EventCallback Submitted { get; set; }
@@ -71,8 +71,8 @@
 
     private bool _isPm => Hour >= 12;
     private int _displayHour => Is24Hour ? Hour : (Hour % 12 == 0 ? 12 : Hour % 12);
-    private string _amText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.AMDesignator, "AM");
-    private string _pmText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.PMDesignator, "PM");
+    private string _amText => Nz((Culture ?? FormattingCulture).DateTimeFormat.AMDesignator, "AM");
+    private string _pmText => Nz((Culture ?? FormattingCulture).DateTimeFormat.PMDesignator, "PM");
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     private static string InputClass(bool invalid) =>

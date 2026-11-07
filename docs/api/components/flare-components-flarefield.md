@@ -66,6 +66,11 @@
 Removes keyboard focus from the field.
 Returns: `ValueTask`.
 
+### `FocusAsync()`
+
+Sets keyboard focus to this field's control.
+Returns: `ValueTask`.
+
 ### `SelectAsync()`
 
 Selects (highlights) all the text in the field.
@@ -86,6 +91,7 @@ Returns: `ValueTask`.
 
 - `FlareEditableFieldBase`
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

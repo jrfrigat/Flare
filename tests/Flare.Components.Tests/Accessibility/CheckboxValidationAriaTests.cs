@@ -51,6 +51,34 @@ public class CheckboxValidationAriaTests : FlareTestContext
     }
 
     [Fact]
+    public void LabelAndErrorAddedAfterMount_KeepStableAssociations()
+    {
+        var cut = Render<FlareCheckbox<bool>>();
+        Assert.Null(cut.Find("input").GetAttribute("aria-labelledby"));
+        Assert.Null(cut.Find("input").GetAttribute("aria-describedby"));
+
+        cut.Render(p => p.Add(x => x.Label, "Accept").Add(x => x.ErrorText, "Required"));
+        var labelId = cut.Find($".{Css.Classes.Checkbox.Label}").Id;
+        var errorId = cut.Find("[role=alert]").Id;
+        Assert.NotNull(labelId);
+        Assert.NotNull(errorId);
+        Assert.NotEmpty(labelId);
+        Assert.NotEmpty(errorId);
+        Assert.Equal(labelId, cut.Find("input").GetAttribute("aria-labelledby"));
+        Assert.Equal(errorId, cut.Find("input").GetAttribute("aria-describedby"));
+
+        cut.Render(p => p.Add(x => x.Label, (string?)null).Add(x => x.ErrorText, (string?)null));
+        Assert.Null(cut.Find("input").GetAttribute("aria-labelledby"));
+        Assert.Null(cut.Find("input").GetAttribute("aria-describedby"));
+
+        cut.Render(p => p.Add(x => x.Label, "Confirm").Add(x => x.ErrorText, "Please confirm"));
+        Assert.Equal(labelId, cut.Find($".{Css.Classes.Checkbox.Label}").Id);
+        Assert.Equal(errorId, cut.Find("[role=alert]").Id);
+        Assert.Equal(labelId, cut.Find("input").GetAttribute("aria-labelledby"));
+        Assert.Equal(errorId, cut.Find("input").GetAttribute("aria-describedby"));
+    }
+
+    [Fact]
     public void AValidationError_FromTheEditContext_AppearsAndClears()
     {
         var model = new Model();

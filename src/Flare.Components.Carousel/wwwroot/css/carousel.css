@@ -1,8 +1,8 @@
 .flare-carousel {
     position: relative;
     overflow: hidden;
-    border-radius: var(--flare-carousel-radius);
-    background: var(--flare-carousel-bg);
+    border-radius: var(--flare-carousel-radius, var(--flare-shape-medium));
+    background: var(--flare-carousel-bg, var(--flare-color-surface-container-low));
     user-select: none;
 }
 
@@ -14,7 +14,7 @@
 .flare-carousel__track {
     display: flex;
     transform: translateX(calc(var(--_carousel-index, 0) * -100%));
-    transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized, ease);
+    transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized);
     will-change: transform;
 }
 
@@ -39,28 +39,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--flare-carousel-arrow-size);
-    height: var(--flare-carousel-arrow-size);
-    border-radius: var(--flare-carousel-arrow-radius);
-    background: var(--flare-carousel-arrow-bg);
-    color: var(--flare-carousel-arrow-color);
-    border: var(--flare-carousel-arrow-border);
+    width: var(--flare-carousel-arrow-size, var(--flare-spacing-20));
+    height: var(--flare-carousel-arrow-size, var(--flare-spacing-20));
+    border-radius: var(--flare-carousel-arrow-radius, var(--flare-shape-full));
+    background: var(--flare-carousel-arrow-bg, color-mix(in srgb, var(--flare-color-surface) 85%, transparent));
+    color: var(--flare-carousel-arrow-color, var(--flare-color-on-surface));
+    border: var(--flare-carousel-arrow-border, var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline-variant));
     cursor: pointer;
     transition: background var(--flare-motion-duration-state-change);
-    backdrop-filter: blur(var(--flare-carousel-arrow-blur));
+    backdrop-filter: blur(var(--flare-carousel-arrow-blur, 0));
 }
 
 .flare-carousel__arrow:hover:not(:disabled) {
-    background: var(--flare-carousel-arrow-bg-hover);
+    background: var(--flare-carousel-arrow-bg-hover, color-mix(in srgb, var(--flare-color-on-surface) 12%, var(--flare-color-surface)));
 }
 
 .flare-carousel__arrow:disabled {
-    opacity: var(--flare-carousel-arrow-disabled-opacity);
+    opacity: var(--flare-carousel-arrow-disabled-opacity, var(--flare-state-disabled-opacity));
     cursor: default;
 }
 
-.flare-carousel__arrow--prev { inset-inline-start: var(--flare-carousel-arrow-inset); }
-.flare-carousel__arrow--next { inset-inline-end: var(--flare-carousel-arrow-inset); }
+.flare-carousel__arrow--prev { inset-inline-start: var(--flare-carousel-arrow-inset, var(--flare-spacing-4)); }
+.flare-carousel__arrow--next { inset-inline-end: var(--flare-carousel-arrow-inset, var(--flare-spacing-4)); }
 
 /* A chevron points towards the reading start; in RTL that is the right side, so the glyph is mirrored. */
 .flare-carousel__arrow:dir(rtl) .flare-icon {
@@ -70,26 +70,26 @@
 /* Keyboard focus ring (owned here since Carousel is its own package). */
 .flare-carousel__arrow:focus-visible,
 .flare-carousel__dot:focus-visible {
-    outline: var(--flare-carousel-focus-ring);
-    outline-offset: var(--flare-carousel-focus-ring-offset);
+    outline: var(--flare-carousel-focus-ring, var(--flare-focus-ring));
+    outline-offset: var(--flare-carousel-focus-ring-offset, var(--flare-spacing-1));
 }
 
 /* Dot indicators */
 .flare-carousel__dots {
     position: absolute;
-    bottom: var(--flare-carousel-dots-bottom);
+    bottom: var(--flare-carousel-dots-bottom, var(--flare-spacing-6));
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: var(--flare-carousel-dots-gap);
+    gap: var(--flare-carousel-dots-gap, var(--flare-spacing-3));
     z-index: 10;
 }
 
 .flare-carousel__dot {
-    width: var(--flare-carousel-dot-size);
-    height: var(--flare-carousel-dot-size);
+    width: var(--flare-carousel-dot-size, var(--flare-spacing-4));
+    height: var(--flare-carousel-dot-size, var(--flare-spacing-4));
     border-radius: var(--flare-shape-full);
-    background: var(--flare-carousel-dot-bg);
+    background: var(--flare-carousel-dot-bg, color-mix(in srgb, var(--flare-color-on-surface) 40%, transparent));
     border: none;
     cursor: pointer;
     padding: 0;
@@ -98,6 +98,6 @@
 }
 
 .flare-carousel__dot--active {
-    width: var(--flare-carousel-dot-active-width);
-    background: var(--flare-carousel-dot-active-bg);
+    width: var(--flare-carousel-dot-active-width, var(--flare-spacing-10));
+    background: var(--flare-carousel-dot-active-bg, var(--flare-color-primary));
 }

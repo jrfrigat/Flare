@@ -1,0 +1,34 @@
+@using Flare.Components.Scheduler
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText>@GalleryStrings.Scheduler_ProviderHint</FlareText>
+    <FlareStack Height="32rem">
+        <FlareScheduler TItem="SchedulerEventData" Mapping="SchedulerMappings.EventData" EventsProvider="Load"
+                        TimeZone="TimeZoneInfo.Utc" View="SchedulerView.Agenda" />
+    </FlareStack>
+    <FlareText role="status">@_status</FlareText>
+</FlareStack>
+
+@code {
+    private static readonly DateOnly SourceStart = new(2010, 1, 1);
+    private const int SourceCount = 50000;
+    private string? _status;
+    private async Task<IEnumerable<SchedulerEventData>> Load(SchedulerDataRequest request)
+    {
+        await Task.Delay(80, request.CancellationToken);
+        var first = Math.Clamp(request.Window.Dates.Start.DayNumber - SourceStart.DayNumber, 0, SourceCount);
+        var end = Math.Clamp(request.Window.Dates.End.DayNumber - SourceStart.DayNumber, first, SourceCount);
+        var result = Enumerable.Range(first, end - first).Select(index =>
+        {
+            var start = new DateTimeOffset(SourceStart.AddDays(index).ToDateTime(new TimeOnly(9, 0)), TimeSpan.Zero);
+            return new SchedulerEventData
+            {
+                Key = $"server-{index}", Title = GalleryStrings.Scheduler_Standup,
+                Start = start, End = start.AddMinutes(30), SeriesKey = "daily", RecurrenceId = $"server-{index}"
+            };
+        }).ToArray();
+        _status = string.Format(GalleryStrings.Scheduler_ProviderStatus, SourceCount, result.Length,
+            request.Window.Dates.Start.ToDateTime(TimeOnly.MinValue), request.Window.Dates.End.ToDateTime(TimeOnly.MinValue));
+        return result;
+    }
+}

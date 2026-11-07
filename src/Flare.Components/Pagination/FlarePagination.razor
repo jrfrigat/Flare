@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <nav class="@BuildCssClass(_sizeClass, _colorClass)" style="@_inlineStyle" aria-label="@_navAriaLabel" @attributes="AdditionalAttributes">
     @if (ShowInfo && TotalItems > 0)
@@ -19,14 +19,14 @@
             }
             else
             {
-                @(string.Format(FlareStrings.Pagination_Range, _infoFrom, _infoTo, TotalItems))
+                @(string.Format(CoreText["Pagination_Range"], _infoFrom, _infoTo, TotalItems))
             }
         </span>
     }
     @if (RowsPerPageOptions is { Length: > 0 })
     {
         <label class="@Css.Classes.Pagination.Rows" for="@_rowsId">
-            <span class="@Css.Classes.Pagination.RowsLabel">@(FlareStrings.DataGrid_RowsLabel)</span>
+            <span class="@Css.Classes.Pagination.RowsLabel">@(CoreText["DataGrid_RowsLabel"])</span>
             <select id="@_rowsId" class="@Css.Classes.Pagination.RowsSelect" value="@PageSize" @onchange="HandlePageSizeChange">
                 @foreach (var opt in RowsPerPageOptions)
                 {
@@ -39,13 +39,13 @@
     {
         <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
                 disabled="@(_displayPage <= 1)"
-                aria-label="@(FlareStrings.Pagination_First)"
+                aria-label="@(CoreText["Pagination_First"])"
                 @onclick="@(() => GoTo(1))">«</button>
     }
 
     <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
             disabled="@(_displayPage <= 1)"
-            aria-label="@(FlareStrings.Pagination_Prev)"
+            aria-label="@(CoreText["Pagination_Prev"])"
             @onclick="@(() => GoTo(_displayPage - 1))">‹</button>
 
     @foreach (var page in _pageNumbers)
@@ -58,7 +58,7 @@
         {
             var p = page.Value;
             <button type="button" class="@Css.Classes.Pagination.Btn @(p == _displayPage ? Css.Classes.Pagination.BtnActive : "")"
-                    aria-label="@(string.Format(FlareStrings.Pagination_Page, p))"
+                    aria-label="@(string.Format(CoreText["Pagination_Page"], p))"
                     aria-current="@(p == _displayPage ? "page" : null)"
                     @onclick="@(() => GoTo(p))">@p</button>
         }
@@ -66,14 +66,14 @@
 
     <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
             disabled="@(_displayPage >= TotalPages)"
-            aria-label="@(FlareStrings.Pagination_Next)"
+            aria-label="@(CoreText["Pagination_Next"])"
             @onclick="@(() => GoTo(_displayPage + 1))">›</button>
 
     @if (ShowFirstLast)
     {
         <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
                 disabled="@(_displayPage >= TotalPages)"
-                aria-label="@(FlareStrings.Pagination_Last)"
+                aria-label="@(CoreText["Pagination_Last"])"
                 @onclick="@(() => GoTo(TotalPages))">»</button>
     }
 </nav>
@@ -116,7 +116,7 @@
 
     private readonly string _rowsId = $"flare-pagination-rows-{Guid.NewGuid():N}";
 
-    private string _navAriaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (FlareStrings.Nav_Pagination);
+    private string _navAriaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (CoreText["Nav_Pagination"]);
 
     private string _sizeClass => Size switch
     {

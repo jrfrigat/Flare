@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IUiJsService Ui
 
@@ -26,7 +26,7 @@
                 {
                     <li class="@Css.Classes.Breadcrumb.Item">
                         <button type="button" class="@Css.Classes.Breadcrumb.Expander"
-                                aria-label="@(FlareStrings.Breadcrumb_Expand)"
+                                aria-label="@(CoreText["Breadcrumb_Expand"])"
                                 @onclick="Expand">...</button>
                         <span class="@Css.Classes.Breadcrumb.Separator" aria-hidden="true">@Separator</span>
                     </li>
@@ -128,5 +128,5 @@
         catch (JSException) { }
     }
 
-    private string _ariaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (FlareStrings.Nav_Breadcrumb);
+    private string _ariaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (CoreText["Nav_Breadcrumb"]);
 }

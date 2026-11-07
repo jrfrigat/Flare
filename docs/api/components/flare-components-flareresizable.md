@@ -12,17 +12,19 @@
 | `Edge` | `ResizableEdge` | `ResizableEdge.Right` | Parameter |  | Which edge carries the drag handle. Default Right (width). |
 | `InitialSize` | `string?` | `` | Parameter |  | Initial size as a CSS length (for example 300px or 20rem), applied along the edge's axis: width for left/right, height for top/bottom. |
 | `MaxSize` | `string?` | `` | Parameter |  | Maximum size, with the same units and resolution as MinSize. A value below the resolved minimum is raised to it, so the range is never inverted. |
-| `MinSize` | `string?` | `` | Parameter |  | Minimum size as a CSS length. px, rem, em, %, vw and vh are resolved against the parent box (percentages) or the viewport; an unsupported value is ignored rather than treated as pixels. The handle's own footprint is always a floor. |
+| `MinSize` | `string?` | `` | Parameter |  | Minimum size as a CSS length. px, rem, em, %, vw and vh are resolved against the parent box (percentages) or the viewport. CSS var(), calc(), min(), max() and clamp() resolve in the element's CSS context; an unsupported value is ignored rather than treated as pixels. The handle's own footprint is always a floor. |
 | `OnResized` | `EventCallback<string>` | `` | Callback |  | Invoked with the resulting size in pixels (for example 256px) after a drag, a step button, or Home/End. |
+| `ShowControls` | `bool` | `true` | Parameter |  | Shows single-click size buttons. A compact composition can hide them while retaining the keyboard-accessible handle. |
+| `Step` | `string?` | `` | Parameter |  | CSS length added by arrow keys and single-click controls. Null keeps the 16px step; supports token expressions. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
-### `DisposeAsync()`
+### `FocusAsync()`
 
-Disposes the component; override to release JS interop or subscriptions.
+Moves keyboard focus to the resize handle.
 Returns: `ValueTask`.
 
 ### `OnResizedCallback(string newSize)`
@@ -36,6 +38,7 @@ Returns: `Task`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

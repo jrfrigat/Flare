@@ -1,0 +1,45 @@
+@page "/file-upload"
+@using Microsoft.AspNetCore.Components.Forms
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false" />
+<button id="manual" @onclick="() => _auto = false">Manual</button>
+<button id="disabled" @onclick="() => _disabled = !_disabled">Disabled</button>
+<button id="fail" @onclick="() => _fail = true">Fail next</button>
+<button id="start" @onclick="Start">Start</button>
+<button id="single" @onclick="() => _multiple = false">Single file</button>
+<FlareFileUploadZone @ref="_zone" id="upload-zone" Multiple="_multiple" ShowFileList Auto="_auto" Disabled="_disabled"
+                     Uploader="Upload" OnFilesChanged="Selected" OnAllCompleted="() => _finished++" Style="padding:16px;max-width:36rem" />
+<FlareFileUploadButton id="upload-button" OnFilesChanged="Selected" />
+<div id="selections">@_selections</div>
+<div id="bytes">@_bytes</div>
+<div id="finished">@_finished</div>
+<div id="selected-count">@_selectedCount</div>
+
+@code {
+    private FlareFileUploadZone? _zone;
+    private bool _auto = true, _multiple = true, _disabled, _fail;
+    private int _selections, _finished, _selectedCount;
+    private long _bytes;
+    private void Selected(IReadOnlyList<IBrowserFile> files) { _selections++; _selectedCount = files.Count; }
+    private Task Start() => _zone!.UploadAsync();
+    private async Task Upload(FlareUploadContext context)
+    {
+        await using var stream = context.File.OpenReadStream(2_000_000, context.CancellationToken);
+        var buffer = new byte[4096];
+        long sent = 0;
+        int read;
+        while ((read = await stream.ReadAsync(buffer, context.CancellationToken)) > 0)
+        {
+            await Task.Delay(80, context.CancellationToken);
+            sent += read;
+            context.Progress.Report(sent);
+            if (_fail && sent >= context.File.Size / 2)
+            {
+                _fail = false;
+                throw new InvalidOperationException("Transfer refused");
+            }
+        }
+        _bytes += sent;
+        await InvokeAsync(StateHasChanged);
+    }
+}

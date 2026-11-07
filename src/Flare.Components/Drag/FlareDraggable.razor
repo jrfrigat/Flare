@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* Focusable when the context reorders from the keyboard, because an item you can only move with a
    pointer is a control half the readers cannot use. aria-roledescription is what tells a screen reader
@@ -10,7 +10,7 @@
      data-flare-drag-group="@_group"
      data-flare-drag-disabled="@(Disabled ? "true" : null)"
      tabindex="@(_keyboard ? "0" : null)"
-     aria-roledescription="@(_keyboard ? FlareStrings.Drag_Reorderable : null)"
+     aria-roledescription="@(_keyboard ? CoreText["Drag_Reorderable"].Value : null)"
      aria-grabbed="@(_keyboard ? (_picked ? "true" : "false") : null)"
      @onkeydown="HandleKeyAsync"
      @attributes="AdditionalAttributes">

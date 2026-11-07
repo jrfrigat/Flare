@@ -10,14 +10,14 @@ public interface IMessageBoxService
 {
     /// <summary>Shows a prompt dialog with a text input. Returns null if cancelled.</summary>
     Task<string?> PromptAsync(string title, string label = "", string defaultValue = "",
-        string confirmLabel = "OK", string cancelLabel = "Cancel");
+        string? confirmLabel = null, string? cancelLabel = null);
 
     /// <summary>Shows a confirmation dialog. Returns true when the user confirms, false when cancelled.</summary>
     Task<bool> ConfirmAsync(string title, string message = "",
-        string confirmLabel = "Yes", string cancelLabel = "No");
+        string? confirmLabel = null, string? cancelLabel = null);
 
     /// <summary>Shows an information alert dialog. Returns when the user dismisses it.</summary>
-    Task AlertAsync(string title, string message = "", string confirmLabel = "OK");
+    Task AlertAsync(string title, string message = "", string? confirmLabel = null);
 
     /// <summary>Raised when the pending request changes, so the host component can re-render.</summary>
     event Action? OnStateChanged;
@@ -49,13 +49,13 @@ public enum MessageBoxKind
 /// <param name="Title">Dialog title.</param>
 /// <param name="Label">Input label (prompt) or body message.</param>
 /// <param name="DefaultValue">Initial value for the prompt input.</param>
-/// <param name="ConfirmLabel">Label for the confirm/OK button.</param>
-/// <param name="CancelLabel">Label for the cancel button.</param>
+/// <param name="ConfirmLabel">Explicit confirm caption; null uses the host's live localized default.</param>
+/// <param name="CancelLabel">Explicit cancel caption; null uses the host's live localized default.</param>
 /// <param name="Kind">Which message-box variant to render.</param>
 public sealed record MessageBoxRequest(
     string Title,
     string Label,
     string DefaultValue,
-    string ConfirmLabel,
-    string CancelLabel,
+    string? ConfirmLabel,
+    string? CancelLabel,
     MessageBoxKind Kind = MessageBoxKind.Prompt);

@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text;
 
 namespace Flare.Components;
 
@@ -16,19 +15,23 @@ public partial class FlareDateTimePicker
         var need = _numericPattern.Count(char.IsLetter);
         var seen = 0;
         var sign = '\0';
-        var digits = new StringBuilder(4);
+        Span<char> offset = stackalloc char[5];
+        var written = 0;
         foreach (var c in raw)
         {
             if (char.IsDigit(c))
             {
                 if (seen < need) seen++;
-                else if (digits.Length < 4) digits.Append(c);
+                else if (written < offset.Length)
+                {
+                    if (written == 2) offset[written++] = ':';
+                    offset[written++] = c;
+                }
             }
             else if (seen == need && sign == '\0' && (c is '+' or '-')) sign = c;
         }
-        if (seen < need || (sign == '\0' && digits.Length == 0)) return masked;
-        var offset = digits.Length <= 2 ? digits.ToString() : $"{digits.ToString(0, 2)}:{digits.ToString(2, digits.Length - 2)}";
-        return $"{masked} {(sign == '\0' ? '+' : sign)}{offset}";
+        if (seen < need || (sign == '\0' && written == 0)) return masked;
+        return string.Concat(masked, sign == '-' ? " -" : " +", offset[..written]);
     }
 
     // Text edits the wall date and time only: the offset and the ticks the pattern cannot show come from the

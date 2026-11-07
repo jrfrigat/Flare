@@ -1,12 +1,12 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <header class="@BuildCssClass(_denseClass)" style="@_style" @attributes="AdditionalAttributes">
     @if (DrawerToggle)
     {
         <button class="@ToggleStateClasses @(_isOpen ? Css.Classes.Layout.AppbarToggleOpen : null)"
                 @onclick="ToggleDrawer"
-                aria-label="@(FlareStrings.Aria_ToggleDrawer)"
+                aria-label="@(CoreText["Aria_ToggleDrawer"])"
                 aria-expanded="@(_isOpen ? "true" : "false")"
                 type="button">
             <span class="@Css.Classes.Burger.Root" aria-hidden="true">

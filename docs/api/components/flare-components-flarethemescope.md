@@ -19,10 +19,7 @@ Re-themes one subtree without disturbing the rest of the app - a dark toolbar ov
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

@@ -11,27 +11,27 @@ public enum MenuActivation
 }
 
 /// <summary>
-/// Corner of the activator that the <see cref="FlareMenu"/> dropdown panel aligns to,
-/// and the direction in which it opens. Logical (RTL-aware) aliases are also provided.
+/// Logical edge of the activator that the <see cref="FlareMenu"/> dropdown panel aligns to,
+/// and the direction in which it opens. Start is left in LTR and right in RTL; end is the opposite.
+/// Prefer the Start/End names. The Left/Right names are retained for compatibility and also follow text direction.
 /// </summary>
 public enum MenuAnchor
 {
-    /// <summary>Panel opens below the activator, aligned to the left / start edge.</summary>
+    /// <summary>Compatibility name for <see cref="BottomStart"/>. Opens below at logical start: left in LTR, right in RTL.</summary>
     BottomLeft,
-    /// <summary>Panel opens below the activator, aligned to the right / end edge.</summary>
+    /// <summary>Compatibility name for <see cref="BottomEnd"/>. Opens below at logical end: right in LTR, left in RTL.</summary>
     BottomRight,
-    /// <summary>Panel opens above the activator, aligned to the left / start edge.</summary>
+    /// <summary>Compatibility name for <see cref="TopStart"/>. Opens above at logical start: left in LTR, right in RTL.</summary>
     TopLeft,
-    /// <summary>Panel opens above the activator, aligned to the right / end edge.</summary>
+    /// <summary>Compatibility name for <see cref="TopEnd"/>. Opens above at logical end: right in LTR, left in RTL.</summary>
     TopRight,
 
-    // Logical (RTL-aware) aliases
-    /// <summary>Alias for <see cref="BottomLeft"/> - panel opens below, start-aligned.</summary>
+    /// <summary>Opens below at logical start: left in LTR, right in RTL.</summary>
     BottomStart = BottomLeft,
-    /// <summary>Alias for <see cref="BottomRight"/> - panel opens below, end-aligned.</summary>
+    /// <summary>Opens below at logical end: right in LTR, left in RTL.</summary>
     BottomEnd = BottomRight,
-    /// <summary>Alias for <see cref="TopLeft"/> - panel opens above, start-aligned.</summary>
+    /// <summary>Opens above at logical start: left in LTR, right in RTL.</summary>
     TopStart = TopLeft,
-    /// <summary>Alias for <see cref="TopRight"/> - panel opens above, end-aligned.</summary>
+    /// <summary>Opens above at logical end: right in LTR, left in RTL.</summary>
     TopEnd = TopRight,
 }

@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* The tree's own drag-and-drop is gone: it is a FlareDragContext now, and every branch is a drop zone
    with Both placement - the thirds of a row, which is where before/inside/after came from in the first
@@ -63,7 +63,9 @@
     // [Parameter]s are applied before OnInitialized, and the cascade is fixed, matching the prior behaviour.
     private FlareTreeContext _treeContext = default!;
 
-    private string _announcement = "";
+    private string? _announcementKey;
+    private object[] _announcementArguments = [];
+    private string _announcement => _announcementKey is null ? "" : CoreText[_announcementKey, _announcementArguments].Value;
 
     protected override void OnInitialized()
     {
@@ -73,9 +75,10 @@
             Draggable = Draggable,
             DragRegistry = _dragRegistry,
             OnItemDrop = OnItemDrop,
-            Announce = text =>
+            Announce = (key, arguments) =>
             {
-                _announcement = text;
+                _announcementKey = key;
+                _announcementArguments = arguments;
                 StateHasChanged();
             },
         };

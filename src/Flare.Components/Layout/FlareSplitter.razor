@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.ISplitterJsService SplitterJs
 
@@ -10,14 +10,16 @@
      role="separator"
      tabindex="0"
      aria-orientation="@_ariaOrientation"
-     aria-label="@(AriaLabel ?? FlareStrings.Splitter_Resize)"
+     aria-label="@(AriaLabel ?? CoreText["Splitter_Resize"])"
      style="@_rootStyle"
      @ref="_gutter"
      data-flare-splitter-keyboard-step="@KeyboardStep"
+     data-flare-splitter-large-step="@KeyboardLargeStep" data-flare-splitter-reverse="@(Reverse ? "true" : null)"
      data-flare-splitter-orientation="@_axis"
      data-flare-splitter-min="@MinSize" data-flare-splitter-max="@MaxSize"
-     data-flare-splitter-variable="@(Value is null ? null : ValueVariable)" data-flare-splitter-scope="@(Value is null ? null : ValueScope)"
-     data-flare-splitter-value="@Number(Value)" data-flare-splitter-default="@(Value is null ? null : Number(DefaultValue))"
+     data-flare-splitter-variable="@(_valueMode ? ValueVariable : null)" data-flare-splitter-scope="@(_valueMode ? ValueScope : null)"
+     data-flare-splitter-target="@ValueTarget"
+     data-flare-splitter-value="@(_valueMode ? Number(Value) ?? string.Empty : null)" data-flare-splitter-default="@(_valueMode ? Number(DefaultValue) : null)"
      aria-valuenow="@Number(Value)" aria-valuemin="@(Value is null ? null : Number(Px(MinSize) ?? 0))"
      aria-valuemax="@(Value is null ? null : Number(Px(MaxSize)))"
      @attributes="AdditionalAttributes">
@@ -38,9 +40,9 @@
         <span class="@Css.Classes.Splitter.GutterBar" aria-hidden="true"></span>
     }
     <span class="@Css.Classes.Splitter.StepDecrease" data-flare-splitter-step="-1" aria-hidden="true"
-          title="@FlareStrings.Resize_Decrease">-</span>
+          title="@CoreText["Resize_Decrease"]">-</span>
     <span class="@Css.Classes.Splitter.StepIncrease" data-flare-splitter-step="1" aria-hidden="true"
-          title="@FlareStrings.Resize_Increase">+</span>
+          title="@CoreText["Resize_Increase"]">+</span>
 </div>
 
 @code {
@@ -64,11 +66,23 @@
     /// <summary>Minimum size in pixels (e.g. "120px") that either neighbour may be dragged to. Optional.</summary>
     [Parameter] public string? MinSize { get; set; }
 
-    /// <summary>Maximum size in pixels (e.g. "600px") for the previous (left/top) neighbour. Optional.</summary>
+    /// <summary>Maximum size in pixels (e.g. "600px") for the previous (left/top) neighbour. In value mode,
+    /// a percentage is relative to the width or height of <see cref="ValueScope"/>. Optional.</summary>
     [Parameter] public string? MaxSize { get; set; }
 
     /// <summary>Keyboard step (px) applied when the handle is focused and arrowed. Default 16.</summary>
     [Parameter] public int KeyboardStep { get; set; } = 16;
+
+    /// <summary>Step in pixels for Shift+arrow in value mode. Null uses <see cref="KeyboardStep"/>.</summary>
+    [Parameter] public int? KeyboardLargeStep { get; set; }
+
+    /// <summary>Reverses value-mode drag and arrow direction, for a trailing or bottom region.</summary>
+    [Parameter] public bool Reverse { get; set; }
+
+    /// <summary>Selector of an element within <see cref="ValueScope"/> whose measured length supplies the current
+    /// value. Enables value mode even without <see cref="Value"/>, so initial sizes in rem or percent remain valid.
+    /// The browser writes <see cref="ValueVariable"/>; the host applies the final size from <see cref="OnSizeChanged"/>.</summary>
+    [Parameter] public string? ValueTarget { get; set; }
 
     /// <summary>Accessible label for the resize handle. Null uses the localized default.</summary>
     [Parameter] public string? AriaLabel { get; set; }
@@ -119,6 +133,8 @@
 
     /// <summary>Selector of the ancestor that carries <see cref="ValueVariable"/>; the separator's parent when null.</summary>
     [Parameter] public string? ValueScope { get; set; }
+
+    private bool _valueMode => Value is not null || ValueTarget is not null;
 
     protected override string ComponentCssClass => Css.Classes.Splitter.Root;
 

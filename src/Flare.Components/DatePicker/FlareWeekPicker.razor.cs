@@ -27,7 +27,7 @@ public partial class FlareWeekPicker
     [Parameter] public DateOnly? Max { get; set; }
     /// <summary>Predicate that disables specific dates; a week whose every day is disabled cannot be picked.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture for the calendar, the week rule and the field. Default = CurrentUICulture. The calendar follows
+    /// <summary>Culture for the calendar, the week rule and the field. Default = the current formatting culture. The calendar follows
     /// the culture's own (Persian for fa-IR); ISO weeks are always Gregorian.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>The calendar to show dates on instead of the culture's own; only one the culture offers among its
@@ -90,7 +90,7 @@ public partial class FlareWeekPicker
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-weekpicker-{Guid.NewGuid():N}");
     private PickerViews? _viewState;
-    private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled);
+    private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled, () => CoreText);
     private bool _open;
 
     // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
@@ -106,13 +106,13 @@ public partial class FlareWeekPicker
     private string? _syncedText;
     private DateOnly? _focusedDate;
 
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private DayOfWeek _firstDay => IsoWeeks ? DayOfWeek.Monday : FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
     private DateOnly? _start => Value is { } v ? WeekStart(v) : null;
     private DateOnly FocusedCursor => _focusedDate ?? _start ?? Today;
     private bool _invalid => HasError || !string.IsNullOrEmpty(DisplayedErrorText);
-    private string _format => IsoWeeks ? "yyyy-Www" : string.Format(_culture, FlareStrings.WeekPicker_Value, "N", _culture.DateTimeFormat.Calendar.GetYear(DateTime.Today));
+    private string _format => IsoWeeks ? "yyyy-Www" : string.Format(_culture, CoreText["WeekPicker_Value"], "N", _culture.DateTimeFormat.Calendar.GetYear(DateTime.Today));
     private string DisplayValue => _start is { } s ? WeekText(s) : string.Empty;
 
     private int Weekday(DateOnly day) => ((int)day.DayOfWeek - (int)_firstDay + 7) % 7;
@@ -131,7 +131,7 @@ public partial class FlareWeekPicker
         var year = supported ? calendar.GetYear(at) : start.Year;
         var week = (supported ? calendar : CalendarMath.Gregorian).GetWeekOfYear(
             at, _culture.DateTimeFormat.CalendarWeekRule, _firstDay);
-        return string.Format(_culture, FlareStrings.WeekPicker_Value, week, year);
+        return string.Format(_culture, CoreText["WeekPicker_Value"], week, year);
     }
 
     private bool IsDisabled(DateOnly d) =>

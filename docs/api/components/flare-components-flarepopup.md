@@ -27,11 +27,6 @@ The anchored dropdown panel for the select family (see the markup partial for th
 Invoked from JS when a pointer-down outside the widget or a focus-out escaping it occurs.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `ScrollOptionIntoViewAsync(string optionId)`
 
 Scrolls the option element with optionId into view within the panel.

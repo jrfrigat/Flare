@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Field content (input, select, etc.). |
-| `For` | `string?` | `` | Parameter |  | ID of the input element this label targets (HTML for attribute). |
+| `For` | `string?` | `` | Parameter |  | ID of the native control targeted by the label. Without it, names the content as a group. |
 | `HelperText` | `string?` | `` | Parameter |  | Helper text shown below the field control. |
 | `Label` | `string?` | `` | Parameter |  | Label text shown above the field control. |
 | `Required` | `bool` | `false` | Parameter |  | Marks the field as required, adding a visual indicator. |

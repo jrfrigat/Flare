@@ -19,14 +19,11 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Removes this item from its drag context.
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

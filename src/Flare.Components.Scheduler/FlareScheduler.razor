@@ -1,0 +1,11 @@
+@typeparam TItem
+@inherits FlareLocalizedComponentBase
+
+@if (ChildContent is not null) { @ChildContent(Snapshot) }
+else
+{
+    <FlareSchedulerSurface TItem="TItem" Context="Snapshot" Class="@Class" Style="@Style" @attributes="AdditionalAttributes">
+        <Header Context="context"><FlareSchedulerToolbar TItem="TItem" Context="context" /></Header>
+    </FlareSchedulerSurface>
+    @if (!OnEditRequested.HasDelegate) { <FlareSchedulerDialog TItem="TItem" Context="ActiveEdit" /> }
+}

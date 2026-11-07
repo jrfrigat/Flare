@@ -30,7 +30,6 @@
 | `SelectedKeyChanged` | `EventCallback<string?>` | `` | Callback |  | Raised when the selection changes. |
 | `SideWidth` | `string` | `"16rem"` | Parameter |  | Width of the row-header column as a CSS length. |
 | `SideWidthChanged` | `EventCallback<string>` | `` | Callback |  | Raised with the new row-header width as a CSS length in pixels when the user has dragged the edge, used a key on it or a step. |
-| `Texts` | `GanttTexts?` | `` | Parameter |  | Texts to replace in announcements, refusals and labels; every text not set here comes from the package resources in Culture. |
 | `UnitWidth` | `double` | `40` | Parameter |  | Width of one axis unit in pixels. |
 | `Virtualize` | `bool` | `false` | Parameter |  | Renders only the rows near the visible part of each panel (plus a margin): a chart of hundreds of rows then costs as much as one screen of them. Needs the browser to report what is visible; until it does, the first screen is drawn. The window is cut from the chart's own layout rather than by Blazor's Virtualize: rows have different heights (one lane per overlapping bar) and the connectors are drawn at the rows' exact positions, while Virtualize places rows by an estimated size. The browser reports the vertical and horizontal view in one call per scroll, so a scroll costs one round trip on Blazor Server. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
@@ -60,11 +59,6 @@ Returns: `Task`.
 | `action` | `string` | What the gesture did: Move, ResizeStart or ResizeEnd. |
 | `units` | `int` | Whole axis units the start, the end or both moved by. |
 | `rowKey` | `string` | Row the pointer was over at the end of a move, or null. |
-
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
 
 ### `Horizontal(double left, double width)`
 
@@ -156,6 +150,7 @@ Returns: `double`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

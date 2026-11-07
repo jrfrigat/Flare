@@ -6,6 +6,9 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 
 ## Components
 
+- [`DataGridColumnPicker`](components/flare-components-datagridcolumnpicker.md) — A button with a menu of the grid's columns, where each column is shown or hidden with a check.
+- [`DataGridExport`](components/flare-components-datagridexport.md) — Toolbar buttons that export the grid's filtered and sorted rows, one per exporter, or a split button with the first exporter as its main action.
+- [`DataGridFilterBuilder`](components/flare-components-datagridfilterbuilder.md) — An editor for the grid's advanced filter: a tree of conditions joined by And or Or, applied to the grid.
 - [`FlareAccordion`](components/flare-components-flareaccordion.md)
 - [`FlareAccordionPanel`](components/flare-components-flareaccordionpanel.md)
 - [`FlareAlert`](components/flare-components-flarealert.md)
@@ -67,6 +70,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDescriptionItem`](components/flare-components-flaredescriptionitem.md)
 - [`FlareDescriptionList`](components/flare-components-flaredescriptionlist.md)
 - [`FlareDialog`](components/flare-components-flaredialog.md)
+- [`FlareDialogCloseGuard`](components/flare-components-flaredialogcloseguard.md) — Confirms closing a dialog with unsaved changes. Place inside a dialog, and inside its EditForm to use EditContext.IsModified automatically. After saving, clear HasUnsavedChanges or call EditContext.MarkAsUnmodified before closing. Requires a FlareDialogProvider for the default prompt.
 - [`FlareDialogProvider`](components/flare-components-flaredialogprovider.md)
 - [`FlareDivider`](components/flare-components-flaredivider.md)
 - [`FlareDocumentTab`](components/flare-components-ide-flaredocumenttab.md)
@@ -111,6 +115,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareLinkTabs`](components/flare-components-flarelinktabs.md)
 - [`FlareList`](components/flare-components-flarelist.md)
 - [`FlareListItem`](components/flare-components-flarelistitem.md)
+- [`FlareLocalizationProvider`](components/flare-components-flarelocalizationprovider.md)
 - [`FlareMarkdown`](components/flare-components-flaremarkdown.md)
 - [`FlareMaskedField`](components/flare-components-flaremaskedfield.md)
 - [`FlareMediaQuery`](components/flare-components-flaremediaquery.md)
@@ -161,6 +166,18 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareRibbonSeparator`](components/flare-components-ide-flareribbonseparator.md)
 - [`FlareRibbonTab`](components/flare-components-ide-flareribbontab.md)
 - [`FlareRichTextEditor`](components/flare-components-flarerichtexteditor.md)
+- [`FlareScheduler`](components/flare-components-flarescheduler.md) — Per-instance scheduling data and interaction scope, with optional ready-made composition.
+- [`FlareSchedulerAgenda`](components/flare-components-flarescheduleragenda.md) — Chronological list of the loaded event occurrences.
+- [`FlareSchedulerAllDay`](components/flare-components-flareschedulerallday.md) — Independent date-only event band with shared collision lanes and configurable overflow actions.
+- [`FlareSchedulerCalendar`](components/flare-components-flareschedulercalendar.md) — Month or year projection composed from the existing calendar.
+- [`FlareSchedulerDialog`](components/flare-components-flareschedulerdialog.md) — Optional dialog presenter for an independent scheduler editing session.
+- [`FlareSchedulerEditor`](components/flare-components-flareschedulereditor.md) — Independent event form over a scheduler editing session; usable inside any presentation.
+- [`FlareSchedulerEvent`](components/flare-components-flareschedulerevent.md) — Shared event selection control that preserves application templates.
+- [`FlareSchedulerEventAction`](components/flare-components-flareschedulereventaction.md) — Primary event activation control with standard selection and keyboard actions, composable beside custom controls.
+- [`FlareSchedulerSurface`](components/flare-components-flareschedulersurface.md) — Optional scheduling frame, state presentations and active projection switch.
+- [`FlareSchedulerTimeGrid`](components/flare-components-flareschedulertimegrid.md) — Day, week and working-week projection using the shared Gantt axis and lane calculations.
+- [`FlareSchedulerTimeline`](components/flare-components-flareschedulertimeline.md) — Virtual resource projection composed from the existing Gantt timeline.
+- [`FlareSchedulerToolbar`](components/flare-components-flareschedulertoolbar.md) — Optional standard navigation and event commands, composable anywhere in a scheduling scope.
 - [`FlareScrollTop`](components/flare-components-flarescrolltop.md)
 - [`FlareSection`](components/flare-components-flaresection.md)
 - [`FlareSelect`](components/flare-components-flareselect.md) — Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned "no value" row, so a filter select expresses "all" without a sentinel value.
@@ -214,6 +231,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareVisuallyHidden`](components/flare-components-flarevisuallyhidden.md)
 - [`FlareWeekPicker`](components/flare-components-flareweekpicker.md) — Week field bound to a DateOnly: the first day of the chosen week. A click or Enter on any day picks its week; the field writes the week by the culture's week rule ("Week 41, 2026") or by ISO 8601 ("2026-W41") and takes a week or a date typed in.
 - [`FlareZone`](components/flare-components-flarezone.md) — A coloured band drawn across part of a slider's or progress bar's track, marking a region of the host's own scale - "danger starts at 90". The range is absolute, so each zone reads as a pair of boundaries and is independent of the others. It registers with the host and renders nothing itself.
+- [`QueryConditionEditor`](components/flare-components-queryconditioneditor.md)
 
 ## Supporting types
 
@@ -233,7 +251,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.BarcodeSymbology`](enums/flare-components-barcodesymbology.md) — The 1D symbologies FlareBarcode can encode, ordered by how often they are actually asked for rather than alphabetically.
 - [`Flare.Components.BottomNavLabelMode`](enums/flare-components-bottomnavlabelmode.md) — How FlareBottomNav lays out an item's label.
 - [`Flare.Components.BottomNavPosition`](enums/flare-components-bottomnavposition.md) — How FlareBottomNav sits in the page.
-- [`Flare.Components.Breakpoint`](enums/flare-components-breakpoint.md) — A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). The bounds are configurable per subscription and via FlareOptions.
+- [`Flare.Components.Breakpoint`](enums/flare-components-breakpoint.md) — A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). Custom bounds apply only to an individual SubscribeAsync subscription through Breakpoints. The breakpoint-only subscriptions, CSS Hidden/Col utilities and MediaQuery helpers keep the default tiers; there is no global breakpoint-bound setting.
 - [`Flare.Components.ButtonEdge`](enums/flare-components-buttonedge.md) — Optical edge alignment for an icon/toggle button: a negative inline margin that pulls the button toward the container edge so its icon lines up with adjacent content (app bars, toolbars, list-item leading/trailing slots).
 - [`Flare.Components.ButtonShape`](enums/flare-components-buttonshape.md) — Corner shape of a button, orthogonal to its variant. Every value resolves to per-theme shape tokens, so a shape looks native in whichever theme is active.
 - [`Flare.Components.ButtonSize`](enums/flare-components-buttonsize.md) — Size of a FlareButton on the shared Xs..Xl scale (Md is the default). The height is theme-owned: Md and larger meet the WCAG 2.5.8 target minimum of 24x24 CSS px in every built-in theme. Xs is the smallest target a theme's design system defines rather than an invented step below it - a theme whose primary control is 24px maps Xs there, and a compact desktop theme whose toolbar spec stops at 22px maps Xs to that height; where the result is below 24px the spacing exception applies, so use Sm or larger where the minimum has to hold. The 44x44 (iOS) and 48x48 (Android) targets are platform guidance for touch, not a web requirement: use Lg or larger where a finger is the primary input. An icon-only button has no visible label, so it must carry AriaLabel.
@@ -312,7 +330,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.LinkUnderline`](enums/flare-components-linkunderline.md) — When a FlareLink shows its underline.
 - [`Flare.Components.MaskPreset`](enums/flare-components-maskpreset.md) — Ready-made mask patterns for FlareMaskedField. When set (and no explicit Mask is given), the corresponding pattern is used. Pattern tokens: # digit, A letter, * alphanumeric.
 - [`Flare.Components.MenuActivation`](enums/flare-components-menuactivation.md) — How a FlareMenu is opened from its activator.
-- [`Flare.Components.MenuAnchor`](enums/flare-components-menuanchor.md) — Corner of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Logical (RTL-aware) aliases are also provided.
+- [`Flare.Components.MenuAnchor`](enums/flare-components-menuanchor.md) — Logical edge of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Start is left in LTR and right in RTL; end is the opposite. Prefer the Start/End names. The Left/Right names are retained for compatibility and also follow text direction.
 - [`Flare.Components.Combobox.MenuTrigger`](enums/flare-components-combobox-menutrigger.md) — What user gesture opens the dropdown.
 - [`Flare.Abstractions.MessageBoxKind`](enums/flare-abstractions-messageboxkind.md) — The kind of message box to display.
 - [`Flare.Components.MonthYearGridView`](enums/flare-components-monthyeargridview.md) — What a FlareMonthYearGrid lays out: the months of one year or the years of one decade.
@@ -327,6 +345,10 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.QrErrorCorrectionLevel`](enums/flare-components-qrerrorcorrectionlevel.md) — QR code error correction level. Higher levels allow more data recovery at the cost of reduced capacity.
 - [`Flare.Components.ResizableEdge`](enums/flare-components-resizableedge.md) — Which edge of a FlareResizable carries the drag handle.
 - [`Flare.Components.IDE.RibbonSizeMode`](enums/flare-components-ide-ribbonsizemode.md) — Size mode for the ribbon - collapsed shows only tabs, full shows tabs + commands.
+- [`Flare.Components.Scheduler.SchedulerEditAction`](enums/flare-components-scheduler-schedulereditaction.md) — Kind of application-owned event change requested by a scheduler interaction.
+- [`Flare.Components.Scheduler.SchedulerEditScope`](enums/flare-components-scheduler-schedulereditscope.md) — Persistence scope of a recurring-event change; the application owns series splitting and storage.
+- [`Flare.Components.Scheduler.SchedulerEditStatus`](enums/flare-components-scheduler-schedulereditstatus.md) — Outcome of the latest attempt to save an editing session.
+- [`Flare.Components.Scheduler.SchedulerView`](enums/flare-components-scheduler-schedulerview.md) — Built-in scheduling projections. Compose independent views or replace the surface's view content.
 - [`Flare.Components.ScrollAlign`](enums/flare-components-scrollalign.md) — Where a scrolled-to element should come to rest in the visible area.
 - [`Flare.Components.ScrollAxis`](enums/flare-components-scrollaxis.md) — Which axis a direction filter reacts to.
 - [`Flare.Components.ScrollBehavior`](enums/flare-components-scrollbehavior.md) — How the browser should animate a programmatic scroll.

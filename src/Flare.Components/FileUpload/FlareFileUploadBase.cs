@@ -10,7 +10,7 @@ namespace Flare.Components;
 /// input, the accept/multiple/limit rules, the selected-file list and the change callback. Only the trigger
 /// - a drop region or a button in a row - differs, and each subclass owns just that.
 /// </summary>
-public abstract class FlareFileUploadBase : FlareComponentBase
+public abstract class FlareFileUploadBase : FlareLocalizedComponentBase
 {
     /// <summary>Callback invoked with the list of selected files.</summary>
     [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> OnFilesChanged { get; set; }
@@ -105,10 +105,12 @@ public abstract class FlareFileUploadBase : FlareComponentBase
 
     /// <summary>Why files from the latest selection were not added, one localized message per rejected
     /// file. Empty when every file was accepted.</summary>
-    protected readonly List<string> Rejections = [];
+    protected IReadOnlyList<string> Rejections => _rejections.Select(x =>
+        CoreText[x.Key, x.Name, x.Size ? FormatSize(x.Limit) : (object)x.Limit].Value).ToArray();
+    private readonly List<(string Key, string Name, long Limit, bool Size)> _rejections = [];
 
     private readonly Dictionary<string, CancellationTokenSource> _cancels = [];
-    private bool _running;
+    private bool _running, _runRequested, _disposed;
 
     /// <summary>Id linking the trigger's <c>&lt;label for&gt;</c> to the hidden input.</summary>
     protected readonly string InputId = $"flare-fu-{Guid.NewGuid():N}";
@@ -130,20 +132,18 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     {
         if (Disabled) return;
 
-        Rejections.Clear();
+        _rejections.Clear();
         var accepted = new List<IBrowserFile>(Math.Max(0, Math.Min(e.FileCount, MaxFiles)));
         foreach (var file in e.GetMultipleFiles(int.MaxValue))
         {
             if (accepted.Count >= MaxFiles)
             {
-                Rejections.Add(string.Format(CultureInfo.CurrentUICulture,
-                    FlareStrings.FileUpload_FileLimitReached, file.Name, MaxFiles));
+                _rejections.Add(("FileUpload_FileLimitReached", file.Name, MaxFiles, false));
                 continue;
             }
             if (file.Size > MaxFileSize)
             {
-                Rejections.Add(string.Format(CultureInfo.CurrentUICulture,
-                    FlareStrings.FileUpload_FileTooLarge, file.Name, FormatSize(MaxFileSize)));
+                _rejections.Add(("FileUpload_FileTooLarge", file.Name, MaxFileSize, true));
                 continue;
             }
             accepted.Add(file);
@@ -168,30 +168,36 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// Runs the queue: every file still queued is sent through <see cref="Uploader"/>, at most
     /// <see cref="Concurrency"/> at a time. Returns when nothing is left in flight. Safe to call again
     /// after a failure - it picks up whatever is still queued and skips what already finished.
+    /// Requests made during a run are drained before the all-completed callback.
     /// </summary>
     public async Task UploadAsync()
     {
-        if (Uploader is null || _running) return;
+        if (Uploader is null || _disposed) return;
+        _runRequested = true;
+        if (_running) return;
         _running = true;
         try
         {
             var lanes = Math.Max(1, Concurrency);
             using var gate = new SemaphoreSlim(lanes, lanes);
-            var pending = Queue.Where(q => q.State == FlareUploadState.Queued).ToList();
-
-            await Task.WhenAll(pending.Select(async item =>
+            while (_runRequested && !_disposed)
             {
-                await gate.WaitAsync();
-                try { await SendAsync(item); }
-                finally { gate.Release(); }
-            }));
+                _runRequested = false;
+                var pending = Queue.Where(q => q.State == FlareUploadState.Queued).ToList();
+                await Task.WhenAll(pending.Select(async item =>
+                {
+                    await gate.WaitAsync();
+                    try { await SendAsync(item); }
+                    finally { gate.Release(); }
+                }));
+            }
         }
         finally
         {
             _running = false;
         }
 
-        await OnAllCompleted.InvokeAsync();
+        if (!_disposed) await OnAllCompleted.InvokeAsync();
     }
 
     /// <summary>Cancels one file by its <see cref="FlareUploadFile.Id"/>. A file that already finished is
@@ -236,7 +242,7 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     private async Task SendAsync(FlareUploadFile item)
     {
         // Cancelled while it waited its turn in the queue.
-        if (item.State != FlareUploadState.Queued) return;
+        if (_disposed || item.State != FlareUploadState.Queued || !Queue.Contains(item)) return;
 
         var cts = new CancellationTokenSource();
         _cancels[item.Id] = cts;
@@ -248,9 +254,11 @@ public abstract class FlareFileUploadBase : FlareComponentBase
         // render state goes back through the dispatcher.
         var progress = new Progress<long>(sent =>
         {
+            if (_disposed) return;
             item.BytesSent = sent;
             _ = InvokeAsync(async () =>
             {
+                if (_disposed) return;
                 await OnUploadProgress.InvokeAsync(item);
                 StateHasChanged();
             });
@@ -261,7 +269,7 @@ public abstract class FlareFileUploadBase : FlareComponentBase
             await Uploader!(new FlareUploadContext(item.File, progress, cts.Token));
             item.State = FlareUploadState.Completed;
             item.BytesSent = item.File.Size;
-            await OnUploadCompleted.InvokeAsync(item);
+            if (!_disposed) await OnUploadCompleted.InvokeAsync(item);
         }
         catch (OperationCanceledException)
         {
@@ -272,13 +280,13 @@ public abstract class FlareFileUploadBase : FlareComponentBase
             // One file failing must not take the queue down with it.
             item.State = FlareUploadState.Failed;
             item.Error = ex.Message;
-            await OnUploadFailed.InvokeAsync(item);
+            if (!_disposed) await OnUploadFailed.InvokeAsync(item);
         }
         finally
         {
             _cancels.Remove(item.Id);
             cts.Dispose();
-            await InvokeAsync(StateHasChanged);
+            if (!_disposed) await InvokeAsync(StateHasChanged);
         }
     }
 
@@ -291,15 +299,19 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
     {
+        if (_disposed) return ValueTask.CompletedTask;
+        _disposed = true;
+        _runRequested = false;
         CancelAll();
+        foreach (var item in Queue.Where(item => item.IsActive)) item.State = FlareUploadState.Cancelled;
         return base.DisposeAsync();
     }
 
     /// <summary>Renders a byte count as a short human-readable size (B / KB / MB).</summary>
-    protected static string FormatSize(long bytes) => bytes switch
+    protected string FormatSize(long bytes) => bytes switch
     {
-        < 1024 => $"{bytes} B",
-        < 1024 * 1024 => $"{bytes / 1024.0:F1} KB",
-        _ => $"{bytes / (1024.0 * 1024):F1} MB",
+        < 1024 => bytes.ToString(FormattingCulture) + " B",
+        < 1024 * 1024 => (bytes / 1024.0).ToString("F1", FormattingCulture) + " KB",
+        _ => (bytes / (1024.0 * 1024)).ToString("F1", FormattingCulture) + " MB",
     };
 }

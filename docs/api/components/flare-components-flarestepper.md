@@ -29,11 +29,6 @@
 Returns to the previous step. No-op on the first step. Runs the OnStepChanging guard.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `GoTo(int index)`
 
 Navigates to index (clamped to range) when allowed by the linear/skippable rules. Runs the OnStepChanging guard.
@@ -61,6 +56,7 @@ Returns: `Task`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

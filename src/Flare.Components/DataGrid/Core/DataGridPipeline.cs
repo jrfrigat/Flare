@@ -79,7 +79,9 @@ public static class DataGridPipeline<[DynamicallyAccessedMembers(DynamicallyAcce
         List<TItem> paged;
         if (materialized is not null)
         {
-            paged = materialized.Skip(page * pageSize).Take(pageSize).ToList();
+            paged = page == 0 && pageSize >= totalCount
+                ? materialized
+                : materialized.Skip(page * pageSize).Take(pageSize).ToList();
         }
         else if (query is IList<TItem> iList)
         {

@@ -10,6 +10,44 @@ namespace Flare.Browser.Tests;
 public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
     [Fact]
+    public async Task KeyboardReorder_ReachesTheThreeHundredthPositionOfFiveHundred()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/kanban-virtual");
+        var source = page.Locator("[data-flare-drag='t0']");
+        await source.FocusAsync();
+        await page.Keyboard.PressAsync("Space");
+        var status = page.Locator($".{Css.Classes.Drag.Context} [role=status]");
+        await Expect(status).ToHaveTextAsync("Picked up. Arrow keys move it, space drops it, escape cancels.");
+        for (var i = 0; i < 299; i++) await page.Keyboard.PressAsync("ArrowDown");
+        await Expect(status).ToHaveTextAsync("Position 300 of 500.");
+        await Expect(page.Locator("[data-flare-drag='t300']")).ToBeVisibleAsync();
+        await page.Keyboard.PressAsync("Space");
+        await Expect(page.Locator("#first-index")).ToHaveTextAsync("299");
+        await Expect(source).ToBeFocusedAsync();
+        Assert.True(await page.Locator("[data-flare-drop='todo'] [data-flare-drag]").CountAsync() < 60);
+    }
+
+    [Fact]
+    public async Task CancellingAfterTheSourceLeavesTheWindow_RestoresItsFocusAndPosition()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/kanban-virtual");
+        var source = page.Locator("[data-flare-drag='t0']");
+        await source.FocusAsync();
+        await page.Keyboard.PressAsync("Space");
+        await Expect(page.Locator($".{Css.Classes.Drag.Context} [role=status]")).ToContainTextAsync("Picked up.");
+        for (var i = 0; i < 100; i++) await page.Keyboard.PressAsync("ArrowDown");
+        await Expect(page.Locator($".{Css.Classes.Drag.Context} [role=status]")).ToHaveTextAsync("Position 101 of 500.");
+        await page.Keyboard.PressAsync("Escape");
+        await Expect(page.Locator("#first-index")).ToHaveTextAsync("0");
+        await Expect(source).ToBeFocusedAsync();
+        await Expect(source).ToBeVisibleAsync();
+    }
+
+    [Fact]
     public async Task AColumnOfHundredsOfCards_KeepsOnlyItsWindowInTheDom()
     {
         await using var context = await fixture.Browser.NewContextAsync();
@@ -33,6 +71,9 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/kanban-virtual");
         await Expect(page.Locator("[data-flare-drag=\"d0\"]")).ToBeVisibleAsync();
+        await page.WaitForFunctionAsync(
+            "() => parseFloat(getComputedStyle(document.querySelector('[data-flare-drag=d0]')).paddingTop) > 0");
+        await BrowserFonts.WaitAsync(page.Locator("#board"));
 
         await page.EvaluateAsync(@"() => {
             const list = document.querySelector('[data-flare-drop=""todo""] .flare-kanban__cards');

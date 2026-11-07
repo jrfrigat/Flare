@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.IUiJsService Ui
 
@@ -8,11 +9,11 @@
 
 @if (_showHelp)
 {
-    <div class="@Css.Classes.Shortcuts.HelpScrim" @onclick="ToggleHelp">
-        <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(FlareStrings.Shortcuts_Title)" @onclick:stopPropagation="true">
+    <div data-flare-backdrop class="@Css.Classes.Shortcuts.HelpScrim" @onclick="ToggleHelp">
+        <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(CoreText["Shortcuts_Title"])" @onclick:stopPropagation="true">
             <div class="@Css.Classes.Shortcuts.HelpHeader">
-                <span class="@Css.Classes.Shortcuts.HelpTitle">@(FlareStrings.Shortcuts_Title)</span>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="@(FlareStrings.Dialog_Close)" OnClick="ToggleHelp">
+                <span class="@Css.Classes.Shortcuts.HelpTitle">@(CoreText["Shortcuts_Title"])</span>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="@(CoreText["Dialog_Close"])" OnClick="ToggleHelp">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Close" /></LeadingIcon>
                 </FlareButton>
             </div>
@@ -30,12 +31,16 @@
 }
 
 @code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Shortcuts.Help;
     /// <summary>Content the registered keyboard shortcuts apply to.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     internal readonly List<FlareShortcutEntry> _entries = new();
 
     private bool _showHelp;
+    private readonly string _id = Guid.NewGuid().ToString("N");
+    private bool _disposed;
     private DotNetObjectReference<FlareShortcuts>? _dotNetRef;
 
     internal void Register(FlareShortcutEntry entry) => _entries.Add(entry);
@@ -51,7 +56,7 @@
             try
             {
                 _dotNetRef = DotNetObjectReference.Create(this);
-                await Ui.RegisterShortcutsAsync(_dotNetRef);
+                await Ui.RegisterShortcutsAsync(_id, _dotNetRef);
             }
             catch (InvalidOperationException) { }
             catch (JSException) { }
@@ -59,12 +64,20 @@
     }
 
     [JSInvokable]
-    public Task HandleKeyDown(string keys) => FlareShortcutEntry.HandleKeyDown(keys);
-
-    public async ValueTask DisposeAsync()
+    public Task HandleKeyDown(string keys) => InvokeAsync(async () =>
     {
-        try { await Ui.RemoveShortcutsAsync(); }
+        if (_disposed) return;
+        foreach (var entry in _entries.ToArray())
+            if (!_disposed && _entries.Contains(entry) && string.Equals(entry.Keys, keys, StringComparison.OrdinalIgnoreCase))
+                await entry.OnActivated.InvokeAsync();
+    });
+
+    public override async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        try { await Ui.RemoveShortcutsAsync(_id); }
         catch { }
         _dotNetRef?.Dispose();
+        await base.DisposeAsync();
     }
 }

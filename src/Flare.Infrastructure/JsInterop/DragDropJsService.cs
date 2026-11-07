@@ -31,6 +31,10 @@ public sealed class DragDropJsService : FlareJsModule, IDragDropJsService
         => InvokeVoidAsync("showDropHint", root, targetId, index, sourceId);
 
     /// <inheritdoc />
+    public ValueTask ShowDropHintAsync(ElementReference root, string targetId, int index, string sourceId, string? overId)
+        => InvokeVoidAsync("showDropHint", root, targetId, index, sourceId, overId);
+
+    /// <inheritdoc />
     public ValueTask HideDropHintAsync(ElementReference root)
         => InvokeVoidAsync("hideDropHint", root);
 }

@@ -21,10 +21,7 @@ A heading that spans several columns, turning a flat header into a banded one. I
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

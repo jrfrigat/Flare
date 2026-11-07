@@ -25,6 +25,9 @@ This component exposes no documented public methods.
 
 ## Derived components
 
+- `DataGridColumnPicker`
+- `DataGridExport`
+- `DataGridFilterBuilder`
 - `FlareAccordion`
 - `FlareAccordionPanel`
 - `FlareAlert`
@@ -67,8 +70,12 @@ This component exposes no documented public methods.
 - `FlareColorPicker`
 - `FlareColorScope`
 - `FlareCombobox`
+- `FlareConfirmDialogProvider`
 - `FlareContainer`
 - `FlareDataGrid`
+- `FlareDataGridFilterPresets`
+- `FlareDataGridPager`
+- `FlareDataGridQuickFilter`
 - `FlareDataTree`
 - `FlareDatePicker`
 - `FlareDateRangePicker`
@@ -76,6 +83,7 @@ This component exposes no documented public methods.
 - `FlareDescriptionItem`
 - `FlareDescriptionList`
 - `FlareDialog`
+- `FlareDialogCloseGuard`
 - `FlareDialogProvider`
 - `FlareDivider`
 - `FlareDocumentTab`
@@ -127,8 +135,11 @@ This component exposes no documented public methods.
 - `FlareMenuBar`
 - `FlareMenuGroup`
 - `FlareMenuItem`
+- `FlareMessageBoxProvider`
 - `FlareMeter`
+- `FlareMonthGrid`
 - `FlareMonthPicker`
+- `FlareMonthYearGrid`
 - `FlareMultiDatePicker`
 - `FlareMultiSelect`
 - `FlareNavGroup`
@@ -166,10 +177,23 @@ This component exposes no documented public methods.
 - `FlareRibbonSeparator`
 - `FlareRibbonTab`
 - `FlareRichTextEditor`
+- `FlareScheduler`
+- `FlareSchedulerAgenda`
+- `FlareSchedulerAllDay`
+- `FlareSchedulerCalendar`
+- `FlareSchedulerDialog`
+- `FlareSchedulerEditor`
+- `FlareSchedulerEvent`
+- `FlareSchedulerEventAction`
+- `FlareSchedulerSurface`
+- `FlareSchedulerTimeGrid`
+- `FlareSchedulerTimeline`
+- `FlareSchedulerToolbar`
 - `FlareScrollTop`
 - `FlareSection`
 - `FlareSelect`
 - `FlareSheetTabs`
+- `FlareShortcuts`
 - `FlareSignaturePad`
 - `FlareSkeleton`
 - `FlareSlider`
@@ -212,3 +236,4 @@ This component exposes no documented public methods.
 - `FlareVirtualList`
 - `FlareVisuallyHidden`
 - `FlareWeekPicker`
+- `QueryConditionEditor`
