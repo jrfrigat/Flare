@@ -11,6 +11,16 @@ namespace Flare.Core.Tests;
 public sealed class ProgressThemeExtensionTests
 {
     [Fact]
+    public void ExpressiveDesignIsSharedAcrossInstances()
+    {
+        var first = new MaterialDesign3ExpressiveTheme();
+        var second = new MaterialDesign3ExpressiveTheme();
+
+        Assert.Same(first.Design, second.Design);
+        Assert.NotSame(new MaterialDesign3Theme().Design, first.Design);
+    }
+
+    [Fact]
     public void Md3Expressive_ProvidesItsWaveTokens()
     {
         ITheme theme = new MaterialDesign3ExpressiveTheme();
