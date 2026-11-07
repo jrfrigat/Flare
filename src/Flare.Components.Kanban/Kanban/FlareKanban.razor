@@ -35,10 +35,8 @@
                     <div class="@Css.Classes.Kanban.Cards" role="list" data-flare-virtual-count="@(Virtual ? colCards.Count : (int?)null)">
                         @if (Virtual)
                         {
-                            <Virtualize Items="colCards" Context="card" ItemSize="VirtualItemSize"
-                                        OverscanCount="OverscanCount">
-                                @RenderCard(card)
-                            </Virtualize>
+                            <Virtualize Items="colCards" ItemContent="RenderCard" ItemSize="VirtualItemSize"
+                                        OverscanCount="OverscanCount" />
                         }
                         else
                         {
@@ -90,11 +88,30 @@
 
     private List<KanbanCard> _cards = [];
     private IReadOnlyList<KanbanCard>? _cardsSource;
+    private IReadOnlyList<DragZoneOrder> _cardOrder = [];
     private Func<string, IReadOnlyList<DragZoneOrder>>? KeyboardOrder => Virtual ? FullCardOrder : null;
 
-    private IReadOnlyList<DragZoneOrder> FullCardOrder(string group) => group != "kanban" ? []
-        : Columns?.Select(column => new DragZoneOrder(column.Id,
-            CardsForColumn(column.Id).Select(card => card.Id).ToArray())).ToArray() ?? [];
+    private IReadOnlyList<DragZoneOrder> FullCardOrder(string group)
+    {
+        if (group != "kanban" || Columns is not { Count: > 0 } columns) return [];
+        if (_cardOrder.Count == columns.Count)
+        {
+            var index = 0;
+            while (index < columns.Count && _cardOrder[index].Target == columns[index].Id) index++;
+            if (index == columns.Count) return _cardOrder;
+        }
+
+        var order = new DragZoneOrder[columns.Count];
+        for (var index = 0; index < order.Length; index++)
+        {
+            var column = columns[index].Id;
+            var cards = CardsForColumn(column);
+            var ids = new string[cards.Count];
+            for (var i = 0; i < ids.Length; i++) ids[i] = cards[i].Id;
+            order[index] = new DragZoneOrder(column, ids);
+        }
+        return _cardOrder = order;
+    }
     private bool _cardsDirty;
     private Dictionary<string, List<KanbanCard>>? _cardsByColumn;
 
@@ -108,6 +125,7 @@
             _cardsSource = Cards;
             _cardsDirty = false;
             _cardsByColumn = null;
+            _cardOrder = [];
         }
     }
 
@@ -180,8 +198,14 @@
     // has it.
     private bool ResolveCard(string id, out KanbanCard card)
     {
-        card = _cards.Find(c => c.Id == id)!;
-        return card is not null;
+        foreach (var candidate in _cards)
+        {
+            if (candidate.Id != id) continue;
+            card = candidate;
+            return true;
+        }
+        card = null!;
+        return false;
     }
 
     // Cards live in one flat list and a column is a filter over it, so a move is a remove and an
@@ -198,20 +222,30 @@
 
         _cards.Remove(e.Payload);
         _cardsDirty = true;
+        _cards.Insert(InsertIndex(e), e.Payload with { ColumnId = e.TargetId });
         _cardsByColumn = null;
-        var moved = e.Payload with { ColumnId = e.TargetId };
-
-        var inColumn = CardsForColumn(e.TargetId);
-        var over = e.HasOverPayload && e.Edge != DropEdge.Into ? inColumn.IndexOf(e.OverPayload!) : -1;
-        var index = over >= 0
-            ? over + (e.Edge == DropEdge.After ? 1 : 0)
-            : Virtual ? inColumn.Count : e.Index;
-        if (index < 0 || index > inColumn.Count) index = inColumn.Count;
-        var insertAt = index < inColumn.Count ? _cards.IndexOf(inColumn[index]) : _cards.Count;
-
-        _cards.Insert(insertAt, moved);
-        // The column lists computed above no longer describe the board.
-        _cardsByColumn = null;
+        _cardOrder = [];
         await CardsChanged.InvokeAsync(_cards.AsReadOnly());
+    }
+
+    private int InsertIndex(FlareDropEventArgs<KanbanCard> drop)
+    {
+        if (drop.HasOverPayload && drop.Edge != DropEdge.Into && drop.OverPayload is { } overCard && overCard.ColumnId == drop.TargetId)
+        {
+            var over = _cards.IndexOf(overCard);
+            if (over >= 0)
+            {
+                if (drop.Edge != DropEdge.After) return over;
+                for (var i = over + 1; i < _cards.Count; i++)
+                    if (_cards[i].ColumnId == drop.TargetId) return i;
+                return _cards.Count;
+            }
+        }
+
+        if (Virtual || drop.Index < 0) return _cards.Count;
+        var remaining = drop.Index;
+        for (var i = 0; i < _cards.Count; i++)
+            if (_cards[i].ColumnId == drop.TargetId && remaining-- == 0) return i;
+        return _cards.Count;
     }
 }
