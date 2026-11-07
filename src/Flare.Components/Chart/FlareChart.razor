@@ -74,7 +74,7 @@
             {
                 @if (hit.Shape == HitShape.Rectangle)
                 {
-                    <rect @key="hit.Key" x="@F(hit.X)" y="@F(hit.Y)" width="@F(hit.Width)" height="@F(hit.Height)"
+                    <rect @key="hit.Key" x="@hit.X" y="@hit.Y" width="@hit.Width" height="@hit.Height"
                           fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
                           role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
                           @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
@@ -89,7 +89,7 @@
                 }
                 else
                 {
-                    <circle @key="hit.Key" cx="@F(hit.X)" cy="@F(hit.Y)" r="@F(hit.Radius)"
+                    <circle @key="hit.Key" cx="@hit.X" cy="@hit.Y" r="@hit.Radius"
                             fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
                             role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
                             @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
