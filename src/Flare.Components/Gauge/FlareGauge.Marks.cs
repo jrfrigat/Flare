@@ -103,18 +103,90 @@ public partial class FlareGauge
         return Vertical ? (x - half, y, x + half, y) : (x, y - half, x, y + half);
     }
 
-    /// <summary>
-    /// One scale label. Razor reserves the tag name <c>text</c> for its own control blocks, so an SVG text
-    /// node carrying attributes cannot be written as markup and is emitted here instead.
-    /// </summary>
-    private RenderFragment ScaleText(double x, double y, string content) => builder =>
+    private const string MinorTickClass = Css.Classes.Gauge.Tick + " " + Css.Classes.Gauge.TickMinor;
+
+    private readonly record struct ScaleKey(GaugeShape Shape, bool Vertical, double Min, double Max,
+        double Start, double End, double Interval, double MinorInterval, bool Ticks, bool Labels,
+        double TrackWidth, double Gap, double Length, double MinorLength, double LabelSize, string? Format);
+
+    private readonly record struct ScaleMark(string? TickClass, string? X1, string? Y1, string? X2, string? Y2,
+        string? LabelX, string? LabelY, string? Label);
+
+    private ScaleKey _scaleKey;
+    private CultureInfo? _scaleCulture;
+    private RenderFragment? _scale;
+
+    private RenderFragment? Scale()
     {
-        builder.OpenElement(0, "text");
-        builder.AddAttribute(1, "class", Css.Classes.Gauge.ScaleLabel);
-        builder.AddAttribute(2, "x", F(x));
-        builder.AddAttribute(3, "y", F(y));
-        builder.AddContent(4, content);
-        builder.CloseElement();
+        if (!ShowTicks && !ShowScaleLabels)
+        {
+            _scale = null;
+            _scaleCulture = null;
+            return null;
+        }
+
+        var key = new ScaleKey(Shape, Vertical, Min, Max, Start, End, TickInterval, MinorTickInterval,
+            ShowTicks, ShowScaleLabels, TrackWidthUnits, TickGapUnits, TickLengthUnits, TickMinorLengthUnits,
+            LabelSizeUnits, Format);
+        var culture = ShowScaleLabels ? FormattingCulture : null;
+        if (_scale is not null && (culture is null || culture.IsReadOnly)
+            && ReferenceEquals(culture, _scaleCulture) && key == _scaleKey)
+            return _scale;
+
+        var marks = new List<ScaleMark>();
+        foreach (var (value, major) in Ticks)
+        {
+            var linear = Shape == GaugeShape.Linear;
+            var angle = linear ? 0 : AngleOf(value);
+            var (x1, y1) = linear ? PointOn(value) : TickInner(angle);
+            string? tickClass = null, endX = null, endY = null, labelX = null, labelY = null, label = null;
+            if (ShowTicks)
+            {
+                var (x2, y2) = linear ? LinearTickEnd(x1, y1, major) : TickOuter(angle, major);
+                tickClass = major ? Css.Classes.Gauge.Tick : MinorTickClass;
+                endX = F(x2);
+                endY = F(y2);
+            }
+            if (ShowScaleLabels && major)
+            {
+                var (lx, ly) = linear ? LinearScaleLabelPoint(x1, y1) : ScaleLabelPoint(angle);
+                labelX = F(lx);
+                labelY = F(ly);
+                label = Display(value);
+            }
+            marks.Add(new(tickClass, ShowTicks ? F(x1) : null, ShowTicks ? F(y1) : null,
+                endX, endY, labelX, labelY, label));
+        }
+
+        _scaleCulture = culture;
+        _scaleKey = key;
+        return _scale = DrawScale(marks);
+    }
+
+    private static RenderFragment DrawScale(List<ScaleMark> marks) => builder =>
+    {
+        foreach (var mark in marks)
+        {
+            if (mark.TickClass is not null)
+            {
+                builder.OpenElement(0, "line");
+                builder.AddAttribute(1, "class", mark.TickClass);
+                builder.AddAttribute(2, "x1", mark.X1);
+                builder.AddAttribute(3, "y1", mark.Y1);
+                builder.AddAttribute(4, "x2", mark.X2);
+                builder.AddAttribute(5, "y2", mark.Y2);
+                builder.CloseElement();
+            }
+            if (mark.Label is not null)
+            {
+                builder.OpenElement(6, "text");
+                builder.AddAttribute(7, "class", Css.Classes.Gauge.ScaleLabel);
+                builder.AddAttribute(8, "x", mark.LabelX);
+                builder.AddAttribute(9, "y", mark.LabelY);
+                builder.AddContent(10, mark.Label);
+                builder.CloseElement();
+            }
+        }
     };
 
 

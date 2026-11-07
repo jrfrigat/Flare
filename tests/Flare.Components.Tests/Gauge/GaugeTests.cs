@@ -204,6 +204,26 @@ public class GaugeTests : FlareTestContext
     }
 
     [Fact]
+    public void UpdatingReadingKeepsScaleWhileGeometryAndFormattingChangesReplaceIt()
+    {
+        var cut = Render<FlareGauge>(p => p
+            .Add(x => x.Value, 25d)
+            .Add(x => x.TickInterval, 25d)
+            .Add(x => x.ShowScaleLabels, true));
+        var tick = $".{Css.Classes.Gauge.Tick}";
+        var mark = cut.Find(tick).OuterHtml;
+
+        cut.Render(p => p.Add(x => x.Value, 75d));
+        Assert.Equal(mark, cut.Find(tick).OuterHtml);
+        Assert.Equal("75", cut.Find("[role='meter']").GetAttribute("aria-valuenow"));
+
+        cut.Render(p => p.Add(x => x.StartAngle, -45d).Add(x => x.TickInterval, 50d).Add(x => x.Format, "0.0"));
+        Assert.Equal(3, cut.FindAll(tick).Count);
+        Assert.NotEqual(mark, cut.Find(tick).OuterHtml);
+        Assert.Contains(cut.FindAll($".{Css.Classes.Gauge.ScaleLabel}"), x => x.TextContent == "50.0");
+    }
+
+    [Fact]
     public void TargetIsMarkedWithoutASecondPointer()
     {
         var cut = Render<FlareGauge>(p => p.Add(x => x.Value, 40).Add(x => x.Target, 70d));
