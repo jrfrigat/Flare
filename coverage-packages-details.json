@@ -1,0 +1,93 @@
+{
+  "group": "packages",
+  "sourceLineUnion": {
+    "covered": 7445,
+    "valid": 26594,
+    "percent": 28.0
+  },
+  "perTfm": {
+    "net10.0": {
+      "covered": 7443,
+      "valid": 26592,
+      "percent": 27.99,
+      "branchCovered": 3683,
+      "branchValid": 18954
+    },
+    "net8.0": {
+      "covered": 4387,
+      "valid": 24239,
+      "percent": 18.1,
+      "branchCovered": 2697,
+      "branchValid": 18112
+    },
+    "net9.0": {
+      "covered": 4388,
+      "valid": 24240,
+      "percent": 18.1,
+      "branchCovered": 2698,
+      "branchValid": 18114
+    }
+  },
+  "categories": {
+    "authored": {
+      "Covered": 7445,
+      "Valid": 26594,
+      "Files": 504
+    },
+    "generated": {
+      "Covered": 0,
+      "Valid": 3512,
+      "Files": 4
+    },
+    "tool": {
+      "Covered": 345,
+      "Valid": 770,
+      "Files": 8
+    }
+  },
+  "observedModules": [
+    "Flare",
+    "Flare.Abstractions",
+    "Flare.ApiDocGen",
+    "Flare.Components",
+    "Flare.Components.Barcode",
+    "Flare.Components.Carousel",
+    "Flare.Components.Gantt",
+    "Flare.Components.IDE",
+    "Flare.Components.Kanban",
+    "Flare.Components.Media",
+    "Flare.Components.QrCode",
+    "Flare.Components.Query",
+    "Flare.Components.RichTextEditor",
+    "Flare.Components.Scheduler",
+    "Flare.Components.Scheduler.Ical",
+    "Flare.Components.Transfer",
+    "Flare.Icons",
+    "Flare.Infrastructure",
+    "Flare.Theme.MaterialDesign3",
+    "Flare.Theme.MaterialDesign3.Tokens",
+    "Flare.Theming"
+  ],
+  "missingModules": [
+    "Flare.Icons.FluentUI.Svg",
+    "Flare.Icons.FontAwesome.Symbols",
+    "Flare.Icons.MaterialDesign2.Svg",
+    "Flare.Icons.MaterialDesign2.Symbols",
+    "Flare.Icons.MaterialDesign3.Svg",
+    "Flare.Icons.MaterialDesign3.Symbols",
+    "Flare.Theme.Aero",
+    "Flare.Theme.FluentUI2",
+    "Flare.Theme.FluentUI2.Tokens",
+    "Flare.Theme.LiquidGlass",
+    "Flare.Theme.MaterialDesign2",
+    "Flare.Theme.MaterialDesign3Expressive",
+    "Flare.Theme.VisualStudio"
+  ],
+  "missingProjects": [],
+  "missingTfms": [],
+  "partial": false,
+  "inputs": {
+    "files": 32,
+    "projects": 12
+  }
+}
