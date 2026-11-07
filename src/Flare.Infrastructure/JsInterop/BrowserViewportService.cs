@@ -15,6 +15,7 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
 {
     private readonly ConcurrentDictionary<Guid, ViewportSub> _viewportSubs = new();
     private readonly ConcurrentDictionary<string, ElementSub> _elementSubs = new();
+    private readonly SemaphoreSlim _viewportListenerGate = new(1);
     private readonly object _refLock = new();
     private DotNetObjectReference<BrowserViewportService>? _selfRef;
     private bool _disposed;
@@ -92,31 +93,46 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
         var sub = new ViewportSub(handler, options);
         _viewportSubs[id] = sub;
 
-        // Seed the current breakpoint so the first real resize can report BreakpointChanged correctly,
-        // and deliver the immediate notification when requested.
-        var size = await GetViewportSizeAsync(cancellationToken);
-        var bp = size.Width > 0 ? FlareBreakpoints.FromWidth(size.Width, options.Breakpoints) : Breakpoint.Md;
-        sub.LastBreakpoint = bp;
-        sub.HasLast = true;
-
-        try { await InvokeVoidAsync("ensureViewportListener", SelfRef(), options.DebounceMs); }
-        catch (Exception ex) when (IsInteropTeardown(ex)) { /* prerender: attaches on a later subscribe */ }
-
-        if (options.FireImmediately)
+        try
         {
-            try { await sub.Handler(new ViewportChange(size, bp, BreakpointChanged: true, IsImmediate: true)); }
-            catch (Exception ex) when (IsInteropTeardown(ex)) { }
-        }
+            // Seed the current breakpoint before attaching the listener.
+            var size = await GetViewportSizeAsync(cancellationToken);
+            var bp = size.Width > 0 ? FlareBreakpoints.FromWidth(size.Width, options.Breakpoints) : Breakpoint.Md;
+            sub.LastBreakpoint = bp;
+            sub.HasLast = true;
 
-        return new AsyncActionDisposable(async () =>
-        {
-            _viewportSubs.TryRemove(id, out _);
-            if (_viewportSubs.IsEmpty)
+            await _viewportListenerGate.WaitAsync();
+            try { await InvokeVoidAsync("ensureViewportListener", SelfRef(), options.DebounceMs); }
+            catch (Exception ex) when (IsInteropTeardown(ex)) { /* prerender: attaches on a later subscribe */ }
+            finally { _viewportListenerGate.Release(); }
+
+            if (options.FireImmediately)
             {
-                try { await InvokeVoidAsync("stopViewportListener"); }
+                try { await sub.Handler(new ViewportChange(size, bp, BreakpointChanged: true, IsImmediate: true)); }
                 catch (Exception ex) when (IsInteropTeardown(ex)) { }
             }
-        });
+        }
+        catch
+        {
+            try { await UnsubscribeViewportAsync(id); }
+            catch { /* Preserve the subscription failure. */ }
+            throw;
+        }
+
+        return new AsyncActionDisposable(() => UnsubscribeViewportAsync(id));
+    }
+
+    private async ValueTask UnsubscribeViewportAsync(Guid id)
+    {
+        if (!_viewportSubs.TryRemove(id, out _) || !_viewportSubs.IsEmpty) return;
+        await _viewportListenerGate.WaitAsync();
+        try
+        {
+            if (_viewportSubs.IsEmpty)
+                await InvokeVoidAsync("stopViewportListener");
+        }
+        catch (Exception ex) when (IsInteropTeardown(ex)) { }
+        finally { _viewportListenerGate.Release(); }
     }
 
     /// <inheritdoc />
@@ -136,22 +152,33 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
         var id = Guid.NewGuid().ToString("N");
         _elementSubs[id] = new ElementSub(handler);
 
-        ElementRectDto? initial = null;
-        try { initial = await InvokeAsync<ElementRectDto?>("observeElement", id, SelfRef(), element, options.DebounceMs); }
-        catch (Exception ex) when (IsInteropTeardown(ex)) { }
-
-        if (options.FireImmediately && initial is not null)
+        try
         {
-            try { await handler(initial.ToRect()); }
+            ElementRectDto? initial = null;
+            try { initial = await InvokeAsync<ElementRectDto?>("observeElement", id, SelfRef(), element, options.DebounceMs); }
             catch (Exception ex) when (IsInteropTeardown(ex)) { }
+
+            if (options.FireImmediately && initial is not null)
+            {
+                try { await handler(initial.ToRect()); }
+                catch (Exception ex) when (IsInteropTeardown(ex)) { }
+            }
+        }
+        catch
+        {
+            try { await UnobserveElementAsync(id); }
+            catch { /* Preserve the observation failure. */ }
+            throw;
         }
 
-        return new AsyncActionDisposable(async () =>
-        {
-            _elementSubs.TryRemove(id, out _);
-            try { await InvokeVoidAsync("unobserveElement", id); }
-            catch (Exception ex) when (IsInteropTeardown(ex)) { }
-        });
+        return new AsyncActionDisposable(() => UnobserveElementAsync(id));
+    }
+
+    private async ValueTask UnobserveElementAsync(string id)
+    {
+        if (!_elementSubs.TryRemove(id, out _)) return;
+        try { await InvokeVoidAsync("unobserveElement", id); }
+        catch (Exception ex) when (IsInteropTeardown(ex)) { }
     }
 
     /// <summary>JS callback: the shared window-resize listener settled. Fans out to subscribers.</summary>
