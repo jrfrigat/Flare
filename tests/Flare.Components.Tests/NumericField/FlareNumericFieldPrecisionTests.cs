@@ -95,6 +95,19 @@ public class FlareNumericFieldPrecisionTests : FlareTestContext
     }
 
     [Fact]
+    public void Change_ConvertsNullableByteAndRejectsOverflow()
+    {
+        var values = new List<byte?>();
+        var cut = Render<FlareNumericField<byte?>>(p => p
+            .Add(x => x.ValueChanged, EventCallback.Factory.Create<byte?>(this, values.Add)));
+
+        cut.Find("input").Change("255");
+        cut.Find("input").Change("256");
+
+        Assert.Equal((byte)255, Assert.Single(values));
+    }
+
+    [Fact]
     public void Change_EmptyOnNullable_EmitsNull()
     {
         int? value = 5;

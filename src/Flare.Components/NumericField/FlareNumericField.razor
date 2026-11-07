@@ -3,7 +3,6 @@
 @implements IFlareField<TValue>
 @typeparam TValue
 @inject Flare.Components.Services.IElementJsService ElementJs
-@using System.ComponentModel
 @using System.Linq.Expressions
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
@@ -181,16 +180,7 @@
     // decimal field that cannot type a separator is unusable in every locale that has one. An integral
     // field gets `numeric` for the same reason in reverse: a separator it cannot accept is a key that
     // only produces an error.
-    private static readonly HashSet<Type> _integralTypes =
-    [
-        typeof(byte), typeof(sbyte), typeof(short), typeof(ushort),
-        typeof(int), typeof(uint), typeof(long), typeof(ulong),
-    ];
-
-    private string _inputMode =>
-        _integralTypes.Contains(Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue))
-            ? "numeric"
-            : "decimal";
+    private string _inputMode => NumericFieldConversion<TValue>.IsIntegral ? "numeric" : "decimal";
     private bool _focused;
     private string _text = string.Empty;
     private TValue? _lastValue;
@@ -236,11 +226,9 @@
         if (ReadOnly || Disabled) return;
         _debounceCts.Cancel();
 
-        var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
-
         // decimal and the integral types must not go through double: a long above 2^53 or a decimal
         // with more than ~15 significant digits is changed by the conversion, not by the step.
-        if (targetType == typeof(decimal) || _integralTypes.Contains(targetType))
+        if (NumericFieldConversion<TValue>.IsDecimalBacked)
         {
             decimal current = 0m;
             if (Value is not null)
@@ -255,7 +243,7 @@
 
             if (Min.HasValue) { try { next = Math.Max(next, (decimal)Min.Value); } catch { } }
             if (Max.HasValue) { try { next = Math.Min(next, (decimal)Max.Value); } catch { } }
-            if (!TryConvertDecimal(next, targetType, out var convertedValue)) return;
+            if (!NumericFieldConversion<TValue>.TryConvertDecimal(next, out var convertedValue)) return;
 
             // Keep the editable buffer in sync so a focused text-mode field reflects the step.
             if (_useTextMode && _focused)
@@ -263,7 +251,7 @@
                     ? formattable.ToString(null, _fmtCulture)
                     : next.ToString(_fmtCulture);
 
-            await ValueChanged.InvokeAsync((TValue?)convertedValue);
+            await ValueChanged.InvokeAsync(convertedValue);
             NotifyFieldChanged();
             return;
         }
@@ -279,15 +267,7 @@
         if (Min.HasValue && nextDouble < Min.Value) nextDouble = Min.Value;
         if (Max.HasValue && nextDouble > Max.Value) nextDouble = Max.Value;
 
-        TValue? converted = default;
-        try
-        {
-            var converter = InvariantConverter.For(targetType);
-            var str = nextDouble.ToString(CultureInfo.InvariantCulture);
-            if (converter.CanConvertFrom(typeof(string)))
-                converted = (TValue?)converter.ConvertFromInvariantString(str);
-        }
-        catch { }
+        var converted = NumericFieldConversion<TValue>.ConvertFloating(nextDouble);
 
         if (_useTextMode && _focused)
             _text = nextDouble.ToString(_fmtCulture);
@@ -362,158 +342,33 @@
             return;
         }
 
-        var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
-        if (targetType == typeof(decimal) || _integralTypes.Contains(targetType))
+        var culture = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
+        var percentFormat = _useTextMode && NumericFieldConversion<TValue>.IsPercentFormat(Format!);
+        if (NumericFieldConversion<TValue>.IsDecimalBacked)
         {
-            if (!TryParseDecimalNumber(raw, out var dec)) return;
+            if (!NumericFieldConversion<TValue>.TryParseDecimalNumber(raw, culture, percentFormat, out var dec)) return;
             if (clamp)
             {
                 if (Min.HasValue) { try { dec = Math.Max(dec, (decimal)Min.Value); } catch { } }
                 if (Max.HasValue) { try { dec = Math.Min(dec, (decimal)Max.Value); } catch { } }
             }
-            if (!TryConvertDecimal(dec, targetType, out var convertedDecimal)) return;
+            if (!NumericFieldConversion<TValue>.TryConvertDecimal(dec, out var convertedDecimal)) return;
 
-            await ValueChanged.InvokeAsync((TValue?)convertedDecimal);
+            await ValueChanged.InvokeAsync(convertedDecimal);
             NotifyFieldChanged();
             return;
         }
 
-        if (!TryParseNumber(raw, out var d)) return;
+        if (!NumericFieldConversion<TValue>.TryParseNumber(raw, culture, percentFormat, out var d)) return;
         if (clamp)
         {
             if (Min.HasValue && d < Min.Value) d = Min.Value;
             if (Max.HasValue && d > Max.Value) d = Max.Value;
         }
-        var token = (!_useTextMode && !clamp) ? raw : d.ToString(CultureInfo.InvariantCulture);
-        var converted = ConvertFromInvariant(token);
+        var converted = NumericFieldConversion<TValue>.ConvertFloating(d, !_useTextMode && !clamp ? raw : null);
 
         await ValueChanged.InvokeAsync(converted);
 
         NotifyFieldChanged();
-    }
-
-    // A percent format writes 0.25 as "25%"; pasted text carrying the symbol must come back as the
-    // fraction. .NET has no percent parse style, so the symbol is removed here and the number scaled.
-    private bool _percentFormat => Format is { Length: > 0 } format && IsPercentFormat(format);
-
-    // A standard P/p format (with optional precision digits), or a custom format with an unescaped and
-    // unquoted percent placeholder.
-    private static bool IsPercentFormat(string format)
-    {
-        var trimmed = format.Trim();
-        if (trimmed.Length > 0 && (trimmed[0] is 'P' or 'p') && trimmed.Skip(1).All(char.IsDigit)) return true;
-        for (var i = 0; i < trimmed.Length; i++)
-        {
-            var ch = trimmed[i];
-            if (ch == '\\') { i++; continue; }
-            if (ch is '"' or '\'')
-            {
-                var quote = ch;
-                for (i++; i < trimmed.Length && trimmed[i] != quote; i++)
-                {
-                    if (trimmed[i] == '\\') i++;
-                }
-                continue;
-            }
-            if (ch == '%') return true;
-        }
-        return false;
-    }
-
-    // The culture's percent symbol in any position (prefix cultures put it before the number), with the
-    // surrounding space a formatted value may carry. Only a percent format scales the result.
-    private string StripPercentSymbol(string raw, out bool percent)
-    {
-        percent = false;
-        if (!_useTextMode || !_percentFormat) return raw;
-        var symbol = _fmtCulture.NumberFormat.PercentSymbol;
-        if (string.IsNullOrEmpty(symbol)) return raw;
-        var index = raw.IndexOf(symbol, StringComparison.Ordinal);
-        if (index < 0) return raw;
-        percent = true;
-        return raw.Remove(index, symbol.Length).Trim();
-    }
-
-    // Tolerant parse: try the culture (currency/thousands), then a stripped fallback (e.g. percent).
-    private bool TryParseNumber(string raw, out double value)
-    {
-        var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
-        var text = StripPercentSymbol(raw, out var percent);
-        if (double.TryParse(text, NumberStyles.Any, c, out value))
-        {
-            if (percent) value /= 100d;
-            return true;
-        }
-
-        var dec = c.NumberFormat.NumberDecimalSeparator;
-        var sb = new System.Text.StringBuilder(text.Length);
-        foreach (var ch in text)
-        {
-            if (char.IsDigit(ch) || ch == '-' || ch == '+') sb.Append(ch);
-            else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
-        }
-        if (!double.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value)) return false;
-        if (percent) value /= 100d;
-        return true;
-    }
-
-    private bool TryParseDecimalNumber(string raw, out decimal value)
-    {
-        var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
-        var text = StripPercentSymbol(raw, out var percent);
-        if (decimal.TryParse(text, NumberStyles.Any, c, out value))
-        {
-            if (percent) value /= 100m;
-            return true;
-        }
-
-        // A well-formed number the decimal parser refused overflowed its range (or asked for a
-        // precision it cannot hold). Stripping its characters would invent a different value - "1e100"
-        // became "1100" - so the caller keeps the previous value instead.
-        if (double.TryParse(text, NumberStyles.Any, c, out _)) { value = default; return false; }
-
-        var dec = c.NumberFormat.NumberDecimalSeparator;
-        var sb = new System.Text.StringBuilder(text.Length);
-        foreach (var ch in text)
-        {
-            if (char.IsDigit(ch) || ch == '-' || ch == '+') sb.Append(ch);
-            else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
-        }
-        if (!decimal.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value)) return false;
-        if (percent) value /= 100m;
-        return true;
-    }
-
-    // Range-checked conversion. An out-of-range or fractional value returns false, so the component
-    // keeps the previous value instead of emitting a silent zero.
-    private static bool TryConvertDecimal(decimal value, Type targetType, out object? converted)
-    {
-        converted = null;
-        if (targetType == typeof(decimal))
-        {
-            converted = value;
-            return true;
-        }
-        if (value != decimal.Truncate(value)) return false;
-        try
-        {
-            converted = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
-            return true;
-        }
-        catch (OverflowException) { return false; }
-        catch (InvalidCastException) { return false; }
-    }
-
-    private static TValue? ConvertFromInvariant(string invariant)
-    {
-        var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
-        try
-        {
-            var converter = InvariantConverter.For(targetType);
-            if (converter.CanConvertFrom(typeof(string)))
-                return (TValue?)converter.ConvertFromInvariantString(invariant);
-        }
-        catch { }
-        return default;
     }
 }
