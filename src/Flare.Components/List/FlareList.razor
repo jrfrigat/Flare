@@ -50,6 +50,5 @@ else
     private string _containerStyle => string.IsNullOrEmpty(MaxHeight)
         ? $"height:{CssValidator.StripDangerous(Height)};overflow-y:auto;{Style}"
         : $"max-height:{CssValidator.StripDangerous(MaxHeight)};overflow-y:auto;{Style}";
-    private ICollection<TItem> _virtualizeItems =>
-        Items as ICollection<TItem> ?? Items?.ToList() ?? [];
+    private ICollection<TItem> _virtualizeItems => VirtualListItems<TItem>.Adapt(Items);
 }

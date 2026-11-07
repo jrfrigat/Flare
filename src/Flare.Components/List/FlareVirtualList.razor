@@ -26,6 +26,6 @@
 
     protected override string ComponentCssClass => Css.Classes.Virtual.List;
 
-    private ICollection<TItem> _items => Items as ICollection<TItem> ?? Items?.ToList() ?? [];
+    private ICollection<TItem> _items => VirtualListItems<TItem>.Adapt(Items);
     private string _containerStyle => $"height:{CssValidator.StripDangerous(Height)};overflow-y:auto;{Style}";
 }
