@@ -32,9 +32,13 @@
             var day = date;
             var events = _eventsByDate[day];
             var lanes = _lanesByDate[day];
+            var slots = _slotsByDate[day];
+            var focus = slots.Length > 0 && _focusedSlot >= slots[0].Index && _focusedSlot <= slots[^1].Index
+                ? _focusedSlot : -1;
             <section class="@Css.Classes.Scheduler.Day" @key="day" aria-label="@day.ToString("D", Context.Culture)">
                 <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
-                    @foreach (var entry in _slotsByDate[day])
+                    @RenderSlotRegion(SlotTemplate is null && _slotVisuals.Length > 0 ? _slotVisuals : null, focus, @<text>
+                    @foreach (var entry in slots)
                     {
                         var slot = entry.Slot;
                         var index = entry.Index;
@@ -50,6 +54,7 @@
                             </button>
                         </FlareDropZone>
                     }
+                    </text>)
                     @foreach (var occurrence in events)
                     {
                         <div class="@Css.Classes.Scheduler.Event" style="@EventStyle(occurrence, day, lanes)" @key="occurrence.Identity">
@@ -70,6 +75,15 @@
 </div>
 
 @code {
+    private static RenderFragment RenderSlotRegion(object? visuals, int focus, RenderFragment content) => builder =>
+    {
+        builder.OpenComponent<SchedulerSlotRegion>(0);
+        builder.AddAttribute(1, nameof(SchedulerSlotRegion.Visuals), visuals);
+        builder.AddAttribute(2, nameof(SchedulerSlotRegion.FocusedSlot), focus);
+        builder.AddAttribute(3, nameof(SchedulerSlotRegion.ChildContent), content);
+        builder.CloseComponent();
+    };
+
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     /// <summary>Day heading content; layout and column geometry are retained.</summary>
     [Parameter] public RenderFragment<DateOnly>? DayHeaderTemplate { get; set; }

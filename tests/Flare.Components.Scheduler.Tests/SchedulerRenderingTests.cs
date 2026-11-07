@@ -65,15 +65,44 @@ public sealed class SchedulerRenderingTests : FlareTestContext
             .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Source")));
         var events = new CountingOccurrences(source.Instance.Snapshot.Occurrences);
         var snapshot = source.Instance.Snapshot with { Occurrences = events };
-        var cut = Render<FlareSchedulerTimeGrid<SchedulerEventData>>(p => p.Add(x => x.Context, snapshot));
+        var cut = Render<FlareSchedulerTimeGrid<SchedulerEventData>>(p => p
+            .Add(x => x.Context, snapshot).Add(x => x.ShowAllDay, false));
         var passes = events.Enumerations;
         var dates = cut.Instance.VisibleDates;
+        var dropZone = cut.FindComponents<FlareDropZone>()[0];
+        var slotRenders = dropZone.RenderCount;
         Assert.True(passes > 0);
         cut.Render(p => p.Add(x => x.Context, snapshot with { SelectedEvent = events[0] }));
+        Assert.Equal(slotRenders, dropZone.RenderCount);
         cut.Render(p => p.Add(x => x.Context, snapshot with { Culture = CultureInfo.GetCultureInfo("ru-RU") }));
+        Assert.True(dropZone.RenderCount > slotRenders);
         Assert.Same(dates, cut.Instance.VisibleDates);
         Assert.Equal(passes, events.Enumerations);
         Assert.Contains("Planning", cut.Markup);
+
+        var label = "First slot label";
+        RenderFragment<SchedulerTimeSlot> template = _ => builder => builder.AddContent(0, label);
+        cut.Render(p => p.Add(x => x.SlotTemplate, template));
+        Assert.Equal(label, cut.Find("[data-flare-tree-index='0']").TextContent.Trim());
+        label = "Updated slot label";
+        cut.Render();
+        Assert.Equal(label, cut.Find("[data-flare-tree-index='0']").TextContent.Trim());
+    }
+
+    [Fact]
+    public async Task TimeGridUpdatesTheCachedSlotsWhenKeyboardFocusMoves()
+    {
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Week).Add(x => x.TimeZone, TimeZoneInfo.Utc)
+            .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Source")));
+        var cut = Render<FlareSchedulerTimeGrid<SchedulerEventData>>(p => p
+            .Add(x => x.Context, source.Instance.Snapshot).Add(x => x.ShowAllDay, false));
+        Assert.Equal("0", cut.Find("[data-flare-tree-index='0']").GetAttribute("tabindex"));
+
+        await cut.InvokeAsync(() => cut.Instance.HandleTreeKeyAsync(0, "ArrowDown"));
+
+        Assert.Equal("-1", cut.Find("[data-flare-tree-index='0']").GetAttribute("tabindex"));
+        Assert.Equal("0", cut.Find("[data-flare-tree-index='1']").GetAttribute("tabindex"));
     }
 
     [Fact]
