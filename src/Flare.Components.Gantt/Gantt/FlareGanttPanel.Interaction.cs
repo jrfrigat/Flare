@@ -65,9 +65,9 @@ public partial class FlareGanttPanel<TRow, TItem>
     /// <inheritdoc />
     protected override bool ShouldRender()
     {
-        if (!_skipRender) return true;
+        var render = !_skipRender || _viewportOnly;
         _skipRender = false;
-        return false;
+        return render;
     }
 
     // A gesture the browser tracked (gantt.js): the bar moved or was resized by whole axis units, possibly into
@@ -78,7 +78,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         var toRow = action == GanttEditAction.Move && AllowRowChange && rowKey is not null && _rows.Any(r => r.Key == rowKey) ? rowKey : bar.RowKey;
         _suppressClick = true;
         await Commit(key, action, Apply(bar.Span, action, units, CoverOf(key)), bar.RowKey, toRow);
-        StateHasChanged();
+        RenderLayout();
     }
 
     // A link the user drew from one bar to another in the browser.
@@ -88,7 +88,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         if (!_bars.TryGetValue(toKey, out var to) || to.IsSummary) return;
         _suppressClick = true;
         await CreateLink(new GanttLink(fromKey, toKey, NewLinkType));
-        StateHasChanged();
+        RenderLayout();
     }
 
     /// <inheritdoc />
@@ -204,17 +204,27 @@ public partial class FlareGanttPanel<TRow, TItem>
     private async Task Commit(string key, GanttEditAction action, GanttSpan span, string fromRow, string? toRow)
     {
         var rowChanged = toRow is not null && toRow != fromRow;
-        var spans = new Dictionary<string, GanttSpan>();
+        var spans = ScheduleMode == GanttScheduleMode.Push ? new Dictionary<string, GanttSpan>() : null;
+        var original = span;
         foreach (var item in Items ?? [])
-            if (ItemKey is not null && ItemSpan?.Invoke(item) is { } s) spans.TryAdd(ItemKey(item), s);
-        var original = spans.TryGetValue(key, out var before) ? before : span;
+        {
+            if (ItemKey is null || ItemSpan?.Invoke(item) is not { } itemSpan) continue;
+            var itemKey = ItemKey(item);
+            if (spans is not null) spans.TryAdd(itemKey, itemSpan);
+            else if (itemKey == key)
+            {
+                original = itemSpan;
+                break;
+            }
+        }
+        if (spans is not null && spans.TryGetValue(key, out var before)) original = before;
         if (span == original && !rowChanged) return;
 
-        var cascade = span == original
-            ? new Dictionary<string, GanttSpan>()
-            : GanttGraph.Cascade(spans, Links ?? [], key, span, ScheduleMode);
         var changes = new List<GanttChange> { new(key, span, rowChanged ? toRow : null) };
-        changes.AddRange(cascade.Where(c => c.Key != key).Select(c => new GanttChange(c.Key, c.Value)));
+        if (spans is not null && span != original)
+            foreach (var change in GanttGraph.Cascade(spans, Links ?? [], key, span, ScheduleMode))
+                if (change.Key != key)
+                    changes.Add(new(change.Key, change.Value));
 
         var args = new GanttChangeEventArgs(key, action, changes);
         await OnChange.InvokeAsync(args);

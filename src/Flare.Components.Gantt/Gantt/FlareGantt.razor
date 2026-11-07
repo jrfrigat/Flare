@@ -294,7 +294,7 @@
         {
             _visible[panels[i]] = (from[i], to[i]);
             foreach (var panel in _panels.ToArray())
-                if (panel.Id == panels[i] && panel.Uncovered(from[i], to[i])) panel.Refresh();
+                if (panel.Id == panels[i] && panel.Uncovered(from[i], to[i])) panel.RefreshViewport();
         }
     }
 

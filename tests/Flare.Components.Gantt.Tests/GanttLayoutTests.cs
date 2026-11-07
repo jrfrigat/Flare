@@ -130,9 +130,17 @@ public sealed class GanttLayoutTests : GanttTestBase
     public void Virtualized_panels_route_only_links_between_drawn_rows()
     {
         var (rows, items, links) = FarAndNearLinks();
+        var projections = 0;
         var cut = Chart(p => p.Add(x => x.Rows, rows).Add(x => x.Items, items).Add(x => x.Links, links),
             g => g.Add(x => x.Virtualize, true));
+        var renderedPanel = cut.FindComponent<FlareGanttPanel<Node, Work>>();
+        renderedPanel.Render(p => p.Add(x => x.ItemSpan, (Func<Work, GanttSpan?>)(item =>
+        {
+            projections++;
+            return GanttSpan.FromDays(item.Start, item.End);
+        })));
         var panel = cut.Find(".flare-gantt__body").GetAttribute("data-panel")!;
+        var before = projections;
 
         // Rows of 30 px: this window covers roughly rows 75-100, where only the near link's ends sit.
         cut.InvokeAsync(() => cut.Instance.Visible([panel], [3000], [3600]));
@@ -140,6 +148,13 @@ public sealed class GanttLayoutTests : GanttTestBase
         var link = Assert.Single(cut.FindAll(".flare-gantt__link"));
         Assert.Equal("near-a", link.GetAttribute("data-from"));
         Assert.Equal("near-b", link.GetAttribute("data-to"));
+        Assert.Equal(before, projections);
+
+        var path = link.GetAttribute("d");
+        items[2] = items[2] with { Start = Day(4), End = Day(5) };
+        renderedPanel.Render();
+        Assert.True(projections > before);
+        Assert.NotEqual(path, cut.Find(".flare-gantt__link").GetAttribute("d"));
     }
 
     [Fact]
