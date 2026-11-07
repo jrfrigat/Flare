@@ -76,7 +76,10 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     /// <summary>Identifier of the bound model field, created from the component's <c>For</c> accessor.</summary>
     protected FieldIdentifier FieldId { get; private set; }
 
-    private bool _validationSubscribed;
+    private EditContext? _validationContext;
+    private bool _usesCustomValidationRendering;
+    private bool _readValidationOutput;
+    private string? _lastRenderedError;
     private bool _hasBoundField;
     private UnchangedParameters? _parameters;
     private bool _skipRender;
@@ -95,9 +98,20 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     /// <inheritdoc />
     public override Task SetParametersAsync(ParameterView parameters)
     {
+        // A template or another delegate can read validation state beyond this field's own message.
+        if (!_usesCustomValidationRendering)
+        {
+            foreach (var parameter in parameters)
+            {
+                if (parameter.Value is not Delegate) continue;
+                _usesCustomValidationRendering = true;
+                break;
+            }
+        }
         if (SkipsUnchangedParameters)
             _skipRender = (_parameters ??= new UnchangedParameters()).Matches(parameters, DelegatesAffectRender);
         var task = base.SetParametersAsync(parameters);
+        SyncValidationSubscription();
         // The render the push asks for has been decided by now; a skip left unconsumed (a render was already
         // queued, so ShouldRender was not asked) must not swallow the field's next render of its own.
         _skipRender = false;
@@ -116,11 +130,18 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (EditContext is not null)
-        {
-            EditContext.OnValidationStateChanged += HandleValidationStateChanged;
-            _validationSubscribed = true;
-        }
+        _usesCustomValidationRendering |= GetType().Assembly != typeof(FlareFieldBase).Assembly;
+        SyncValidationSubscription();
+    }
+
+    private void SyncValidationSubscription()
+    {
+        if (ReferenceEquals(_validationContext, EditContext)) return;
+        if (_validationContext is not null)
+            _validationContext.OnValidationStateChanged -= HandleValidationStateChanged;
+        _validationContext = EditContext;
+        if (_validationContext is not null)
+            _validationContext.OnValidationStateChanged += HandleValidationStateChanged;
     }
 
     /// <summary>
@@ -135,8 +156,13 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
         {
             FieldId = FieldIdentifier.Create(accessor);
             _hasBoundField = true;
-            SyncFieldRegistration();
         }
+        else
+        {
+            FieldId = default;
+            _hasBoundField = false;
+        }
+        SyncFieldRegistration();
     }
 
     private Dictionary<FieldIdentifier, string>? _registeredFieldRegistry;
@@ -147,12 +173,11 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     // from the old one, and a field that stops being bound disappears from the map.
     private void SyncFieldRegistration()
     {
-        if (!ReferenceEquals(FieldRegistry, _registeredFieldRegistry))
-        {
+        if (!_hasBoundField || !ReferenceEquals(FieldRegistry, _registeredFieldRegistry)
+            || _registeredControlId is not null && !_registeredField.Equals(FieldId))
             UnregisterField();
-            _registeredFieldRegistry = FieldRegistry;
-        }
         if (FieldRegistry is null || !_hasBoundField) return;
+        _registeredFieldRegistry = FieldRegistry;
         _registeredField = FieldId;
         _registeredControlId = ControlId;
         FieldRegistry[_registeredField] = _registeredControlId;
@@ -194,7 +219,19 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     /// <summary>The error currently shown: the <see cref="ErrorText"/> override, else the bound
     /// validation message, else null. Parameterless convenience over <see cref="DisplayedError"/> that
     /// reads the inherited <see cref="ErrorText"/>.</summary>
-    protected string? DisplayedErrorText => DisplayedError(ErrorText);
+    protected string? DisplayedErrorText
+    {
+        get
+        {
+            var error = DisplayedError(ErrorText);
+            if (!_usesCustomValidationRendering && EditContext is not null)
+            {
+                _lastRenderedError = error;
+                _readValidationOutput = true;
+            }
+            return error;
+        }
+    }
 
     /// <summary>The <c>aria-describedby</c> target for the control: the error id when an error is shown,
     /// else the helper id when helper text is present, else null. Fields with an EXTRA describedby source
@@ -211,13 +248,21 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     }
 
     private void HandleValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
+        => InvokeAsync(RenderValidationChange);
+
+    private void RenderValidationChange()
+    {
+        if (!_usesCustomValidationRendering && _readValidationOutput
+            && string.Equals(_lastRenderedError, DisplayedError(ErrorText), StringComparison.Ordinal))
+            return;
+        StateHasChanged();
+    }
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
-        if (_validationSubscribed && EditContext is not null)
-            EditContext.OnValidationStateChanged -= HandleValidationStateChanged;
+        if (_validationContext is not null)
+            _validationContext.OnValidationStateChanged -= HandleValidationStateChanged;
         UnregisterField();
         await base.DisposeAsync();
     }
