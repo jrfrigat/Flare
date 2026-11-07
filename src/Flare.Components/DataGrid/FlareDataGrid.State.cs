@@ -398,6 +398,12 @@ public partial class FlareDataGrid<TItem>
         if (_treeMode && Tree is not null)
             src = FlattenTree(src).Select(n => n.Item).ToList();
 
+        // Take one snapshot of an untransformed source. Parameter updates still invalidate it,
+        // including edits made in place, and consumers such as exports keep a stable row list.
+        if (_sortStack.Count == 0 && _filters.Count == 0 && _typedFilters.Count == 0 &&
+            _advancedTree is not { IsEmpty: false } && QuickFilter is null && string.IsNullOrEmpty(_quickFilterText))
+            return _unpagedMemo = src.ToList();
+
         var filters = new List<DataGridFilter>();
         foreach (var (colTitle, filterVal) in _filters)
             if (!string.IsNullOrEmpty(filterVal))
@@ -410,7 +416,7 @@ public partial class FlareDataGrid<TItem>
         var result = DataGridPipeline<TItem>.Execute(
             srcList, sorts, filters, _advancedTree, _effectiveQuickFilter,
             null, null, 0, int.MaxValue, BuildColumnStrategies());
-        return _unpagedMemo = result.Items.ToList();
+        return _unpagedMemo = result.Items as List<TItem> ?? result.Items.ToList();
     }
 
     // Zero is a real answer here - "one page, every row" - so it is passed through rather than
