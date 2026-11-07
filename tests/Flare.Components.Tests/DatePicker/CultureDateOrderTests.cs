@@ -16,7 +16,8 @@ public class CultureDateOrderTests : FlareTestContext
     public void NumericDatePattern_FollowsTheCultureOrder(string culture, string expected)
     {
         var c = new CultureInfo(culture);
-        Assert.Equal(expected, MaskedInput.NumericDatePattern(c, c.DateTimeFormat.DateSeparator));
+        var cache = new MaskedInput.DatePatternCache();
+        Assert.Equal(expected, cache.Get(c));
     }
 
     [Theory]

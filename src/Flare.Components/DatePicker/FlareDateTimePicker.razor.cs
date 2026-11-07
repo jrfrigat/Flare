@@ -195,16 +195,15 @@ public partial class FlareDateTimePicker
     private string _format => string.IsNullOrEmpty(DateTimeFormat)
         ? $"{_culture.DateTimeFormat.ShortDatePattern} {(ShowSeconds ? _culture.DateTimeFormat.LongTimePattern : _culture.DateTimeFormat.ShortTimePattern)}"
         : DateTimeFormat;
-    private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Date segments in the culture's own order, so year-first cultures mask and parse too.
-    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + (ShowSeconds ? " HH:mm:ss" : " HH:mm");
+    private MaskedInput.DatePatternCache _datePattern;
+    private string _timeSuffix => ShowSeconds ? " HH:mm:ss" : " HH:mm";
+    private string _numericPattern => _datePattern.Get(_culture, _timeSuffix);
     // A format that shows the offset (z, K) edits it too, after the time: "15.10.2026 14:30 +05:00".
     private bool _editsOffset => _format.Contains('z') || _format.Contains('K');
-    private string _editPattern => _editsOffset ? _numericPattern + " zzz" : _numericPattern;
+    private string _editPattern => _datePattern.Get(_culture, _timeSuffix, _editsOffset);
     // Length of a complete edit: "zzz" renders as the 6 characters "+05:00".
     private int _editLength => _numericPattern.Length + (_editsOffset ? 7 : 0);
-
-    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     // Layout: Auto resolves to Panels on >= md (960px) viewports, Tabs otherwise.
     private DateTimeVariant _effectiveVariant => Mode switch

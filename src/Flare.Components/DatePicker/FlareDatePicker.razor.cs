@@ -163,15 +163,13 @@ public partial class FlareDatePicker
 
     // Effective display/parse format (culture short pattern when not set).
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
-    private string _separator => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Normalised numeric mask used for typing + placeholder, with the segments in the culture's own order so
     // year-first cultures (ja-JP, sv-SE, ...) mask and parse too.
-    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _separator);
+    private MaskedInput.DatePatternCache _datePattern;
+    private string _numericPattern => _datePattern.Get(_culture);
     // The field edits digits on a mask unless a custom parser reads the text or the calendar writes letters
     // (Hebrew): then it takes free text and judges it on change.
     private bool _digitEditing => ParseInput is null && CalendarMath.WritesDigits(_culture);
-
-    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     private string DisplayValue => Value.HasValue ? CalendarMath.FormatSafe(Value.Value, _format, _culture) : string.Empty;
 

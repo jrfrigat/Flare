@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text;
 
 namespace Flare.Components;
 
@@ -42,14 +41,36 @@ internal static class MaskedInput
     /// the order the culture's short date pattern uses them (<c>dd.MM.yyyy</c>, <c>MM/dd/yyyy</c>,
     /// <c>yyyy/MM/dd</c>, ...), joined by <paramref name="separator"/>.
     /// </summary>
-    public static string NumericDatePattern(CultureInfo culture, string separator)
+    private static string NumericDatePattern(string shortPattern, string separator)
     {
-        var shortPattern = culture.DateTimeFormat.ShortDatePattern;
         static int At(string p, char c) { var i = p.IndexOf(c); return i < 0 ? int.MaxValue : i; }
         var segments = new[] { ('d', "dd"), ('M', "MM"), ('y', "yyyy") }
             .OrderBy(s => At(shortPattern, s.Item1))
             .Select(s => s.Item2);
         return string.Join(separator, segments);
+    }
+
+    // Key on the actual format strings: a caller can edit a writable CultureInfo in place.
+    internal struct DatePatternCache
+    {
+        private (string Pattern, string Separator, string Suffix) _key;
+        private string? _numeric;
+        private string? _withOffset;
+
+        internal string Get(CultureInfo culture, string suffix = "", bool withOffset = false)
+        {
+            var format = culture.DateTimeFormat;
+            var separator = format.DateSeparator;
+            if (separator.Length == 0) separator = ".";
+            var key = (format.ShortDatePattern, separator, suffix);
+            if (_numeric is null || _key != key)
+            {
+                _key = key;
+                _numeric = NumericDatePattern(key.ShortDatePattern, separator) + suffix;
+                _withOffset = null;
+            }
+            return withOffset ? _withOffset ??= _numeric + " zzz" : _numeric;
+        }
     }
 
     /// <summary>
@@ -72,18 +93,26 @@ internal static class MaskedInput
     public static string MaskByPattern(string? raw, string pattern)
     {
         if (string.IsNullOrEmpty(raw)) return string.Empty;
-        using var digits = raw.Where(char.IsDigit).GetEnumerator();
-        var sb = new StringBuilder(pattern.Length);
-        var separator = new StringBuilder();
-        foreach (var c in pattern)
+        Span<char> masked = pattern.Length <= 128 ? stackalloc char[pattern.Length] : new char[pattern.Length];
+        var written = 0;
+        var source = 0;
+        var literalStart = 0;
+        for (var index = 0; index < pattern.Length; index++)
         {
-            if (!char.IsLetter(c)) { separator.Append(c); continue; }
-            if (!digits.MoveNext()) break;
-            if (sb.Length > 0) sb.Append(separator);
-            separator.Clear();
-            sb.Append(digits.Current);
+            if (!char.IsLetter(pattern[index])) continue;
+            while (source < raw.Length && !char.IsDigit(raw[source])) source++;
+            if (source == raw.Length) break;
+            if (written > 0)
+            {
+                var literal = pattern.AsSpan(literalStart, index - literalStart);
+                literal.CopyTo(masked[written..]);
+                written += literal.Length;
+            }
+            masked[written++] = raw[source++];
+            literalStart = index + 1;
         }
-        return sb.ToString();
+        var result = masked[..written];
+        return result.SequenceEqual(raw) ? raw : new string(result);
     }
 
     /// <summary>
@@ -92,14 +121,8 @@ internal static class MaskedInput
     /// an incomplete edit must never rewrite the neighbouring segment; validation happens when
     /// the field is committed.
     /// </summary>
-    public static string MaskTime(string? raw, bool showSeconds)
-    {
-        if (string.IsNullOrEmpty(raw)) return string.Empty;
-        var digits = new string(raw.Where(char.IsDigit).Take(showSeconds ? 6 : 4).ToArray());
-        if (digits.Length <= 2) return digits;
-        if (digits.Length <= 4) return $"{digits[..2]}:{digits[2..]}";
-        return $"{digits[..2]}:{digits[2..4]}:{digits[4..]}";
-    }
+    public static string MaskTime(string? raw, bool showSeconds) =>
+        MaskByPattern(raw, showSeconds ? "HH:mm:ss" : "HH:mm");
 
     /// <summary>
     /// The 12-hour form of <see cref="MaskTime"/>: the digits fill <c>hh:mm</c> (or <c>hh:mm:ss</c>) and, once all are
@@ -111,7 +134,7 @@ internal static class MaskedInput
     public static string MaskTime12(string? raw, bool showSeconds, string am, string pm, bool currentPm)
     {
         var time = MaskTime(raw, showSeconds);
-        if (string.IsNullOrEmpty(raw) || raw.Count(char.IsDigit) < (showSeconds ? 6 : 4)) return time;
+        if (string.IsNullOrEmpty(raw) || time.Length < (showSeconds ? 8 : 5)) return time;
         return $"{time} {(PicksPm(raw, am, pm) ?? currentPm ? pm : am)}";
     }
 

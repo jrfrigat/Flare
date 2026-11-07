@@ -18,7 +18,9 @@ public partial class FlareTimePicker
         (false, true) => "hh':'mm':'ss tt",
     };
 
-    private string _timePlaceholder => (_is24Hour ? "HH:mm" : "hh:mm") + (ShowSeconds ? ":ss" : "") + (_is24Hour ? "" : " " + _am);
+    private string _timePlaceholder => _is24Hour
+        ? (ShowSeconds ? "HH:mm:ss" : "HH:mm")
+        : (ShowSeconds ? "hh:mm:ss " : "hh:mm ") + _am;
 
     private string FormatTime(TimeOnly t) => _is24Hour ? t.ToString(_timeFormat, CultureInfo.InvariantCulture) : Format12(t);
 
@@ -31,9 +33,9 @@ public partial class FlareTimePicker
         if (_is24Hour) return TimeOnly.TryParseExact(text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out shown);
         shown = default;
         var time = MaskedInput.MaskTime(text, ShowSeconds);
-        var period = text.Length > time.Length ? text[time.Length..].Trim() : string.Empty;
-        var isPm = string.Equals(period, _pm, StringComparison.OrdinalIgnoreCase);
-        if (!isPm && !string.Equals(period, _am, StringComparison.OrdinalIgnoreCase)) return false;
+        var period = text.AsSpan(Math.Min(text.Length, time.Length)).Trim();
+        var isPm = period.Equals(_pm, StringComparison.OrdinalIgnoreCase);
+        if (!isPm && !period.Equals(_am, StringComparison.OrdinalIgnoreCase)) return false;
         if (!TimeOnly.TryParseExact(time, ShowSeconds ? "hh':'mm':'ss" : "hh':'mm", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out var twelve)) return false;
         shown = twelve.Hour == 12 ? (isPm ? twelve : twelve.AddHours(-12)) : (isPm ? twelve.AddHours(12) : twelve);
