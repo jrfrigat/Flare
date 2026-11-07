@@ -77,6 +77,28 @@ public sealed class SchedulerRenderingTests : FlareTestContext
     }
 
     [Fact]
+    public void YearKeepsTheDefaultProjectionUntilItsInputsChange()
+    {
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Events, new[] { Item }).Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Year)
+            .Add(x => x.TimeZone, TimeZoneInfo.Utc).Add(x => x.Culture, CultureInfo.GetCultureInfo("en-GB"))
+            .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Source")));
+        var snapshot = source.Instance.Snapshot;
+        var year = Render<FlareSchedulerCalendar<SchedulerEventData>>(p => p.Add(x => x.Context, snapshot));
+        var renders = year.RenderCount;
+        Assert.Contains("November 2026", year.Markup);
+
+        year.Render(p => p.Add(x => x.Context, source.Instance.Snapshot));
+        Assert.Equal(renders, year.RenderCount);
+
+        year.Render(p => p.Add(x => x.Context, snapshot with { Culture = CultureInfo.GetCultureInfo("de-DE") })
+            .Add(x => x.MonthHeaderTemplate, month => b => b.AddContent(0, month.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")))));
+        Assert.True(year.RenderCount > renders);
+        Assert.Contains("Dezember 2026", year.Markup);
+        Assert.Contains("Planning", year.Markup);
+    }
+
+    [Fact]
     public async Task RefusedAndFailedGesturesDoNotOpenAnEditorAndFailuresAreObservable()
     {
         var fail = false;

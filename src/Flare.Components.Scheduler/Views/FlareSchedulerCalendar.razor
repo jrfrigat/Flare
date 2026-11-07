@@ -3,7 +3,9 @@
 @inherits FlareSchedulerViewBase<TItem>
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IUiJsService Ui
+@inject TimeProvider Clock
 
+@{ _lastDefaultRender = CanReuseRender ? new(Context, Class, Style, Today, LocalizationState) : null; }
 <div @ref="_root" class="@BuildCssClass(Css.Classes.Scheduler.Month)" style="@Style" @attributes="AdditionalAttributes">
 <FlareCalendar ViewDate="Anchor" ShowNavigation="false"
                MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
@@ -23,7 +25,10 @@
     [Parameter] public RenderFragment<DateOnly>? DateTemplate { get; set; }
     /// <summary>Optional weekday heading content.</summary>
     [Parameter] public RenderFragment<DayOfWeek>? DayHeaderTemplate { get; set; }
-    private object? _projectionKey;
+    private (IReadOnlyList<SchedulerOccurrence<TItem>> Occurrences, SchedulerWindow Window, TimeZoneInfo Zone, int Version)? _projectionKey;
+    private readonly record struct CalendarRender(SchedulerViewContext<TItem> Context, string? Class, string? Style,
+        DateOnly Today, FlareLocalizationState? Localization);
+    private CalendarRender? _lastDefaultRender;
     private bool _keyboardRegistered;
     private ElementReference _root;
     private readonly Dictionary<CalendarEvent, SchedulerOccurrence<TItem>> _source = new(ReferenceEqualityComparer.Instance);
@@ -31,10 +36,27 @@
     private DateOnly Anchor => Context.View == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;
     private DateOnly? SelectedDate => Context.SelectedSlot is not { } slot ? null : slot.AllDay?.Start
         ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(slot.Start, Context.TimeZone).DateTime);
+    private DateOnly Today => DateOnly.FromDateTime(Clock.GetLocalNow().DateTime);
+    private bool CanReuseRender => GetType() == typeof(FlareSchedulerCalendar<TItem>) &&
+        MonthHeaderTemplate is null && DateTemplate is null && DayHeaderTemplate is null && EventTemplate is null &&
+        AdditionalAttributes is null && Context.Focus.Identity is null && Context.Culture.IsReadOnly;
+
+    protected override bool ShouldRender()
+    {
+        // Application templates can depend on state outside Context. The standard calendar can keep
+        // the last projection when the context, current day and outer attributes agree.
+        if (!CanReuseRender || _lastDefaultRender is not { } previous) return true;
+        return previous.Context != Context || previous.Class != Class || previous.Style != Style ||
+            previous.Today != Today || !ReferenceEquals(previous.Localization, LocalizationState) ||
+            !ReferenceEquals(previous.Context.Culture, Context.Culture) ||
+            !ReferenceEquals(previous.Context.Commands, Context.Commands) ||
+            !ReferenceEquals(previous.Context.Occurrences, Context.Occurrences);
+    }
+
     protected override void OnParametersSet()
     {
-        var key = (Context.Occurrences, Context.Window, Context.TimeZone);
-        if (Equals(key, _projectionKey)) return;
+        var key = (Context.Occurrences, Context.Window, Context.TimeZone, Context.Version);
+        if (key == _projectionKey) return;
         _projectionKey = key;
         _source.Clear();
         var result = new List<CalendarEvent>();
