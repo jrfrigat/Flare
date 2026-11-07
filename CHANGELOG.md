@@ -3,16 +3,28 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.53.0] - 2026-11-07
 
-### Fixed
+### Added
 
-- Flare packages no longer raise the minimum .NET 10 patch to the version available when Flare is built. Blazor and localization dependencies accept 10.0.0 and newer patches, so applications can keep their chosen 10.0.x version.
+- Scheduler views, navigation and event editing can be composed independently. The default composition still provides a surface, toolbar and dialog. Custom layouts can use an inline form, drawer or dialog with the same edit session. The shared all-day band supports multi-day events and configurable overflow.
+
+### Breaking changes
+
+- Scheduler customization moves from root parameters to the components that render the views, toolbar and editor. View event templates receive `SchedulerEventContext<TItem>`. Selecting a time slot and creating an event are separate actions. The all-day lane token is now `AllDayRowHeight`. See the [Scheduler upgrade guide](https://github.com/jrfrigat/Flare/blob/main/docs/en/scheduler.md#upgrading-from-0520).
 
 ### Changed
 
-- Plain `FlareText` renders without managed allocations after warm-up, including when it inherits typography. Buttons and checkboxes allocate less during rendering and updates, and checkboxes without a label or error retain less memory.
-- Scheduler is now a component builder: a headless data/command scope, optional Surface/Toolbar/Dialog, independent edit sessions/forms, interactive event templates and a shared multi-day all-day band with configurable +N overflow. Slot selection is separate from creation. Root ViewTemplate/ToolbarTemplate/EditorTemplate/ShowToolbar/Views move to explicit component composition; event templates receive SchedulerEventContext on views; AllDayHeight becomes AllDayRowHeight. Calendar/Gantt expose reusable interaction-template hooks. Gallery and EN/RU guides show calendar filters, preview/right-drawer editing and quick/full inline business forms.
+- Components share flattened theme tokens, and unchanged theme inputs reuse their generated CSS. Semantic colors reuse their CSS class strings.
+- Plain `FlareText` renders without managed allocations after warm-up, including when it inherits typography. Buttons and checkboxes allocate less during rendering and updates. Checkboxes without a label or error retain less memory.
+- Built-in fields with standard validation output refresh when their displayed error changes. In a Chromium WebAssembly benchmark with 80 fields, one edit that produced a new validation error allocated about 80% less. Date and time pickers, `FlareNumericField` and `FlareMaskedField` allocate less during text entry.
+- Tables reuse grouping buffers, and DataGrid builds fewer temporary objects for rows and cells. Virtual lists read `IReadOnlyList<T>` items without copying the entire source. Transfer and Kanban allocate less when updating their items or moving them.
+- Charts reuse drawing and category hit geometry when its inputs match. Gantt reuses row layout during scrolling, and gauges reuse scale marks when only the reading changes. Calendar reuses its month data, and Scheduler allocates less when switching views or editing events.
+
+### Fixed
+
+- Flare packages accept .NET 10 Blazor and localization dependencies from 10.0.0 onward, so applications can keep their chosen 10.0.x patch.
+- Concurrent JS module requests share a single import. A viewport subscription is released if its initial callback fails. Fields detach from the previous `EditContext` when the context changes.
 
 ## [0.52.0] - 2026-11-05
 

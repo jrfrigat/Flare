@@ -48,6 +48,23 @@ Surface, Toolbar and Dialog components for convenience. With ChildContent it ren
 composition. Pass visual Class/Style/attributes to the chosen surface in a custom composition.
 The scope itself has no dependency on IDialogService.
 
+## Upgrading from 0.52.0
+
+Use the ready-made composition above for a scheduler with the standard views, toolbar and editor.
+For a customized scheduler, move the former root parameters to the appropriate components.
+
+| In 0.52.0 | In 0.53.0 |
+| --- | --- |
+| `ViewTemplate` | Render the view in `FlareScheduler.ChildContent` or replace the view switch with `FlareSchedulerSurface.ChildContent`. |
+| `ToolbarTemplate` and `ShowToolbar` | In a custom composition, render your toolbar, add `FlareSchedulerToolbar` for standard commands, or omit the toolbar. |
+| `Views` | Set `FlareSchedulerToolbar.Views` to control the view picker. |
+| `EditorTemplate` | Put editor content in `FlareSchedulerDialog.ChildContent` or present `context.Edit` in your own layout. See the [drawer example](#own-the-editing-surface). |
+| Root `EventTemplate` | Set `EventTemplate` on the surface or an individual view. Use `context.Occurrence` to read the event and `FlareSchedulerEventAction` for its primary action. |
+| `AllDayHeight` | Use `AllDayRowHeight` (`--flare-scheduler-all-day-row-height`) to set the minimum height of an all-day lane. |
+
+Selecting a slot updates the selection. Call `context.Commands.CreateEventAsync(slot)` from a
+create action when it should open an editing session. Use `OnChange` to persist accepted changes.
+
 ## Choose the parts
 
 | Part | Responsibility |
