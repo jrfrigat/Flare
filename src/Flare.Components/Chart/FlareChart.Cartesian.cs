@@ -14,7 +14,8 @@ public partial class FlareChart
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(visVals.Min(), visVals.Max(), _valueExtent);
         double min = axis.Min, max = axis.Max;
-        int pts = series.Max(s => s.Values.Count);
+        int pts = _pts;
+        var view = _view;
         int seq = 0;
 
         if (_showGrid || _showY)
@@ -36,7 +37,7 @@ public partial class FlareChart
             var pointList = new List<(double X, double Y)>(vals.Count);
             for (int i = 0; i < vals.Count; i++)
             {
-                double x = XOfIndex(i);
+                double x = XOfIndex(i, view);
                 double y = IsGap(vals[i])
                     ? double.NaN
                     : _padT + _plotH - (SafeValue(vals[i]) - min) / (max - min) * _plotH;
@@ -75,7 +76,7 @@ public partial class FlareChart
             {
                 foreach (var run in runs)
                     foreach (var (x, y) in run)
-                        marks.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{markerR:F2}\" style=\"fill:{color}\"/>"));
+                        marks.Append(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{markerR:F2}\" style=\"fill:{color}\"/>");
             }
             else
             {
@@ -97,9 +98,10 @@ public partial class FlareChart
     private static string StraightPath(IReadOnlyList<(double X, double Y)> pts)
     {
         if (pts.Count == 0) return "";
-        var sb = new System.Text.StringBuilder(string.Create(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}"));
+        var sb = new System.Text.StringBuilder();
+        sb.Append(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}");
         for (int i = 1; i < pts.Count; i++)
-            sb.Append(string.Create(_inv, $" L {pts[i].X:F1} {pts[i].Y:F1}"));
+            sb.Append(_inv, $" L {pts[i].X:F1} {pts[i].Y:F1}");
         return sb.ToString();
     }
 
@@ -133,14 +135,15 @@ public partial class FlareChart
             }
         }
 
-        var sb = new System.Text.StringBuilder(string.Create(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}"));
+        var sb = new System.Text.StringBuilder();
+        sb.Append(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}");
         for (int i = 0; i < n - 1; i++)
         {
             var p1 = pts[i];
             var p2 = pts[i + 1];
             double h = (p2.X - p1.X) / 3.0;
-            sb.Append(string.Create(_inv,
-                $" C {p1.X + h:F1} {p1.Y + m[i] * h:F1} {p2.X - h:F1} {p2.Y - m[i + 1] * h:F1} {p2.X:F1} {p2.Y:F1}"));
+            sb.Append(_inv,
+                $" C {p1.X + h:F1} {p1.Y + m[i] * h:F1} {p2.X - h:F1} {p2.Y - m[i + 1] * h:F1} {p2.X:F1} {p2.Y:F1}");
         }
         return sb.ToString();
     }

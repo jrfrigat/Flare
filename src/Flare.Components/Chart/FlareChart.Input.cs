@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Flare.Components.Services;
 using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
@@ -124,12 +125,33 @@ public partial class FlareChart
 
     private string? CategoryDescription(int index)
     {
-        if (Data is null) return null;
-        var present = Data.Series.Where((s, i) => !IsHidden(i) && (Type != ChartType.Radar || s.Values.Count >= 3)
-            && index < s.Values.Count && !IsGap(s.Values[index])).ToList();
-        if (present.Count == 0) return null;
-        var label = Data.Labels is { } labels && index < labels.Count ? labels[index] : index.ToString(_inv);
-        return $"{label}\n{string.Join("\n", present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}")))}";
+        if (Data is not { } data) return null;
+        var text = new DefaultInterpolatedStringHandler(0, 0, _inv, stackalloc char[256]);
+        var hasValue = false;
+        for (var i = 0; i < data.Series.Count; i++)
+        {
+            if (IsHidden(i)) continue;
+            var series = data.Series[i];
+            var values = series.Values;
+            if (index >= values.Count || Type == ChartType.Radar && values.Count < 3) continue;
+            var value = values[index];
+            if (IsGap(value)) continue;
+
+            if (!hasValue)
+            {
+                if (data.Labels is { } labels && index < labels.Count)
+                    text.AppendFormatted(labels[index]);
+                else
+                    text.AppendFormatted(index);
+                hasValue = true;
+            }
+
+            text.AppendLiteral("\n");
+            text.AppendFormatted(series.Label);
+            text.AppendLiteral(": ");
+            text.AppendFormatted(value, "G4");
+        }
+        return hasValue ? text.ToStringAndClear() : null;
     }
 
     private void ShowHit(ChartHit hit, MouseEventArgs e)

@@ -26,11 +26,13 @@ public partial class FlareChart
     // THE horizontal projection: category index -> viewBox x. Every cartesian renderer goes through it,
     // which is what makes zooming a change of one window rather than a change in each renderer. Without a
     // zoom the visible window is the whole domain, so this reduces to the plain even spacing.
-    private double XOfIndex(double index)
+    private double XOfIndex(double index) => XOfIndex(index, _view);
+
+    private double XOfIndex(double index, ChartZoom view)
     {
-        var span = _view.Span;
+        var span = view.Span;
         if (span <= 0) return _padL + _plotW / 2.0;
-        return _padL + (index - _view.From) / span * _plotW;
+        return _padL + (index - view.From) / span * _plotW;
     }
 
     // Width of one category slot in viewBox units - the group width for bars, the point spacing for lines.
@@ -58,11 +60,13 @@ public partial class FlareChart
 
     // Index range worth drawing: everything outside is clipped away, so computing it costs nothing and
     // skipping it keeps a zoomed chart from building marks nobody can see.
-    private (int From, int To) VisibleIndexRange(int pts)
+    private (int From, int To) VisibleIndexRange(int pts) => VisibleIndexRange(pts, _view);
+
+    private static (int From, int To) VisibleIndexRange(int pts, ChartZoom view)
     {
         if (pts <= 0) return (0, -1);
-        var from = (int)Math.Floor(_view.From) - 1;
-        var to = (int)Math.Ceiling(_view.To) + 1;
+        var from = (int)Math.Floor(view.From) - 1;
+        var to = (int)Math.Ceiling(view.To) + 1;
         return (Math.Max(0, from), Math.Min(pts - 1, to));
     }
 
@@ -72,11 +76,12 @@ public partial class FlareChart
         {
             int pts = _pts;
             if (pts <= 0) yield break;
-            var (from, to) = VisibleIndexRange(pts);
-            double width = SlotWidth;
+            var view = _view;
+            var (from, to) = VisibleIndexRange(pts, view);
+            double width = view.Span <= 0 ? _plotW : _plotW / view.Span;
             for (int i = from; i <= to; i++)
             {
-                double center = XOfIndex(i);
+                double center = XOfIndex(i, view);
                 yield return (i, center - width / 2, width, center);
             }
         }
@@ -161,5 +166,15 @@ public partial class FlareChart
         return runs;
     }
 
-    private int _pts => Data?.Series is { Count: > 0 } s ? s.Max(x => x.Values.Count) : 0;
+    private int _pts
+    {
+        get
+        {
+            if (Data is not { } data) return 0;
+            var count = 0;
+            for (var i = 0; i < data.Series.Count; i++)
+                count = Math.Max(count, data.Series[i].Values.Count);
+            return count;
+        }
+    }
 }
