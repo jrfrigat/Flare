@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 using Flare.Theming;   // FlattenDesign (CssVarMap) extension
@@ -42,23 +43,57 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
     protected abstract string ComponentCssClass { get; }
 
     /// <summary>Combines the root class, the given modifier classes and the user-supplied <see cref="Class"/>.</summary>
-    protected string BuildCssClass(params string?[] additionalClasses)
-    {
-        // Fast path: no modifiers and no user Class -- the most common per-render case for many
-        // components -- returns the root class directly, avoiding a List allocation and string.Join.
-        bool hasClass = !string.IsNullOrWhiteSpace(Class);
-        if (!hasClass && (additionalClasses is null || additionalClasses.Length == 0))
-            return ComponentCssClass;
+    protected string BuildCssClass(params string?[] additionalClasses) => BuildCssClassFromModifiers(additionalClasses);
 
-        var parts = new List<string>((additionalClasses?.Length ?? 0) + 2) { ComponentCssClass };
-        if (additionalClasses is not null)
-            foreach (var c in additionalClasses)
-                if (!string.IsNullOrWhiteSpace(c))
-                    parts.Add(c);
-        if (hasClass)
-            parts.Add(Class!);
-        return parts.Count == 1 ? ComponentCssClass : string.Join(' ', parts);
+    internal string BuildCssClassFromModifiers(ReadOnlySpan<string?> modifiers)
+    {
+        var root = ComponentCssClass;
+        var userClass = string.IsNullOrWhiteSpace(Class) ? null : Class;
+        while (!modifiers.IsEmpty && string.IsNullOrWhiteSpace(modifiers[0]))
+            modifiers = modifiers[1..];
+
+        if (modifiers.IsEmpty)
+            return userClass is null ? root : string.Concat(root, " ", userClass);
+
+        return JoinCssClasses(root, modifiers, userClass);
     }
+
+    private static string JoinCssClasses(string root, ReadOnlySpan<string?> modifiers, string? userClass)
+    {
+        var capacity = modifiers.Length + 2;
+#if NET9_0_OR_GREATER
+        CssClassBuffer buffer = default;
+        Span<string?> classes = capacity <= CssClassBuffer.Capacity ? buffer : new string?[capacity];
+#else
+        var classes = new string?[capacity];
+#endif
+
+        var count = 0;
+        classes[count++] = root;
+        foreach (var modifier in modifiers)
+        {
+            if (!string.IsNullOrWhiteSpace(modifier))
+                classes[count++] = modifier;
+        }
+
+        if (userClass is not null)
+            classes[count++] = userClass;
+
+#if NET9_0_OR_GREATER
+        return string.Join(' ', classes[..count]);
+#else
+        return string.Join(' ', classes, 0, count);
+#endif
+    }
+
+#if NET9_0_OR_GREATER
+    [InlineArray(Capacity)]
+    private struct CssClassBuffer
+    {
+        public const int Capacity = 12;
+        private string? _first;
+    }
+#endif
 
     // Most tokens are consumed by CSS and never enter C#. A few components draw geometry themselves -
     // SVG attributes take numbers, not var() references - and those have to ask the theme for the value.

@@ -44,7 +44,7 @@
 {
     @* Link button: rendered as <a>. Disabled/Loading removes href and marks aria-disabled. *@
     <a @ref="_element"
-       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _labelledClass, _fullWidthClass, _selectedClass)"
+       class="@ButtonCssClass"
        style="@_buttonStyle"
        href="@(Disabled || Loading ? null : Href)"
        target="@Target"
@@ -62,7 +62,7 @@
 else
 {
     <button @ref="_element"
-            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _labelledClass, _fullWidthClass, _selectedClass)"
+            class="@ButtonCssClass"
             style="@_buttonStyle"
             disabled="@(Disabled || Loading)"
             type="@_type"
@@ -75,6 +75,9 @@ else
 }
 
 @code {
+    private string ButtonCssClass => BuildCssClassFromModifiers(
+        [_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _labelledClass, _fullWidthClass, _selectedClass]);
+
     /// <summary>Button label and inner content.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Icon rendered before the button label.</summary>

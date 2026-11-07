@@ -35,6 +35,21 @@ public class FlareTextPresentationTests : FlareTestContext
         Assert.DoesNotContain("transform", ClassOf(cut));
     }
 
+    [Fact]
+    public void ClassUpdate_PreservesModifierOrderAndCallerWhitespace()
+    {
+        var cut = Render<FlareText>();
+        var standard = $"{Css.Classes.Text.Root} {Css.Classes.Text.BodyMedium}";
+        Assert.Equal(standard, cut.Find("p").GetAttribute("class"));
+
+        var custom = $"  custom-{new string('x', 200)}\t  extra ";
+        cut.Render(p => p.Add(x => x.Class, custom).Add(x => x.Mono, true));
+        Assert.Equal($"{standard} {Css.Classes.Text.Mono} {custom}", cut.Find("p").GetAttribute("class"));
+
+        cut.Render(p => p.Add(x => x.Class, " \t").Add(x => x.Mono, false));
+        Assert.Equal(standard, cut.Find("p").GetAttribute("class"));
+    }
+
     // One line keeps the element's own display type, so a heading stays a heading; the clamp does not,
     // which is why one parameter still picks two mechanisms.
     [Fact]
