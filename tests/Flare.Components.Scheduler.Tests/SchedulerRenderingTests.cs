@@ -64,7 +64,7 @@ public sealed class SchedulerRenderingTests : FlareTestContext
             .Add(x => x.Events, new[] { Item }).Add(x => x.Date, Date).Add(x => x.TimeZone, TimeZoneInfo.Utc)
             .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Source")));
         var events = new CountingOccurrences(source.Instance.Snapshot.Occurrences);
-        var snapshot = source.Instance.Snapshot with { Occurrences = events };
+        var snapshot = source.Instance.Snapshot with { Occurrences = events, CanEdit = true };
         var cut = Render<FlareSchedulerTimeGrid<SchedulerEventData>>(p => p
             .Add(x => x.Context, snapshot).Add(x => x.ShowAllDay, false));
         var passes = events.Enumerations;
@@ -87,6 +87,46 @@ public sealed class SchedulerRenderingTests : FlareTestContext
         label = "Updated slot label";
         cut.Render();
         Assert.Equal(label, cut.Find("[data-flare-tree-index='0']").TextContent.Trim());
+    }
+
+    [Fact]
+    public void TimeGridUpdatesDropTargetsWhenEditabilityChangesWithoutChangingTheWindow()
+    {
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Day).Add(x => x.TimeZone, TimeZoneInfo.Utc)
+            .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Source")));
+        var snapshot = source.Instance.Snapshot;
+        var cut = Render<FlareSchedulerTimeGrid<SchedulerEventData>>(p => p
+            .Add(x => x.Context, snapshot).Add(x => x.ShowAllDay, false));
+        const string firstSlot = "[data-flare-tree-index='0']";
+        Assert.Equal("0", cut.Find(firstSlot).GetAttribute("tabindex"));
+        Assert.Empty(cut.FindAll("[data-flare-drop]"));
+
+        cut.Render(p => p.Add(x => x.Context, snapshot with { CanEdit = true }));
+
+        Assert.StartsWith("t:", cut.Find(firstSlot).ParentElement!.GetAttribute("data-flare-drop"));
+
+        cut.Render(p => p.Add(x => x.Context, snapshot));
+
+        Assert.Equal("0", cut.Find(firstSlot).GetAttribute("tabindex"));
+        Assert.Empty(cut.FindAll("[data-flare-drop]"));
+    }
+
+    [Fact]
+    public void AgendaReformatsLabelsWhenAMutableCultureChanges()
+    {
+        var culture = new CultureInfo("en-US");
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Events, new[] { Item }).Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Agenda)
+            .Add(x => x.TimeZone, TimeZoneInfo.Utc).Add(x => x.ChildContent, _ => b => b.AddContent(0, "Source")));
+        var agenda = Render<FlareSchedulerAgenda<SchedulerEventData>>(p => p
+            .Add(x => x.Context, source.Instance.Snapshot with { Culture = culture }));
+        Assert.Equal(Item.Start.ToString("g", culture), agenda.Find($".{Css.Classes.Scheduler.AgendaItem} .{Css.Classes.Text.Root}").TextContent);
+
+        culture.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
+        agenda.Render();
+
+        Assert.Equal(Item.Start.ToString("g", culture), agenda.Find($".{Css.Classes.Scheduler.AgendaItem} .{Css.Classes.Text.Root}").TextContent);
     }
 
     [Fact]

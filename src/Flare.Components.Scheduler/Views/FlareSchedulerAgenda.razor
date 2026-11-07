@@ -1,6 +1,7 @@
 @typeparam TItem
 @namespace Flare.Components
 @inherits FlareSchedulerViewBase<TItem>
+@using System.Globalization
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IUiJsService Ui
 
@@ -8,10 +9,12 @@
      data-flare-focus-target="@($".{Css.Classes.Scheduler.EventBody}")" @attributes="AdditionalAttributes">
     @if (Context.Occurrences.Count == 0) { @if (EmptyTemplate is not null) { @EmptyTemplate(Context) }
         else { <FlareText>@SchedulerText["Empty"].Value</FlareText> } }
-    @foreach (var occurrence in _ordered)
+    @{ RefreshLabels(); }
+    @for (var i = 0; i < _ordered.Count; i++)
     {
+        var occurrence = _ordered[i];
         <div class="@Css.Classes.Scheduler.AgendaItem" @key="occurrence.Identity">
-            <FlareText>@Label(occurrence.Data)</FlareText>
+            <FlareText ChildContent="@_labels[i]" />
             <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" />
         </div>
     }
@@ -21,20 +24,45 @@
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     /// <summary>Content when there are no occurrences.</summary>
     [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? EmptyTemplate { get; set; }
-    private object? _orderKey;
+    private (IReadOnlyList<SchedulerOccurrence<TItem>> Occurrences, TimeZoneInfo Zone)? _orderKey;
+    private CultureInfo? _labelCulture;
+    private string? _allDayLabel;
+    private RenderFragment[] _labels = [];
     private bool _keyboardRegistered;
     private ElementReference _root;
     private IReadOnlyList<SchedulerOccurrence<TItem>> _ordered = [];
     protected override void OnParametersSet()
     {
         var key = (Context.Occurrences, Context.TimeZone);
-        if (Equals(key, _orderKey)) return;
+        if (_orderKey is { } previous && key.Equals(previous)) return;
         _ordered = Context.Occurrences.OrderBy(e => SchedulerClock.Span(e.Data, Context.TimeZone).Start).ToArray();
         _orderKey = key;
+        _labelCulture = null;
     }
-    private string Label(SchedulerEventData data) => data.AllDay is { } days
-        ? $"{days.Start.ToString("d", Context.Culture)} {SchedulerText["AllDay"].Value}"
-        : TimeZoneInfo.ConvertTime(data.Start, Context.TimeZone).ToString("g", Context.Culture);
+
+    private void RefreshLabels()
+    {
+        if (_ordered.Count == 0)
+        {
+            _labels = [];
+            return;
+        }
+        var culture = Context.Culture;
+        var allDay = SchedulerText["AllDay"].Value;
+        if (ReferenceEquals(culture, _labelCulture) && allDay == _allDayLabel) return;
+
+        if (_labels.Length != _ordered.Count) _labels = new RenderFragment[_ordered.Count];
+        for (var i = 0; i < _ordered.Count; i++)
+        {
+            var data = _ordered[i].Data;
+            var label = data.AllDay is { } days
+                ? $"{days.Start.ToString("d", culture)} {allDay}"
+                : TimeZoneInfo.ConvertTime(data.Start, Context.TimeZone).ToString("g", culture);
+            _labels[i] = builder => builder.AddContent(0, label);
+        }
+        _labelCulture = culture.IsReadOnly ? culture : null;
+        _allDayLabel = allDay;
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root); _keyboardRegistered = true; }

@@ -37,22 +37,22 @@
                 ? _focusedSlot : -1;
             <section class="@Css.Classes.Scheduler.Day" @key="day" aria-label="@day.ToString("D", Context.Culture)">
                 <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
-                    @RenderSlotRegion(SlotTemplate is null && _slotVisuals.Length > 0 ? _slotVisuals : null, focus, @<text>
+                    @RenderSlotRegion(SlotTemplate is null && _slotVisuals.Length > 0 ? _slotVisuals : null, focus, Context.CanEdit, @<text>
                     @foreach (var entry in slots)
                     {
                         var slot = entry.Slot;
                         var index = entry.Index;
                         var visual = _slotVisuals.Length == 0 ? CreateSlotVisual(slot) : _slotVisuals[index];
-                        <FlareDropZone @key="slot.Start.UtcDateTime.Ticks" Target="@visual.Target" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is null">
-                            <button @ref="_slotElements[slot.Start.UtcDateTime.Ticks]" type="button" class="@visual.Class"
-                                    style="@visual.Style" tabindex="@(index == _focusedSlot ? "0" : "-1")"
-                                    data-flare-tree-index="@index" aria-label="@visual.AriaLabel"
-                                    data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
-                                    @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)" @ondblclick="() => CreateAsync(slot)" @onkeydown="e => SlotKeyAsync(slot, e)">
-                                @if (SlotTemplate is not null) { @SlotTemplate(slot) }
-                                else { @visual.Label }
-                            </button>
-                        </FlareDropZone>
+                        var button = RenderSlotButton(slot, index, visual);
+                        if (Context.CanEdit)
+                        {
+                            <FlareDropZone @key="slot.Start.UtcDateTime.Ticks" Target="@_targetIds[index]"
+                                           Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is null" ChildContent="button" />
+                        }
+                        else
+                        {
+                            <div @key="slot.Start.UtcDateTime.Ticks" class="@Css.Classes.Drag.Zone">@button</div>
+                        }
                     }
                     </text>)
                     @foreach (var occurrence in events)
@@ -75,12 +75,13 @@
 </div>
 
 @code {
-    private static RenderFragment RenderSlotRegion(object? visuals, int focus, RenderFragment content) => builder =>
+    private static RenderFragment RenderSlotRegion(object? visuals, int focus, bool editable, RenderFragment content) => builder =>
     {
         builder.OpenComponent<SchedulerSlotRegion>(0);
         builder.AddAttribute(1, nameof(SchedulerSlotRegion.Visuals), visuals);
         builder.AddAttribute(2, nameof(SchedulerSlotRegion.FocusedSlot), focus);
-        builder.AddAttribute(3, nameof(SchedulerSlotRegion.ChildContent), content);
+        builder.AddAttribute(3, nameof(SchedulerSlotRegion.Editable), editable);
+        builder.AddAttribute(4, nameof(SchedulerSlotRegion.ChildContent), content);
         builder.CloseComponent();
     };
 
@@ -98,13 +99,14 @@
     private string FrameStyle => FormattableString.Invariant($"min-width:calc(var(--flare-scheduler-day-min-width,var(--flare-spacing-32))*{_dates.Count});");
     private string HeaderStyle => FormattableString.Invariant($"grid-template-columns:repeat({_dates.Count},minmax(0,1fr));");
     private List<DateOnly> _dates = [];
-    private List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
-    private Dictionary<string, SchedulerTimeSlot> _targets = [];
+    private readonly List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
+    private readonly Dictionary<string, SchedulerTimeSlot> _targets = new(StringComparer.Ordinal);
+    private string[] _targetIds = [];
     private readonly Dictionary<long, ElementReference> _slotElements = [];
     private readonly record struct ColumnKey(SchedulerWindow Window, SchedulerView View, TimeZoneInfo Zone,
         TimeSpan Duration, int WorkMask);
     private readonly record struct SlotVisualKey(ColumnKey Columns, TimeOnly WorkStart, TimeOnly WorkEnd, DateOnly Today);
-    private readonly record struct SlotVisual(string Target, string Class, string? Style, string AriaLabel, string Label);
+    private readonly record struct SlotVisual(string Class, string? Style, string AriaLabel, string Label);
     private ColumnKey? _columnKey;
     private (IReadOnlyList<SchedulerOccurrence<TItem>> Occurrences, ColumnKey Columns, int Version)? _eventKey;
     private SlotVisualKey? _slotVisualKey;
@@ -131,25 +133,50 @@
         var columns = new ColumnKey(Context.Window, Context.View, Context.TimeZone, Context.SlotDuration, workMask);
         if (columns != _columnKey)
         {
-            _dates = Enumerable.Range(0, Context.Window.Dates.End.DayNumber - Context.Window.Dates.Start.DayNumber)
-                .Select(i => Context.Window.Dates.Start.AddDays(i))
-                .Where(day => Context.View != SchedulerView.WorkWeek || Context.WorkDays.Contains(day.DayOfWeek)).ToList();
-            _slots = _dates.SelectMany(day => SchedulerSlots.ForDate(day, Context.TimeZone, Context.SlotDuration))
-                .Select((slot, index) => (slot, index)).ToList();
-            _targets = _slots.ToDictionary(s => Target(s.Slot), s => s.Slot, StringComparer.Ordinal);
+            _dates = [];
+            _slots.Clear();
             _slotsByDate.Clear();
             _dayWindows.Clear();
             _axes.Clear();
-            foreach (var day in _dates)
+            _targets.Clear();
+            _targetIds = [];
+            for (var day = Context.Window.Dates.Start; day < Context.Window.Dates.End; day = day.AddDays(1))
             {
-                _slotsByDate[day] = _slots.Where(s => s.Slot.Date == day).ToArray();
+                if (Context.View == SchedulerView.WorkWeek && !Context.WorkDays.Contains(day.DayOfWeek)) continue;
+                _dates.Add(day);
+                var daySlots = SchedulerSlots.ForDate(day, Context.TimeZone, Context.SlotDuration);
+                var indexed = new (SchedulerTimeSlot Slot, int Index)[daySlots.Count];
+                for (var i = 0; i < indexed.Length; i++)
+                {
+                    indexed[i] = (daySlots[i], _slots.Count);
+                    _slots.Add(indexed[i]);
+                }
+                _slotsByDate[day] = indexed;
                 var window = _dayWindows[day] = SchedulerClock.Window(new(day, day.AddDays(1)), Context.TimeZone);
                 _axes[day] = new(new(window.Start.UtcDateTime, window.End.UtcDateTime), GanttScale.Hour, CultureInfo.InvariantCulture);
             }
-            var keys = _slots.Select(s => s.Slot.Start.UtcDateTime.Ticks).ToHashSet();
-            foreach (var key in _slotElements.Keys.Where(key => !keys.Contains(key)).ToArray()) _slotElements.Remove(key);
+            if (_slotElements.Count > 0)
+            {
+                var keys = _slots.Select(s => s.Slot.Start.UtcDateTime.Ticks).ToHashSet();
+                foreach (var key in _slotElements.Keys.Where(key => !keys.Contains(key)).ToArray()) _slotElements.Remove(key);
+            }
             _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _slots.Count - 1));
             _columnKey = columns;
+        }
+        if (Context.CanEdit && _targetIds.Length != _slots.Count)
+        {
+            _targetIds = new string[_slots.Count];
+            foreach (var (slot, index) in _slots)
+            {
+                var target = string.Create(CultureInfo.InvariantCulture, $"t:{slot.Start.UtcDateTime.Ticks}");
+                _targetIds[index] = target;
+                _targets.Add(target, slot);
+            }
+        }
+        else if (!Context.CanEdit && _targetIds.Length > 0)
+        {
+            _targets.Clear();
+            _targetIds = [];
         }
         var events = (Context.Occurrences, columns, Context.Version);
         if (events != _eventKey)
@@ -207,7 +234,17 @@
     }
 
     private SlotVisual CreateSlotVisual(SchedulerTimeSlot slot) =>
-        new(Target(slot), SlotClass(slot), SlotStyle(slot), Label(slot, true), Label(slot, false));
+        new(SlotClass(slot), SlotStyle(slot), Label(slot, true), Label(slot, false));
+
+    private RenderFragment RenderSlotButton(SchedulerTimeSlot slot, int index, SlotVisual visual) =>
+        @<button @ref="_slotElements[slot.Start.UtcDateTime.Ticks]" type="button" class="@visual.Class"
+                 style="@visual.Style" tabindex="@(index == _focusedSlot ? "0" : "-1")"
+                 data-flare-tree-index="@index" aria-label="@visual.AriaLabel"
+                 data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
+                 @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)" @ondblclick="() => CreateAsync(slot)" @onkeydown="e => SlotKeyAsync(slot, e)">
+            @if (SlotTemplate is not null) { @SlotTemplate(slot) }
+            else { @visual.Label }
+        </button>;
 
     private string SlotClass(SchedulerTimeSlot slot)
     {
@@ -250,14 +287,13 @@
         var units = (_slots[0].Slot.End - _slots[0].Slot.Start).TotalMinutes / Context.SlotDuration.TotalMinutes;
         return (bounds.Bottom - bounds.Top) / units;
     }
-    private static string Target(SchedulerTimeSlot slot) => "t:" + slot.Start.UtcDateTime.Ticks.ToString(CultureInfo.InvariantCulture);
     private Task CreateAsync(SchedulerTimeSlot slot) => Context.Commands.CreateEventAsync(new(slot.Start, slot.End));
     private Task SlotKeyAsync(SchedulerTimeSlot slot, KeyboardEventArgs e) => e.Key == "F2" ? CreateAsync(slot) : Task.CompletedTask;
     private Task SelectAsync(SchedulerTimeSlot slot) => Context.Commands.SelectSlotAsync(new(slot.Start, slot.End));
     private async Task DropAsync(FlareDropEventArgs<SchedulerOccurrence<TItem>> args)
     {
         var data = args.Payload.Data;
-        if (!_targets.TryGetValue(args.TargetId, out var slot) || data.AllDay is not null) return;
+        if (!Context.CanEdit || !_targets.TryGetValue(args.TargetId, out var slot) || data.AllDay is not null) return;
         data = data with { Start = slot.Start, End = TimeZoneInfo.ConvertTime(slot.Start + (data.End - data.Start), Context.TimeZone) };
         await Context.Commands.RequestChangeAsync(args.Payload, data, SchedulerEditAction.Move);
     }
