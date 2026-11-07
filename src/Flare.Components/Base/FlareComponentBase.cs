@@ -101,22 +101,14 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
     // what a component computes and what the stylesheet paints cannot disagree. Typed component tokens do
     // not appear in Design.Extended, so reading that alone silently returns nothing.
     //
-    // Cached per theme instance: a theme's Design is usually an expression-bodied property that rebuilds
-    // the record on every access, so the cache is keyed on the THEME - keying it on Design would never hit.
-
-    private object? _tokenCacheKey;
-    private Dictionary<string, string>? _tokenCache;
+    // Share the map by theme identity and let it go when the theme is no longer used.
+    private static readonly ConditionalWeakTable<ITheme, Lazy<Dictionary<string, string>?>> TokenMaps = new();
 
     private Dictionary<string, string>? FlattenedTokens()
     {
         var theme = ThemeService?.CurrentTheme;
-        if (theme is null) return null;
-        if (!ReferenceEquals(theme, _tokenCacheKey))
-        {
-            _tokenCache = theme.Design?.FlattenDesign();
-            _tokenCacheKey = theme;
-        }
-        return _tokenCache;
+        return theme is null ? null : TokenMaps.GetValue(theme, static key =>
+            new Lazy<Dictionary<string, string>?>(() => key.Design?.FlattenDesign())).Value;
     }
 
     /// <summary>The raw theme value behind a CSS custom-property name, or null when no theme supplies it.
