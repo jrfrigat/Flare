@@ -3,6 +3,7 @@
 @inherits FlareLocalizedComponentBase
 @inject TimeProvider TimeProvider
 
+@{ var today = Today; var culture = _culture; var dayFormat = culture.DateTimeFormat; var firstDay = (int)_firstDayOfWeek; }
 <div class="@BuildCssClass(_multiClass)" style="@Style" @attributes="AdditionalAttributes">
     @if (ShowNavigation)
     {
@@ -21,42 +22,44 @@
         {
             var monthOffset = mi;
             var monthDate = _viewDate.AddMonths(monthOffset);
-            var monthCells = _allCells[mi];
+            var dates = _monthDates[mi];
             <div class="@Css.Classes.Calendar.Month">
                 <div class="@Css.Classes.Calendar.Header">
                     @if (MonthHeaderTemplate is not null) { @MonthHeaderTemplate(monthDate) }
-                    else { <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@_culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", _culture))</FlareText> }
+                    else { <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", culture))</FlareText> }
                 </div>
                 <div class="@Css.Classes.Calendar.Grid" role="grid">
-                    @{ var headers = DayHeaders.ToArray(); var fullNames = DayHeaderLabels.ToArray(); }
                     <div class="@Css.Classes.Calendar.Row" role="row">
-                        @for (var hi = 0; hi < headers.Length; hi++)
+                        @for (var hi = 0; hi < 7; hi++)
                         {
-                            <div class="@Css.Classes.Calendar.DayLabel" role="columnheader" aria-label="@fullNames[hi]">
-                                @if (DayHeaderTemplate is not null) { @DayHeaderTemplate((DayOfWeek)(((int)_firstDayOfWeek + hi) % 7)) }
-                                else { @headers[hi] }
+                            var day = (DayOfWeek)((firstDay + hi) % 7);
+                            <div class="@Css.Classes.Calendar.DayLabel" role="columnheader" aria-label="@dayFormat.GetDayName(day)">
+                                @if (DayHeaderTemplate is not null) { @DayHeaderTemplate(day) }
+                                else { @dayFormat.GetShortestDayName(day) }
                             </div>
                         }
                     </div>
-                    @for (var start = 0; start < monthCells.Count; start += 7)
+                    @for (var start = 0; start < dates.Count; start += 7)
                     {
                         <div class="@Css.Classes.Calendar.Row" role="row">
-                            @for (var di = start; di < Math.Min(start + 7, monthCells.Count); di++)
+                            @for (var di = start; di < Math.Min(start + 7, dates.Count); di++)
                             {
-                                var c = monthCells[di];
-                                <div class="@Css.Classes.Calendar.Cell @_cellClass(c)"
-                                     @onclick="@(() => SelectDate(c))"
+                                var date = dates[di];
+                                var other = date.Month != monthDate.Month || date.Year != monthDate.Year;
+                                var selected = SelectedDate == date;
+                                var dayEvents = !other && _eventsByDate.TryGetValue(date, out var events) ? events : EmptyEvents;
+                                <div class="@CellClass(other, date == today, selected)"
+                                     @onclick="@(() => SelectDate(date, other))"
                                      role="gridcell"
                                      tabindex="0"
-                                     @onkeydown="e => DayKey(e, c)"
-                                     aria-label="@c.Date.ToString("D", _culture)"
-                                     aria-selected="@(SelectedDate == c.Date ? "true" : "false")"
-                                     aria-current="@(c.Date == Today ? "date" : null)">
-                                    @if (DateTemplate is not null) { @DateTemplate(c.Date) }
-                                    else { <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span> }
-                                    @foreach (var ev in c.Events.Take(MaxVisibleEvents))
+                                     @onkeydown="e => DayKey(e, date, other)"
+                                     aria-label="@date.ToString("D", culture)"
+                                     aria-selected="@(selected ? "true" : "false")"
+                                     aria-current="@(date == today ? "date" : null)">
+                                    @if (DateTemplate is not null) { @DateTemplate(date) }
+                                    else { <span class="@Css.Classes.Calendar.DayNum">@date.Day</span> }
+                                    @foreach (var calEv in dayEvents)
                                     {
-                                        var calEv = ev;
                                         @if (EventContainerTemplate is not null)
                                         {
                                             <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
@@ -138,31 +141,11 @@
     // Week starts on Monday when forced, otherwise on the culture's first day of week.
     private DayOfWeek _firstDayOfWeek => MondayFirst ? DayOfWeek.Monday : _culture.DateTimeFormat.FirstDayOfWeek;
 
-    // Localized shortest day-name headers, ordered from the first day of week.
-    private IEnumerable<string> DayHeaders
-    {
-        get
-        {
-            var first = (int)_firstDayOfWeek;
-            var fmt = _culture.DateTimeFormat;
-            return Enumerable.Range(0, 7).Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)));
-        }
-    }
-
-    // The full day names behind those short labels, so each column header has a name a screen reader
-    // can speak instead of the abbreviation.
-    private IEnumerable<string> DayHeaderLabels
-    {
-        get
-        {
-            var first = (int)_firstDayOfWeek;
-            var fmt = _culture.DateTimeFormat;
-            return Enumerable.Range(0, 7).Select(i => fmt.GetDayName((DayOfWeek)((first + i) % 7)));
-        }
-    }
-
     private string _multiClass => MonthCount > 1 ? Css.Classes.Calendar.Multi : string.Empty;
-    private List<List<CalendarCell>> _allCells = [[]];
+    private IReadOnlyList<DateOnly>[] _monthDates = [];
+    private (DateOnly Start, DayOfWeek FirstDay, int Count) _dateKey;
+    private static readonly List<CalendarEvent> EmptyEvents = [];
+    private readonly Dictionary<DateOnly, List<CalendarEvent>> _eventsByDate = [];
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
 
@@ -180,40 +163,48 @@
 
     private void RebuildCells()
     {
-        _allCells = [];
-        var events = Events?.ToLookup(item => item.Date);
+        var start = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
+        var firstDay = _firstDayOfWeek;
         var count = Math.Max(1, MonthCount);
-        for (int mi = 0; mi < count; mi++)
-            _allCells.Add(BuildMonthCells(_viewDate.AddMonths(mi), events));
-    }
-
-    private List<CalendarCell> BuildMonthCells(DateOnly monthDate, ILookup<DateOnly, CalendarEvent>? byDate)
-    {
-        return CalendarGrid.Days(monthDate, _firstDayOfWeek).Select(date =>
+        var key = (start, firstDay, count);
+        if (key != _dateKey)
         {
-            var other = date.Year != monthDate.Year || date.Month != monthDate.Month;
-            var events = other ? new List<CalendarEvent>() : byDate?[date].ToList() ?? [];
-            return new CalendarCell(date, events, other);
-        }).ToList();
-    }
-    private Func<CalendarCell, string> _cellClass => cell =>
-    {
-        var parts = new List<string>();
-        if (cell.IsOtherMonth) parts.Add(Css.Classes.Calendar.CellOther);
-        if (cell.Date == Today) parts.Add(Css.Classes.Calendar.CellToday);
-        if (SelectedDate == cell.Date) parts.Add(Css.Classes.Calendar.CellSelected);
-        return string.Join(" ", parts);
-    };
+            var months = new IReadOnlyList<DateOnly>[count];
+            for (var i = 0; i < count; i++)
+                months[i] = CalendarGrid.Days(start.AddMonths(i), firstDay);
+            _monthDates = months;
+            _dateKey = key;
+        }
 
-    private async Task SelectDate(CalendarCell cell)
-    {
-        if (cell.IsOtherMonth) return;
-        SelectedDate = cell.Date;
-        await SelectedDateChanged.InvokeAsync(cell.Date);
+        _eventsByDate.Clear();
+        if (Events is null || MaxVisibleEvents <= 0 || MonthCount <= 0) return;
+        var last = start.AddMonths(count - 1);
+        var end = new DateOnly(last.Year, last.Month, DateTime.DaysInMonth(last.Year, last.Month));
+        foreach (var item in Events)
+        {
+            if (item.Date < start || item.Date > end) continue;
+            if (!_eventsByDate.TryGetValue(item.Date, out var day))
+                _eventsByDate.Add(item.Date, day = []);
+            if (day.Count < MaxVisibleEvents)
+                day.Add(item);
+        }
     }
 
-    private Task DayKey(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e, CalendarCell cell) =>
-        e.Key is "Enter" or " " ? SelectDate(cell) : Task.CompletedTask;
+    private static string CellClass(bool other, bool today, bool selected) => string.Concat(
+        Css.Classes.Calendar.Cell,
+        other ? " " + Css.Classes.Calendar.CellOther : "",
+        today ? " " + Css.Classes.Calendar.CellToday : "",
+        selected ? " " + Css.Classes.Calendar.CellSelected : "");
+
+    private async Task SelectDate(DateOnly date, bool other)
+    {
+        if (other) return;
+        SelectedDate = date;
+        await SelectedDateChanged.InvokeAsync(date);
+    }
+
+    private Task DayKey(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e, DateOnly date, bool other) =>
+        e.Key is "Enter" or " " ? SelectDate(date, other) : Task.CompletedTask;
 
     private Task EventKey(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e, CalendarEvent item) =>
         e.Key is "Enter" or " " ? OnEventClick.InvokeAsync(item) : Task.CompletedTask;
@@ -236,5 +227,4 @@
         StateHasChanged();
     }
 
-    private sealed record CalendarCell(DateOnly Date, List<CalendarEvent> Events, bool IsOtherMonth);
 }
