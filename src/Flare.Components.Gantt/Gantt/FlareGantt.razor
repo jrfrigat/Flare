@@ -16,29 +16,31 @@
                     @Corner
                 </div>
             }
-            <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)" aria-hidden="true">
-                @if (_major.Count > 0)
-                {
-                    <div class="@($"{Css.Classes.Gantt.ScaleRow} {Css.Classes.Gantt.ScaleRowMajor}")">
-                        @foreach (var tick in _major.Where(InView))
-                        {
-                            <div class="@Css.Classes.Gantt.Tick" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">@tick.Label</div>
-                        }
-                    </div>
-                }
-                <div class="@Css.Classes.Gantt.ScaleRow">
-                    @foreach (var tick in _ticks.Where(InView))
+            @RenderScale(@<text>
+                <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)" aria-hidden="true">
+                    @if (_major.Count > 0)
                     {
-                        <div class="@TickClass(tick)" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">
-                            <span>@tick.Label</span>
-                            @if (tick.Caption is not null)
+                        <div class="@($"{Css.Classes.Gantt.ScaleRow} {Css.Classes.Gantt.ScaleRowMajor}")">
+                            @foreach (var tick in _major.Where(InView))
                             {
-                                <span class="@Css.Classes.Gantt.TickCaption">@tick.Caption</span>
+                                <div class="@Css.Classes.Gantt.Tick" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">@tick.Label</div>
                             }
                         </div>
                     }
+                    <div class="@Css.Classes.Gantt.ScaleRow">
+                        @foreach (var tick in _ticks.Where(InView))
+                        {
+                            <div class="@TickClass(tick)" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">
+                                <span>@tick.Label</span>
+                                @if (tick.Caption is not null)
+                                {
+                                    <span class="@Css.Classes.Gantt.TickCaption">@tick.Caption</span>
+                                }
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
+            </text>)
         </div>
         <CascadingValue Value="this" IsFixed="true">
             @ChildContent
@@ -168,6 +170,7 @@
     private string? _selected;
     private string? _selectedParameter;
     private ElementReference _root;
+    private GanttScaleRegion? _scaleRegion;
     private IGanttView? _browser;
     // The flags the attached script was given; a change means the script has to be attached again.
     private bool? _jsVirtualize;
@@ -310,11 +313,20 @@
         if (Virtualize && width > 0 && (_drawn is not { } drawn || left < drawn.From + width / 2 || left + width > drawn.To - width / 2))
         {
             _drawn = (left - width, left + 2 * width);
-            StateHasChanged();
-            Refresh();
+            // Scrolling changes what is drawn within the axis and panels, not their parameters.
+            _scaleRegion?.Refresh();
+            foreach (var panel in _panels.ToArray()) panel.RefreshViewport();
         }
         if (Endless) await Grow(left, width);
     }
+
+    private RenderFragment RenderScale(RenderFragment content) => builder =>
+    {
+        builder.OpenComponent<GanttScaleRegion>(0);
+        builder.AddAttribute(1, nameof(GanttScaleRegion.ChildContent), content);
+        builder.AddComponentReferenceCapture(2, instance => _scaleRegion = (GanttScaleRegion)instance);
+        builder.CloseComponent();
+    };
 
     /// <summary>True when the stretch from <paramref name="left"/> to <paramref name="right"/> pixels is among the drawn columns.</summary>
     internal bool InView(double left, double right) => !Virtualize

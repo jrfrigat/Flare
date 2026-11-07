@@ -76,6 +76,14 @@ public sealed class GanttLayoutTests : GanttTestBase
         var cut = Chart(p => p.Add(x => x.Rows, new[] { new Node("r") })
                 .Add(x => x.Items, new[] { new Work("early", "r", Day(0), Day(0)), new Work("late", "r", Day(12), Day(12)) }),
             g => g.Add(x => x.Virtualize, true));
+        var projections = 0;
+        cut.FindComponent<FlareGanttPanel<Node, Work>>().Render(p => p.Add(x => x.ItemSpan, item =>
+        {
+            projections++;
+            return GanttSpan.FromDays(item.Start, item.End);
+        }));
+        Assert.True(projections > 0);
+        var before = projections;
         Assert.Empty(cut.FindAll(".flare-gantt__scale-row:not(.flare-gantt__scale-row--major) .flare-gantt__tick"));
         Assert.Empty(cut.FindAll(".flare-gantt__bar"));
 
@@ -83,6 +91,7 @@ public sealed class GanttLayoutTests : GanttTestBase
 
         Assert.Equal(6, cut.FindAll(".flare-gantt__scale-row:not(.flare-gantt__scale-row--major) .flare-gantt__tick").Count);
         Assert.Empty(cut.FindAll(".flare-gantt__bar"));
+        Assert.Equal(before, projections);
         Assert.Equal("560px", cut.Find(".flare-gantt__scale").GetAttribute("style")!.Split(':')[1]); // the axis keeps its width
     }
 
