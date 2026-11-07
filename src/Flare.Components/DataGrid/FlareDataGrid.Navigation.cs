@@ -1,4 +1,5 @@
 using Flare.Components.Resources;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Text;
 
@@ -12,6 +13,10 @@ public partial class FlareDataGrid<TItem>
     private int _anchorCol = -1;
     // True while the mouse button is held to drag-select a cell range.
     private bool _dragSelecting;
+
+    private (EventCallback<MouseEventArgs> Down, EventCallback<MouseEventArgs> Enter) CellMouseHandlers(int row, int column) =>
+        (EventCallback.Factory.Create<MouseEventArgs>(this, e => OnCellMouseDown(row, column, e)),
+            EventCallback.Factory.Create<MouseEventArgs>(this, () => OnCellMouseEnter(row, column)));
 
     // Mouse down on a cell: start (or, with Shift, extend) a cell-range selection.
     private void OnCellMouseDown(int row, int col, MouseEventArgs e)

@@ -10,7 +10,9 @@ namespace Flare.Components;
 // and the batch edit buffer. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    private RenderFragment RenderCell(DataGridColumn<TItem> col, TItem item) => builder =>
+    private RenderFragment RenderCell(DataGridColumn<TItem> col, TItem item) => builder => BuildCell(builder, col, item);
+
+    private void BuildCell(RenderTreeBuilder builder, DataGridColumn<TItem> col, TItem item)
     {
         if (col.IsComposite)
             BuildCompositeCell(builder, col, item);
@@ -18,7 +20,7 @@ public partial class FlareDataGrid<TItem>
             builder.AddContent(0, col.CellTemplate(item));
         else
             BuildTypedValue(builder, col.Value?.Invoke(item), col.Type, col.Format, col.NullText);
-    };
+    }
 
     // Renders a raw cell value type-aware: a boolean as a read-only checkbox icon, everything else as
     // culture/format-aware text via DataGridValueFormatter. ColumnDataType.Auto infers from the value.
@@ -97,7 +99,9 @@ public partial class FlareDataGrid<TItem>
                 return;
             }
         }
-        builder.AddContent(0, RenderCell(col, item));
+        builder.OpenRegion(0);
+        BuildCell(builder, col, item);
+        builder.CloseRegion();
     };
 
     // Seeds the edit buffer with a round-trip-safe string for the column type: invariant numbers and
