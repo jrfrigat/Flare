@@ -39,13 +39,15 @@ public static class GanttRouting
                 (false, true) => Math.Min(x1, x2),
                 _ => x1
             };
-            return $"M {F(x0)} {F(y0)} H {F(column)} V {F(y3)} H {F(x3)}";
+            return string.Create(CultureInfo.InvariantCulture,
+                $"M {Round(x0):0.#} {Round(y0):0.#} H {Round(column):0.#} V {Round(y3):0.#} H {Round(x3):0.#}");
         }
 
         // Detour: out, along the line between the two bars, then into the successor.
         var middle = y3 >= y0 ? (from.Y + from.Height + to.Y) / 2 : (to.Y + to.Height + from.Y) / 2;
-        return $"M {F(x0)} {F(y0)} H {F(x1)} V {F(middle)} H {F(x2)} V {F(y3)} H {F(x3)}";
+        return string.Create(CultureInfo.InvariantCulture,
+            $"M {Round(x0):0.#} {Round(y0):0.#} H {Round(x1):0.#} V {Round(middle):0.#} H {Round(x2):0.#} V {Round(y3):0.#} H {Round(x3):0.#}");
     }
 
-    private static string F(double value) => Math.Round(value, 1).ToString("0.#", CultureInfo.InvariantCulture);
+    private static double Round(double value) => Math.Round(value, 1);
 }

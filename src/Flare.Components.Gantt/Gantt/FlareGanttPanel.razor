@@ -40,7 +40,9 @@
         }
         @foreach (var row in drawn)
         {
-            var rowClass = string.Join(' ', new[] { Css.Classes.Gantt.Row, row.HasChildren ? Css.Classes.Gantt.RowParent : "", RowClass?.Invoke(row.Row) ?? "" }.Where(c => c.Length > 0));
+            var rootClass = row.HasChildren ? Css.Classes.Gantt.Row + " " + Css.Classes.Gantt.RowParent : Css.Classes.Gantt.Row;
+            var extraClass = RowClass?.Invoke(row.Row);
+            var rowClass = string.IsNullOrEmpty(extraClass) ? rootClass : string.Concat(rootClass, " ", extraClass);
             <div @key="row.Key" class="@rowClass" role="row" data-row="@row.Key" aria-level="@(_isTree ? (int?)(row.Depth + 1) : null)"
                  aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)"
                  data-flare-tree-index="@row.Index" aria-rowindex="@(row.Index + 1)" tabindex="@(row.Key == _activeRowKey ? 0 : -1)"

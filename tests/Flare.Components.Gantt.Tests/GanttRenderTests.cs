@@ -221,11 +221,16 @@ public sealed class GanttRenderTests : GanttTestBase
     public void Critical_path_marks_bars_and_links()
     {
         var items = new[] { new Work("a", "r", Day(0), Day(1)), new Work("b", "r", Day(2), Day(3)), new Work("x", "r2", Day(0), Day(0)) };
+        var links = new List<GanttLink> { new("a", "b") };
         var cut = Chart(p => p.Add(x => x.Rows, new[] { new Node("r"), new Node("r2") }).Add(x => x.Items, items)
-            .Add(x => x.Links, new[] { new GanttLink("a", "b") }).Add(x => x.ShowCriticalPath, true));
+            .Add(x => x.Links, links).Add(x => x.ShowCriticalPath, true));
 
         Assert.Equal(["a", "b"], cut.FindAll(".flare-gantt__bar--critical").Select(b => b.GetAttribute("data-key")));
         Assert.Single(cut.FindAll(".flare-gantt__link--critical"));
+
+        links.Add(new("b", "a"));
+        cut.Render();
+        Assert.Empty(cut.FindAll(".flare-gantt__bar--critical, .flare-gantt__link--critical"));
     }
 
     [Fact]
