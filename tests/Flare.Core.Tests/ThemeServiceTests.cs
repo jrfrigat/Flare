@@ -112,7 +112,17 @@ public class ThemeServiceTests
     {
         public string Id => id;
         public string DisplayName => id;
-        public DesignTokens Design { get; } = ThemeServiceTests.Design();
+        private DesignTokens _design = ThemeServiceTests.Design();
+        public int DesignReads { get; private set; }
+        public DesignTokens Design
+        {
+            get
+            {
+                DesignReads++;
+                return _design;
+            }
+            set => _design = value;
+        }
         public string DefaultPaletteId => "p1";
         public IReadOnlyList<string> StyleAssets => [];
         public IPaletteGenerator? PaletteGenerator => gen;
@@ -250,6 +260,27 @@ public class ThemeServiceTests
         Assert.Contains(".flare-theme-t1{", inj.LastStaticCss);
         Assert.Contains(".flare-palette-p1{", inj.LastStaticCss);
         Assert.DoesNotContain(".flare-palette-p2{", inj.LastStaticCss);
+    }
+
+    [Fact]
+    public async Task ClassToggle_ReusesBundleForModeAndRefreshesDesignExplicitly()
+    {
+        var injector = new FakeInjector();
+        var theme = new FakeTheme("t1");
+        var service = new ThemeService(injector, theme, Pal("p1"));
+        await service.EnsureStaticCssAsync();
+        var reads = theme.DesignReads;
+        var css = injector.LastStaticCss;
+
+        await service.SetModeAsync(ThemeMode.Dark);
+        await service.SetRtlAsync(true);
+        Assert.Equal(reads, theme.DesignReads);
+        Assert.Same(css, injector.LastStaticCss);
+
+        theme.Design = Design() with { FocusRing = "1px solid #123456" };
+        await service.EnsureStaticCssAsync();
+        Assert.True(theme.DesignReads > reads);
+        Assert.Contains("1px solid #123456", injector.LastStaticCss);
     }
 
     [Fact]

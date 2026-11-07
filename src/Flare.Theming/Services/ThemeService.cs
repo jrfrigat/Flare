@@ -26,6 +26,9 @@ public sealed class ThemeService : IThemeService
     // a FlareThemeScope) are emitted into the static stylesheet -- not every registered one.
     private readonly HashSet<string> _neededThemeIds = new(StringComparer.Ordinal);
     private readonly HashSet<string> _neededPaletteIds = new(StringComparer.Ordinal);
+    private readonly SemaphoreSlim _staticCssGate = new(1);
+    private long _staticCssRevision;
+    private long _emittedCssRevision = -1;
     private string? _emittedCss;
 
     private ITheme _theme;
@@ -199,38 +202,47 @@ public sealed class ThemeService : IThemeService
             _palette = dynamic;
             _neededPaletteIds.Add(Palette.DynamicId);
             _palettesSnapshot = null;
-            _emittedCss = null; // the dynamic palette colors changed -> force a re-emit
+            _staticCssRevision++;
         }
         await ApplyAsync();
     }
 
     /// <summary>Ensures the class-scoped static stylesheet is present (ClassToggle delivery; no-op otherwise).</summary>
-    public async Task EnsureStaticCssAsync()
+    public Task EnsureStaticCssAsync() => EnsureStaticCssAsync(refresh: true);
+
+    private async Task EnsureStaticCssAsync(bool refresh)
     {
         if (Delivery != ThemeDelivery.ClassToggle) return;
 
-        ITheme[] themesCopy;
-        Palette[] palettesCopy;
-        lock (_lock)
+        await _staticCssGate.WaitAsync();
+        try
         {
-            // The active axes are always part of the static stylesheet. We emit only the "needed"
-            // theme/palette combinations (active + anything a FlareThemeScope asked for via
-            // RequireThemeAssetsAsync) instead of every registered one, so a page using a single
-            // theme keeps a ~10 KB stylesheet rather than one covering all registered palettes.
-            _neededThemeIds.Add(_theme.Id);
-            _neededPaletteIds.Add(_palette.Id);
-            themesCopy = _themes.Where(t => _neededThemeIds.Contains(t.Id)).ToArray();
-            palettesCopy = _palettes.Where(p => _neededPaletteIds.Contains(p.Id)).ToArray();
-        }
+            ITheme[] themesCopy;
+            Palette[] palettesCopy;
+            long revision;
+            lock (_lock)
+            {
+                // The stylesheet covers the active axes and those requested by scopes.
+                if (_neededThemeIds.Add(_theme.Id) | _neededPaletteIds.Add(_palette.Id))
+                    _staticCssRevision++;
+                revision = _staticCssRevision;
+                if (!refresh && revision == _emittedCssRevision) return;
 
-        var css = TokensToCss.Bundle(themesCopy, palettesCopy);
-        lock (_lock)
-        {
-            if (css == _emittedCss) return;   // nothing new to push
+                themesCopy = _themes.Where(t => _neededThemeIds.Contains(t.Id)).ToArray();
+                palettesCopy = _palettes.Where(p => _neededPaletteIds.Contains(p.Id)).ToArray();
+            }
+
+            var css = TokensToCss.Bundle(themesCopy, palettesCopy);
+            if (css != _emittedCss)
+                await _injector.SetStaticCssAsync(css);
+
             _emittedCss = css;
+            _emittedCssRevision = revision;
         }
-
-        await _injector.SetStaticCssAsync(css);
+        finally
+        {
+            _staticCssGate.Release();
+        }
     }
 
     /// <summary>Ensures a specific theme/palette's class-scoped CSS is emitted even when not active.</summary>
@@ -238,23 +250,25 @@ public sealed class ThemeService : IThemeService
     {
         if (Delivery != ThemeDelivery.ClassToggle) return;
 
-        bool changed = false;
+        bool needed;
         lock (_lock)
         {
-            if (themeId is not null && _themes.Any(t => t.Id == themeId))
-                changed |= _neededThemeIds.Add(themeId);
-            if (paletteId is not null && _palettes.Any(p => p.Id == paletteId))
-                changed |= _neededPaletteIds.Add(paletteId);
+            var themeNeeded = themeId is not null && (_neededThemeIds.Contains(themeId) || _themes.Any(t => t.Id == themeId));
+            var paletteNeeded = paletteId is not null && (_neededPaletteIds.Contains(paletteId) || _palettes.Any(p => p.Id == paletteId));
+            needed = themeNeeded || paletteNeeded;
+            var changed = themeNeeded && _neededThemeIds.Add(themeId!);
+            changed |= paletteNeeded && _neededPaletteIds.Add(paletteId!);
+            if (changed) _staticCssRevision++;
         }
 
-        if (changed) await EnsureStaticCssAsync();
+        if (needed) await EnsureStaticCssAsync(refresh: false);
     }
 
     private async Task ApplyAsync()
     {
         if (Delivery == ThemeDelivery.ClassToggle)
         {
-            await EnsureStaticCssAsync();
+            await EnsureStaticCssAsync(refresh: false);
         }
         else
         {
