@@ -58,6 +58,9 @@ public enum FlareColorRole
 /// </summary>
 public readonly record struct FlareColor
 {
+    private static readonly Dictionary<FlareColorRole, string> RoleClasses = Enum.GetValues<FlareColorRole>()
+        .ToDictionary(static role => role, static role => $"flare-color-{RoleToString(role)}");
+
     private readonly FlareColorRole _role;
     private readonly string? _custom;
     // Dynamic-color path only: precomputed paired tones (each may be a light-dark() pair).
@@ -257,7 +260,14 @@ public readonly record struct FlareColor
     /// <summary>The sanitized custom CSS color, or null when not custom.</summary>
     public string? Value => _custom;
     /// <summary>The shared role CSS class ("flare-color-primary"), or null for default/custom.</summary>
-    public string? CssClass => RoleName is { } r ? $"flare-color-{r}" : null;
+    public string? CssClass
+    {
+        get
+        {
+            if (!IsRole) return null;
+            return RoleClasses.TryGetValue(_role, out var cssClass) ? cssClass : RoleClasses[FlareColorRole.Primary];
+        }
+    }
 
     /// <summary>
     /// The color as a CSS VALUE - <c>var(--flare-color-primary)</c> for a role, the sanitized literal for
