@@ -41,6 +41,27 @@ public class FlareTableTests : FlareTestContext
     }
 
     [Fact]
+    public void GroupedColumns_RefreshMutableItemsInFirstSeenOrder()
+    {
+        List<string> items = ["A1", "B1", "A2"];
+        FlareTableColumn<string>[] columns = [new() { Header = "Name", Field = value => value }];
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.Items, items)
+            .Add(x => x.Columns, columns)
+            .Add(x => x.GroupBy, value => value == "-" ? null! : value[..1]));
+
+        items.Clear();
+        items.AddRange(["B2", "-", "A3", "B3"]);
+        cut.Render(p => p.Add(x => x.Class, "updated"));
+
+        Assert.Equal(["B2", "B3", "-", "A3"], cut.FindAll($"tbody tr:not(.{Css.Classes.Table.GroupRow}) td")
+            .Select(cell => cell.TextContent.Trim()));
+        cut.FindAll($"button.{Css.Classes.Table.GroupToggle}")[1].Click();
+        Assert.Equal(["B2", "B3", "A3"], cut.FindAll($"tbody tr:not(.{Css.Classes.Table.GroupRow}) td")
+            .Select(cell => cell.TextContent.Trim()));
+    }
+
+    [Fact]
     public void ShowFooter_True_RendersTfoot()
     {
         var items = new[] { "One", "Two" };

@@ -39,15 +39,12 @@
             @if (GroupBy is null)
             {
                 <tbody>
-                    @foreach (var item in Items)
-                    {
-                        @RenderRow(item)
-                    }
+                    @RenderRows(Items)
                 </tbody>
             }
             else
             {
-                @foreach (var group in Items.GroupBy(GroupBy))
+                @foreach (var group in BuildGroups(Items, GroupBy))
                 {
                     var collapsed = _collapsedGroups.Contains(group.Key);
                     <tbody>
@@ -64,10 +61,7 @@
                         </tr>
                         @if (!collapsed)
                         {
-                            @foreach (var item in group)
-                            {
-                                @RenderRow(item)
-                            }
+                            @RenderRows(group.Items)
                         }
                     </tbody>
                 }
@@ -163,7 +157,42 @@
 
     protected override string ComponentCssClass => Css.Classes.Table.Root;
 
-    private readonly HashSet<string> _collapsedGroups = new(StringComparer.Ordinal);
+    private readonly HashSet<string?> _collapsedGroups = new(StringComparer.Ordinal);
+    private readonly Dictionary<GroupKey, int> _groupIndices = [];
+    private readonly List<(string? Key, List<TItem> Items)> _groups = [];
+
+    private readonly record struct GroupKey(string? Value);
+
+    protected override void OnParametersSet()
+    {
+        if (Items is not null && GroupBy is not null) return;
+        _groupIndices.Clear();
+        _groups.Clear();
+    }
+
+    // Re-enumerate on every render, including group toggles. The same list or selector can
+    // produce different results without changing the parameter reference.
+    private List<(string? Key, List<TItem> Items)> BuildGroups(IEnumerable<TItem> items, Func<TItem, string> keySelector)
+    {
+        _groupIndices.Clear();
+        foreach (var group in _groups) group.Items.Clear();
+
+        foreach (var item in items)
+        {
+            var key = keySelector(item);
+            if (!_groupIndices.TryGetValue(new GroupKey(key), out var index))
+            {
+                index = _groupIndices.Count;
+                _groupIndices.Add(new GroupKey(key), index);
+                if (index == _groups.Count) _groups.Add((key, []));
+                else _groups[index] = (key, _groups[index].Items);
+            }
+            _groups[index].Items.Add(item);
+        }
+
+        _groups.RemoveRange(_groupIndices.Count, _groups.Count - _groupIndices.Count);
+        return _groups;
+    }
 
     private string _stripedClass  => Striped     ? Css.Classes.Table.Striped  : string.Empty;
     private string _hoverClass    => Hover        ? Css.Classes.Table.Hover    : string.Empty;
@@ -171,7 +200,7 @@
     private string _denseClass    => Dense        ? Css.Classes.Table.Dense    : string.Empty;
     private string _stickyClass   => StickyHeader ? Css.Classes.Table.StickyContainer : string.Empty;
 
-    private void ToggleGroup(string key)
+    private void ToggleGroup(string? key)
     {
         if (!_collapsedGroups.Remove(key))
             _collapsedGroups.Add(key);
@@ -179,20 +208,32 @@
 
     private int _groupColSpan => Columns?.Count ?? ColSpan;
 
-    // One body row: the columns draw their cells, or the consumer's template draws the whole row.
-    private RenderFragment? RenderRow(TItem item) => Columns is { } columns
-        ? @<tr>
-              @foreach (var column in columns)
-              {
-                  <td>@RenderCell(item, column)</td>
-              }
-          </tr>
-        : RowTemplate?.Invoke(item);
-
-    // A column's custom content wins; otherwise its field is rendered as culture-formatted text.
-    private static RenderFragment RenderCell(TItem item, FlareTableColumn<TItem> column) =>
-        column.Cell is not null
-            ? column.Cell(item)
-            : builder => builder.AddContent(0, column.Field?.Invoke(item)?.ToString());
+    private RenderFragment RenderRows(IEnumerable<TItem> items) => @<text>
+        @foreach (var item in items)
+        {
+            if (Columns is { } columns)
+            {
+                <tr>
+                    @foreach (var column in columns)
+                    {
+                        <td>
+                            @if (column.Cell is { } cell)
+                            {
+                                @cell(item)
+                            }
+                            else
+                            {
+                                @(column.Field?.Invoke(item)?.ToString())
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+            else
+            {
+                @RowTemplate?.Invoke(item)
+            }
+        }
+    </text>;
 
 }
