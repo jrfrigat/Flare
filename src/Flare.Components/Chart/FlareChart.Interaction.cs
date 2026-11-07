@@ -186,7 +186,6 @@ public partial class FlareChart
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
-        _drawingRevision++;
         // Zoom follows the two-way state contract: controlled tracks the parameter, uncontrolled keeps
         // the user's window until the parameter itself moves.
         if (ZoomChanged.HasDelegate)
@@ -194,6 +193,7 @@ public partial class FlareChart
         else if (!Nullable.Equals(Zoom, _lastBoundZoom))
             _internalZoom = Zoom;
         _lastBoundZoom = Zoom;
+        UpdateDrawingRevision();
     }
 
     private async Task SetZoomAsync(ChartZoom? window)
