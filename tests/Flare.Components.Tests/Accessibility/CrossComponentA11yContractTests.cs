@@ -47,6 +47,20 @@ public class CrossComponentA11yContractTests : FlareTestContext
     }
 
     [Fact]
+    public void FieldDescriptionCombinesSupportWithTheExternalTargetInOrder()
+    {
+        var cut = Render<FlareField<string>>(p => p
+            .Add(x => x.HelperText, "Some hint")
+            .Add(x => x.AriaDescribedBy, "external"));
+        var input = cut.Find("input");
+        Assert.Equal(input.Id + "-help external", input.GetAttribute("aria-describedby"));
+
+        cut.Render(p => p.Add(x => x.ErrorText, "Error message"));
+        input = cut.Find("input");
+        Assert.Equal(input.Id + "-err external", input.GetAttribute("aria-describedby"));
+    }
+
+    [Fact]
     public void AFieldWithoutAnErrorDoesNotDescribeOne()
     {
         var cut = Render<FlareField<string>>(p => p.Add(x => x.HelperText, "Some hint"));

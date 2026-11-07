@@ -218,10 +218,10 @@
     {
         get
         {
-            var parts = new System.Collections.Generic.List<string>();
-            if (!string.IsNullOrEmpty(SupportDescribedBy)) parts.Add(SupportDescribedBy);
-            if (!string.IsNullOrEmpty(AriaDescribedBy)) parts.Add(AriaDescribedBy);
-            return parts.Count > 0 ? string.Join(' ', parts) : null;
+            var support = SupportDescribedBy;
+            if (string.IsNullOrEmpty(AriaDescribedBy))
+                return string.IsNullOrEmpty(support) ? null : support;
+            return string.IsNullOrEmpty(support) ? AriaDescribedBy : string.Concat(support, " ", AriaDescribedBy);
         }
     }
 
