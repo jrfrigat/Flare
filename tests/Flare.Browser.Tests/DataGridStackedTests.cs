@@ -59,6 +59,16 @@ public sealed class DataGridStackedTests(BrowserFixture fixture) : IClassFixture
         await Expect(sortableHeader).ToHaveAttributeAsync("aria-sort", "ascending");
         await Expect(narrowRoot).ToHaveClassAsync(new Regex(DataGrid.Stacked));
 
+        // Selection and filtering keep working: the record checkbox still selects, and the filter row
+        // is part of the control bar above the records.
+        var firstRow = narrowRoot.Locator($"tbody tr.{DataGrid.Row}").First;
+        await firstRow.Locator("input[type=checkbox]").First.ClickAsync();
+        await Expect(firstRow).ToHaveAttributeAsync("aria-selected", "true");
+
+        var filterInput = narrowRoot.Locator($"thead tr.{DataGrid.FilterRow} input").First;
+        await filterInput.FillAsync("Ada");
+        await Expect(narrowRoot.Locator($"tbody tr.{DataGrid.Row}")).ToHaveCountAsync(1);
+
         var wideCell = wideRoot.Locator($"tbody tr.{DataGrid.Row} td").First;
         Assert.Equal("table-cell", await wideCell.EvaluateAsync<string>("el => getComputedStyle(el).display"));
     }

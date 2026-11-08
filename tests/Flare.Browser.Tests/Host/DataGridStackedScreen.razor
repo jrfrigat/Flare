@@ -3,20 +3,20 @@
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
     <div id="grid-narrow" style="inline-size:360px;padding:1rem">
         <FlareDataGrid TItem="Employee" Items="@_items" Presentation="DataGridPresentation.Auto"
-                       RowKey="@(e => e.Name)">
+                       SelectionMode="SelectionMode.Multiple" RowKey="@(e => e.Name)">
             <Columns>
-                <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" />
-                <FlareColumn Title="City" Field="@(e => e.City)" />
+                <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" Filterable="true" />
+                <FlareColumn Title="City" Field="@(e => e.City)" Filterable="true" />
             </Columns>
         </FlareDataGrid>
     </div>
 
     <div id="grid-wide" style="inline-size:900px;padding:1rem">
         <FlareDataGrid TItem="Employee" Items="@_items" Presentation="DataGridPresentation.Auto"
-                       RowKey="@(e => e.Name)">
+                       SelectionMode="SelectionMode.Multiple" RowKey="@(e => e.Name)">
             <Columns>
-                <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" />
-                <FlareColumn Title="City" Field="@(e => e.City)" />
+                <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" Filterable="true" />
+                <FlareColumn Title="City" Field="@(e => e.City)" Filterable="true" />
             </Columns>
         </FlareDataGrid>
     </div>
