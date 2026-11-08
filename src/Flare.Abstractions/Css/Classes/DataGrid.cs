@@ -29,6 +29,9 @@ public static class DataGrid
     public const string Dense = "flare-datagrid--dense";
     /// <summary>The <c>flare-datagrid--bordered</c> CSS class.</summary>
     public const string Bordered = "flare-datagrid--bordered";
+    /// <summary>The <c>flare-datagrid--stacked</c> CSS class: the compact presentation where each row
+    /// becomes a record and the header becomes a control bar.</summary>
+    public const string Stacked = "flare-datagrid--stacked";
     /// <summary>The <c>flare-datagrid__wrapper</c> CSS class.</summary>
     public const string Wrapper = "flare-datagrid__wrapper";
     /// <summary>The <c>flare-datagrid__wrapper--sticky-head</c> CSS class, pinning the whole header

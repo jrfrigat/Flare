@@ -1082,3 +1082,215 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
     min-width: max-content;
   }
 }
+
+/* ---- Stacked presentation ----
+   Active when FlareDataGrid.Presentation is Stacked, or Auto is below PresentationBreakpoint.
+   The table stays the DOM: the header becomes a compact control bar, each body row a record, and
+   each cell shows its column title from data-label. Keeping the table means sorting, filtering,
+   selection and virtualization keep the same markup and state; no second renderer exists. */
+.flare-datagrid--stacked .flare-datagrid__wrapper {
+  overflow-x: hidden;
+}
+
+.flare-datagrid--stacked .flare-datagrid__table,
+.flare-datagrid--stacked .flare-datagrid__table--scroll-x,
+.flare-datagrid--stacked .flare-datagrid__table--widths-exact {
+  display: block;
+  width: 100% !important;
+  min-width: 0;
+  max-width: none;
+  table-layout: auto;
+}
+
+.flare-datagrid--stacked thead,
+.flare-datagrid--stacked tbody,
+.flare-datagrid--stacked tfoot {
+  display: block;
+}
+
+.flare-datagrid--stacked tbody > tr,
+.flare-datagrid--stacked thead > tr,
+.flare-datagrid--stacked tfoot > tr {
+  display: block;
+}
+
+.flare-datagrid--stacked tbody > tr > td,
+.flare-datagrid--stacked tbody > tr > th,
+.flare-datagrid--stacked tfoot > tr > td {
+  display: block;
+  width: auto !important;
+  max-width: none !important;
+  position: static !important;
+}
+
+/* The header row and the filter row become one wrapping control bar. Pinned rows in the header
+   are records, not header cells, so they are excluded here and styled with the body records. */
+.flare-datagrid--stacked thead > tr:not(.flare-datagrid__row--pinned) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--flare-spacing-2);
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
+  background: var(--flare-color-surface-container-low);
+  border-bottom: var(--flare-border-divider);
+}
+
+.flare-datagrid--stacked thead > tr:not(.flare-datagrid__row--pinned) > th {
+  display: block;
+  position: static !important;
+  width: auto !important;
+  max-width: none;
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
+  border: 0;
+  border-radius: var(--flare-shape-small);
+  white-space: normal;
+  text-align: start;
+  background: transparent;
+}
+
+.flare-datagrid--stacked thead > tr:not(.flare-datagrid__row--pinned) > th.flare-datagrid__th--sortable:hover {
+  background: var(--flare-state-hover-layer);
+}
+
+.flare-datagrid--stacked .flare-datagrid__filter-row > th {
+  flex: 1 1 12rem;
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
+}
+
+.flare-datagrid--stacked .flare-datagrid__resize-handle {
+  display: none;
+}
+
+/* Sticky header and footer would pin the control bar and aggregates over the records; in this
+   presentation they travel with the content instead. */
+.flare-datagrid--stacked .flare-datagrid__wrapper--sticky-head thead,
+.flare-datagrid--stacked .flare-datagrid__wrapper tfoot {
+  position: static;
+}
+
+/* One record per body row. The row, not the cell, carries the card surface. */
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row {
+  display: block;
+  margin: var(--flare-spacing-4);
+  padding: var(--flare-spacing-2) 0;
+  border: var(--flare-border-divider);
+  border-radius: var(--flare-shape-medium);
+  background: var(--flare-color-surface);
+}
+
+/* A banded composite record spans several table rows; each of them is not a separate record, so the
+   card chrome is dropped there and the rows render as plain labeled blocks. */
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row--record {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row--selected,
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row--selected:hover {
+  background: var(--flare-state-selected-layer);
+}
+
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row:hover {
+  background: var(--flare-state-hover-layer);
+}
+
+/* A cell is a label/value line. The label is the ::after pseudo-element ordered first, because
+   frozen cells already use ::before for their hover layer and a second ::before would replace it. */
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row > td {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--flare-spacing-4);
+  width: auto !important;
+  max-width: none !important;
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
+  border: 0;
+  text-align: start !important;
+  position: static !important;
+  background: transparent;
+}
+
+/* The frozen-cell hover layer is a ::before overlay; a static cell in a record would let it escape
+   the cell, and the card hover already paints the whole record. */
+.flare-datagrid--stacked .flare-datagrid__td--frozen::before,
+.flare-datagrid--stacked .flare-datagrid__td--frozen-right::before {
+  display: none;
+}
+
+.flare-datagrid--stacked tbody > tr.flare-datagrid__row > td[data-label]::after {
+  content: attr(data-label);
+  order: -1;
+  flex: 0 0 auto;
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+  font-weight: var(--flare-typescale-label-medium-weight);
+  color: var(--flare-color-on-surface-variant);
+}
+
+/* Pinned rows are records too, whether they sit in the header or the footer. */
+.flare-datagrid--stacked .flare-datagrid__row--pinned {
+  display: block;
+  margin: var(--flare-spacing-4);
+  padding: var(--flare-spacing-2) 0;
+  border: var(--flare-border-divider);
+  border-radius: var(--flare-shape-medium);
+  background: var(--flare-color-surface-container);
+}
+
+.flare-datagrid--stacked .flare-datagrid__row--pinned > td {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--flare-spacing-4);
+  width: auto !important;
+  max-width: none !important;
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
+  border: 0;
+  text-align: start !important;
+  position: static !important;
+  background: transparent;
+}
+
+.flare-datagrid--stacked .flare-datagrid__row--pinned > td[data-label]::after {
+  content: attr(data-label);
+  order: -1;
+  flex: 0 0 auto;
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+  font-weight: var(--flare-typescale-label-medium-weight);
+  color: var(--flare-color-on-surface-variant);
+}
+
+/* Group headers stay full-width section headings above their records. */
+.flare-datagrid--stacked tbody > tr.flare-datagrid__group-header {
+  margin: var(--flare-spacing-4) var(--flare-spacing-4) 0;
+  background: transparent;
+}
+
+.flare-datagrid--stacked tbody > tr.flare-datagrid__group-header > td {
+  padding: 0;
+  border: 0;
+}
+
+/* A detail row follows its record as an inset panel rather than a second card. */
+.flare-datagrid--stacked tbody > tr.flare-datagrid__detail-row {
+  margin: 0 var(--flare-spacing-4);
+  border: var(--flare-border-divider);
+  border-top: 0;
+  border-radius: 0 0 var(--flare-shape-medium) var(--flare-shape-medium);
+  background: var(--flare-color-surface-container-low);
+}
+
+.flare-datagrid--stacked tbody > tr.flare-datagrid__detail-row > td {
+  padding: var(--flare-spacing-4);
+  border: 0;
+}
+
+/* Composite fields already have their own labels; keep their separators out of the record. */
+.flare-datagrid--stacked .flare-datagrid__td--composite,
+.flare-datagrid--stacked .flare-datagrid__th--composite {
+  border-inline-end: 0;
+}

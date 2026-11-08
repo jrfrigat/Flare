@@ -284,6 +284,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.DataGridEditMode`](enums/flare-components-datagrideditmode.md) — Edit mode for the DataGrid.
 - [`Flare.Components.DataGridFilterMode`](enums/flare-components-datagridfiltermode.md) — Controls how column filters are displayed in the DataGrid.
 - [`Flare.Components.DataGridLoadingIndicator`](enums/flare-components-datagridloadingindicator.md) — How a FlareDataGrid shows its loading state.
+- [`Flare.Components.DataGridPresentation`](enums/flare-components-datagridpresentation.md) — How FlareDataGrid presents its records at the current width.
 - [`Flare.Components.DataGridSelectionMode`](enums/flare-components-datagridselectionmode.md) — Selection mode for the DataGrid.
 - [`Flare.Components.DateRangePickerMode`](enums/flare-components-daterangepickermode.md) — How a FlareDateRangePicker presents the range selection.
 - [`Flare.Components.DateTimeVariant`](enums/flare-components-datetimevariant.md) — Layout of the FlareDateTimePicker popup.

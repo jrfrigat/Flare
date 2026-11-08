@@ -2099,6 +2099,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"PersistStateKey", @"string?", null, @"When set, the grid persists sort/filter/column state to localStorage under this key. State is restored on component init and saved on every user change.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"PinnedBottomRows", @"IReadOnlyList<TItem>?", null, @"Rows pinned to the bottom of the grid - always shown below the scrolling data, outside sorting, filtering and paging. Sticky in scrolling grids (above any aggregate row).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"PinnedTopRows", @"IReadOnlyList<TItem>?", null, @"Rows pinned to the top of the grid - always shown above the scrolling data, outside sorting, filtering and paging (e.g. a totals or highlighted row). Sticky in scrolling grids.", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"Presentation", @"DataGridPresentation", @"DataGridPresentation.Table", @"Presentation of the records. Table (the default) keeps the ordinary table; Stacked renders each row as a compact record; Auto uses the stacked presentation while the grid's own width is below PresentationBreakpoint.", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"PresentationBreakpoint", @"Breakpoint", @"Breakpoint.Sm", @"The width tier at which Auto returns to the table. The grid switches below the tier's lower bound (Sm is 600px by default), measured against the grid's own width rather than the viewport. Custom viewport breakpoint bounds do not apply.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Queryable", @"IQueryable<TItem>?", null, @"A queryable data source (e.g. an EF Core DbSet). When set, the grid translates its sort/filter/paging into a LINQ expression tree via DataGridQuery and runs it against this query - so the database does the work, with no hand-written ItemsProvider. An explicit ItemsProvider takes precedence. Executes synchronously; for async EF execution supply an ItemsProvider instead.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"QuickFilter", @"Func<TItem, bool>?", null, @"Optional predicate applied to every row after column filters; rows returning false are hidden.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"ReorderableColumns", @"bool", @"false", @"Enables drag-and-drop reordering of columns by dragging their headers.", null, false, false, false, @"FlareDataGrid"),
@@ -8977,6 +8979,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareDataGrid",
                 @"FlareDrawer",
                 @"FlareHidden",
                 @"FlareMediaQuery",
@@ -9566,6 +9569,23 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Skeleton", @"1", @"Shimmering skeleton placeholder rows in place of the data."),
                 new ApiEnumMember(@"Text", @"2", @"A small text label only (no animation)."),
                 new ApiEnumMember(@"ProgressLine", @"3", @"A thin indeterminate progress line at the top edge of the table; rows stay visible and interactive."),
+            },
+            new string[]
+            {
+                @"FlareDataGrid",
+            });
+
+        e[@"DataGridPresentation"] = new ApiEnumInfo(
+            @"DataGridPresentation",
+            @"Flare.Components.DataGridPresentation",
+            @"Flare.Components",
+            @"How FlareDataGrid presents its records at the current width.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Table", @"0", @"The ordinary table. This is the default and preserves the existing behavior."),
+                new ApiEnumMember(@"Stacked", @"1", @"A compact presentation: each row becomes a record, each cell carries its column title, and the table header becomes a compact control bar. Sorting, filtering, selection and virtualization keep working."),
+                new ApiEnumMember(@"Auto", @"2", @"Uses Stacked while the grid's own width is below FlareDataGrid.PresentationBreakpoint, and Table at or above it."),
             },
             new string[]
             {

@@ -236,6 +236,17 @@ public partial class FlareDataGrid<TItem>
     /// selection and virtualization). Defaults to the item reference when not set.</summary>
     [Parameter] public Func<TItem, object>? RowKey { get; set; }
 
+    /// <summary>Presentation of the records. <see cref="DataGridPresentation.Table"/> (the default)
+    /// keeps the ordinary table; <see cref="DataGridPresentation.Stacked"/> renders each row as a compact
+    /// record; <see cref="DataGridPresentation.Auto"/> uses the stacked presentation while the grid's own
+    /// width is below <see cref="PresentationBreakpoint"/>.</summary>
+    [Parameter] public DataGridPresentation Presentation { get; set; } = DataGridPresentation.Table;
+
+    /// <summary>The width tier at which <see cref="DataGridPresentation.Auto"/> returns to the table.
+    /// The grid switches below the tier's lower bound (Sm is 600px by default), measured against the
+    /// grid's own width rather than the viewport. Custom viewport breakpoint bounds do not apply.</summary>
+    [Parameter] public Breakpoint PresentationBreakpoint { get; set; } = Breakpoint.Sm;
+
     /// <summary>Controls how column filters are displayed: Simple (text inputs), Menu (dropdowns), or Both.</summary>
     [Parameter] public DataGridFilterMode FilterMode { get; set; } = DataGridFilterMode.Simple;
 

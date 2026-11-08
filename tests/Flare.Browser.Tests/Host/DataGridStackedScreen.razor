@@ -1,0 +1,38 @@
+@page "/datagrid-stacked"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="grid-narrow" style="inline-size:360px;padding:1rem">
+        <FlareDataGrid TItem="Employee" Items="@_items" Presentation="DataGridPresentation.Auto"
+                       RowKey="@(e => e.Name)">
+            <Columns>
+                <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" />
+                <FlareColumn Title="City" Field="@(e => e.City)" />
+            </Columns>
+        </FlareDataGrid>
+    </div>
+
+    <div id="grid-wide" style="inline-size:900px;padding:1rem">
+        <FlareDataGrid TItem="Employee" Items="@_items" Presentation="DataGridPresentation.Auto"
+                       RowKey="@(e => e.Name)">
+            <Columns>
+                <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" />
+                <FlareColumn Title="City" Field="@(e => e.City)" />
+            </Columns>
+        </FlareDataGrid>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private sealed class Employee
+    {
+        public string Name { get; set; } = "";
+        public string City { get; set; } = "";
+    }
+
+    private readonly List<Employee> _items =
+    [
+        new() { Name = "Ada", City = "London" },
+        new() { Name = "Grace", City = "New York" },
+        new() { Name = "Alan", City = "Manchester" },
+    ];
+}

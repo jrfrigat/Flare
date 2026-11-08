@@ -19,6 +19,7 @@ A responsive viewport tier on the shared Xs..Xxl scale. The values are the discr
 
 ## Used by components
 
+- `FlareDataGrid`
 - `FlareDrawer`
 - `FlareHidden`
 - `FlareMediaQuery`

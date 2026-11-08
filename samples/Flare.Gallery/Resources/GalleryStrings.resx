@@ -942,6 +942,12 @@
   <data name="DataGrid_AppearanceDesc" xml:space="preserve">
     <value>Striped, hoverable, dense, and bordered modes.</value>
   </data>
+  <data name="DataGrid_PresentationTitle" xml:space="preserve">
+    <value>Responsive presentation</value>
+  </data>
+  <data name="DataGrid_PresentationDesc" xml:space="preserve">
+    <value>A row becomes a compact record with column labels on a narrow container; the table returns at the breakpoint.</value>
+  </data>
   <data name="DataGrid_FilteringTitle" xml:space="preserve">
     <value>Filtering</value>
   </data>

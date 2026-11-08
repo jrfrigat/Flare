@@ -15,6 +15,9 @@ namespace Flare.Components;
 public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>
 {
 
+    /// <summary>Used only by <see cref="DataGridPresentation.Auto"/> to measure the grid's own width.</summary>
+    [Inject] private IBrowserViewportService Viewport { get; set; } = default!;
+
     /// <summary>Current grid state as an immutable snapshot. Updated on every state change.</summary>
     public DataGridState<TItem> CurrentState => BuildCurrentState();
 
@@ -196,6 +199,11 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private string? _lastSyncedLayout;
 
     private ElementReference _wrapperRef;
+    // The Auto presentation watches the grid's own width, not the viewport: a grid in a narrow
+    // panel must stack even on a wide screen. The subscription exists only while Auto is selected.
+    private IAsyncDisposable? _presentationWatch;
+    private double? _observedWidth;
+    private bool _stacked;
     private ElementReference _infiniteSentinel;
     private DotNetObjectReference<FlareDataGrid<TItem>>? _infiniteRef;
     private bool _infiniteObserverReady;
@@ -279,6 +287,7 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     protected override void OnParametersSet()
     {
         SyncContext();
+        UpdatePresentationMode();
         // Client (in-memory) mode recomputes on every parameter change; provider modes manage the
         // cache via their load methods (and infinite scroll accumulates across pages).
         if (_provider is null)
@@ -316,6 +325,59 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
             _itemsCount = 0;
         else
             _itemsCount = null; // unknown until Sorted() materialises the list
+    }
+
+    // Presentation is a pure function of the parameters and the last measured width. Stacked and Table
+    // are unconditional; Auto stacks while the grid's own width is below the tier's lower bound.
+    private void UpdatePresentationMode()
+    {
+        _stacked = Presentation switch
+        {
+            DataGridPresentation.Stacked => true,
+            DataGridPresentation.Table => false,
+            _ => _observedWidth is { } width && width < FlareBreakpoints.MinWidth(PresentationBreakpoint),
+        };
+    }
+
+    private async Task EnsurePresentationWatchAsync()
+    {
+        if (Presentation != DataGridPresentation.Auto)
+        {
+            await DisposePresentationWatchAsync();
+            return;
+        }
+        if (_presentationWatch is not null) return;
+        try
+        {
+            _presentationWatch = await Viewport.ObserveElementAsync(
+                _wrapperRef,
+                OnWrapperResized,
+                new ElementObserveOptions { DebounceMs = 100, FireImmediately = true });
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+    }
+
+    private void OnWrapperResized(ElementBoundingRect rect)
+    {
+        _observedWidth = rect.Width;
+        var stacked = Presentation == DataGridPresentation.Auto
+            && rect.Width < FlareBreakpoints.MinWidth(PresentationBreakpoint);
+        if (stacked == _stacked) return;
+        _stacked = stacked;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private async Task DisposePresentationWatchAsync()
+    {
+        var watch = _presentationWatch;
+        _presentationWatch = null;
+        if (watch is null) return;
+        try { await watch.DisposeAsync(); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     // Track whether the provider reference changed so we don't reload on every parent render.
@@ -621,6 +683,8 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         {
             await DisposeInfiniteObserverAsync();
         }
+
+        await EnsurePresentationWatchAsync();
     }
 
     // The standard popup's dismissal (pointer-down outside the widget, focus-out escaping it, or
@@ -652,6 +716,7 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _filterDebounceTimer?.Dispose();
+        await DisposePresentationWatchAsync();
         await DisposeInfiniteObserverAsync();
         _infiniteRef?.Dispose();
         await base.DisposeAsync();

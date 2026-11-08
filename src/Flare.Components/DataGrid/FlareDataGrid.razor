@@ -23,7 +23,7 @@
    out as display:contents; the gesture only ever fires on an element that carries data-flare-drag, and
    those exist only when reordering is switched on. *@
 <FlareDragContext TPayload="object" ResolveItem="TryResolveDragItem" OnDrop="OnDragDropped">
-<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill, _bounded, _sized)" style="@_rootStyle" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill, _bounded, _sized, _stacked ? Css.Classes.DataGrid.Stacked : null)" style="@_rootStyle" @attributes="AdditionalAttributes">
     @* Screen-reader announcements for sort/filter/page changes. *@
     <div role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@_ariaAnnouncement</div>
     <!-- Column descriptors render nothing visually -->
@@ -233,6 +233,7 @@
                             if (col.ClassFunc?.Invoke(item) is { Length: > 0 } extraCellClass) cellClass += " " + extraCellClass;
                             var (mouseDown, mouseEnter) = CellSelection ? CellMouseHandlers(rowIdx, colIdx) : default;
                             <td role="gridcell" class="@cellClass"
+                                data-label="@(_stacked && !string.IsNullOrWhiteSpace(col.Title) ? col.Title : null)"
                                 style="@CombineStyle(GetTreeIndentStyle(col, item), col.StyleFunc?.Invoke(item))"
                                 tabindex="@(isFocusCell ? "0" : "-1")"
                                 @onmousedown="@mouseDown"
@@ -573,6 +574,7 @@
         {
             @if (_hiddenColumns.Contains(col.Key)) { continue; }
             <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @AlignClass(col) @(col.ClassFunc?.Invoke(item) ?? "")"
+                data-label="@(_stacked && !string.IsNullOrWhiteSpace(col.Title) ? col.Title : null)"
                 style="@(col.StyleFunc?.Invoke(item))">
                 @RenderCell(col, item)
             </td>

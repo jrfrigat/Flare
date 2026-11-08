@@ -2955,7 +2955,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_AppearanceTitle", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to A row becomes a compact record with column labels on a narrow container; the table returns at the breakpoint..
+        /// </summary>
+        public static string DataGrid_PresentationDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_PresentationDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Responsive presentation.
+        /// </summary>
+        public static string DataGrid_PresentationTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_PresentationTitle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на 500 banded records with Virtual=true - each record spans several rows, only the visible ones render..
         /// </summary>

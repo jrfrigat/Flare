@@ -254,6 +254,7 @@ public partial class FlareDataGrid<TItem>
                         {
                             builder.OpenElement(seq++, "td");
                             builder.AddAttribute(seq++, "class", $"{Css.Classes.DataGrid.Td} {Css.Classes.DataGrid.TdComposite}");
+                            if (_stacked && !string.IsNullOrWhiteSpace(field.Title)) builder.AddAttribute(seq++, "data-label", field.Title);
                             if (span > 1) builder.AddAttribute(seq++, "colspan", span.ToString());
                             if (field.Template is not null) builder.AddContent(seq++, field.Template(item));
                             else builder.AddContent(seq++, field.Field?.Invoke(item)?.ToString());
@@ -268,6 +269,7 @@ public partial class FlareDataGrid<TItem>
                         + (_tdFrozenClass(slot) is { Length: > 0 } fc ? " " + fc : "")
                         + (slot.ClassFunc?.Invoke(item) is { Length: > 0 } cc ? " " + cc : "");
                     builder.AddAttribute(seq++, "class", tdCls);
+                    if (_stacked && !string.IsNullOrWhiteSpace(slot.Title)) builder.AddAttribute(seq++, "data-label", slot.Title);
                     if (rows > 1) builder.AddAttribute(seq++, "rowspan", rows.ToString());
                     if (slot.StyleFunc?.Invoke(item) is { Length: > 0 } cs) builder.AddAttribute(seq++, "style", cs);
                     builder.AddContent(seq++, RenderCell(slot, item));
