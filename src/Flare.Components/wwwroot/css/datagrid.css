@@ -1175,6 +1175,11 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   padding: var(--flare-spacing-2) 0;
   border: var(--flare-border-divider);
   border-radius: var(--flare-shape-medium);
+}
+
+/* The card surface is declared with :where() so a class from RowClassFunc can paint over it. The
+   selected and hover rules below keep their higher specificity, so states still win. */
+:where(.flare-datagrid--stacked tbody > tr.flare-datagrid__row) {
   background: var(--flare-color-surface);
 }
 
@@ -1185,6 +1190,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   padding: 0;
   border: 0;
   border-radius: 0;
+}
+
+:where(.flare-datagrid--stacked tbody > tr.flare-datagrid__row--record) {
   background: transparent;
 }
 
@@ -1210,6 +1218,10 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   border: 0;
   text-align: start !important;
   position: static !important;
+}
+
+/* Same reason as the card surface: a class from Column.ClassFunc must be able to paint the cell. */
+:where(.flare-datagrid--stacked tbody > tr.flare-datagrid__row > td) {
   background: transparent;
 }
 
@@ -1237,6 +1249,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   padding: var(--flare-spacing-2) 0;
   border: var(--flare-border-divider);
   border-radius: var(--flare-shape-medium);
+}
+
+:where(.flare-datagrid--stacked .flare-datagrid__row--pinned) {
   background: var(--flare-color-surface-container);
 }
 
@@ -1251,6 +1266,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   border: 0;
   text-align: start !important;
   position: static !important;
+}
+
+:where(.flare-datagrid--stacked .flare-datagrid__row--pinned > td) {
   background: transparent;
 }
 

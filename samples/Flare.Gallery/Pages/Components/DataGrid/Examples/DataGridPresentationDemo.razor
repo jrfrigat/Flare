@@ -4,6 +4,7 @@
    Auto is the responsive form: it uses this layout below PresentationBreakpoint and the table above it. *@
 <FlareDataGrid Items="@DatagridData._people" PageSize="8"
                Presentation="DataGridPresentation.Stacked"
+               RowStyleFunc="@(p => p.Score < 80 ? "background: var(--flare-color-error-container);" : null)"
                RowKey="@(p => p.Name)">
     <Columns>
         <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />

@@ -1,0 +1,34 @@
+@page "/datagrid-stacked-formatting"
+
+<style>
+    .test-row-bg { background: rgb(255, 0, 0); }
+    .test-cell-bg { background: rgb(0, 0, 255); }
+</style>
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="grid-format" style="inline-size:360px;padding:1rem">
+        <FlareDataGrid TItem="Employee" Items="@_items" Presentation="DataGridPresentation.Stacked"
+                       RowClassFunc="@(e => e.Name == "Ada" ? "test-row-bg" : null)"
+                       RowKey="@(e => e.Name)">
+            <Columns>
+                <FlareColumn Title="Name" Field="@(e => e.Name)" />
+                <FlareColumn Title="City" Field="@(e => e.City)"
+                             ClassFunc="@(e => e.Name == "Ada" ? "test-cell-bg" : "")" />
+            </Columns>
+        </FlareDataGrid>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private sealed class Employee
+    {
+        public string Name { get; set; } = "";
+        public string City { get; set; } = "";
+    }
+
+    private readonly List<Employee> _items =
+    [
+        new() { Name = "Ada", City = "London" },
+        new() { Name = "Grace", City = "New York" },
+    ];
+}
