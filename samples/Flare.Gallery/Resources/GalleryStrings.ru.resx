@@ -4289,6 +4289,12 @@
   <data name="Gantt_MiniHint" xml:space="preserve">
     <value>Компактный вид: без шапок строк и редактирования, ось растянута по карточке.</value>
   </data>
+  <data name="Gantt_PerItem" xml:space="preserve">
+    <value>Стилизация отдельных элементов</value>
+  </data>
+  <data name="Gantt_PerItemHint" xml:space="preserve">
+    <value>ItemClass, CellClass, RegionClass и MarkerClass добавляют свои классы рядом с kind- и структурными классами. Привязывайте переопределения токенов к своему классу, а не к классам элементов пакета.</value>
+  </data>
   <data name="Gantt_TasksPanel" xml:space="preserve">
     <value>Проекция 1: иерархия работ и фазы</value>
   </data>

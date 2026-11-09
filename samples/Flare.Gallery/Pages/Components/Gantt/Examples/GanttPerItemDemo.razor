@@ -1,0 +1,26 @@
+@using Flare.Components.Gantt
+
+@* The caller classes land on the bar, cell, region and marker next to the kind and structural
+   classes, so a consumer can scope --flare-gantt-* overrides to its own class. *@
+<FlareCard Variant="CardVariant.Outlined">
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Gantt_PerItem</FlareText>
+        <FlareGantt Range="_plan.Range" Scale="GanttScale.Day" UnitWidth="18" RowHeight="22" BarInset="4"
+                    Compact="true" FillWidth="true" NonWorking="GanttSample.IsWeekend"
+                    Markers="_plan.Today" Regions="_plan.Sprint" AriaLabel="@GalleryStrings.Gantt_PerItem">
+            <FlareGanttPanel TRow="GanttPerson" TItem="GanttWork" Rows="_plan.People" RowKey="p => p.Key"
+                             Items="_plan.Work" ItemKey="w => w.Key" ItemRow="w => w.Person" ItemSpan="w => w.Span"
+                             ItemLabel="w => w.Title" ItemProgress="w => w.Progress"
+                             Cells="_plan.Load()"
+                             ItemClass="@(w => w.Key == "api" ? "gallery-gantt-item-api" : null)"
+                             CellClass="@(c => "gallery-gantt-cell-" + c.Kind)"
+                             RegionClass="@(r => "gallery-gantt-region-" + r.Kind)"
+                             MarkerClass="@(m => "gallery-gantt-marker-" + m.Kind)" />
+        </FlareGantt>
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Gantt_PerItemHint</FlareText>
+    </FlareStack>
+</FlareCard>
+
+@code {
+    private readonly GanttSample _plan = new();
+}

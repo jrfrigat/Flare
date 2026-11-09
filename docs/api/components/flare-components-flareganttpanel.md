@@ -12,6 +12,7 @@ One projection on the shared axis of a FlareGantt: rows (a list or a tree) and t
 | --- | --- | --- | --- | --- | --- |
 | `AllowRowChange` | `bool` | `true` | Parameter |  | Whether an item may be moved to another row. |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the panel's grid. |
+| `CellClass` | `Func<GanttCell, string?>?` | `` | Parameter |  | Extra CSS class for a cell, appended next to the kind and structural classes. |
 | `CellTemplate` | `RenderFragment<GanttCell>?` | `` | Parameter |  | Content of a cell; its text when null. |
 | `Cells` | `IEnumerable<GanttCell>?` | `` | Parameter |  | Per-row values along the axis, such as hours per day with a status; drawn in a strip above the lanes. |
 | `DropAccepts` | `Func<object?, bool>?` | `` | Parameter |  | Which payloads the row and unit zones of DropGroup take; null takes every payload of the group. |
@@ -20,6 +21,7 @@ One projection on the shared axis of a FlareGantt: rows (a list or a tree) and t
 | `ExpandedByDefault` | `bool` | `true` | Parameter |  | Whether tree rows start expanded. |
 | `Gantt` | `FlareGantt?` | `` | Cascading |  | The axis container; a panel must sit inside FlareGantt. |
 | `Header` | `RenderFragment?` | `` | Parameter |  | Title row of the panel. |
+| `ItemClass` | `Func<TItem, string?>?` | `` | Parameter |  | Extra CSS class for a bar, appended next to the kind and structural classes. It is called for item-backed bars, including suggested ghosts that carry a source item; a summary bar has no item and is not called. Null or empty leaves the class list unchanged. |
 | `ItemCover` | `Func<TItem, GanttSpan?>?` | `` | Parameter |  | The span an item must keep covering, such as the work of a parent's children: resizing stops at its edges. Null, or a null result, leaves the item free. |
 | `ItemDropAccepts` | `Func<object?, bool>?` | `` | Parameter |  | Which payloads the bar zones of ItemDropGroup take; null takes every payload of the group. |
 | `ItemDropGroup` | `string?` | `` | Parameter |  | Drag group of an outside FlareDragContext whose payloads can be dropped onto an item itself. When set, every bar that is neither a summary nor a suggestion becomes a drop zone whose target is Format. While a drag is on, whatever in a track does not take the payload lets the pointer through to the zones beneath it, so a payload only the units take still lands on a unit covered by a bar. |
@@ -37,12 +39,14 @@ One projection on the shared axis of a FlareGantt: rows (a list or a tree) and t
 | `Items` | `IEnumerable<TItem>?` | `` | Parameter |  | Items drawn as bars. |
 | `LinkTypes` | `IReadOnlyCollection<GanttLinkType>?` | `` | Parameter |  | Link types to draw; all when null. |
 | `Links` | `IEnumerable<GanttLink>?` | `` | Parameter |  | Dependencies between items. |
+| `MarkerClass` | `Func<GanttMarker, string?>?` | `` | Parameter |  | Extra CSS class for a marker, appended next to the kind and structural classes. It also applies to chart-level markers that span every row, because the panel renders them. |
 | `Markers` | `IEnumerable<GanttMarker>?` | `` | Parameter |  | Markers of this panel; those without a row key span the whole panel. |
 | `NewLinkType` | `GanttLinkType` | `GanttLinkType.FinishToStart` | Parameter |  | Type of links the user creates. |
 | `OnChange` | `EventCallback<GanttChangeEventArgs>` | `` | Callback |  | Raised with the proposed positions when the user moves or resizes an item. |
 | `OnItemClick` | `EventCallback<TItem>` | `` | Callback |  | Raised when a bar is clicked. |
 | `OnLinkCreate` | `EventCallback<GanttLinkEventArgs>` | `` | Callback |  | Raised when the user creates a link that passed the cycle check. |
 | `OnLinkRejected` | `EventCallback<GanttLinkRejectedEventArgs>` | `` | Callback |  | Raised when a link the user asked for was refused. |
+| `RegionClass` | `Func<GanttRegion, string?>?` | `` | Parameter |  | Extra CSS class for a region, appended next to the kind and structural classes. It also applies to chart-level regions that span every row, because the panel renders them. |
 | `Regions` | `IEnumerable<GanttRegion>?` | `` | Parameter |  | Regions of this panel; those without a row key span the whole panel. |
 | `RollupParents` | `bool` | `false` | Parameter |  | Draws a summary bar over the descendants' items on tree rows that have no items of their own. |
 | `RowChildren` | `Func<TRow, IEnumerable<TRow>?>?` | `` | Parameter |  | Child rows; null or empty for a leaf. Turns the panel into a tree. |

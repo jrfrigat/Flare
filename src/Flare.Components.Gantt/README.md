@@ -84,6 +84,11 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 }
 ```
 
+- Add your own class to one bar, cell, region or marker with `ItemClass`, `CellClass`, `RegionClass` and
+  `MarkerClass` on the panel. The class is emitted next to the structural and kind classes, so your CSS can
+  scope `--flare-gantt-*` overrides to it without targeting package element classes. `ItemClass` is called
+  for item-backed bars, including suggested ghosts with a source item; summary bars use `SummaryKind`.
+
 - Labels, dependency messages and announcements come from EN/RU resources through `GanttStrings` and
   `CultureInfo.CurrentUICulture`, like other Flare components. Unsupported UI languages fall back to English.
   The chart's `Culture` controls dates and axis formatting independently. `GanttStrings.Describe` formats

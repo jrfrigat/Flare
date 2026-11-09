@@ -4289,6 +4289,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Gantt_MiniHint" xml:space="preserve">
     <value>Compact: no row headers and no editing, the axis stretched to the card.</value>
   </data>
+  <data name="Gantt_PerItem" xml:space="preserve">
+    <value>Per-item styling</value>
+  </data>
+  <data name="Gantt_PerItemHint" xml:space="preserve">
+    <value>ItemClass, CellClass, RegionClass and MarkerClass add your own classes next to the kind and structural classes. Scope token overrides to your class instead of the package element classes.</value>
+  </data>
   <data name="Gantt_TasksPanel" xml:space="preserve">
     <value>Projection 1: work breakdown and phases</value>
   </data>

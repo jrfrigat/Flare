@@ -154,6 +154,68 @@ public sealed class GanttRenderTests : GanttTestBase
     }
 
     [Fact]
+    public void Per_item_class_hooks_extend_the_structural_and_kind_classes()
+    {
+        var cut = Chart(p => p
+                .Add(x => x.Rows, new[] { new Node("anna") })
+                .Add(x => x.Items, new[] { new Work("w", "anna", Day(0), Day(3), "work") })
+                .Add(x => x.ItemClass, (Func<Work, string?>)(w => "alva-item-" + w.Key))
+                .Add(x => x.Cells, new[] { new GanttCell("anna", GanttSpan.Day(Day(0)), "overload", "11.5") })
+                .Add(x => x.CellClass, (Func<GanttCell, string?>)(c => "alva-cell-" + c.Kind))
+                .Add(x => x.Regions, new[] { new GanttRegion("vacation", GanttSpan.FromDays(Day(7), Day(9)), "anna", "Vacation") })
+                .Add(x => x.RegionClass, (Func<GanttRegion, string?>)(r => "alva-region-" + r.Kind))
+                .Add(x => x.Markers, new[] { new GanttMarker("deadline", Day(4).ToDateTime(TimeOnly.MinValue), "anna", "Deadline") })
+                .Add(x => x.MarkerClass, (Func<GanttMarker, string?>)(m => "alva-marker-" + m.Kind)),
+            g => g.Add(x => x.Regions, new[] { new GanttRegion("sprint", GanttSpan.FromDays(Day(0), Day(9)), Label: "Sprint") })
+                  .Add(x => x.Markers, new[] { new GanttMarker("today", Day(1).ToDateTime(TimeOnly.MinValue)) }));
+
+        var bar = cut.Find("." + Flare.Css.Classes.Gantt.Bar);
+        Assert.Contains(Flare.Css.Classes.Gantt.Bar, bar.ClassList);
+        Assert.Contains(Flare.Css.Classes.Gantt.Kind("work"), bar.ClassList);
+        Assert.Contains("alva-item-w", bar.ClassList);
+
+        var cell = cut.Find("." + Flare.Css.Classes.Gantt.Cell);
+        Assert.Contains(Flare.Css.Classes.Gantt.Kind("overload"), cell.ClassList);
+        Assert.Contains("alva-cell-overload", cell.ClassList);
+
+        var regions = cut.FindAll("." + Flare.Css.Classes.Gantt.Region);
+        Assert.Equal(["sprint", "vacation"], regions.Select(r => r.GetAttribute("data-kind")));
+        Assert.Contains("alva-region-sprint", regions[0].ClassList);
+        Assert.Contains("alva-region-vacation", regions[1].ClassList);
+
+        var markers = cut.FindAll("." + Flare.Css.Classes.Gantt.Marker);
+        Assert.Equal(["deadline", "today"], markers.Select(m => m.GetAttribute("data-kind")));
+        Assert.Contains("alva-marker-deadline", markers[0].ClassList);
+        Assert.Contains("alva-marker-today", markers[1].ClassList);
+    }
+
+    [Fact]
+    public void Item_class_is_not_called_for_a_summary_bar()
+    {
+        var cut = Chart(p => p
+            .Add(x => x.Rows, new[] { new Node("stage", new Node("t1")) })
+            .Add(x => x.RollupParents, true)
+            .Add(x => x.Items, new[] { new Work("w", "t1", Day(1), Day(2)) })
+            .Add(x => x.ItemClass, (Func<Work, string?>)(_ => "alva-summary-should-not")));
+
+        var summary = cut.Find("." + Flare.Css.Classes.Gantt.BarSummary);
+        Assert.DoesNotContain("alva-summary-should-not", summary.ClassList);
+    }
+
+    [Fact]
+    public void Suggested_ghost_with_a_source_item_gets_the_item_class()
+    {
+        var cut = Chart(p => p
+            .Add(x => x.Rows, new[] { new Node("anna") })
+            .Add(x => x.Items, new[] { new Work("w", "anna", Day(0), Day(2)) })
+            .Add(x => x.Suggested, new[] { new GanttChange("w", GanttSpan.FromDays(Day(1), Day(3))) })
+            .Add(x => x.ItemClass, (Func<Work, string?>)(w => "alva-item-" + w.Key)));
+
+        var suggested = cut.Find("." + Flare.Css.Classes.Gantt.BarSuggested);
+        Assert.Contains("alva-item-w", suggested.ClassList);
+    }
+
+    [Fact]
     public void Legend_samples_are_the_chart_elements_of_each_kind()
     {
         var cut = Render<FlareGanttLegend>(p => p.Add(x => x.Items, new GanttLegendItem[]

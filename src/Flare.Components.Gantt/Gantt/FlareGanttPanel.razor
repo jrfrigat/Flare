@@ -24,7 +24,7 @@
             }
             @foreach (var region in _panelRegions.Where(r => gantt.InView(r.Span)))
             {
-                <div class="@($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}")" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
+                <div class="@WithExtraClass($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}", RegionClass?.Invoke(region))" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
                     @if (region.Label is not null)
                     {
                         <span class="@Css.Classes.Gantt.RegionLabel">@region.Label</span>
@@ -75,7 +75,7 @@
                 <div class="@Css.Classes.Gantt.Track" role="gridcell" style="width:@width;height:@GanttFormat.Px(row.Height)">
                     @foreach (var region in row.Regions.Where(r => gantt.InView(r.Span)))
                     {
-                        <div class="@($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}")" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
+                        <div class="@WithExtraClass($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}", RegionClass?.Invoke(region))" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
                             @if (region.Label is not null)
                             {
                                 <span class="@Css.Classes.Gantt.RegionLabel">@region.Label</span>
@@ -91,7 +91,7 @@
                     }
                     @foreach (var cell in row.Cells.Where(c => gantt.InView(c.Span)))
                     {
-                        <div class="@($"{Css.Classes.Gantt.Cell} {Css.Classes.Gantt.Kind(cell.Kind)}")" data-kind="@cell.Kind" style="@CellStyle(cell)" title="@cell.Title">
+                        <div class="@WithExtraClass($"{Css.Classes.Gantt.Cell} {Css.Classes.Gantt.Kind(cell.Kind)}", CellClass?.Invoke(cell))" data-kind="@cell.Kind" style="@CellStyle(cell)" title="@cell.Title">
                             @if (CellTemplate is null)
                             {
                                 @cell.Text
@@ -120,7 +120,7 @@
                     }
                     @foreach (var marker in row.Markers.Where(m => gantt.InView(gantt.X(m.At), gantt.X(m.At))))
                     {
-                        <div class="@($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}")" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
+                        <div class="@WithExtraClass($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}", MarkerClass?.Invoke(marker))" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
                             @if (marker.Label is not null)
                             {
                                 <span class="@Css.Classes.Gantt.MarkerLabel">@marker.Label</span>
@@ -147,7 +147,7 @@
         <div class="@($"{Css.Classes.Gantt.Overlay} {Css.Classes.Gantt.OverlayFront}")" style="width:@width" aria-hidden="true">
             @foreach (var marker in _panelMarkers.Where(m => gantt.InView(gantt.X(m.At), gantt.X(m.At))))
             {
-                <div class="@($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}")" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
+                <div class="@WithExtraClass($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}", MarkerClass?.Invoke(marker))" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
                     @if (marker.Label is not null)
                     {
                         <span class="@Css.Classes.Gantt.MarkerLabel">@marker.Label</span>
@@ -223,6 +223,9 @@
             </div>
         </div>
     };
+
+    private static string WithExtraClass(string baseClass, string? extra) =>
+        string.IsNullOrWhiteSpace(extra) ? baseClass : string.Concat(baseClass, " ", extra);
 
     private string? TitleOf(GanttBarLayout<TItem> bar) =>
         ItemTitle is not null && bar.Item is { } item && !bar.IsSummary ? ItemTitle(item) ?? bar.Label : bar.Label;

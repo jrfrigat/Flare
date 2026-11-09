@@ -48,6 +48,11 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     /// <summary>Kind key of an item, rendered as a CSS modifier and <c>data-kind</c>.</summary>
     [Parameter] public Func<TItem, string?>? ItemKind { get; set; }
 
+    /// <summary>Extra CSS class for a bar, appended next to the kind and structural classes. It is called
+    /// for item-backed bars, including suggested ghosts that carry a source item; a summary bar has no item
+    /// and is not called. Null or empty leaves the class list unchanged.</summary>
+    [Parameter] public Func<TItem, string?>? ItemClass { get; set; }
+
     /// <summary>Parts of an item's bar, such as work and waiting.</summary>
     [Parameter] public Func<TItem, IEnumerable<GanttSegment>?>? ItemSegments { get; set; }
 
@@ -95,11 +100,22 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     /// <summary>Content of a cell; its text when null.</summary>
     [Parameter] public RenderFragment<GanttCell>? CellTemplate { get; set; }
 
+    /// <summary>Extra CSS class for a cell, appended next to the kind and structural classes.</summary>
+    [Parameter] public Func<GanttCell, string?>? CellClass { get; set; }
+
     /// <summary>Regions of this panel; those without a row key span the whole panel.</summary>
     [Parameter] public IEnumerable<GanttRegion>? Regions { get; set; }
 
+    /// <summary>Extra CSS class for a region, appended next to the kind and structural classes. It also
+    /// applies to chart-level regions that span every row, because the panel renders them.</summary>
+    [Parameter] public Func<GanttRegion, string?>? RegionClass { get; set; }
+
     /// <summary>Markers of this panel; those without a row key span the whole panel.</summary>
     [Parameter] public IEnumerable<GanttMarker>? Markers { get; set; }
+
+    /// <summary>Extra CSS class for a marker, appended next to the kind and structural classes. It also
+    /// applies to chart-level markers that span every row, because the panel renders them.</summary>
+    [Parameter] public Func<GanttMarker, string?>? MarkerClass { get; set; }
 
     /// <summary>Proposed changes drawn as ghosts, without being applied.</summary>
     [Parameter] public IEnumerable<GanttChange>? Suggested { get; set; }
@@ -401,6 +417,8 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         if (_linkFrom == bar.Key) classes.Add(Css.Classes.Gantt.BarLinkSource);
         if (!bar.IsSuggested && Gantt!.Selected == bar.Key) classes.Add(Css.Classes.Gantt.BarSelected);
         if (ShowCriticalPath && _critical.Contains(bar.Key)) classes.Add(Css.Classes.Gantt.BarCritical);
+        if (!bar.IsSummary && bar.Item is { } item && ItemClass?.Invoke(item) is { Length: > 0 } itemClass)
+            classes.Add(itemClass);
         return string.Join(' ', classes.Where(c => c.Length > 0));
     }
 

@@ -13711,6 +13711,12 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized Gantt compact demo hint.</summary>
         public static string Gantt_MiniHint => ResourceManager.GetString("Gantt_MiniHint", resourceCulture);
 
+        /// <summary>Looks up the localized Gantt per-item styling title.</summary>
+        public static string Gantt_PerItem => ResourceManager.GetString("Gantt_PerItem", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt per-item styling hint.</summary>
+        public static string Gantt_PerItemHint => ResourceManager.GetString("Gantt_PerItemHint", resourceCulture);
+
         /// <summary>Looks up the localized Gantt tasks panel header.</summary>
         public static string Gantt_TasksPanel => ResourceManager.GetString("Gantt_TasksPanel", resourceCulture);
 
