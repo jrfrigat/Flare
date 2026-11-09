@@ -948,6 +948,24 @@
   <data name="DataGrid_PresentationDesc" xml:space="preserve">
     <value>A row becomes a compact record with column labels on a narrow container; the table returns at the breakpoint.</value>
   </data>
+  <data name="DataGrid_PresentationMode" xml:space="preserve">
+    <value>Presentation</value>
+  </data>
+  <data name="DataGrid_ModeTable" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="DataGrid_ModeStacked" xml:space="preserve">
+    <value>Stacked records</value>
+  </data>
+  <data name="DataGrid_ModeAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="DataGrid_PresentationWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="DataGrid_PresentationHint" xml:space="preserve">
+    <value>Narrow the container below 600px to see Auto switch to stacked records.</value>
+  </data>
   <data name="DataGrid_FilteringTitle" xml:space="preserve">
     <value>Filtering</value>
   </data>

@@ -2975,6 +2975,60 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Presentation.
+        /// </summary>
+        public static string DataGrid_PresentationMode {
+            get {
+                return ResourceManager.GetString("DataGrid_PresentationMode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Table.
+        /// </summary>
+        public static string DataGrid_ModeTable {
+            get {
+                return ResourceManager.GetString("DataGrid_ModeTable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stacked records.
+        /// </summary>
+        public static string DataGrid_ModeStacked {
+            get {
+                return ResourceManager.GetString("DataGrid_ModeStacked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        public static string DataGrid_ModeAuto {
+            get {
+                return ResourceManager.GetString("DataGrid_ModeAuto", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string DataGrid_PresentationWidth {
+            get {
+                return ResourceManager.GetString("DataGrid_PresentationWidth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Narrow the container below 600px to see Auto switch to stacked records..
+        /// </summary>
+        public static string DataGrid_PresentationHint {
+            get {
+                return ResourceManager.GetString("DataGrid_PresentationHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на 500 banded records with Virtual=true - each record spans several rows, only the visible ones render..
         /// </summary>
         public static string DataGrid_BandedVirtualDesc {

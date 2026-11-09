@@ -1,15 +1,47 @@
 @using Flare.Gallery.Pages.Components.DataGrid.Examples
 
-@* Presentation=Stacked is unconditional, so the compact form is visible at any width.
-   Auto is the responsive form: it uses this layout below PresentationBreakpoint and the table above it. *@
-<FlareDataGrid Items="@DatagridData._people" PageSize="8"
-               Presentation="DataGridPresentation.Stacked"
-               RowStyleFunc="@(p => p.Score < 80 ? "background: var(--flare-color-error-container);" : null)"
-               RowKey="@(p => p.Name)">
-    <Columns>
-        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
-        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
-        <FlareColumn Title="City" Field="@(p => p.City)" />
-        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
-    </Columns>
-</FlareDataGrid>
+@* Auto follows the grid's own container: the slider narrows the stack, and below 600px the
+   grid switches to stacked records. The header becomes a control bar there, so sorting, filtering
+   and select-all stay available; conditional row formatting keeps working. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" MaxWidth="32rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
+            <FlareSelect TValue="DataGridPresentation" @bind-Value="_mode" Items="_modes"
+                         ItemLabel="ModeLabel" Label="@GalleryStrings.DataGrid_PresentationMode" />
+        </FlareStack>
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
+            <FlareSlider @bind-Value="_width" Label="@GalleryStrings.DataGrid_PresentationWidth"
+                         Min="280" Max="1600" Step="10" />
+        </FlareStack>
+    </FlareStack>
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.DataGrid_PresentationHint</FlareText>
+    <FlareStack MaxWidth="@($"{_width}px")">
+        <FlareDataGrid Items="@DatagridData._people" PageSize="8"
+                       Presentation="_mode"
+                       SelectionMode="SelectionMode.Multiple"
+                       RowStyleFunc="@(p => p.Score < 80 ? "background: var(--flare-color-error-container);" : null)"
+                       RowKey="@(p => p.Name)">
+            <Columns>
+                <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" Filterable="true" />
+                <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" Filterable="true" />
+                <FlareColumn Title="City" Field="@(p => p.City)" Filterable="true" />
+                <FlareColumn Title="Score" Field="@(p => p.Score)" Sortable="true" Filterable="true" Width="80px" />
+            </Columns>
+        </FlareDataGrid>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private DataGridPresentation _mode = DataGridPresentation.Auto;
+    private double _width = 1600;
+
+    private static readonly DataGridPresentation[] _modes =
+        [DataGridPresentation.Table, DataGridPresentation.Stacked, DataGridPresentation.Auto];
+
+    private static string ModeLabel(DataGridPresentation mode) => mode switch
+    {
+        DataGridPresentation.Table => GalleryStrings.DataGrid_ModeTable,
+        DataGridPresentation.Stacked => GalleryStrings.DataGrid_ModeStacked,
+        _ => GalleryStrings.DataGrid_ModeAuto,
+    };
+}

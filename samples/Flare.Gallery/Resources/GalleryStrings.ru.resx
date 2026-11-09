@@ -948,6 +948,24 @@
   <data name="DataGrid_PresentationDesc" xml:space="preserve">
     <value>На узком контейнере строка становится компактной записью с подписями колонок; на пороге возвращается таблица.</value>
   </data>
+  <data name="DataGrid_PresentationMode" xml:space="preserve">
+    <value>Представление</value>
+  </data>
+  <data name="DataGrid_ModeTable" xml:space="preserve">
+    <value>Таблица</value>
+  </data>
+  <data name="DataGrid_ModeStacked" xml:space="preserve">
+    <value>Компактные записи</value>
+  </data>
+  <data name="DataGrid_ModeAuto" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="DataGrid_PresentationWidth" xml:space="preserve">
+    <value>Ширина</value>
+  </data>
+  <data name="DataGrid_PresentationHint" xml:space="preserve">
+    <value>Сузьте контейнер ниже 600px, чтобы Auto переключился на компактные записи.</value>
+  </data>
   <data name="DataGrid_FilteringTitle" xml:space="preserve">
     <value>Фильтрация</value>
   </data>
