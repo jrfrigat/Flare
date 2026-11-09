@@ -10,6 +10,10 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareDataGrid` can present each row as a compact stacked record on a narrow container through `Presentation` and `PresentationBreakpoint`; sorting, filtering, selection and virtualization keep working, and the table remains the default.
 - `FlareGanttPanel` exposes `ItemClass`, `CellClass`, `RegionClass` and `MarkerClass`, so a consumer can scope token overrides to its own classes instead of the package element classes.
 
+### Fixed
+
+- Row and cell classes from `RowClassFunc` and `Column.ClassFunc` can override the stacked DataGrid card surface, so conditional background formatting survives the responsive presentation.
+
 ## [0.53.0] - 2026-11-07
 
 ### Added
