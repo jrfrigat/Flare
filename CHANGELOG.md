@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `FlareDataGrid` can present each row as a compact stacked record on a narrow container through `Presentation` and `PresentationBreakpoint`; sorting, filtering, selection and virtualization keep working, and the table remains the default.
+
 ## [0.53.0] - 2026-11-07
 
 ### Added
