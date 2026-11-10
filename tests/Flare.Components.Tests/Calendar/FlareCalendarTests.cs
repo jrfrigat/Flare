@@ -84,7 +84,7 @@ public class FlareCalendarTests : FlareTestContext
         var classes = (chip.ClassName ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
         Assert.DoesNotContain(Css.Classes.Calendar.Root, classes);
         Assert.Contains(Css.Classes.Calendar.Event, classes);
-        Assert.Contains("flare-color-primary", classes);
+        Assert.Contains(Flare.Css.Classes.Color.Primary, classes);
     }
 
     [Fact]

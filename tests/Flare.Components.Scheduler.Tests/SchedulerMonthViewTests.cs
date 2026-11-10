@@ -59,7 +59,7 @@ public sealed class SchedulerMonthViewTests : FlareTestContext
         var bar = Assert.Single(cut.FindAll(".flare-scheduler__month-bar"));
         Assert.Contains("grid-column:4 / span 3", bar.GetAttribute("style"), StringComparison.Ordinal);
         Assert.Single(cut.FindAll(".flare-scheduler__event-time"));
-        Assert.Empty(cut.FindAll(".flare-calendar__event"));
+        Assert.Empty(cut.FindAll("." + Flare.Css.Classes.Calendar.Event));
     }
 
     [Fact]
@@ -116,7 +116,7 @@ public sealed class SchedulerMonthViewTests : FlareTestContext
         var cut = Month(item);
 
         Assert.Empty(cut.FindAll(".flare-scheduler__month-bar"));
-        Assert.Single(cut.FindAll(".flare-calendar__event"));
+        Assert.Single(cut.FindAll("." + Flare.Css.Classes.Calendar.Event));
         Assert.Empty(cut.FindAll(".flare-scheduler__event-time"));
     }
 
@@ -129,7 +129,7 @@ public sealed class SchedulerMonthViewTests : FlareTestContext
 
         var cut = Month(events);
 
-        Assert.Equal(5, cut.FindAll(".flare-calendar__event").Count);
+        Assert.Equal(5, cut.FindAll("." + Flare.Css.Classes.Calendar.Event).Count);
         Assert.Empty(cut.FindAll(".flare-scheduler__month-bar"));
     }
 
