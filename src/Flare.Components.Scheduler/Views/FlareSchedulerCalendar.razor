@@ -6,7 +6,7 @@
 @inject TimeProvider Clock
 
 @{ _lastDefaultRender = CanReuseRender ? new(Context, Class, Style, Today, LocalizationState) : null; }
-<div @ref="_root" class="@BuildCssClass(Css.Classes.Scheduler.Month, Context.View == SchedulerView.Year ? Css.Classes.Scheduler.MonthYear : null)" style="@Style" @attributes="AdditionalAttributes">
+<div @ref="_root" class="@(Context.View == SchedulerView.Year ? BuildCssClass(Css.Classes.Scheduler.Month, Css.Classes.Scheduler.MonthYear) : BuildCssClass(Css.Classes.Scheduler.Month))" style="@Style" @attributes="AdditionalAttributes">
 <FlareCalendar ViewDate="Anchor" ShowNavigation="false"
                MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
                MaxVisibleEvents="int.MaxValue" MonthHeaderTemplate="MonthHeaderTemplate" DateTemplate="DateTemplate" DayHeaderTemplate="DayHeaderTemplate"
