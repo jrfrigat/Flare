@@ -21,6 +21,8 @@ FlareDataGrid partial: column-band (grouped header) layout logic.
 | `Dense` | `bool` | `false` | Parameter |  | Compact row height and cell padding for dense tables. |
 | `EditMode` | `DataGridEditMode` | `DataGridEditMode.None` | Parameter |  | Edit mode: None (default), Inline (row), or Cell (click individual cells). |
 | `EmptyStateContent` | `RenderFragment?` | `` | Parameter |  | Custom content displayed when no data rows are available. Defaults to FlareEmptyState. |
+| `ExpandedItems` | `HashSet<TItem>?` | `` | Parameter |  | Controlled set of expanded tree rows. When null, expansion stays inside the grid and is seeded from Tree.InitiallyExpanded. When set, the grid is controlled: update this value from ExpandedItemsChanged. |
+| `ExpandedItemsChanged` | `EventCallback<HashSet<TItem>>` | `` | Callback |  | Raised when the user expands or collapses a tree row, with the new expanded set. |
 | `FilterMode` | `DataGridFilterMode` | `DataGridFilterMode.Simple` | Parameter |  | Controls how column filters are displayed: Simple (text inputs), Menu (dropdowns), or Both. |
 | `FilterPlaceholder` | `string?` | `` | Parameter |  | Overrides the placeholder text shown in filter inputs. |
 | `FooterContent` | `RenderFragment?` | `` | Parameter |  | Custom content rendered in the footer area below the table (the toolbar's counterpart at the bottom). Like ToolbarContent, child components placed here resolve the grid automatically via the cascade. Use it to position grid controls (e.g. a FlareDataGridPager) below the data. |
@@ -37,6 +39,7 @@ FlareDataGrid partial: column-band (grouped header) layout logic.
 | `OnBatchCancel` | `EventCallback` | `` | Callback |  | Callback raised when batch edit is cancelled. |
 | `OnBatchSave` | `EventCallback<IReadOnlyDictionary<TItem, IReadOnlyDictionary<string, string>>>` | `` | Callback |  | Callback raised when batch save is requested. The parameter contains all edited items with their edit values. |
 | `OnColumnOrderChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Raised after the user reorders columns, with the new left-to-right order (column keys). |
+| `OnExpandedChanged` | `EventCallback<DataGridTreeExpandChanged<TItem>>` | `` | Callback |  | Raised for each tree expansion change, with the row and its new state. |
 | `OnFilterChanged` | `EventCallback<IReadOnlyList<DataGridFilter>>` | `` | Callback |  | Raised when a column filter changes, with the full structured filter model. |
 | `OnGroupChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Raised when the group-by keys change (outermost first). |
 | `OnPageChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the current page index changes. |

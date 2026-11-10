@@ -13,6 +13,7 @@ Primary event activation control with standard selection and keyboard actions, c
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible name; null uses the event title, including for an icon-only caption. |
 | `ChildContent` | `RenderFragment<SchedulerEventContext<TItem>>?` | `` | Parameter |  | Noninteractive caption content. Place secondary actions alongside this component. |
 | `Context` | `SchedulerEventContext<TItem>` | `` | Parameter | Yes | Occurrence, selection and standard scheduler commands for this primary action. |
+| `TimeText` | `string?` | `` | Parameter |  | Optional start time rendered before the title by the default caption. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

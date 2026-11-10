@@ -16,6 +16,7 @@ Shared event selection control that preserves application templates.
 | `OnNavigateKey` | `EventCallback<KeyboardEventArgs>` | `` | Callback |  | Replaces modified-arrow navigation, for example with the containing timeline's axis commands. |
 | `Resizable` | `bool` | `false` | Parameter |  | Enables shared resizing of this visible timed segment when MeasureSlot is supplied. |
 | `SegmentStart` | `DateTimeOffset` | `01/01/0001 00:00:00 +00:00` | Parameter |  | Visible segment's inclusive instant. |
+| `TimeText` | `string?` | `` | Parameter |  | Optional start time shown before the title by the default event action. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Loaded snapshot supplied by any scheduling scope or custom composition. Inherited from `FlareSchedulerViewBase`. |

@@ -285,7 +285,9 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.DataGridFilterMode`](enums/flare-components-datagridfiltermode.md) — Controls how column filters are displayed in the DataGrid.
 - [`Flare.Components.DataGridLoadingIndicator`](enums/flare-components-datagridloadingindicator.md) — How a FlareDataGrid shows its loading state.
 - [`Flare.Components.DataGridPresentation`](enums/flare-components-datagridpresentation.md) — How FlareDataGrid presents its records at the current width.
+- [`Flare.Components.DataGridRowDropPosition`](enums/flare-components-datagridrowdropposition.md) — Where a dragged row lands relative to the row under the pointer.
 - [`Flare.Components.DataGridSelectionMode`](enums/flare-components-datagridselectionmode.md) — Selection mode for the DataGrid.
+- [`Flare.Components.DataGridTreeSortMode`](enums/flare-components-datagridtreesortmode.md) — How tree rows are sorted when a sortable column header is clicked.
 - [`Flare.Components.DateRangePickerMode`](enums/flare-components-daterangepickermode.md) — How a FlareDateRangePicker presents the range selection.
 - [`Flare.Components.DateTimeVariant`](enums/flare-components-datetimevariant.md) — Layout of the FlareDateTimePicker popup.
 - [`Flare.Abstractions.DialogCloseReason`](enums/flare-abstractions-dialogclosereason.md) — Why a dialog is being dismissed - passed to a BeforeClose guard so it can decide whether to allow or veto the close (e.g. block a scrim click while there are unsaved changes).

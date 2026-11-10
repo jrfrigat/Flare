@@ -2069,6 +2069,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Compact row height and cell padding for dense tables.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"EditMode", @"DataGridEditMode", @"DataGridEditMode.None", @"Edit mode: None (default), Inline (row), or Cell (click individual cells).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"EmptyStateContent", @"RenderFragment?", null, @"Custom content displayed when no data rows are available. Defaults to FlareEmptyState.", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"ExpandedItems", @"HashSet<TItem>?", null, @"Controlled set of expanded tree rows. When null, expansion stays inside the grid and is seeded from Tree.InitiallyExpanded. When set, the grid is controlled: update this value from ExpandedItemsChanged.", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"ExpandedItemsChanged", @"EventCallback<HashSet<TItem>>", null, @"Raised when the user expands or collapses a tree row, with the new expanded set.", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"FilterMode", @"DataGridFilterMode", @"DataGridFilterMode.Simple", @"Controls how column filters are displayed: Simple (text inputs), Menu (dropdowns), or Both.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"FilterPlaceholder", @"string?", null, @"Overrides the placeholder text shown in filter inputs.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"FooterContent", @"RenderFragment?", null, @"Custom content rendered in the footer area below the table (the toolbar's counterpart at the bottom). Like ToolbarContent, child components placed here resolve the grid automatically via the cascade. Use it to position grid controls (e.g. a FlareDataGridPager) below the data.", null, false, false, false, @"FlareDataGrid"),
@@ -2085,6 +2087,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnBatchCancel", @"EventCallback", null, @"Callback raised when batch edit is cancelled.", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnBatchSave", @"EventCallback<IReadOnlyDictionary<TItem, IReadOnlyDictionary<string, string>>>", null, @"Callback raised when batch save is requested. The parameter contains all edited items with their edit values.", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnColumnOrderChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Raised after the user reorders columns, with the new left-to-right order (column keys).", null, false, true, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"OnExpandedChanged", @"EventCallback<DataGridTreeExpandChanged<TItem>>", null, @"Raised for each tree expansion change, with the row and its new state.", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnFilterChanged", @"EventCallback<IReadOnlyList<DataGridFilter>>", null, @"Raised when a column filter changes, with the full structured filter model.", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnGroupChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Raised when the group-by keys change (outermost first).", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnPageChanged", @"EventCallback<int>", null, @"Raised when the current page index changes.", null, false, true, false, @"FlareDataGrid"),
@@ -6517,6 +6520,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnNavigateKey", @"EventCallback<KeyboardEventArgs>", null, @"Replaces modified-arrow navigation, for example with the containing timeline's axis commands.", null, false, true, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"Resizable", @"bool", @"false", @"Enables shared resizing of this visible timed segment when MeasureSlot is supplied.", null, false, false, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"SegmentStart", @"DateTimeOffset", @"01/01/0001 00:00:00 +00:00", @"Visible segment's inclusive instant.", null, false, false, false, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"TimeText", @"string?", null, @"Optional start time shown before the title by the default event action.", null, false, false, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
@@ -6546,6 +6550,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name; null uses the event title, including for an icon-only caption.", null, false, false, false, @"FlareSchedulerEventAction"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Noninteractive caption content. Place secondary actions alongside this component.", null, false, false, false, @"FlareSchedulerEventAction"),
                 new ApiParameterInfo(@"Context", @"SchedulerEventContext<TItem>", null, @"Occurrence, selection and standard scheduler commands for this primary action.", null, false, false, true, @"FlareSchedulerEventAction"),
+                new ApiParameterInfo(@"TimeText", @"string?", null, @"Optional start time rendered before the title by the default caption.", null, false, false, false, @"FlareSchedulerEventAction"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -9596,6 +9601,20 @@ public static class ComponentApiRegistry
                 @"FlareDataGrid",
             });
 
+        e[@"DataGridRowDropPosition"] = new ApiEnumInfo(
+            @"DataGridRowDropPosition",
+            @"Flare.Components.DataGridRowDropPosition",
+            @"Flare.Components",
+            @"Where a dragged row lands relative to the row under the pointer.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Before", @"0", @"Before the target row, as its sibling."),
+                new ApiEnumMember(@"After", @"1", @"After the target row, as its sibling."),
+                new ApiEnumMember(@"Inside", @"2", @"Inside the target row, as its last child."),
+            },
+            System.Array.Empty<string>());
+
         e[@"DataGridSelectionMode"] = new ApiEnumInfo(
             @"DataGridSelectionMode",
             @"Flare.Components.DataGridSelectionMode",
@@ -9607,6 +9626,19 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"None", @"0", @"No selection."),
                 new ApiEnumMember(@"Single", @"1", @"Single row selection."),
                 new ApiEnumMember(@"Multiple", @"2", @"Multiple row selection with checkboxes."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"DataGridTreeSortMode"] = new ApiEnumInfo(
+            @"DataGridTreeSortMode",
+            @"Flare.Components.DataGridTreeSortMode",
+            @"Flare.Components",
+            @"How tree rows are sorted when a sortable column header is clicked.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Hierarchical", @"0", @"Sort each group of siblings; children stay under their parent."),
+                new ApiEnumMember(@"Flat", @"1", @"Sort the flattened visible rows as one list (the behavior before 0.55)."),
             },
             System.Array.Empty<string>());
 
