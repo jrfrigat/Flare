@@ -87,6 +87,56 @@ public partial class FlareDataGrid<TItem>
         return $"padding-left:{depth * px}px";
     }
 
+    private int TreeDepthOf(TItem item) => _treeDepths.TryGetValue(item, out var depth) ? depth : 0;
+
+    private bool HasTreeChildren(TItem item) => Tree?.ChildrenSelector(item)?.Any() == true;
+
+    // The parent of a visible row: the nearest earlier row one level up. Null at the root level.
+    private TItem? TreeParentOf(IList<TItem> rows, int index)
+    {
+        var depth = TreeDepthOf(rows[index]);
+        if (depth == 0) return default;
+        for (var i = index - 1; i >= 0; i--)
+            if (TreeDepthOf(rows[i]) == depth - 1)
+                return rows[i];
+        return default;
+    }
+
+    // Whether the visible row at index sits under the given ancestor. The walk is bounded by the row
+    // count so a malformed depth map can never loop.
+    private bool TreeIsDescendantOf(IList<TItem> rows, TItem ancestor, int index)
+    {
+        var current = index;
+        for (var guard = 0; guard < rows.Count; guard++)
+        {
+            if (TreeParentOf(rows, current) is not { } parent) return false;
+            if (EqualityComparer<TItem>.Default.Equals(parent, ancestor)) return true;
+            current = IndexOf(rows, parent);
+            if (current < 0) return false;
+        }
+        return false;
+    }
+
+    // Position and count of a row among its visible siblings, for the keyboard announcement.
+    private (int Position, int Count) TreeSiblingPosition(IList<TItem> rows, int index)
+    {
+        var depth = TreeDepthOf(rows[index]);
+        var start = index;
+        while (start > 0 && TreeDepthOf(rows[start - 1]) >= depth) start--;
+        var end = index;
+        while (end + 1 < rows.Count && TreeDepthOf(rows[end + 1]) >= depth) end++;
+
+        var position = 0;
+        var count = 0;
+        for (var i = start; i <= end; i++)
+        {
+            if (TreeDepthOf(rows[i]) != depth) continue;
+            count++;
+            if (i == index) position = count;
+        }
+        return (position, count);
+    }
+
     /// <summary>Flattens hierarchical data into a list with depth information.</summary>
     private List<TreeNode<TItem>> FlattenTree(IEnumerable<TItem> items)
     {

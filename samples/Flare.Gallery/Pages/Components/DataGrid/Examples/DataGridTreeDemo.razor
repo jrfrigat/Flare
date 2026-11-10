@@ -1,6 +1,7 @@
 @using Flare.Gallery.Pages.Components.DataGrid.Examples
 
 <FlareDataGrid Items="@_employees" PageSize="20" @bind-ExpandedItems="_expandedItems"
+               RowReorderable="true" OnRowReordered="@((DataGridRowReorder<Employee> move) => MoveRow(move))"
                Tree="@(new DataGridTreeConfig<Employee>
                {
                    ChildrenSelector = e => e.Subordinates,
@@ -33,13 +34,43 @@
                 yield return child;
         }
     }
+
+    // The grid reports where the row belongs; the demo owns the model and applies the move.
+    private void MoveRow(DataGridRowReorder<Employee> move)
+    {
+        if (!Remove(_employees, move.Item)) return;
+
+        if (move.Position == DataGridRowDropPosition.Inside)
+        {
+            move.Target.Subordinates ??= new();
+            move.Target.Subordinates.Add(move.Item);
+            _expandedItems.Add(move.Target);
+            return;
+        }
+
+        var siblings = move.Parent is null ? _employees : move.Parent.Subordinates ??= new();
+        var index = siblings.IndexOf(move.Target);
+        if (index < 0) index = siblings.Count;
+        else if (move.Position == DataGridRowDropPosition.After) index++;
+        siblings.Insert(index, move.Item);
+    }
+
+    private static bool Remove(List<Employee> nodes, Employee item)
+    {
+        if (nodes.Remove(item)) return true;
+        foreach (var node in nodes)
+            if (node.Subordinates is { } children && Remove(children, item))
+                return true;
+        return false;
+    }
+
     private readonly List<Employee> _employees = new()
     {
         new Employee { Name = "Иван Петров", Position = "CEO", Department = "Руководство", Level = 0,
-            Subordinates = new[]
+            Subordinates = new()
             {
                 new Employee { Name = "Мария Сидорова", Position = "CTO", Department = "Разработка", Level = 1,
-                    Subordinates = new[]
+                    Subordinates = new()
                     {
                         new Employee { Name = "Алексей Козлов", Position = "Team Lead", Department = "Backend", Level = 2 },
                         new Employee { Name = "Елена Волкова", Position = "Team Lead", Department = "Frontend", Level = 2 },
@@ -56,6 +87,6 @@
         public string Position { get; set; } = "";
         public string Department { get; set; } = "";
         public int Level { get; set; }
-        public IEnumerable<Employee>? Subordinates { get; set; }
+        public List<Employee>? Subordinates { get; set; }
     }
 }

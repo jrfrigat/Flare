@@ -202,6 +202,8 @@
                         role="row"
                         aria-rowindex="@(_rowIndexOffset + rowIdx + 2)"
                         aria-selected="@(SelectionMode == SelectionMode.None ? null : selected ? "true" : "false")"
+                        aria-level="@(_treeMode ? (TreeDepthOf(item) + 1).ToString() : null)"
+                        aria-expanded="@(_treeMode && HasTreeChildren(item) ? (IsExpanded(item) ? "true" : "false") : null)"
                         class="@rowClass"
                         style="@(RowStyleFunc?.Invoke(item))"
                         data-flare-drag="@(RowReorderable ? RowDragId(rowIdx) : null)"
@@ -366,7 +368,7 @@
             }
             <tbody data-flare-drop="@RowZone"
                    data-flare-drag-group="@RowZone"
-                   data-flare-drop-placement="between">
+                   data-flare-drop-placement="@(_treeMode ? "both" : "between")">
                 @if (_hasBandedComposite)
                 {
                     @* Each record spans several <tr>; Virtualize uses a fixed per-record ItemSize

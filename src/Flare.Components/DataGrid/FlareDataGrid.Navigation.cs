@@ -151,13 +151,45 @@ public partial class FlareDataGrid<TItem>
         if (!e.AltKey || e.Key is not ("ArrowUp" or "ArrowDown")) return false;
 
         var from = Math.Clamp(_focusRow, 0, rows.Count - 1);
-        var to = Math.Clamp(from + (e.Key == "ArrowUp" ? -1 : 1), 0, rows.Count - 1);
-        if (to == from) return true;
 
-        await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(rows[from], rows[to], from, to));
-        _focusRow = to;
-        _anchorRow = to;
-        Announce("Drag_Position", to + 1, rows.Count);
+        if (_treeMode)
+        {
+            // A tree row moves among its siblings: descendants of the neighbours are skipped and a
+            // shallower row marks the end of the group, so the move never crosses a level.
+            var depth = TreeDepthOf(rows[from]);
+            var step = e.Key == "ArrowUp" ? -1 : 1;
+            var to = -1;
+            for (var i = from + step; i >= 0 && i < rows.Count; i += step)
+            {
+                var candidateDepth = TreeDepthOf(rows[i]);
+                if (candidateDepth < depth) break;
+                if (candidateDepth == depth) { to = i; break; }
+            }
+
+            if (to < 0) return true;
+
+            var parent = TreeParentOf(rows, to);
+            var position = step < 0 ? DataGridRowDropPosition.Before : DataGridRowDropPosition.After;
+            await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(rows[from], rows[to], from, to)
+            {
+                Parent = parent,
+                Position = position,
+                Depth = depth,
+            });
+            _focusRow = to;
+            _anchorRow = to;
+            var (siblingPosition, siblingCount) = TreeSiblingPosition(rows, to);
+            Announce("Drag_Position", siblingPosition, siblingCount);
+            return true;
+        }
+
+        var flatTo = Math.Clamp(from + (e.Key == "ArrowUp" ? -1 : 1), 0, rows.Count - 1);
+        if (flatTo == from) return true;
+
+        await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(rows[from], rows[flatTo], from, flatTo));
+        _focusRow = flatTo;
+        _anchorRow = flatTo;
+        Announce("Drag_Position", flatTo + 1, rows.Count);
         return true;
     }
 

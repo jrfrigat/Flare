@@ -72,6 +72,12 @@ public partial class FlareDataGrid<TItem>
         var oldIndex = IndexOf(rows, dragged);
         if (oldIndex < 0) return;
 
+        if (_treeMode)
+        {
+            await MoveTreeRowAsync(e, rows, dragged, oldIndex);
+            return;
+        }
+
         // The drop reports the position WITHOUT the dragged row, which is the index it ends up at.
         // OnRowReordered has always described the move as "this row, over that row", so the neighbour
         // the new position belongs to is what it is told about.
@@ -81,6 +87,47 @@ public partial class FlareDataGrid<TItem>
         var target = e.HasOverPayload && e.OverPayload is TItem over ? over : rows[newIndex];
 
         await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(dragged, target, oldIndex, newIndex));
+        StateHasChanged();
+    }
+
+    // A tree drop carries the new parent and depth: before/after place the row among the target's
+    // siblings, inside makes it the target's last child. A row cannot be dropped into its own
+    // descendant - that would cut the branch out of the tree.
+    private async Task MoveTreeRowAsync(FlareDropEventArgs<object> e, IList<TItem> rows, TItem dragged, int oldIndex)
+    {
+        if (!e.HasOverPayload || e.OverPayload is not TItem target) return;
+
+        var targetIndex = IndexOf(rows, target);
+        if (targetIndex < 0 || EqualityComparer<TItem>.Default.Equals(target, dragged)) return;
+
+        var targetDepth = TreeDepthOf(target);
+        var position = e.Edge switch
+        {
+            DropEdge.Before => DataGridRowDropPosition.Before,
+            DropEdge.After => DataGridRowDropPosition.After,
+            _ => DataGridRowDropPosition.Inside,
+        };
+
+        TItem? parent;
+        int depth;
+        if (position == DataGridRowDropPosition.Inside)
+        {
+            if (TreeIsDescendantOf(rows, dragged, targetIndex)) return;
+            parent = target;
+            depth = targetDepth + 1;
+        }
+        else
+        {
+            parent = TreeParentOf(rows, targetIndex);
+            depth = targetDepth;
+        }
+
+        await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(dragged, target, oldIndex, targetIndex)
+        {
+            Parent = parent,
+            Position = position,
+            Depth = depth,
+        });
         StateHasChanged();
     }
 

@@ -86,13 +86,34 @@ public sealed record DataGridPasteCell<TItem>(TItem Item, string ColumnKey, stri
 /// <param name="Cells">The cells to write, already mapped to row items and column keys.</param>
 public sealed record DataGridPaste<TItem>(IReadOnlyList<DataGridPasteCell<TItem>> Cells);
 
+/// <summary>Where a dragged row lands relative to the row under the pointer.</summary>
+public enum DataGridRowDropPosition
+{
+    /// <summary>Before the target row, as its sibling.</summary>
+    Before,
+    /// <summary>After the target row, as its sibling.</summary>
+    After,
+    /// <summary>Inside the target row, as its last child.</summary>
+    Inside,
+}
+
 /// <summary>Describes a row drag-and-drop reorder raised by <c>FlareDataGrid.OnRowReordered</c>.</summary>
 /// <typeparam name="TItem">Row item type.</typeparam>
 /// <param name="Item">The dragged row item.</param>
 /// <param name="Target">The row item the dragged row was dropped onto.</param>
 /// <param name="OldIndex">Index of the dragged row within the current page (0-based).</param>
 /// <param name="NewIndex">Index of the drop target within the current page (0-based).</param>
-public sealed record DataGridRowReorder<TItem>(TItem Item, TItem Target, int OldIndex, int NewIndex);
+public sealed record DataGridRowReorder<TItem>(TItem Item, TItem Target, int OldIndex, int NewIndex)
+{
+    /// <summary>The row that becomes the moved row's parent; null for the root level.</summary>
+    public TItem? Parent { get; init; }
+
+    /// <summary>Where the row was placed relative to <see cref="Target"/>. A flat grid leaves the default.</summary>
+    public DataGridRowDropPosition Position { get; init; } = DataGridRowDropPosition.After;
+
+    /// <summary>Depth at the new position (0 = root). Zero for a flat grid.</summary>
+    public int Depth { get; init; }
+}
 
 /// <summary>Describes one tree expansion change raised by <c>FlareDataGrid.OnExpandedChanged</c>.</summary>
 /// <typeparam name="TItem">Row item type.</typeparam>
