@@ -3,6 +3,20 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.55.0] - 2026-11-10
+
+### Added
+
+- `FlareDataGrid` tree rows keep their expansion in a controlled `ExpandedItems` set, report every change through `ExpandedItemsChanged` and `OnExpandedChanged`, and use `DataGridTreeConfig.KeySelector` to survive recreated items.
+- Tree sorting is hierarchical by default: a header sorts each sibling group and children stay under their parents. `DataGridTreeConfig.SortMode` accepts `Flat` for the previous flat order.
+- Tree rows can be dragged before, after or inside another row. `DataGridRowReorder` carries `Parent`, `Position` and `Depth`, the keyboard moves among siblings, and rows expose `aria-level` and `aria-expanded` in a `treegrid`.
+- `FlareScheduler` month events show their start time before the title, and `SchedulerTokens.MonthCellMaxHeight` caps a busy day cell.
+
+### Fixed
+
+- Collapsing a tree row that `InitiallyExpanded` opened no longer reopens it, and the toggle updates the rows immediately.
+- The scheduler month view fills its surface instead of a 400px strip, keeps event titles on one line, and scrolls a day with more events rather than wrapping text letter by letter.
+
 ## [0.54.0] - 2026-11-09
 
 ### Added
