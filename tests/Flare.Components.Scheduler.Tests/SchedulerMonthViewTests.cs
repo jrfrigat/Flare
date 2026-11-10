@@ -48,7 +48,7 @@ public sealed class SchedulerMonthViewTests : FlareTestContext
     {
         var cut = Month(Timed("multi", "Conference", 9, 10, 4, 6));
 
-        Assert.Equal(3, cut.FindAll(".flare-calendar__event").Count);
+        Assert.Equal(3, cut.FindAll("." + Flare.Css.Classes.Calendar.Event).Count);
         Assert.Single(cut.FindAll(".flare-scheduler__event-time"));
     }
 
@@ -94,6 +94,6 @@ public sealed class SchedulerMonthViewTests : FlareTestContext
 
         var cut = Month(events);
 
-        Assert.Equal(5, cut.FindAll(".flare-calendar__event").Count);
+        Assert.Equal(5, cut.FindAll("." + Flare.Css.Classes.Calendar.Event).Count);
     }
 }
