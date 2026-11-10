@@ -27,6 +27,9 @@ public partial class FlareDataGrid<TItem>
         if (keys.SetEquals(_expandedKeys)) return;
         _expandedKeys.Clear();
         foreach (var key in keys) _expandedKeys.Add(key);
+        // Drop instances no longer named by the controlled set; the map is only a key-to-row view.
+        foreach (var stale in _itemsByKey.Keys.Where(k => !_expandedKeys.Contains(k)).ToList())
+            _itemsByKey.Remove(stale);
     }
 
     private async Task ToggleExpandAsync(TItem item)
@@ -94,7 +97,9 @@ public partial class FlareDataGrid<TItem>
         {
             _treeDepths[row.Item] = row.Depth;
             var key = KeyOf(row.Item);
-            if (key is not null) _itemsByKey[key] = row.Item;
+            // Only an expanded row's instance is ever needed again; keeping every visible row would
+            // hold the whole data set in memory for a page-controlled grid.
+            if (key is not null && _expandedKeys.Contains(key)) _itemsByKey[key] = row.Item;
         }
         return rows;
     }
