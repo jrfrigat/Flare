@@ -288,6 +288,7 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     {
         SyncContext();
         UpdatePresentationMode();
+        SyncExpandedItems();
         // Client (in-memory) mode recomputes on every parameter change; provider modes manage the
         // cache via their load methods (and infinite scroll accumulates across pages).
         if (_provider is null)

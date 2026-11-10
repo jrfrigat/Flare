@@ -1,10 +1,10 @@
 @using Flare.Gallery.Pages.Components.DataGrid.Examples
 
-<FlareDataGrid Items="@_employees" PageSize="20"
+<FlareDataGrid Items="@_employees" PageSize="20" @bind-ExpandedItems="_expandedItems"
                Tree="@(new DataGridTreeConfig<Employee>
                {
                    ChildrenSelector = e => e.Subordinates,
-                   InitiallyExpanded = e => e.Level < 2,
+                   KeySelector = e => e.Name,
                    IndentWidth = "24px"
                })">
     <Columns>
@@ -15,6 +15,24 @@
 </FlareDataGrid>
 
 @code {
+    private HashSet<Employee> _expandedItems = new();
+
+    protected override void OnInitialized()
+    {
+        foreach (var employee in Flatten(_employees))
+            if (employee.Level < 2)
+                _expandedItems.Add(employee);
+    }
+
+    private static IEnumerable<Employee> Flatten(IEnumerable<Employee> roots)
+    {
+        foreach (var root in roots)
+        {
+            yield return root;
+            foreach (var child in Flatten(root.Subordinates ?? []))
+                yield return child;
+        }
+    }
     private readonly List<Employee> _employees = new()
     {
         new Employee { Name = "Иван Петров", Position = "CEO", Department = "Руководство", Level = 0,

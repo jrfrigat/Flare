@@ -159,6 +159,17 @@ public partial class FlareDataGrid<TItem>
     /// and recursive row rendering based on the ChildrenSelector.</summary>
     [Parameter] public DataGridTreeConfig<TItem>? Tree { get; set; }
 
+    /// <summary>Controlled set of expanded tree rows. When null, expansion stays inside the grid and is
+    /// seeded from <c>Tree.InitiallyExpanded</c>. When set, the grid is controlled: update this value
+    /// from <see cref="ExpandedItemsChanged"/>.</summary>
+    [Parameter] public HashSet<TItem>? ExpandedItems { get; set; }
+
+    /// <summary>Raised when the user expands or collapses a tree row, with the new expanded set.</summary>
+    [Parameter] public EventCallback<HashSet<TItem>> ExpandedItemsChanged { get; set; }
+
+    /// <summary>Raised for each tree expansion change, with the row and its new state.</summary>
+    [Parameter] public EventCallback<DataGridTreeExpandChanged<TItem>> OnExpandedChanged { get; set; }
+
     /// <summary>Row selection mode - none, single, or multiple.</summary>
     [Parameter] public SelectionMode SelectionMode { get; set; } = SelectionMode.None;
     /// <summary>Enables Excel-like cell-range selection. With the grid focused, arrow keys move the

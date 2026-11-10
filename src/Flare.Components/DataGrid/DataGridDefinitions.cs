@@ -94,6 +94,12 @@ public sealed record DataGridPaste<TItem>(IReadOnlyList<DataGridPasteCell<TItem>
 /// <param name="NewIndex">Index of the drop target within the current page (0-based).</param>
 public sealed record DataGridRowReorder<TItem>(TItem Item, TItem Target, int OldIndex, int NewIndex);
 
+/// <summary>Describes one tree expansion change raised by <c>FlareDataGrid.OnExpandedChanged</c>.</summary>
+/// <typeparam name="TItem">Row item type.</typeparam>
+/// <param name="Item">The row that was expanded or collapsed.</param>
+/// <param name="Expanded">Whether the row is now expanded.</param>
+public sealed record DataGridTreeExpandChanged<TItem>(TItem Item, bool Expanded);
+
 /// <summary>Defines an aggregate (footer) calculation for a data grid column.</summary>
 public sealed class AggregateDefinition<TItem>
 {

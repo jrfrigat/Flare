@@ -11,6 +11,10 @@ public sealed class DataGridTreeConfig<T>
     /// <summary>Selector that determines if a row should be initially expanded.</summary>
     public Func<T, bool>? InitiallyExpanded { get; init; }
 
+    /// <summary>Stable identity of a row for the expanded state. When set, recreated items with the same
+    /// key keep their expansion; when null, the item itself is the key.</summary>
+    public Func<T, object?>? KeySelector { get; init; }
+
     /// <summary>CSS width for each level of indentation.</summary>
     public string IndentWidth { get; init; } = "24px";
 

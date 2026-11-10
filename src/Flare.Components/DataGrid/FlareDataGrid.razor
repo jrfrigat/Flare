@@ -240,9 +240,17 @@
                                 @onmouseenter="@mouseEnter">
                                 @if (_treeMode && col == _gridColumns.First() && Tree?.ChildrenSelector?.Invoke(item)?.Any() == true)
                                 {
+                                    var expanded = IsExpanded(item);
                                     <span class="@Css.Classes.DataGrid.TreeToggle"
-                                          @onclick:stopPropagation="true" @onclick="@(() => ToggleExpand(item))">
-                                        <FlareIconView Value="@(IsExpanded(item) ? Tree!.ExpandedIcon : Tree!.CollapsedIcon)" />
+                                          role="button"
+                                          tabindex="0"
+                                          aria-expanded="@(expanded ? "true" : "false")"
+                                          aria-label="@(CoreText[expanded ? "Tree_Collapse" : "Tree_Expand"])"
+                                          @onclick:stopPropagation="true"
+                                          @onclick="@(() => ToggleExpandAsync(item))"
+                                          @onkeydown:stopPropagation="true"
+                                          @onkeydown="@(async e => { if (e.Key is "Enter" or " ") await ToggleExpandAsync(item); })">
+                                        <FlareIconView Value="@(expanded ? Tree!.ExpandedIcon : Tree!.CollapsedIcon)" />
                                     </span>
                                 }
                                 @RenderCellOrInput(col, item, isEditing)
