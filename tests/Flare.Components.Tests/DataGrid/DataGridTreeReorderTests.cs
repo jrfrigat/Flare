@@ -163,6 +163,7 @@ public sealed class DataGridTreeReorderTests : FlareTestContext
         var cut = RenderSampleTree(rootA, rootB);
 
         var rows = cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}");
+        Assert.Equal("treegrid", cut.Find("table").GetAttribute("role"));
         Assert.Equal("1", rows[0].GetAttribute("aria-level"));
         Assert.Equal("true", rows[0].GetAttribute("aria-expanded"));
         Assert.Equal("2", rows[1].GetAttribute("aria-level"));
@@ -177,6 +178,7 @@ public sealed class DataGridTreeReorderTests : FlareTestContext
             .Add(x => x.Columns, Columns()));
 
         var row = cut.Find($"tbody tr.{Css.Classes.DataGrid.Row}");
+        Assert.Equal("grid", cut.Find("table").GetAttribute("role"));
         Assert.Null(row.GetAttribute("aria-level"));
         Assert.Null(row.GetAttribute("aria-expanded"));
     }
