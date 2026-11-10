@@ -62,14 +62,14 @@
                                     {
                                         @if (EventContainerTemplate is not null)
                                         {
-                                            <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
+                                            <div class="@EventCssClass(calEv.Color)"
                                                  style="@EventColorStyle(calEv.Color)" @onclick:stopPropagation="true" @onkeydown:stopPropagation="true">
                                                 @EventContainerTemplate(calEv)
                                             </div>
                                         }
                                         else
                                         {
-                                        <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
+                                        <div class="@EventCssClass(calEv.Color)"
                                              style="@EventColorStyle(calEv.Color)"
                                              role="button" tabindex="0"
                                              @onkeydown="e => EventKey(e, calEv)"
@@ -133,6 +133,13 @@
     // Event color: role -> flare-color-* class (sets --fc-container/--fc-on-container);
     // custom -> inline tonal tokens; default -> primary-container fallback in CSS.
     private static string? EventColorStyle(FlareColor color) => color.StyleContainerSolid();
+
+    // An event chip is a child element, not the calendar root. BuildCssClass would prepend the root
+    // class and with it the root's width, border and max-width; the chip has its own event class.
+    private static string EventCssClass(FlareColor color) =>
+        color.CssClass is { Length: > 0 } role
+            ? string.Concat(Css.Classes.Calendar.Event, " ", role)
+            : Css.Classes.Calendar.Event;
 
     private DateOnly _viewDate;
     private DateOnly? _viewDateParameter;

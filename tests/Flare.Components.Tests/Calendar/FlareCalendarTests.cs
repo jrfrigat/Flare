@@ -73,6 +73,21 @@ public class FlareCalendarTests : FlareTestContext
     }
 
     [Fact]
+    public void EventChip_DoesNotCarryTheCalendarRootClass()
+    {
+        var day = new DateOnly(2026, 6, 10);
+        var cut = Render<FlareCalendar>(p => p
+            .Add(x => x.ViewDate, day)
+            .Add(x => x.Events, new[] { new CalendarEvent("One", day, FlareColor.Primary) }));
+
+        var chip = cut.Find($".{Css.Classes.Calendar.Event}");
+        var classes = (chip.ClassName ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        Assert.DoesNotContain(Css.Classes.Calendar.Root, classes);
+        Assert.Contains(Css.Classes.Calendar.Event, classes);
+        Assert.Contains("flare-color-primary", classes);
+    }
+
+    [Fact]
     public void ClickingDay_RaisesSelectedDateChanged()
     {
         DateOnly? picked = null;
