@@ -1,5 +1,15 @@
 namespace Flare.Components;
 
+/// <summary>How tree rows are sorted when a sortable column header is clicked.</summary>
+public enum DataGridTreeSortMode
+{
+    /// <summary>Sort each group of siblings; children stay under their parent.</summary>
+    Hierarchical,
+
+    /// <summary>Sort the flattened visible rows as one list (the behavior before 0.55).</summary>
+    Flat,
+}
+
 /// <summary>
 /// Configuration for tree-grid (hierarchical data) support.
 /// </summary>
@@ -14,6 +24,10 @@ public sealed class DataGridTreeConfig<T>
     /// <summary>Stable identity of a row for the expanded state. When set, recreated items with the same
     /// key keep their expansion; when null, the item itself is the key.</summary>
     public Func<T, object?>? KeySelector { get; init; }
+
+    /// <summary>How a sortable column sorts the tree. Defaults to <see cref="DataGridTreeSortMode.Hierarchical"/>;
+    /// <see cref="DataGridTreeSortMode.Flat"/> keeps the flat sort used before 0.55.</summary>
+    public DataGridTreeSortMode SortMode { get; init; } = DataGridTreeSortMode.Hierarchical;
 
     /// <summary>CSS width for each level of indentation.</summary>
     public string IndentWidth { get; init; } = "24px";

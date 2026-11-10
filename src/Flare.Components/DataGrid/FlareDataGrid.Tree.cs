@@ -63,6 +63,16 @@ public partial class FlareDataGrid<TItem>
 
     private bool IsExpanded(TItem item) => _expandedKeys.Contains(KeyOf(item));
 
+    // A hierarchical sort orders each level before the flatten, so a child never leaves its parent.
+    private bool _hierarchicalTreeSort => _treeMode && Tree is { SortMode: DataGridTreeSortMode.Hierarchical };
+
+    private Comparison<TItem>? BuildTreeComparison()
+    {
+        EnsureColumnsBuilt();
+        var sorts = _sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)).ToList();
+        return DataGridPipeline<TItem>.BuildComparison(sorts, BuildColumnStrategies());
+    }
+
     // Depth per visible item, captured once during FlattenTree so the render path is an O(1) lookup
     // instead of re-walking the whole tree for every row (which was O(rows * tree size) per render).
 #pragma warning disable CS8714
@@ -84,7 +94,21 @@ public partial class FlareDataGrid<TItem>
         if (Tree is null)
             return items.Select(item => new TreeNode<TItem> { Item = item, Depth = 0, HasChildren = false, IsExpanded = false }).ToList();
 
-        var rows = TreeFlattener.Flatten(items, Tree.ChildrenSelector, item =>
+        var comparison = _hierarchicalTreeSort ? BuildTreeComparison() : null;
+        var comparer = comparison is null ? null : Comparer<TItem>.Create(comparison);
+        var roots = comparer is null ? items : items.OrderBy(x => x, comparer);
+        Func<TItem, IEnumerable<TItem>?> children = Tree.ChildrenSelector;
+        if (comparer is not null)
+        {
+            var selector = Tree.ChildrenSelector;
+            children = item =>
+            {
+                var level = selector(item);
+                return level is null ? null : level.OrderBy(x => x, comparer);
+            };
+        }
+
+        var rows = TreeFlattener.Flatten(roots, children, item =>
         {
             var key = KeyOf(item);
             // InitiallyExpanded seeds a key once, so collapsing a seeded row sticks. A controlled

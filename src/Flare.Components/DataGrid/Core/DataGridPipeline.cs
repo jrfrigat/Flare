@@ -197,9 +197,7 @@ public static class DataGridPipeline<[DynamicallyAccessedMembers(DynamicallyAcce
 
             // Prefer an explicit selector (e.g. composite fields whose key is not a property name);
             // otherwise sort by the property named by the key (so formatted columns sort by raw value).
-            Func<TItem, object?> selector = strategies?.SortSelectors is { } sels && sels.TryGetValue(sort.Key, out var sel)
-                ? sel
-                : item => GetPropertyValue(item, sort.Key);
+            var selector = SortSelector(sort.Key, strategies);
 
             if (ordered is null)
                 ordered = asc ? source.OrderBy(selector) : source.OrderByDescending(selector);
@@ -207,6 +205,49 @@ public static class DataGridPipeline<[DynamicallyAccessedMembers(DynamicallyAcce
                 ordered = asc ? ordered.ThenBy(selector) : ordered.ThenByDescending(selector);
         }
         return ordered ?? source;
+    }
+
+    // The selector a sort key reads. Shared with BuildComparison so the flat and tree sorts agree.
+    private static Func<TItem, object?> SortSelector(string key, DataGridColumnStrategies<TItem>? strategies)
+        => strategies?.SortSelectors is { } sels && sels.TryGetValue(key, out var sel)
+            ? sel
+            : item => GetPropertyValue(item, key);
+
+    /// <summary>
+    /// Builds the comparison the sort stack describes, or null when nothing sorts. The flat pipeline and
+    /// the hierarchical tree sorter share it, so one column sorts the same way at every tree level.
+    /// </summary>
+    public static Comparison<TItem>? BuildComparison(IReadOnlyList<DataGridSort> sorts,
+        DataGridColumnStrategies<TItem>? strategies = null)
+    {
+        var comparisons = new List<Comparison<TItem>>(sorts.Count);
+        foreach (var sort in sorts)
+        {
+            if (string.IsNullOrEmpty(sort.Key)) continue;
+            var asc = sort.Direction == SortDirection.Ascending;
+
+            if (strategies?.SortComparers is { } comparers && comparers.TryGetValue(sort.Key, out var cmp))
+            {
+                comparisons.Add(asc ? cmp : (a, b) => cmp(b, a));
+                continue;
+            }
+
+            var selector = SortSelector(sort.Key, strategies);
+            comparisons.Add(asc
+                ? (a, b) => Comparer<object?>.Default.Compare(selector(a), selector(b))
+                : (a, b) => Comparer<object?>.Default.Compare(selector(b), selector(a)));
+        }
+
+        if (comparisons.Count == 0) return null;
+        return (a, b) =>
+        {
+            foreach (var comparison in comparisons)
+            {
+                var result = comparison(a, b);
+                if (result != 0) return result;
+            }
+            return 0;
+        };
     }
 
     private static object? GetPropertyValue(TItem item, string key)

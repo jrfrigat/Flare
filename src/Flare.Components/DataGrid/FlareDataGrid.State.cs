@@ -358,7 +358,11 @@ public partial class FlareDataGrid<TItem>
             filters.Add(typedFilter);
         }
 
-        var sorts = _sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)).ToList();
+        // Hierarchical tree mode ordered every level during the flatten; sorting the flat list again
+        // would pull children away from their parents. Flat mode keeps the pre-0.55 behavior.
+        var sorts = new List<DataGridSort>();
+        if (!_hierarchicalTreeSort)
+            sorts.AddRange(_sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)));
 
         var srcList = src is IList<TItem> iList ? iList.ToList() : src.ToList();
         var result = DataGridPipeline<TItem>.Execute(
@@ -400,7 +404,7 @@ public partial class FlareDataGrid<TItem>
 
         // Take one snapshot of an untransformed source. Parameter updates still invalidate it,
         // including edits made in place, and consumers such as exports keep a stable row list.
-        if (_sortStack.Count == 0 && _filters.Count == 0 && _typedFilters.Count == 0 &&
+        if ((_sortStack.Count == 0 || _hierarchicalTreeSort) && _filters.Count == 0 && _typedFilters.Count == 0 &&
             _advancedTree is not { IsEmpty: false } && QuickFilter is null && string.IsNullOrEmpty(_quickFilterText))
             return _unpagedMemo = src.ToList();
 
@@ -411,7 +415,9 @@ public partial class FlareDataGrid<TItem>
         foreach (var (_, typedFilter) in _typedFilters)
             filters.Add(typedFilter);
 
-        var sorts = _sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)).ToList();
+        var sorts = new List<DataGridSort>();
+        if (!_hierarchicalTreeSort)
+            sorts.AddRange(_sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)));
         var srcList = src is IList<TItem> iList ? iList.ToList() : src.ToList();
         var result = DataGridPipeline<TItem>.Execute(
             srcList, sorts, filters, _advancedTree, _effectiveQuickFilter,
