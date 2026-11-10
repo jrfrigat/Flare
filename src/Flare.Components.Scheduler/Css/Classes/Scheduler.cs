@@ -75,5 +75,21 @@ public static class Scheduler
     public const string MonthYear = "flare-scheduler__month--year";
     /// <summary>Start time shown before an event title in the month projection.</summary>
     public const string EventTime = "flare-scheduler__event-time";
+    /// <summary>Container of the month panels.</summary>
+    public const string MonthGrid = "flare-scheduler__month-grid";
+    /// <summary>One month panel in the month projection.</summary>
+    public const string MonthPanel = "flare-scheduler__month-panel";
+    /// <summary>Month title row.</summary>
+    public const string MonthHeader = "flare-scheduler__month-header";
+    /// <summary>Weekday heading row of a month panel.</summary>
+    public const string MonthWeekdays = "flare-scheduler__month-weekdays";
+    /// <summary>One week row of a month panel.</summary>
+    public const string MonthWeek = "flare-scheduler__month-week";
+    /// <summary>Absolute band layer holding the spanning event bars of a week.</summary>
+    public const string MonthBars = "flare-scheduler__month-bars";
+    /// <summary>One continuous bar of a multi-day event inside a week.</summary>
+    public const string MonthBar = "flare-scheduler__month-bar";
+    /// <summary>Single-day event list inside a day cell.</summary>
+    public const string MonthCellEvents = "flare-scheduler__month-cell-events";
 }
 

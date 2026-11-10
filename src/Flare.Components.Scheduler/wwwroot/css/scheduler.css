@@ -62,31 +62,72 @@
 .flare-scheduler__event-action:not(.flare-scheduler__event-body) { border: 0; padding: 0; background: transparent; color: inherit; }
 .flare-scheduler__event-action:focus-visible { outline: var(--flare-scheduler-selected-outline, var(--flare-focus-ring)); }
 
-/* Month projection: the calendar is the view's surface, not a fixed-width widget. Child combinators
-   keep these rules off the event chips, which carry the calendar root class by an existing accident. */
-.flare-scheduler__month > .flare-calendar { max-width: none; }
-
-/* A single month fills the scheduling surface's width and scrolls as a whole when its rows exceed
-   the height; a day cell caps its own height and scrolls internally. The year keeps its own
-   scrolling grid of twelve months. */
-.flare-scheduler__month:not(.flare-scheduler__month--year) {
+/* Month projection: an in-view month grid with continuous bars for multi-day events. */
+.flare-scheduler__month {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
 }
-.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar {
-    min-height: 100%;
+.flare-scheduler__month-grid { display: flex; flex-direction: column; }
+.flare-scheduler__month--year .flare-scheduler__month-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--flare-scheduler-padding, var(--flare-spacing-4));
+    padding: var(--flare-scheduler-padding, var(--flare-spacing-4));
 }
-.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar .flare-calendar__grid {
-    grid-auto-rows: minmax(var(--flare-calendar-cell-min-height), auto);
+.flare-scheduler__month-panel { display: flex; flex-direction: column; min-width: 0; }
+.flare-scheduler__month--year .flare-scheduler__month-panel {
+    border: var(--flare-scheduler-border, var(--flare-border-divider));
+    border-radius: var(--flare-scheduler-radius, var(--flare-shape-medium));
+    overflow: hidden;
 }
-.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar .flare-calendar__cell {
+.flare-scheduler__month-header {
+    padding: var(--flare-spacing-4) var(--flare-spacing-6);
+    border-bottom: var(--flare-scheduler-border, var(--flare-border-divider));
+    background: var(--flare-scheduler-header-surface, var(--flare-color-surface-container-low));
+}
+.flare-scheduler__month-weekdays,
+.flare-scheduler__month-week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    column-gap: var(--flare-spacing-1);
+}
+.flare-scheduler__month-week { position: relative; }
+
+/* The span layer sits below the day-number row; each cell reserves the same height in its event
+   list, so bars and single-day chips never share a line. Empty layer space passes clicks through. */
+.flare-scheduler__month-bars {
+    position: absolute;
+    inset-inline: 0;
+    top: calc(var(--flare-spacing-2) + var(--flare-calendar-day-num-size) + var(--flare-spacing-1));
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-auto-rows: var(--flare-scheduler-month-bar-height, var(--flare-spacing-8));
+    row-gap: var(--flare-scheduler-event-gap, var(--flare-spacing-1));
+    column-gap: var(--flare-spacing-1);
+    pointer-events: none;
+}
+.flare-scheduler__month-bar {
+    min-width: 0;
+    overflow: hidden;
+    pointer-events: auto;
+    border-radius: var(--flare-scheduler-event-radius, var(--flare-shape-small));
+}
+.flare-scheduler__month-bar .flare-scheduler__event-body,
+.flare-scheduler__month-bar .flare-scheduler__event-action {
+    height: 100%;
+    line-height: var(--flare-scheduler-month-bar-height, var(--flare-spacing-8));
+    border-radius: inherit;
+}
+.flare-scheduler__month .flare-calendar__cell { min-width: 0; }
+.flare-scheduler__month-cell-events {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-1);
+    min-height: 0;
+    padding-top: calc(var(--month-bands, 0) * (var(--flare-scheduler-month-bar-height, var(--flare-spacing-8)) + var(--flare-scheduler-event-gap, var(--flare-spacing-1))));
     max-height: var(--flare-scheduler-month-cell-max-height, calc(var(--flare-spacing-32) * 2));
     overflow-y: auto;
-}
-/* The cell is a flex column: without this its children shrink to fit instead of scrolling. */
-.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar .flare-calendar__cell > * {
-    flex: 0 0 auto;
 }
 
 /* Month events are one-line rows even though the shared event body is a column. */

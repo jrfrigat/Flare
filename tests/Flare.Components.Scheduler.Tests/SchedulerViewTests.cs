@@ -65,7 +65,7 @@ public sealed class SchedulerViewTests : FlareTestContext
         Assert.Same(Event, Assert.Single(cut.Instance.Snapshot.Occurrences).Item);
         Assert.Equal(columns, cut.FindAll($".{Css.Classes.Scheduler.Day}").Count);
         if (view is SchedulerView.Month or SchedulerView.Year)
-            Assert.Equal(view == SchedulerView.Year ? 12 : 1, cut.FindAll($".{Css.Classes.Calendar.Month}").Count);
+            Assert.Equal(view == SchedulerView.Year ? 12 : 1, cut.FindAll($".{Css.Classes.Scheduler.MonthPanel}").Count);
         if (view == SchedulerView.Timeline) Assert.Single(cut.FindComponents<FlareGantt>());
     }
 

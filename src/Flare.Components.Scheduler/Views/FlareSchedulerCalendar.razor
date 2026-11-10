@@ -6,100 +6,71 @@
 @inject TimeProvider Clock
 
 @{ _lastDefaultRender = CanReuseRender ? new(Context, Class, Style, Today, LocalizationState) : null; }
-<div @ref="_root" class="@(Context.View == SchedulerView.Year ? BuildCssClass(Css.Classes.Scheduler.Month, Css.Classes.Scheduler.MonthYear) : BuildCssClass(Css.Classes.Scheduler.Month))" style="@Style" @attributes="AdditionalAttributes">
-<FlareCalendar ViewDate="Anchor" ShowNavigation="false"
-               MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
-               MaxVisibleEvents="int.MaxValue" MonthHeaderTemplate="MonthHeaderTemplate" DateTemplate="DateTemplate" DayHeaderTemplate="DayHeaderTemplate"
-               Culture="Context.Culture" Events="_events" SelectedDate="SelectedDate" SelectedDateChanged="SelectDayAsync"
-               OnEventClick="SelectEventAsync">
-    <EventContainerTemplate Context="item">
-        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="_source[item]" EventTemplate="EventTemplate" TimeText="@_timeText.GetValueOrDefault(item)" />
-    </EventContainerTemplate>
-</FlareCalendar>
-</div>
-
-@code {
-    /// <summary>Optional month title content.</summary>
-    [Parameter] public RenderFragment<DateOnly>? MonthHeaderTemplate { get; set; }
-    /// <summary>Optional date heading inside each day cell.</summary>
-    [Parameter] public RenderFragment<DateOnly>? DateTemplate { get; set; }
-    /// <summary>Optional weekday heading content.</summary>
-    [Parameter] public RenderFragment<DayOfWeek>? DayHeaderTemplate { get; set; }
-    private (IReadOnlyList<SchedulerOccurrence<TItem>> Occurrences, SchedulerWindow Window, TimeZoneInfo Zone, int Version)? _projectionKey;
-    private readonly record struct CalendarRender(SchedulerViewContext<TItem> Context, string? Class, string? Style,
-        DateOnly Today, FlareLocalizationState? Localization);
-    private CalendarRender? _lastDefaultRender;
-    private bool _keyboardRegistered;
-    private ElementReference _root;
-    private readonly Dictionary<CalendarEvent, SchedulerOccurrence<TItem>> _source = new(ReferenceEqualityComparer.Instance);
-    private readonly Dictionary<CalendarEvent, string?> _timeText = new(ReferenceEqualityComparer.Instance);
-    private IReadOnlyList<CalendarEvent> _events = [];
-    private DateOnly Anchor => Context.View == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;
-    private DateOnly? SelectedDate => Context.SelectedSlot is not { } slot ? null : slot.AllDay?.Start
-        ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(slot.Start, Context.TimeZone).DateTime);
-    private DateOnly Today => DateOnly.FromDateTime(Clock.GetLocalNow().DateTime);
-    private bool CanReuseRender => GetType() == typeof(FlareSchedulerCalendar<TItem>) &&
-        MonthHeaderTemplate is null && DateTemplate is null && DayHeaderTemplate is null && EventTemplate is null &&
-        AdditionalAttributes is null && Context.Focus.Identity is null && Context.Culture.IsReadOnly;
-
-    protected override bool ShouldRender()
-    {
-        // Application templates can depend on state outside Context. The standard calendar can keep
-        // the last projection when the context, current day and outer attributes agree.
-        if (!CanReuseRender || _lastDefaultRender is not { } previous) return true;
-        return previous.Context != Context || previous.Class != Class || previous.Style != Style ||
-            previous.Today != Today || !ReferenceEquals(previous.Localization, LocalizationState) ||
-            !ReferenceEquals(previous.Context.Culture, Context.Culture) ||
-            !ReferenceEquals(previous.Context.Commands, Context.Commands) ||
-            !ReferenceEquals(previous.Context.Occurrences, Context.Occurrences);
-    }
-
-    protected override void OnParametersSet()
-    {
-        var key = (Context.Occurrences, Context.Window, Context.TimeZone, Context.Version);
-        if (key == _projectionKey) return;
-        _projectionKey = key;
-        _source.Clear();
-        _timeText.Clear();
-        var result = new List<CalendarEvent>();
-        foreach (var occurrence in Context.Occurrences)
+<div @ref="_root" class="@RootClass" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Scheduler.MonthGrid">
+        @foreach (var panel in _panels)
         {
-            var span = SchedulerClock.Span(occurrence.Data, Context.TimeZone);
-            var start = DateOnly.FromDateTime(span.Start);
-            var last = DateOnly.FromDateTime(span.End > span.Start ? span.End.AddTicks(-1) : span.End);
-            start = start < Context.Window.Dates.Start ? Context.Window.Dates.Start : start;
-            last = last >= Context.Window.Dates.End ? Context.Window.Dates.End.AddDays(-1) : last;
-            for (var day = start; day <= last; day = day.AddDays(1))
-            {
-                var item = new CalendarEvent(occurrence.Data.Title, day, occurrence.Data.Color);
-                _source.Add(item, occurrence);
-                // The month row shows the start time on the day the event begins; all-day events and
-                // continuation days have none.
-                _timeText[item] = occurrence.Data.AllDay is null && DateOnly.FromDateTime(span.Start) == day
-                    ? span.Start.ToString("HH:mm", Context.Culture)
-                    : null;
-                result.Add(item);
-            }
+            <div class="@Css.Classes.Scheduler.MonthPanel">
+                <div class="@Css.Classes.Scheduler.MonthHeader">
+                    @if (MonthHeaderTemplate is not null) { @MonthHeaderTemplate(panel.Month) }
+                    else { <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@MonthTitle(panel.Month)</FlareText> }
+                </div>
+                <div role="grid" aria-label="@MonthTitle(panel.Month)">
+                    <div class="@Css.Classes.Scheduler.MonthWeekdays" role="row">
+                        @for (var i = 0; i < 7; i++)
+                        {
+                            var weekday = (DayOfWeek)(((int)FirstDayOfWeek + i) % 7);
+                            <div class="@Css.Classes.Calendar.DayLabel" role="columnheader" aria-label="@Format.GetDayName(weekday)">
+                                @if (DayHeaderTemplate is not null) { @DayHeaderTemplate(weekday) }
+                                else { @Format.GetShortestDayName(weekday) }
+                            </div>
+                        }
+                    </div>
+                    @foreach (var week in panel.Weeks)
+                    {
+                        <div class="@Css.Classes.Scheduler.MonthWeek" role="row" style="@WeekStyle(week)">
+                            <div class="@Css.Classes.Scheduler.MonthBars" role="presentation">
+                                @foreach (var bar in week.Bars)
+                                {
+                                    <div class="@Css.Classes.Scheduler.MonthBar" style="@BarStyle(bar)">
+                                        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="bar.Event.Occurrence"
+                                                             EventTemplate="EventTemplate"
+                                                             TimeText="@(bar.ShowsTime ? bar.Event.TimeText : null)" />
+                                    </div>
+                                }
+                            </div>
+                            @for (var d = 0; d < 7; d++)
+                            {
+                                var date = week.Dates[d];
+                                var other = date.Month != panel.Month.Month || date.Year != panel.Month.Year;
+                                var selected = SelectedDate == date;
+                                <div class="@CellClass(other, date == Today, selected)" role="gridcell"
+                                     aria-label="@date.ToString("D", Format)" aria-selected="@(selected ? "true" : "false")"
+                                     aria-current="@(date == Today ? "date" : null)" tabindex="0"
+                                     @onclick="@(() => SelectDayAsync(date, other))"
+                                     @onkeydown="@(e => DayKey(e, date, other))">
+                                    @if (DateTemplate is not null) { @DateTemplate(date) }
+                                    else { <span class="@Css.Classes.Calendar.DayNum">@date.Day</span> }
+                                    <div class="@Css.Classes.Scheduler.MonthCellEvents">
+                                        @if (!other)
+                                        {
+                                            @foreach (var item in week.Days[d])
+                                            {
+                                                <div class="@EventCssClass(item.Occurrence.Data.Color)"
+                                                     style="@item.Occurrence.Data.Color.StyleContainerSolid()"
+                                                     @onclick:stopPropagation="true" @onkeydown:stopPropagation="true">
+                                                    <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="item.Occurrence"
+                                                                         EventTemplate="EventTemplate" TimeText="@item.TimeText" />
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
         }
-        _events = result;
-    }
-    private Task SelectEventAsync(CalendarEvent item) => Context.Commands.SelectEventAsync(_source[item]);
-    private Task SelectDayAsync(DateOnly date)
-    {
-        var dates = new SchedulerDateRange(date, date.AddDays(1));
-        var window = SchedulerClock.Window(dates, Context.TimeZone);
-        return Context.Commands.SelectSlotAsync(new(window.Start, window.End, dates));
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root); _keyboardRegistered = true; }
-    }
-    /// <summary>Releases the independent view's native keyboard listener.</summary>
-    public override async ValueTask DisposeAsync()
-    {
-        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
-        await base.DisposeAsync();
-    }
-}
+    </div>
+</div>

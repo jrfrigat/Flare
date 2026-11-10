@@ -71,5 +71,7 @@ public static class Scheduler
     public const string ResizeWidth = "--flare-scheduler-resize-width";
     /// <summary>Maximum height of one day cell in the month projection before it scrolls.</summary>
     public const string MonthCellMaxHeight = "--flare-scheduler-month-cell-max-height";
+    /// <summary>Height of one multi-day event bar in the month projection.</summary>
+    public const string MonthBarHeight = "--flare-scheduler-month-bar-height";
 }
 

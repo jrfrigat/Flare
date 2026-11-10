@@ -76,5 +76,7 @@ public sealed record SchedulerTokens
     [CssVar(Names.ResizeWidth)] public string ResizeWidth { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Maximum height of one day cell in the month projection; content beyond it scrolls.</summary>
     [CssVar(Names.MonthCellMaxHeight)] public string MonthCellMaxHeight { get; init; } = $"calc({Var(Css.Tokens.Spacing.S32)} * 2)";
+    /// <summary>Height of one multi-day event bar in the month projection.</summary>
+    [CssVar(Names.MonthBarHeight)] public string MonthBarHeight { get; init; } = Var(Css.Tokens.Spacing.S8);
 }
 
