@@ -71,5 +71,9 @@ public static class Scheduler
     public const string Status = "flare-scheduler__status";
     /// <summary>The Month scheduler element.</summary>
     public const string Month = "flare-scheduler__month";
+    /// <summary>The Year projection of the month element; keeps the scrolling multi-month grid.</summary>
+    public const string MonthYear = "flare-scheduler__month--year";
+    /// <summary>Start time shown before an event title in the month projection.</summary>
+    public const string EventTime = "flare-scheduler__event-time";
 }
 

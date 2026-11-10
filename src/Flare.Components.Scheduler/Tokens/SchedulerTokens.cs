@@ -74,5 +74,7 @@ public sealed record SchedulerTokens
     [CssVar(Names.ResourceHeaderSurface)] public string ResourceHeaderSurface { get; init; } = Var(Css.Tokens.Color.SurfaceContainerLow);
     /// <summary>Design value for ResizeWidth; defaults to the corresponding base theme role.</summary>
     [CssVar(Names.ResizeWidth)] public string ResizeWidth { get; init; } = Var(Css.Tokens.Spacing.S4);
+    /// <summary>Maximum height of one day cell in the month projection; content beyond it scrolls.</summary>
+    [CssVar(Names.MonthCellMaxHeight)] public string MonthCellMaxHeight { get; init; } = $"calc({Var(Css.Tokens.Spacing.S32)} * 2)";
 }
 

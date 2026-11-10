@@ -61,3 +61,50 @@
 .flare-scheduler__event-action { display: flex; flex-direction: column; width: 100%; min-width: 0; font: inherit; text-align: start; cursor: pointer; white-space: normal; overflow-wrap: anywhere; }
 .flare-scheduler__event-action:not(.flare-scheduler__event-body) { border: 0; padding: 0; background: transparent; color: inherit; }
 .flare-scheduler__event-action:focus-visible { outline: var(--flare-scheduler-selected-outline, var(--flare-focus-ring)); }
+
+/* Month projection: the calendar is the view's surface, not a fixed-width widget. Child combinators
+   keep these rules off the event chips, which carry the calendar root class by an existing accident. */
+.flare-scheduler__month > .flare-calendar { max-width: none; }
+
+/* A single month fills the scheduling surface's width and scrolls as a whole when its rows exceed
+   the height; a day cell caps its own height and scrolls internally. The year keeps its own
+   scrolling grid of twelve months. */
+.flare-scheduler__month:not(.flare-scheduler__month--year) {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar {
+    min-height: 100%;
+}
+.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar .flare-calendar__grid {
+    grid-auto-rows: minmax(var(--flare-calendar-cell-min-height), auto);
+}
+.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar .flare-calendar__cell {
+    max-height: var(--flare-scheduler-month-cell-max-height, calc(var(--flare-spacing-32) * 2));
+    overflow-y: auto;
+}
+/* The cell is a flex column: without this its children shrink to fit instead of scrolling. */
+.flare-scheduler__month:not(.flare-scheduler__month--year) > .flare-calendar .flare-calendar__cell > * {
+    flex: 0 0 auto;
+}
+
+/* Month events are one-line rows even though the shared event body is a column. */
+.flare-scheduler__month .flare-calendar__event { padding: 0 var(--flare-spacing-2); }
+.flare-scheduler__month .flare-scheduler__event-action,
+.flare-scheduler__month .flare-scheduler__event-body {
+    display: block;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-wrap: normal;
+}
+.flare-scheduler__month .flare-scheduler__event-time {
+    margin-inline-end: var(--flare-spacing-1);
+    font-weight: 600;
+}

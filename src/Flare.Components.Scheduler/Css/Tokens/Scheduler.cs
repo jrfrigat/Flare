@@ -69,5 +69,7 @@ public static class Scheduler
     public const string ResourceHeaderSurface = "--flare-scheduler-resource-header-surface";
     /// <summary>Custom-property name for ResizeWidth.</summary>
     public const string ResizeWidth = "--flare-scheduler-resize-width";
+    /// <summary>Maximum height of one day cell in the month projection before it scrolls.</summary>
+    public const string MonthCellMaxHeight = "--flare-scheduler-month-cell-max-height";
 }
 

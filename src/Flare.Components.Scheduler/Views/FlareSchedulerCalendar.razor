@@ -6,14 +6,14 @@
 @inject TimeProvider Clock
 
 @{ _lastDefaultRender = CanReuseRender ? new(Context, Class, Style, Today, LocalizationState) : null; }
-<div @ref="_root" class="@BuildCssClass(Css.Classes.Scheduler.Month)" style="@Style" @attributes="AdditionalAttributes">
+<div @ref="_root" class="@BuildCssClass(Css.Classes.Scheduler.Month, Context.View == SchedulerView.Year ? Css.Classes.Scheduler.MonthYear : null)" style="@Style" @attributes="AdditionalAttributes">
 <FlareCalendar ViewDate="Anchor" ShowNavigation="false"
                MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
                MaxVisibleEvents="int.MaxValue" MonthHeaderTemplate="MonthHeaderTemplate" DateTemplate="DateTemplate" DayHeaderTemplate="DayHeaderTemplate"
                Culture="Context.Culture" Events="_events" SelectedDate="SelectedDate" SelectedDateChanged="SelectDayAsync"
                OnEventClick="SelectEventAsync">
     <EventContainerTemplate Context="item">
-        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="_source[item]" EventTemplate="EventTemplate" />
+        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="_source[item]" EventTemplate="EventTemplate" TimeText="@_timeText.GetValueOrDefault(item)" />
     </EventContainerTemplate>
 </FlareCalendar>
 </div>
@@ -32,6 +32,7 @@
     private bool _keyboardRegistered;
     private ElementReference _root;
     private readonly Dictionary<CalendarEvent, SchedulerOccurrence<TItem>> _source = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<CalendarEvent, string?> _timeText = new(ReferenceEqualityComparer.Instance);
     private IReadOnlyList<CalendarEvent> _events = [];
     private DateOnly Anchor => Context.View == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;
     private DateOnly? SelectedDate => Context.SelectedSlot is not { } slot ? null : slot.AllDay?.Start
@@ -59,6 +60,7 @@
         if (key == _projectionKey) return;
         _projectionKey = key;
         _source.Clear();
+        _timeText.Clear();
         var result = new List<CalendarEvent>();
         foreach (var occurrence in Context.Occurrences)
         {
@@ -71,6 +73,11 @@
             {
                 var item = new CalendarEvent(occurrence.Data.Title, day, occurrence.Data.Color);
                 _source.Add(item, occurrence);
+                // The month row shows the start time on the day the event begins; all-day events and
+                // continuation days have none.
+                _timeText[item] = occurrence.Data.AllDay is null && DateOnly.FromDateTime(span.Start) == day
+                    ? span.Start.ToString("HH:mm", Context.Culture)
+                    : null;
                 result.Add(item);
             }
         }

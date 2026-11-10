@@ -29,6 +29,8 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
     [Parameter, EditorRequired] public SchedulerOccurrence<TItem> Occurrence { get; set; } = default!;
     /// <summary>Enables shared drag behavior inside a scheduling drag context.</summary>
     [Parameter] public bool Draggable { get; set; }
+    /// <summary>Optional start time shown before the title by the default event action.</summary>
+    [Parameter] public string? TimeText { get; set; }
     /// <summary>Enables shared resizing of this visible timed segment when MeasureSlot is supplied.</summary>
     [Parameter] public bool Resizable { get; set; }
     /// <summary>Visible segment's inclusive instant.</summary>
@@ -57,7 +59,7 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
         {
             <FlareSchedulerEventAction @ref="_action" TItem="TItem" Context="@(new SchedulerEventContext<TItem>(Context, Occurrence) { KeyHandler = EventKeyAsync })"
                 Class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
-                Style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description" />
+                Style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description" TimeText="@TimeText" />
         }
     </text>;
 

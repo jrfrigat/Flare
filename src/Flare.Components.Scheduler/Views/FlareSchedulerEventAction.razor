@@ -7,6 +7,11 @@
         data-flare-edit-keys="@(Context.View.CanEdit ? "" : null)" aria-pressed="@(Context.IsSelected ? "true" : "false")"
         @onclick="Context.SelectAsync" @ondblclick="Context.EditAsync" @onkeydown="Context.HandleKeyAsync" @attributes="AdditionalAttributes">
     @if (ChildContent is not null) { @ChildContent(Context) }
+    else if (TimeText is { Length: > 0 } time)
+    {
+        <span class="@Css.Classes.Scheduler.EventTime">@time</span>
+        @Context.Occurrence.Data.Title
+    }
     else { @Context.Occurrence.Data.Title }
 </button>
 
@@ -17,6 +22,8 @@
     [Parameter] public RenderFragment<SchedulerEventContext<TItem>>? ChildContent { get; set; }
     /// <summary>Accessible name; null uses the event title, including for an icon-only caption.</summary>
     [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Optional start time rendered before the title by the default caption.</summary>
+    [Parameter] public string? TimeText { get; set; }
     private ElementReference _element;
     protected override string ComponentCssClass => Css.Classes.Scheduler.EventAction;
     /// <summary>Restores native focus to the primary event action.</summary>
