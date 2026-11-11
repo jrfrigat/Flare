@@ -83,6 +83,7 @@
         <table @ref="_tableRef"
                tabindex="0"
                role="@(_treeMode ? "treegrid" : "grid")"
+               aria-label="@TableAriaLabel"
                class="@Css.Classes.DataGrid.Table @(_dimTable ? Css.Classes.DataGrid.TableLoading : "") @(_hasFrozen ? Css.Classes.DataGrid.TableScrollX : "") @((_shouldVirtualize || _hasVisibleColumnWidth) ? Css.Classes.DataGrid.TableFixed : "") @(_visibleColumnWidthsExact ? Css.Classes.DataGrid.TableWidthsExact : "") @(CellSelection ? Css.Classes.DataGrid.CellSelectMode : "")"
                style="@_exactTableWidthStyle"
                aria-rowcount="@_totalRows"
@@ -240,7 +241,7 @@
                                 tabindex="@(isFocusCell ? "0" : "-1")"
                                 @onmousedown="@mouseDown"
                                 @onmouseenter="@mouseEnter">
-                                @if (_treeMode && col == _gridColumns.First() && Tree?.ChildrenSelector?.Invoke(item)?.Any() == true)
+                                @if (_treeMode && col == TreeToggleColumn && Tree?.ChildrenSelector?.Invoke(item)?.Any() == true)
                                 {
                                     var expanded = IsExpanded(item);
                                     <span class="@Css.Classes.DataGrid.TreeToggle"

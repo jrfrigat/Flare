@@ -44,6 +44,9 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public RenderFragment? EmptyStateContent { get; set; }
     /// <summary>Overrides the loading indicator text.</summary>
     [Parameter] public string? LoadingText { get; set; }
+    /// <summary>Accessible name of the grid's table element. <c>AdditionalAttributes</c> land on the
+    /// root container, so this is the only way to name the table itself.</summary>
+    [Parameter] public string? TableAriaLabel { get; set; }
     /// <summary>Overrides the placeholder text shown in filter inputs.</summary>
     [Parameter] public string? FilterPlaceholder { get; set; }
     /// <summary>Overrides the rows-per-page label shown next to the page size selector.</summary>

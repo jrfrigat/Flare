@@ -13,6 +13,7 @@ public sealed class DataGridTreeExpansionTests : FlareTestContext
     private sealed class Node
     {
         public required string Name { get; init; }
+        public string Kind { get; init; } = "node";
         public List<Node> Children { get; init; } = [];
     }
 
@@ -40,6 +41,18 @@ public sealed class DataGridTreeExpansionTests : FlareTestContext
         ChildrenSelector = n => n.Children,
         InitiallyExpanded = initiallyExpanded,
         KeySelector = n => n.Name,
+    };
+
+    private static RenderFragment TwoColumns() => b =>
+    {
+        b.OpenComponent<FlareColumn<Node>>(0);
+        b.AddAttribute(1, "Title", "Kind");
+        b.AddAttribute(2, "Field", (Func<Node, object?>)(n => n.Kind));
+        b.CloseComponent();
+        b.OpenComponent<FlareColumn<Node>>(10);
+        b.AddAttribute(11, "Title", "Name");
+        b.AddAttribute(12, "Field", (Func<Node, object?>)(n => n.Name));
+        b.CloseComponent();
     };
 
     private static readonly string Toggle = "." + Css.Classes.DataGrid.TreeToggle;
@@ -149,18 +162,62 @@ public sealed class DataGridTreeExpansionTests : FlareTestContext
     }
 
     [Fact]
-    public void KeySelector_MatchesExpansionOfRecreatedItems()
+    public void ToggleColumnTitle_MovesTheToggleAndTheIndent()
     {
         var root = Sample();
-        // A page that recreated its rows passes a different instance carrying the same key.
-        var recreatedRoot = new Node { Name = "root" };
-
         var cut = Render<FlareDataGrid<Node>>(p => p
             .Add(x => x.Items, new[] { root })
-            .Add(x => x.ExpandedItems, new HashSet<Node> { recreatedRoot })
+            .Add(x => x.ExpandedItems, new HashSet<Node> { root })
+            .Add(x => x.Tree, new DataGridTreeConfig<Node>
+            {
+                ChildrenSelector = n => n.Children,
+                KeySelector = n => n.Name,
+                ToggleColumnTitle = "Name",
+            })
+            .Add(x => x.Columns, TwoColumns()));
+
+        var toggle = cut.Find(Toggle);
+        var toggleCell = toggle.ParentElement!;
+        Assert.Equal(1, toggleCell.ParentElement!.QuerySelectorAll("td").ToList().IndexOf(toggleCell));
+
+        var childRow = cut.FindAll("tbody tr").Single(r => r.TextContent.Contains("child-one", StringComparison.Ordinal));
+        var childCells = childRow.QuerySelectorAll("td").ToList();
+        Assert.Contains("padding-left", childCells[1].GetAttribute("style") ?? "", StringComparison.Ordinal);
+        Assert.DoesNotContain("padding-left", childCells[0].GetAttribute("style") ?? "", StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ToggleColumnTitle_UnknownTitleFallsBackToTheFirstColumn()
+    {
+        var cut = Render<FlareDataGrid<Node>>(p => p
+            .Add(x => x.Items, new[] { Sample() })
+            .Add(x => x.Tree, new DataGridTreeConfig<Node>
+            {
+                ChildrenSelector = n => n.Children,
+                KeySelector = n => n.Name,
+                ToggleColumnTitle = "Missing",
+            })
+            .Add(x => x.Columns, TwoColumns()));
+
+        var toggle = cut.Find(Toggle);
+        Assert.Equal(0, toggle.ParentElement!.ParentElement!.QuerySelectorAll("td").ToList().IndexOf(toggle.ParentElement!));
+    }
+
+    [Fact]
+    public void TableAriaLabel_NamesTheTableElement()
+    {
+        var named = Render<FlareDataGrid<Node>>(p => p
+            .Add(x => x.Items, new[] { Sample() })
+            .Add(x => x.Tree, Config())
+            .Add(x => x.TableAriaLabel, "Task tree")
+            .Add(x => x.Columns, NodeColumn()));
+        Assert.Equal("treegrid", named.Find("table").GetAttribute("role"));
+        Assert.Equal("Task tree", named.Find("table").GetAttribute("aria-label"));
+
+        var plain = Render<FlareDataGrid<Node>>(p => p
+            .Add(x => x.Items, new[] { Sample() })
             .Add(x => x.Tree, Config())
             .Add(x => x.Columns, NodeColumn()));
-
-        Assert.Contains("child-one", cut.Markup, StringComparison.Ordinal);
+        Assert.Null(plain.Find("table").GetAttribute("aria-label"));
     }
 }

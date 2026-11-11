@@ -32,7 +32,8 @@ public sealed class DataGridTreeConfig<T>
     /// <summary>CSS width for each level of indentation.</summary>
     public string IndentWidth { get; init; } = "24px";
 
-    /// <summary>Column title to render the expand/collapse toggle in. If null, uses the first column.</summary>
+    /// <summary>Column title to render the expand/collapse toggle in. The first column with this title is
+    /// used; null or an unknown title falls back to the first column.</summary>
     public string? ToggleColumnTitle { get; init; }
 
     /// <summary>Icon for the collapsed state - any provider. Defaults to the built-in chevron-right.</summary>

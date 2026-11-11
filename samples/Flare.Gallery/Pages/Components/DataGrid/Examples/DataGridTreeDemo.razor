@@ -1,11 +1,13 @@
 @using Flare.Gallery.Pages.Components.DataGrid.Examples
 
 <FlareDataGrid Items="@_employees" PageSize="20" @bind-ExpandedItems="_expandedItems"
+               TableAriaLabel="@GalleryStrings.DataGrid_TreeGridTitle"
                RowReorderable="true" OnRowReordered="@((DataGridRowReorder<Employee> move) => MoveRow(move))"
                Tree="@(new DataGridTreeConfig<Employee>
                {
                    ChildrenSelector = e => e.Subordinates,
                    KeySelector = e => e.Name,
+                   ToggleColumnTitle = "Position",
                    IndentWidth = "24px"
                })">
     <Columns>

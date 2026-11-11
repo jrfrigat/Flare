@@ -79,9 +79,16 @@ public partial class FlareDataGrid<TItem>
     private readonly Dictionary<TItem, int> _treeDepths = new();
 #pragma warning restore CS8714
 
+    // The column that carries the tree toggle: ToggleColumnTitle picks it by title; null or an unknown
+    // title falls back to the first column, which is where the toggle has always been.
+    private DataGridColumn<TItem>? TreeToggleColumn =>
+        Tree?.ToggleColumnTitle is { Length: > 0 } title
+            ? _gridColumns.FirstOrDefault(c => string.Equals(c.Title, title, StringComparison.Ordinal)) ?? _gridColumns.FirstOrDefault()
+            : _gridColumns.FirstOrDefault();
+
     private string GetTreeIndentStyle(DataGridColumn<TItem> col, TItem item)
     {
-        if (Tree is null || _gridColumns.Count == 0 || !ReferenceEquals(col, _gridColumns[0])) return "";
+        if (Tree is null || _gridColumns.Count == 0 || !ReferenceEquals(col, TreeToggleColumn)) return "";
         if (!_treeDepths.TryGetValue(item, out var depth) || depth == 0) return "";
         var px = int.TryParse(Tree.IndentWidth.Replace("px", ""), out var w) ? w : 24;
         return $"padding-left:{depth * px}px";
