@@ -7,11 +7,11 @@
   // so its compiler is never the older one and it cannot reproduce that break at all: the CI stays
   // green while an older dev machine fails.
   //
-  // 10.0.400 ships Roslyn 5.9.0, matching the pinned analyzer packages. rollForward latestFeature
-  // accepts 10.0.400 and any higher 10.0 feature band, so newer machines are fine - it only bars
-  // ones that are too old, which is the failure this guards.
+  // 11.0.100 ships Roslyn 5.1200.26.53018, newer than the pinned analyzer packages (5.9.0).
+  // rollForward latestFeature accepts 11.0.100 and any higher 11.0 feature band, so newer machines
+  // are fine - it only bars ones that are too old, which is the failure this guards.
   "sdk": {
-    "version": "10.0.400",
+    "version": "11.0.100",
     "rollForward": "latestFeature",
     "allowPrerelease": false
   },

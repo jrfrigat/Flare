@@ -26,7 +26,7 @@
          loads it. Exceed it and the SDK drops the analyzer with CS9057 - only a WARNING - so the
          generated code silently disappears and the build fails somewhere else entirely, with CS0103
          on the generated types. Keep them at or below the Roslyn shipped by the SDK floor in
-         global.json (10.0.400 -> 5.9.0); raising them means raising that floor first. -->
+         global.json (11.0.100 -> 5.1200.26.53018); raising them means raising that floor first. -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
     <!-- Library dependencies use a stable minimum, so pack does not turn the newest installed
@@ -34,11 +34,14 @@
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
     <!-- Gallery-only dependencies do not flow into the published libraries. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.13" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
     <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
          its text language are needed by the designer; the Gallery adds two renderers to demo one

@@ -175,7 +175,7 @@
   </Target>
 
   <!--
-    Packing a library checks that its net8.0, net9.0 and net10.0 builds expose the same API, so an app
+    Packing a library checks that its net8.0, net9.0, net10.0 and net11.0 builds expose the same API, so an app
     sees one set of parameters whichever framework it targets. It compares the frameworks inside one
     package only, never with a published version.
   -->
