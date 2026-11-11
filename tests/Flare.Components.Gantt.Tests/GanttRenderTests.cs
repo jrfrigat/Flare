@@ -341,6 +341,79 @@ public sealed class GanttRenderTests : GanttTestBase
         Assert.Single(cut.FindAll(".flare-gantt__header"));
     }
 
+    [Fact]
+    public void Axis_header_captions_replace_inside_labels_for_chart_level_items()
+    {
+        var cut = Chart(
+            p => p.Add(x => x.Rows, new[] { new Node("anna") })
+                  .Add(x => x.Items, new[] { new Work("w", "anna", Day(0), Day(3)) })
+                  .Add(x => x.Regions, new[] { new GanttRegion("vacation", GanttSpan.FromDays(Day(7), Day(9)), "anna", "Vacation") })
+                  .Add(x => x.Markers, new[] { new GanttMarker("deadline", Day(4).ToDateTime(TimeOnly.MinValue), "anna", "Deadline") }),
+            g => g.Add(x => x.Regions, new[] { new GanttRegion("sprint", GanttSpan.FromDays(Day(0), Day(2)), Label: "Sprint") { LabelPlacement = GanttLabelPlacement.AxisHeader } })
+                  .Add(x => x.Markers, new[] { new GanttMarker("today", Day(1).ToDateTime(TimeOnly.MinValue), Label: "Today") { LabelPlacement = GanttLabelPlacement.AxisHeader } }));
+
+        var captions = cut.FindAll("." + Flare.Css.Classes.Gantt.AxisCaption);
+        Assert.Equal(2, captions.Count);
+        Assert.Equal("left:0px;width:120px", captions.Single(c => c.TextContent == "Sprint").GetAttribute("style"));
+        Assert.Equal("left:40px", captions.Single(c => c.TextContent == "Today").GetAttribute("style"));
+        Assert.DoesNotContain(cut.FindAll("." + Flare.Css.Classes.Gantt.RegionLabel), l => l.TextContent == "Sprint");
+        Assert.DoesNotContain(cut.FindAll("." + Flare.Css.Classes.Gantt.MarkerLabel), l => l.TextContent == "Today");
+        Assert.Contains(cut.FindAll("." + Flare.Css.Classes.Gantt.RegionLabel), l => l.TextContent == "Vacation");
+        Assert.Contains(cut.FindAll("." + Flare.Css.Classes.Gantt.MarkerLabel), l => l.TextContent == "Deadline");
+        Assert.Null(cut.Find("." + Flare.Css.Classes.Gantt.Scale).GetAttribute("aria-hidden"));
+        Assert.All(cut.FindAll("." + Flare.Css.Classes.Gantt.ScaleRow), row => Assert.Equal("true", row.GetAttribute("aria-hidden")));
+    }
+
+    [Fact]
+    public void Axis_header_caption_is_drawn_once_for_two_panels()
+    {
+        var cut = Render<FlareGantt>(p => p
+            .Add(x => x.Range, GanttSpan.FromDays(Monday, Day(6)))
+            .Add(x => x.Culture, Ru)
+            .Add(x => x.Regions, new[] { new GanttRegion("sprint", GanttSpan.FromDays(Day(0), Day(2)), Label: "Sprint") { LabelPlacement = GanttLabelPlacement.AxisHeader } })
+            .Add(x => x.ChildContent, (RenderFragment)(b =>
+            {
+                Panel(b, 0, "tasks", [new Work("w", "tasks", Day(0), Day(1))]);
+                Panel(b, 10, "people", [new Work("w", "people", Day(0), Day(1))]);
+            })));
+
+        Assert.Equal(2, cut.FindAll("." + Flare.Css.Classes.Gantt.Panel).Count);
+        Assert.Single(cut.FindAll("." + Flare.Css.Classes.Gantt.AxisCaption));
+        Assert.DoesNotContain(cut.FindAll("." + Flare.Css.Classes.Gantt.RegionLabel), l => l.TextContent == "Sprint");
+    }
+
+    [Fact]
+    public async Task Axis_header_caption_follows_the_axis_and_virtualization()
+    {
+        var cut = Chart(
+            p => p.Add(x => x.Rows, new[] { new Node("anna") }).Add(x => x.Items, new[] { new Work("w", "anna", Day(0), Day(3)) }),
+            g => g.Add(x => x.Virtualize, true)
+                  .Add(x => x.Regions, new[] { new GanttRegion("sprint", GanttSpan.FromDays(Day(2), Day(3)), Label: "Sprint") { LabelPlacement = GanttLabelPlacement.AxisHeader } }));
+
+        Assert.Empty(cut.FindAll("." + Flare.Css.Classes.Gantt.AxisCaption));
+
+        await cut.InvokeAsync(() => cut.Instance.Horizontal(0, 400));
+        Assert.Equal("left:80px;width:80px", cut.Find("." + Flare.Css.Classes.Gantt.AxisCaption).GetAttribute("style"));
+
+        cut.Render(p => p.Add(x => x.Range, GanttSpan.FromDays(Day(1), Day(13))));
+        Assert.Equal("left:40px;width:80px", cut.Find("." + Flare.Css.Classes.Gantt.AxisCaption).GetAttribute("style"));
+
+        await cut.InvokeAsync(() => cut.Instance.Horizontal(1600, 400));
+        Assert.Empty(cut.FindAll("." + Flare.Css.Classes.Gantt.AxisCaption));
+    }
+
+    [Fact]
+    public void Panel_level_axis_header_caption_stays_inside()
+    {
+        var cut = Chart(p => p
+            .Add(x => x.Rows, new[] { new Node("anna") })
+            .Add(x => x.Items, new[] { new Work("w", "anna", Day(0), Day(3)) })
+            .Add(x => x.Regions, new[] { new GanttRegion("sprint", GanttSpan.FromDays(Day(0), Day(2)), Label: "Sprint") { LabelPlacement = GanttLabelPlacement.AxisHeader } }));
+
+        Assert.Empty(cut.FindAll("." + Flare.Css.Classes.Gantt.AxisCaption));
+        Assert.Contains(cut.FindAll("." + Flare.Css.Classes.Gantt.RegionLabel), l => l.TextContent == "Sprint");
+    }
+
     private static void Panel(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder b, int seq, string row, Work[] items)
     {
         b.OpenComponent<FlareGanttPanel<Node, Work>>(seq);

@@ -17,17 +17,27 @@
                 </div>
             }
             @RenderScale(@<text>
-                <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)" aria-hidden="true">
+                <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)">
+                    @{ var captions = AxisCaptions().ToList(); }
+                    @if (captions.Count > 0)
+                    {
+                        <div class="@Css.Classes.Gantt.AxisCaptions">
+                            @foreach (var caption in captions)
+                            {
+                                <div class="@AxisCaptionClass(caption)" style="@AxisCaptionStyle(caption)" title="@caption.Label" data-kind="@caption.Kind">@caption.Label</div>
+                            }
+                        </div>
+                    }
                     @if (_major.Count > 0)
                     {
-                        <div class="@($"{Css.Classes.Gantt.ScaleRow} {Css.Classes.Gantt.ScaleRowMajor}")">
+                        <div class="@($"{Css.Classes.Gantt.ScaleRow} {Css.Classes.Gantt.ScaleRowMajor}")" aria-hidden="true">
                             @foreach (var tick in _major.Where(InView))
                             {
                                 <div class="@Css.Classes.Gantt.Tick" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">@tick.Label</div>
                             }
                         </div>
                     }
-                    <div class="@Css.Classes.Gantt.ScaleRow">
+                    <div class="@Css.Classes.Gantt.ScaleRow" aria-hidden="true">
                         @foreach (var tick in _ticks.Where(InView))
                         {
                             <div class="@TickClass(tick)" style="left:@GanttFormat.Px(tick.Offset * EffectiveUnitWidth);width:@GanttFormat.Px(tick.Width * EffectiveUnitWidth)">
@@ -340,6 +350,36 @@
 
     /// <summary>True when <paramref name="span"/> is among the drawn columns.</summary>
     internal bool InView(GanttSpan span) => InView(X(span.Start), X(span.End));
+
+    // Captions moved to the axis header. Only chart-level items qualify: a panel-level item has no axis of its
+    // own, so its caption stays inside the panel.
+    private IEnumerable<GanttAxisCaption> AxisCaptions()
+    {
+        foreach (var region in Regions ?? [])
+        {
+            if (region.LabelPlacement != GanttLabelPlacement.AxisHeader || string.IsNullOrEmpty(region.Label)) continue;
+            if (!InView(region.Span)) continue;
+            var left = X(region.Span.Start);
+            yield return new GanttAxisCaption(region.Kind, region.Label, true, left, Math.Max(0, X(region.Span.End) - left));
+        }
+        foreach (var marker in Markers ?? [])
+        {
+            if (marker.LabelPlacement != GanttLabelPlacement.AxisHeader || string.IsNullOrEmpty(marker.Label)) continue;
+            var at = X(marker.At);
+            if (!InView(at, at)) continue;
+            yield return new GanttAxisCaption(marker.Kind, marker.Label, false, at, 0);
+        }
+    }
+
+    private static string AxisCaptionClass(GanttAxisCaption caption) => caption.IsRegion
+        ? $"{Css.Classes.Gantt.AxisCaption} {Css.Classes.Gantt.Kind(caption.Kind)} {Css.Classes.Gantt.AxisCaptionRegion}"
+        : $"{Css.Classes.Gantt.AxisCaption} {Css.Classes.Gantt.Kind(caption.Kind)}";
+
+    private static string AxisCaptionStyle(GanttAxisCaption caption) => caption.IsRegion
+        ? $"left:{GanttFormat.Px(caption.Left)};width:{GanttFormat.Px(caption.Width)}"
+        : $"left:{GanttFormat.Px(caption.Left)}";
+
+    private readonly record struct GanttAxisCaption(string Kind, string Label, bool IsRegion, double Left, double Width);
 
     // Grows an endless axis by three screens on the side the view is near; one request at a time.
     private Task Grow(double left, double width)

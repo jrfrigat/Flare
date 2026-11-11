@@ -10208,6 +10208,19 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"GanttLabelPlacement"] = new ApiEnumInfo(
+            @"GanttLabelPlacement",
+            @"Flare.Components.Gantt.GanttLabelPlacement",
+            @"Flare.Components.Gantt",
+            @"Where a marker or region caption is drawn.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Inside", @"0", @"Inside the chart, over the rows."),
+                new ApiEnumMember(@"AxisHeader", @"1", @"In the shared axis header, above the relevant columns of the chart."),
+            },
+            System.Array.Empty<string>());
+
         e[@"GanttLegendShape"] = new ApiEnumInfo(
             @"GanttLegendShape",
             @"Flare.Components.Gantt.GanttLegendShape",

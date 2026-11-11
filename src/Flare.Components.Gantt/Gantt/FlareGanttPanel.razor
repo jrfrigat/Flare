@@ -25,7 +25,7 @@
             @foreach (var region in _panelRegions.Where(r => gantt.InView(r.Span)))
             {
                 <div class="@WithExtraClass($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}", RegionClass?.Invoke(region))" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
-                    @if (region.Label is not null)
+                    @if (region.Label is not null && ShowsInsideLabel(region.LabelPlacement, gantt.Regions?.Contains(region) == true))
                     {
                         <span class="@Css.Classes.Gantt.RegionLabel">@region.Label</span>
                     }
@@ -76,7 +76,7 @@
                     @foreach (var region in row.Regions.Where(r => gantt.InView(r.Span)))
                     {
                         <div class="@WithExtraClass($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}", RegionClass?.Invoke(region))" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
-                            @if (region.Label is not null)
+                            @if (region.Label is not null && ShowsInsideLabel(region.LabelPlacement, gantt.Regions?.Contains(region) == true))
                             {
                                 <span class="@Css.Classes.Gantt.RegionLabel">@region.Label</span>
                             }
@@ -121,7 +121,7 @@
                     @foreach (var marker in row.Markers.Where(m => gantt.InView(gantt.X(m.At), gantt.X(m.At))))
                     {
                         <div class="@WithExtraClass($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}", MarkerClass?.Invoke(marker))" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
-                            @if (marker.Label is not null)
+                            @if (marker.Label is not null && ShowsInsideLabel(marker.LabelPlacement, gantt.Markers?.Contains(marker) == true))
                             {
                                 <span class="@Css.Classes.Gantt.MarkerLabel">@marker.Label</span>
                             }
@@ -148,7 +148,7 @@
             @foreach (var marker in _panelMarkers.Where(m => gantt.InView(gantt.X(m.At), gantt.X(m.At))))
             {
                 <div class="@WithExtraClass($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}", MarkerClass?.Invoke(marker))" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
-                    @if (marker.Label is not null)
+                    @if (marker.Label is not null && ShowsInsideLabel(marker.LabelPlacement, gantt.Markers?.Contains(marker) == true))
                     {
                         <span class="@Css.Classes.Gantt.MarkerLabel">@marker.Label</span>
                     }

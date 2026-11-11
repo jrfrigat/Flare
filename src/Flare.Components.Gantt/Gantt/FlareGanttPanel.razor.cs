@@ -221,6 +221,11 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         _expanded[key] = !IsExpanded(key);
     }
 
+    // A chart-level AxisHeader caption is drawn once by FlareGantt; a panel-level one has no other renderer,
+    // so it keeps its label inside.
+    private static bool ShowsInsideLabel(GanttLabelPlacement placement, bool chartLevel) =>
+        placement != GanttLabelPlacement.AxisHeader || !chartLevel;
+
     private void Layout()
     {
         if (!_viewportOnly) BuildLayout();

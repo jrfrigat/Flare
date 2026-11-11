@@ -317,6 +317,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.FontWeight`](enums/flare-components-fontweight.md) — Font weight override for FlareText. Default keeps the weight defined by the active type scale; the other values map to the standard CSS numeric weights via shared flare-text--weight-* classes (no inline style needed).
 - [`Flare.Components.FormLayout`](enums/flare-components-formlayout.md) — Controls the visual layout of form fields inside a FlareForm.
 - [`Flare.Components.Gantt.GanttEditAction`](enums/flare-components-gantt-gantteditaction.md) — What the user did to an item.
+- [`Flare.Components.Gantt.GanttLabelPlacement`](enums/flare-components-gantt-ganttlabelplacement.md) — Where a marker or region caption is drawn.
 - [`Flare.Components.Gantt.GanttLegendShape`](enums/flare-components-gantt-ganttlegendshape.md) — What a legend sample is drawn as: the same element the chart draws, so it takes the same look.
 - [`Flare.Components.Gantt.GanttLinkType`](enums/flare-components-gantt-ganttlinktype.md) — Dependency type between two items.
 - [`Flare.Components.Gantt.GanttScale`](enums/flare-components-gantt-ganttscale.md) — Step of the time axis.

@@ -21,6 +21,12 @@ public static class Gantt
     public const string ScaleRow = "flare-gantt__scale-row";
     /// <summary>The <c>flare-gantt__scale-row--major</c> CSS class.</summary>
     public const string ScaleRowMajor = "flare-gantt__scale-row--major";
+    /// <summary>The <c>flare-gantt__axis-captions</c> CSS class: the strip of axis-header captions.</summary>
+    public const string AxisCaptions = "flare-gantt__axis-captions";
+    /// <summary>The <c>flare-gantt__axis-caption</c> CSS class.</summary>
+    public const string AxisCaption = "flare-gantt__axis-caption";
+    /// <summary>The <c>flare-gantt__axis-caption--region</c> CSS class.</summary>
+    public const string AxisCaptionRegion = "flare-gantt__axis-caption--region";
     /// <summary>The <c>flare-gantt__tick</c> CSS class.</summary>
     public const string Tick = "flare-gantt__tick";
     /// <summary>The <c>flare-gantt__tick--nonworking</c> CSS class.</summary>

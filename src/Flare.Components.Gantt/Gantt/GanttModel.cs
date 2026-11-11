@@ -74,20 +74,39 @@ public enum GanttScheduleMode
 /// <param name="Label">Optional text shown inside the part.</param>
 public sealed record GanttSegment(string Kind, GanttSpan Span, string? Label = null);
 
+/// <summary>Where a marker or region caption is drawn.</summary>
+public enum GanttLabelPlacement
+{
+    /// <summary>Inside the chart, over the rows.</summary>
+    Inside,
+    /// <summary>In the shared axis header, above the relevant columns of the chart.</summary>
+    AxisHeader,
+}
+
 /// <summary>A point in time: a milestone, a deadline, "today".</summary>
 /// <param name="Kind">Consumer key rendered as a CSS modifier and <c>data-kind</c>.</param>
 /// <param name="At">Moment of the marker.</param>
 /// <param name="RowKey">Row the marker belongs to; null draws it across every row.</param>
 /// <param name="Label">Optional caption.</param>
 /// <param name="Key">Optional key, for example the item the marker belongs to.</param>
-public sealed record GanttMarker(string Kind, DateTime At, string? RowKey = null, string? Label = null, string? Key = null);
+public sealed record GanttMarker(string Kind, DateTime At, string? RowKey = null, string? Label = null, string? Key = null)
+{
+    /// <summary>Where the caption is drawn. <see cref="GanttLabelPlacement.AxisHeader"/> needs the marker to be
+    /// passed to <see cref="FlareGantt.Markers"/>; a marker passed to a panel keeps its caption inside.</summary>
+    public GanttLabelPlacement LabelPlacement { get; init; } = GanttLabelPlacement.Inside;
+}
 
 /// <summary>A highlighted range of the axis: a sprint window, a holiday, an absence.</summary>
 /// <param name="Kind">Consumer key rendered as a CSS modifier and <c>data-kind</c>.</param>
 /// <param name="Span">Time covered by the region.</param>
 /// <param name="RowKey">Row the region belongs to; null spans every row.</param>
 /// <param name="Label">Optional caption.</param>
-public sealed record GanttRegion(string Kind, GanttSpan Span, string? RowKey = null, string? Label = null);
+public sealed record GanttRegion(string Kind, GanttSpan Span, string? RowKey = null, string? Label = null)
+{
+    /// <summary>Where the caption is drawn. <see cref="GanttLabelPlacement.AxisHeader"/> needs the region to be
+    /// passed to <see cref="FlareGantt.Regions"/>; a region passed to a panel keeps its caption inside.</summary>
+    public GanttLabelPlacement LabelPlacement { get; init; } = GanttLabelPlacement.Inside;
+}
 
 /// <summary>A value of a row over one stretch of the axis, such as hours per day with a status.</summary>
 /// <param name="RowKey">Row the cell belongs to.</param>

@@ -76,6 +76,35 @@
     flex: none;
 }
 
+/* Axis-header captions: labels moved out of the chart into a strip above the scale. */
+.flare-gantt__axis-captions {
+    position: relative;
+    height: calc(var(--flare-spacing-6, 0.375rem) + var(--flare-spacing-2, 0.25rem));
+    flex: none;
+}
+
+.flare-gantt__axis-caption {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding-inline: var(--flare-spacing-2, 0.25rem);
+    border-radius: var(--flare-shape-extra-small);
+    background: var(--flare-gantt-marker, var(--flare-color-error));
+    color: var(--flare-gantt-marker-fg, var(--flare-color-on-error));
+    font-weight: 600;
+}
+
+.flare-gantt__axis-caption--region {
+    background: var(--flare-gantt-region-bg, color-mix(in srgb, var(--flare-color-primary) 8%, transparent));
+    color: var(--flare-gantt-region-fg, var(--flare-color-primary));
+    border-left: var(--flare-gantt-selected-width, var(--flare-border-width-emphasis)) solid var(--flare-gantt-region-border, var(--flare-color-primary));
+}
+
 .flare-gantt__scale-row {
     position: relative;
     height: var(--flare-gantt-scale-height, calc(var(--flare-spacing-16) + var(--flare-spacing-2)));
