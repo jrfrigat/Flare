@@ -12,7 +12,7 @@
          registers its own, and a real screen is what would find it.
 
        net10 only: this asks whether the pieces fit together, which is not a per-runtime question, and
-       the component suite already builds and runs everything on net8/net9/net10. -->
+       the component suite already builds and runs everything on net8/net9/net10/net11. -->
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

@@ -4,9 +4,9 @@
        separately: the core suite does not reference it, and this suite does not carry the core's. -->
 
   <PropertyGroup>
-    <!-- The same three runtimes the package itself targets. Clearing the inherited singular
+    <!-- The same four runtimes the package itself targets. Clearing the inherited singular
          TargetFramework is required - when both are set the singular one wins. -->
-    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
     <TargetFramework></TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

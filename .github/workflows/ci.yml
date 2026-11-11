@@ -29,15 +29,16 @@ jobs:
         with:
           fetch-depth: 0   # MinVer needs full history/tags to compute the version
 
-      # The libraries multi-target net8.0/net9.0/net10.0, so all three SDKs (and their targeting
-      # packs/runtimes) are needed to build and run-test every TFM. The latest SDK (10) drives the build.
-      - name: Setup .NET (8 / 9 / 10)
+      # The libraries multi-target net8.0/net9.0/net10.0/net11.0, so all four SDKs (and their targeting
+      # packs/runtimes) are needed to build and run-test every TFM. The latest SDK (11) drives the build.
+      - name: Setup .NET (8 / 9 / 10 / 11)
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: Restore
         run: dotnet restore Flare.slnx
@@ -101,13 +102,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup .NET (8 / 9 / 10)
+      - name: Setup .NET (8 / 9 / 10 / 11)
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: Download build
         uses: actions/download-artifact@v8
@@ -207,10 +209,13 @@ jobs:
         with:
           fetch-depth: 0   # MinVer needs full history/tags to compute the version
 
-      - name: Setup .NET (10)
+      # global.json requires SDK 11 for restore, while ApiDocGen and its tests run on the net10 runtime.
+      - name: Setup .NET (10 and 11)
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: |
+            10.0.x
+            11.0.x
 
       - name: Download build
         uses: actions/download-artifact@v8

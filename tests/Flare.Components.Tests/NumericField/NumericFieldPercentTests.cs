@@ -34,10 +34,10 @@ public class NumericFieldPercentTests : FlareTestContext
     }
 
     [Theory]
-    [InlineData("25%", 0.25)]
-    [InlineData("-25%", -0.25)]
-    [InlineData("1,234%", 12.34)]
-    public void PastedPercent_CommitsTheFraction_Decimal(string text, double expected)
+    [InlineData("25%", "0.25")]
+    [InlineData("-25%", "-0.25")]
+    [InlineData("1,234%", "12.34")]
+    public void PastedPercent_CommitsTheFraction_Decimal(string text, string expected)
     {
         decimal? committed = null;
         var cut = Render<FlareNumericField<decimal>>(p => p
@@ -49,7 +49,7 @@ public class NumericFieldPercentTests : FlareTestContext
         cut.Find("input").Focus();
         cut.Find("input").Change(text);
 
-        Assert.Equal((decimal)expected, committed);
+        Assert.Equal(decimal.Parse(expected, CultureInfo.InvariantCulture), committed);
     }
 
     [Fact]

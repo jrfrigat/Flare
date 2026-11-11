@@ -30,7 +30,14 @@ public partial class FlareTimePicker
 
     private bool TryParseTime(string text, out TimeOnly shown)
     {
-        if (_is24Hour) return TimeOnly.TryParseExact(text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out shown);
+        if (_is24Hour)
+        {
+            // .NET 11 parses "24:00" as midnight. The clock's contract is an hour inside 0-23, so
+            // accept only text that formats back to exactly what was typed.
+            if (!TimeOnly.TryParseExact(text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out shown))
+                return false;
+            return shown.ToString(_timeFormat, CultureInfo.InvariantCulture) == text;
+        }
         shown = default;
         var time = MaskedInput.MaskTime(text, ShowSeconds);
         var period = text.AsSpan(Math.Min(text.Length, time.Length)).Trim();
