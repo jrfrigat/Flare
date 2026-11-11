@@ -10,6 +10,21 @@ All notable changes to Flare are documented here. This project adheres to
 - .NET 11 support: every package now targets `net8.0`, `net9.0`, `net10.0` and `net11.0`. On .NET 11 the libraries use ASP.NET Core 11, the runtime's JIT, ReadyToRun and trimming improvements, and the Blazor `Virtualize` changes (variable-height items and CSP-safe rendering). The test matrix and CI also run on .NET 11.
 - The .NET 11 build removes redundant `StateHasChanged` calls flagged by the new Blazor analyzers, so components avoid extra render passes.
 - Building from source now requires the .NET 11 SDK.
+- `FlareGantt` draws a marker or region caption in the scale header through `GanttLabelPlacement.AxisHeader`, so the label no longer covers the bar it names; `GanttMarker.LabelPlacement` and `GanttRegion.LabelPlacement` choose this per item.
+- `FlareDataGrid.TableAriaLabel` names the table for assistive technology, and `DataGridTreeConfig.ToggleColumnTitle` puts the expand toggle in the column with that title instead of always the first.
+- The shipped libraries are marked AOT-compatible. Theme and palette JSON use source-generated serialization, `IBrowserStorage` accepts caller-supplied `JsonTypeInfo<T>` metadata, and DataGrid persistence no longer needs reflection, so a trimmed or NativeAOT app keeps its JSON paths. `ThemeJsonSerializer` no longer requires trimming suppressions.
+
+### Changed
+
+- `DataGridQuery` states that its expression-tree translation needs dynamic code. A NativeAOT app uses `ItemsProvider` instead of the grid's `Queryable` parameter, which says the same in its documentation.
+
+### Breaking changes
+
+- `IBrowserStorage` gains `GetAsync<T>` and `SetAsync<T>` overloads that take `JsonTypeInfo<T>`. An application that implements the interface itself must implement the two new members, and its implementations of the old generic methods should carry the same `RequiresDynamicCode` and `RequiresUnreferencedCode` annotations.
+
+### Fixed
+
+- `FlareGantt` attaches its drag and resize gestures once per mode, so a re-render no longer stacks duplicate listeners.
 
 ## [0.55.0] - 2026-11-10
 
