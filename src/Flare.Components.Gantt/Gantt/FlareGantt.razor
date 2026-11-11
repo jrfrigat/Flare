@@ -172,6 +172,9 @@
     private ElementReference _root;
     private GanttScaleRegion? _scaleRegion;
     private IGanttView? _browser;
+    // True while AttachAsync is in flight: _browser is still null then, and a render arriving during the
+    // module import must not start a second attach - two startDrag listeners duplicate every gesture.
+    private bool _attaching;
     // The flags the attached script was given; a change means the script has to be attached again.
     private bool? _jsVirtualize;
     private bool? _jsEndless;
@@ -393,14 +396,22 @@
     {
         // The script captures the flags in its listeners, so turning Virtualize or Endless on after mounting has to
         // reattach it. Compact has no scroll region to watch; a chart that leaves Compact attaches on that render.
-        if (!Compact && (_browser is null || _jsVirtualize != Virtualize || _jsEndless != Endless))
+        if (!Compact && !_attaching && (_browser is null || _jsVirtualize != Virtualize || _jsEndless != Endless))
         {
-            if (_browser is not null) await _browser.DisposeAsync();
-            _browser = null;
-            _self ??= DotNetObjectReference.Create(this);
-            _jsVirtualize = Virtualize;
-            _jsEndless = Endless;
-            _browser = await GanttJs.AttachAsync(_root, _self, Virtualize, Endless);
+            _attaching = true;
+            try
+            {
+                if (_browser is not null) await _browser.DisposeAsync();
+                _browser = null;
+                _self ??= DotNetObjectReference.Create(this);
+                _jsVirtualize = Virtualize;
+                _jsEndless = Endless;
+                _browser = await GanttJs.AttachAsync(_root, _self, Virtualize, Endless);
+            }
+            finally
+            {
+                _attaching = false;
+            }
         }
         // An endless axis may have grown while the module was still attaching: what waited is applied once it is here.
         await ApplyPending();

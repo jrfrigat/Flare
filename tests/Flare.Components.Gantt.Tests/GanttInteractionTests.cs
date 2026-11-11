@@ -314,6 +314,36 @@ public sealed class GanttInteractionTests : GanttTestBase
         cut.WaitForAssertion(() => Assert.Equal(["a"], view.Focused));
     }
 
+    [Fact]
+    public async Task A_render_during_attach_does_not_attach_the_module_twice()
+    {
+        var attached = new TaskCompletionSource<IGanttView?>();
+        var js = new CountingJs(attached.Task);
+        Services.AddSingleton<IGanttJsService>(js);
+        var cut = Editable([]);
+
+        cut.Render();
+        cut.Render();
+
+        Assert.Equal(1, js.AttachCalls);
+
+        await cut.InvokeAsync(() => attached.SetResult(new RecordingView()));
+        cut.WaitForAssertion(() => Assert.Equal(1, js.AttachCalls));
+    }
+
+    private sealed class CountingJs(Task<IGanttView?> attached) : IGanttJsService
+    {
+        public int AttachCalls { get; private set; }
+
+        public async ValueTask<IGanttView?> AttachAsync(ElementReference root, DotNetObjectReference<FlareGantt> dotNetRef, bool virtualize, bool endless)
+        {
+            AttachCalls++;
+            return await attached;
+        }
+
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    }
+
     private sealed class SlowJs(Task<IGanttView?> attached) : IGanttJsService
     {
         public async ValueTask<IGanttView?> AttachAsync(ElementReference root, DotNetObjectReference<FlareGantt> dotNetRef, bool virtualize, bool endless) =>
