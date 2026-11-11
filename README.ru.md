@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://jrfrigat.github.io/Flare/">
-    <img src="assets/banner.png" alt="Flare - не зависящая от тем библиотека компонентов Blazor для .NET 10 на основе системы семантических токенов" width="860">
+    <img src="assets/banner.png" alt="Flare - не зависящая от тем библиотека компонентов Blazor для .NET 8-11 на основе системы семантических токенов" width="860">
   </a>
 </p>
 
@@ -11,7 +11,7 @@
 [![CI](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml/badge.svg)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
 [![Downloads](https://img.shields.io/nuget/dt/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
-[![.NET](https://img.shields.io/badge/.NET-8%20%7C%209%20%7C%2010-512BD4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-8%20%7C%209%20%7C%2010%20%7C%2011-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://jrfrigat.github.io/Flare/)
 
@@ -25,7 +25,7 @@
 [![guards coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-guards.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 [![packages coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-packages.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 
-Производственная, **не зависящая от тем** библиотека компонентов Blazor для **.NET 10** с **нулевым встроенным стилем**. Создавайте собственную дизайн-систему на семантических токенах или начните мгновенно с одной из семи готовых preset-тем (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026) - все поставляются как независимые, необязательные пакеты. Переключение тем во время выполнения без перезагрузки страницы и без мигания.
+Производственная, **не зависящая от тем** библиотека компонентов Blazor для **.NET 11** с поддержкой **.NET 8, .NET 9 и .NET 10** с **нулевым встроенным стилем**. Создавайте собственную дизайн-систему на семантических токенах или начните мгновенно с одной из семи готовых preset-тем (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026) - все поставляются как независимые, необязательные пакеты. Переключение тем во время выполнения без перезагрузки страницы и без мигания.
 
 **Библиотека backend-разработчиков для backend-разработчиков.** Чтобы собрать на Flare любой экран -
 дашборд, административный грид, мастер, редактор с разделителем, - знать HTML и CSS не требуется: все

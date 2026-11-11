@@ -3,6 +3,14 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- .NET 11 support: every package now targets `net8.0`, `net9.0`, `net10.0` and `net11.0`. On .NET 11 the libraries use ASP.NET Core 11, the runtime's JIT, ReadyToRun and trimming improvements, and the Blazor `Virtualize` changes (variable-height items and CSP-safe rendering). The test matrix and CI also run on .NET 11.
+- The .NET 11 build removes redundant `StateHasChanged` calls flagged by the new Blazor analyzers, so components avoid extra render passes.
+- Building from source now requires the .NET 11 SDK.
+
 ## [0.55.0] - 2026-11-10
 
 ### Added

@@ -6,8 +6,8 @@
 
 ## Requirements
 
-- .NET SDK 10 (to build). The Flare libraries are **.NET 10-first but multi-target net8.0, net9.0 and
-  net10.0**, so they run on a .NET 8, 9, or 10 app.
+- .NET SDK 11 (to build). The Flare libraries are **.NET 11-first but multi-target net8.0, net9.0,
+  net10.0 and net11.0**, so they run on a .NET 8, 9, 10, or 11 app.
 - Blazor WebAssembly **or** Blazor Server (both are supported)
 
 ---

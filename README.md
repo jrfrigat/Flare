@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://jrfrigat.github.io/Flare/">
-    <img src="assets/banner.png" alt="Flare - Theme-agnostic Blazor component library for .NET 10 powered by a semantic token system" width="860">
+    <img src="assets/banner.png" alt="Flare - Theme-agnostic Blazor component library for .NET 8-11 powered by a semantic token system" width="860">
   </a>
 </p>
 
@@ -11,7 +11,7 @@
 [![CI](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml/badge.svg)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
 [![Downloads](https://img.shields.io/nuget/dt/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
-[![.NET](https://img.shields.io/badge/.NET-8%20%7C%209%20%7C%2010-512BD4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-8%20%7C%209%20%7C%2010%20%7C%2011-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://jrfrigat.github.io/Flare/)
 
@@ -25,7 +25,7 @@
 [![guards coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-guards.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 [![packages coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-packages.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 
-A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-first, also targeting **.NET 8 and .NET 9** - with **zero baked-in styling**. Build your own design system with semantic tokens, or start instantly with one of seven production-ready preset themes (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), all shipped as independent, optional packages. Runtime theme switching, no page reload, no flash of unstyled content.
+A production-ready, **theme-agnostic** Blazor component library - **.NET 11**-first, also targeting **.NET 8, .NET 9 and .NET 10** - with **zero baked-in styling**. Build your own design system with semantic tokens, or start instantly with one of seven production-ready preset themes (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), all shipped as independent, optional packages. Runtime theme switching, no page reload, no flash of unstyled content.
 
 **Built by backend developers, for backend developers.** You should not need to know HTML or CSS to
 build any screen you want with Flare - a dashboard, an admin grid, a wizard, a split editor is

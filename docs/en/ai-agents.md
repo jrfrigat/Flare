@@ -11,7 +11,7 @@ per component in [docs/api/components](../api/components) and per enum in [docs/
 
 ## 1. What Flare is
 
-- A **.NET 8 / 9 / 10 Blazor** UI library (net10-first). Works in **both** Blazor WebAssembly and Blazor Server.
+- A **.NET 8 / 9 / 10 / 11 Blazor** UI library (net11-first). Works in **both** Blazor WebAssembly and Blazor Server.
 - **190+ components**, all prefixed `Flare*` (e.g. `FlareButton`, `FlareDataGrid`).
 - **Token-based theming - you own the design system.** Components ship with zero baked-in styling; every
   color, shape, size and motion comes from a theme via one semantic token API. Seven preset design systems
