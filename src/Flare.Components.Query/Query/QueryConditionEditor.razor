@@ -160,8 +160,7 @@
     /// <summary>Caption for the toggle that makes a timestamp comparison relative to now.</summary>
     [Parameter] public string RelativeLabel { get; set; } = "Relative";
 
-    private static readonly IReadOnlyList<QueryTimeUnit> Units =
-        (QueryTimeUnit[])Enum.GetValues(typeof(QueryTimeUnit));
+    private static readonly IReadOnlyList<QueryTimeUnit> Units = Enum.GetValues<QueryTimeUnit>();
 
     // One dropdown covers every kind of left-hand side, so the token says which kind it is:
     // "f:" a field, "fn:" a value function, "s:" a computed aggregate by its output name.

@@ -18,15 +18,23 @@ public static class DataGridQuery
     // A column key is a public property or field of the row type, read by name; the row type keeps them when trimmed.
     private const DynamicallyAccessedMemberTypes Members =
         DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields;
+    private const string DynamicMessage =
+        "Builds LINQ expression trees from column names at run time; NativeAOT cannot generate the required code. Use ItemsProvider when publishing with NativeAOT.";
+    private const string TrimMessage =
+        "Builds LINQ expression trees from column names at run time; the row type's members are kept by the DynamicallyAccessedMembers annotation.";
 
     private static readonly MethodInfo StringToLower = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
 
     /// <summary>Applies the request's filters then sorts to <paramref name="source"/> (no paging).</summary>
+    [RequiresDynamicCode(DynamicMessage)]
+    [RequiresUnreferencedCode(TrimMessage)]
     public static IQueryable<T> ApplyFiltersAndSorts<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, DataGridRequest request)
         => ApplySorts(ApplyFilters(source, request.FilterModel), request.Sorts);
 
     /// <summary>Runs the full request against <paramref name="source"/>: filter, sort, count (before
     /// paging) and page, materialising the page synchronously. For EF Core this executes as SQL.</summary>
+    [RequiresDynamicCode(DynamicMessage)]
+    [RequiresUnreferencedCode(TrimMessage)]
     public static DataGridResult<T> Execute<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, DataGridRequest request)
     {
         var filteredSorted = ApplyFiltersAndSorts(source, request);
@@ -40,6 +48,8 @@ public static class DataGridQuery
 
     /// <summary>Folds each filter into a <c>Where</c> (AND). Filters whose column or operator cannot be
     /// translated are skipped rather than throwing.</summary>
+    [RequiresDynamicCode(DynamicMessage)]
+    [RequiresUnreferencedCode(TrimMessage)]
     public static IQueryable<T> ApplyFilters<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, IEnumerable<DataGridFilter>? filters)
     {
         if (filters is null) return source;
@@ -52,6 +62,8 @@ public static class DataGridQuery
     }
 
     /// <summary>Applies multi-column ordering by property name (first sort is OrderBy, rest ThenBy).</summary>
+    [RequiresDynamicCode(DynamicMessage)]
+    [RequiresUnreferencedCode(TrimMessage)]
     public static IQueryable<T> ApplySorts<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, IReadOnlyList<DataGridSort>? sorts)
     {
         if (sorts is null || sorts.Count == 0) return source;
@@ -74,6 +86,8 @@ public static class DataGridQuery
         return ordered ?? source;
     }
 
+    [RequiresDynamicCode(DynamicMessage)]
+    [RequiresUnreferencedCode(TrimMessage)]
     private static Expression<Func<T, bool>>? BuildPredicate<[DynamicallyAccessedMembers(Members)] T>(DataGridFilter filter)
     {
         if (string.IsNullOrEmpty(filter.Key)) return null;
@@ -153,6 +167,8 @@ public static class DataGridQuery
         return negate ? Expression.Not(inRange) : inRange;
     }
 
+    [RequiresDynamicCode(DynamicMessage)]
+    [RequiresUnreferencedCode(TrimMessage)]
     private static Expression? InList(Expression member, Type type, Type underlying, IReadOnlyList<string>? values)
     {
         if (values is null || values.Count == 0) return null;

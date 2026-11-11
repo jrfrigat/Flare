@@ -14,7 +14,9 @@ public partial class FlareDataGrid<TItem>
     /// its sort/filter/paging into a LINQ expression tree via <see cref="DataGridQuery"/> and runs it
     /// against this query - so the database does the work, with no hand-written <see cref="ItemsProvider"/>.
     /// An explicit <see cref="ItemsProvider"/> takes precedence. Executes synchronously; for async EF
-    /// execution supply an <see cref="ItemsProvider"/> instead.</summary>
+    /// execution supply an <see cref="ItemsProvider"/> instead.
+    /// <para>Requires dynamic code: not available when publishing with NativeAOT. Use
+    /// <see cref="ItemsProvider"/> there.</para></summary>
     [Parameter] public IQueryable<TItem>? Queryable { get; set; }
     /// <summary>FlareColumn descriptors defining the grid columns.</summary>
     [Parameter] public RenderFragment? Columns { get; set; }

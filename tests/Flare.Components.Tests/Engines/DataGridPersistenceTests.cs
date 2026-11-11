@@ -78,6 +78,26 @@ public class DataGridPersistenceTests
     }
 
     [Fact]
+    public async Task Load_ReadsTheCamelCaseTheStorageHasAlwaysWritten()
+    {
+        // The source-generated metadata has to keep matching the shape BrowserStorage wrote
+        // before it: a reader upgrading must not lose the grid layout already in the browser.
+        var js = new FakeLocalStorageJsRuntime();
+        js.Store["grid-key"] = """{"sorts":[{"key":"Name","direction":"Descending"}],"filters":{"Dept":"Eng"},"columnOrder":["Dept","Name"],"hiddenColumns":["Score"],"page":3,"pageSize":50}""";
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js), "grid-key");
+
+        var loaded = await persistence.LoadAsync();
+
+        Assert.NotNull(loaded);
+        Assert.Equal(3, loaded!.Page);
+        Assert.Equal(50, loaded.PageSize);
+        Assert.Equal("Name", Assert.Single(loaded.Sorts!).Key);
+        Assert.Equal("Eng", loaded.Filters!["Dept"]);
+        Assert.Equal(["Dept", "Name"], loaded.ColumnOrder);
+        Assert.Equal(["Score"], loaded.HiddenColumns);
+    }
+
+    [Fact]
     public async Task Load_ReturnsNull_WhenNothingStored()
     {
         var js = new FakeLocalStorageJsRuntime();

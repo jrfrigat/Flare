@@ -391,6 +391,8 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private Func<DataGridRequest, Task<DataGridResult<TItem>>>? _provider
         => ItemsProvider ?? (Queryable is not null ? (_queryProvider ??= ExecuteQueryableAsync) : null);
 
+    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Queryable is an opt-in dynamic LINQ path; NativeAOT users use ItemsProvider.")]
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Queryable is an opt-in dynamic LINQ path; row members are annotated on DataGridQuery.")]
     private Task<DataGridResult<TItem>> ExecuteQueryableAsync(DataGridRequest req)
         => Task.FromResult(DataGridQuery.Execute(Queryable!, req));
 

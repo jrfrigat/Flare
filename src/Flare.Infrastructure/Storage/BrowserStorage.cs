@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using Flare.Components;
 using Microsoft.JSInterop;
 
@@ -26,7 +27,8 @@ public sealed class BrowserStorage : IBrowserStorage
     public BrowserStorage(IJSRuntime js) => _js = js;
 
     /// <inheritdoc />
-    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "T keeps the members System.Text.Json reads, as IJSRuntime does for its results.")]
+    [RequiresDynamicCode("Uses reflection-based JSON serialization; use the JsonTypeInfo overload when publishing with NativeAOT.")]
+    [RequiresUnreferencedCode("Uses reflection-based JSON serialization; the type's members may be trimmed.")]
     public async ValueTask<T?> GetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, CancellationToken cancellationToken = default)
     {
         try
@@ -41,12 +43,39 @@ public sealed class BrowserStorage : IBrowserStorage
     }
 
     /// <inheritdoc />
-    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "T keeps the members System.Text.Json reads, as IJSRuntime does for its results.")]
+    public async ValueTask<T?> GetAsync<T>(string key, JsonTypeInfo<T> typeInfo, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var json = await _js.InvokeAsync<string?>("localStorage.getItem", cancellationToken, key);
+            return string.IsNullOrEmpty(json) ? default : JsonSerializer.Deserialize(json, typeInfo);
+        }
+        catch (InvalidOperationException) { return default; } // SSR / prerender
+        catch (JSDisconnectedException) { return default; }
+        catch (JSException) { return default; }              // storage blocked / quota
+        catch (JsonException) { return default; }             // corrupt / old payload
+    }
+
+    /// <inheritdoc />
+    [RequiresDynamicCode("Uses reflection-based JSON serialization; use the JsonTypeInfo overload when publishing with NativeAOT.")]
+    [RequiresUnreferencedCode("Uses reflection-based JSON serialization; the type's members may be trimmed.")]
     public async ValueTask SetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, T value, CancellationToken cancellationToken = default)
     {
         try
         {
             await _js.InvokeVoidAsync("localStorage.setItem", cancellationToken, key, JsonSerializer.Serialize(value, Json));
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { } // storage blocked / quota (e.g. private mode)
+    }
+
+    /// <inheritdoc />
+    public async ValueTask SetAsync<T>(string key, T value, JsonTypeInfo<T> typeInfo, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await _js.InvokeVoidAsync("localStorage.setItem", cancellationToken, key, JsonSerializer.Serialize(value, typeInfo));
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }

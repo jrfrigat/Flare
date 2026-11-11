@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 using System.Text.Json;
@@ -12,21 +11,10 @@ namespace Flare.Theming;
 /// </summary>
 public static class ThemeJsonSerializer
 {
-    private const string TrimMessage =
-        "Reads and writes the theme's design tokens with reflection-based System.Text.Json; a trimmed app may lose token members it does not use itself.";
-
-    private static readonly JsonSerializerOptions s_options = new()
-    {
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-    };
-
     /// <summary>
     /// Serializes a theme to JSON. The theme's <see cref="ITheme.Base"/> is written as the parent's id
     /// (<c>baseId</c>); the asset lists are written complete, the inherited ones included.
     /// </summary>
-    [RequiresUnreferencedCode(TrimMessage)]
     public static string ExportTheme(ITheme theme)
     {
         var model = new ThemeExportModel
@@ -39,7 +27,7 @@ public static class ThemeJsonSerializer
             BaseId = theme.Base?.Id,
             Design = theme.Design,
         };
-        return JsonSerializer.Serialize(model, s_options);
+        return JsonSerializer.Serialize(model, ThemeJsonContext.Default.ThemeExportModel);
     }
 
     /// <summary>
@@ -51,10 +39,9 @@ public static class ThemeJsonSerializer
     /// <param name="json">The exported theme.</param>
     /// <param name="knownThemes">Themes a parent id is looked up in; only needed when the export names a parent.</param>
     /// <exception cref="InvalidOperationException">The JSON is not a theme, or it names a parent that is not among <paramref name="knownThemes"/>.</exception>
-    [RequiresUnreferencedCode(TrimMessage)]
     public static ITheme ImportTheme(string json, IEnumerable<ITheme>? knownThemes = null)
     {
-        var model = JsonSerializer.Deserialize<ThemeExportModel>(json, s_options)
+        var model = JsonSerializer.Deserialize(json, ThemeJsonContext.Default.ThemeExportModel)
             ?? throw new InvalidOperationException("Invalid theme JSON.");
 
         var builder = new Flare.Theming.FlareThemeBuilder(model.Id, model.DisplayName, model.Design)
@@ -78,30 +65,38 @@ public static class ThemeJsonSerializer
     }
 
     /// <summary>Serializes a palette to JSON.</summary>
-    [RequiresUnreferencedCode(TrimMessage)]
     public static string ExportPalette(Palette palette)
     {
-        return JsonSerializer.Serialize(palette, s_options);
+        return JsonSerializer.Serialize(palette, ThemeJsonContext.Default.Palette);
     }
 
     /// <summary>Deserializes a palette from JSON.</summary>
-    [RequiresUnreferencedCode(TrimMessage)]
     public static Palette ImportPalette(string json)
     {
-        return JsonSerializer.Deserialize<Palette>(json, s_options)
+        return JsonSerializer.Deserialize(json, ThemeJsonContext.Default.Palette)
             ?? throw new InvalidOperationException("Invalid palette JSON.");
     }
 
-    private sealed class ThemeExportModel
-    {
-        public string Id { get; set; } = "";
-        public string DisplayName { get; set; } = "";
-        public string DefaultPaletteId { get; set; } = "";
-        public string[] StyleAssets { get; set; } = [];
-        public string[] ScriptAssets { get; set; } = [];
-        public string? BaseId { get; set; }
-        // Only read, never written: exports from 0.39-0.41 named the theme whose stylesheets styled this one here.
-        public string? StyleFamilyId { get; set; }
-        public DesignTokens Design { get; set; } = null!;
-    }
+}
+
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
+[JsonSerializable(typeof(ThemeExportModel))]
+[JsonSerializable(typeof(Palette))]
+[JsonSerializable(typeof(DesignTokens))]
+internal partial class ThemeJsonContext : JsonSerializerContext;
+
+internal sealed class ThemeExportModel
+{
+    public string Id { get; set; } = "";
+    public string DisplayName { get; set; } = "";
+    public string DefaultPaletteId { get; set; } = "";
+    public string[] StyleAssets { get; set; } = [];
+    public string[] ScriptAssets { get; set; } = [];
+    public string? BaseId { get; set; }
+    // Only read, never written: exports from 0.39-0.41 named the theme whose stylesheets styled this one here.
+    public string? StyleFamilyId { get; set; }
+    public DesignTokens Design { get; set; } = null!;
 }

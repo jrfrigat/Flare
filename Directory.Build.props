@@ -40,6 +40,14 @@
     <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
   </PropertyGroup>
 
+  <!--
+    The shipped libraries are AOT-compatible, so the IL2xxx/IL3xxx analyzers run on every project under
+    src. Source-generator projects target netstandard2.0 and are analyzers themselves, so they are excluded.
+  -->
+  <PropertyGroup Condition="$([MSBuild]::MakeRelative('$(RepoRoot)', '$(MSBuildProjectDirectory)').StartsWith('src')) And !$(MSBuildProjectName.EndsWith('.Generators'))">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- MinVer + Microsoft.SourceLink.GitHub are injected into every project as
          GlobalPackageReferences from Directory.Packages.props (Central Package Management). -->

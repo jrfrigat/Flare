@@ -198,7 +198,7 @@
                             </div>
                             <div class="@Css.Classes.DataGrid.FilterBuilderOp">
                                 <FlareSelect TValue="FilterOperator" Size="FieldSize.Xs"
-                                             Items="Enum.GetValues(typeof(FilterOperator)).Cast<FilterOperator>().ToList()"
+                                             Items="Enum.GetValues<FilterOperator>().ToList()"
                                              ItemLabel="OperatorLabel" Value="@c.Operator"
                                              ValueChanged="@(v => { c.Operator = v; StateHasChanged(); })" />
                             </div>

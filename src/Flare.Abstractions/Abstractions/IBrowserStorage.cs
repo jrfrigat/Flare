@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Flare.Components;
 
@@ -11,10 +12,22 @@ namespace Flare.Components;
 public interface IBrowserStorage
 {
     /// <summary>Reads and deserializes the value stored under <paramref name="key"/>; returns <c>default</c> when absent.</summary>
+    [RequiresDynamicCode("Uses reflection-based JSON serialization; use the JsonTypeInfo overload when publishing with NativeAOT.")]
+    [RequiresUnreferencedCode("Uses reflection-based JSON serialization; the type's members may be trimmed.")]
     ValueTask<T?> GetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, CancellationToken cancellationToken = default);
 
+    /// <summary>Reads and deserializes the value stored under <paramref name="key"/> with caller-supplied
+    /// AOT-safe type metadata; returns <c>default</c> when absent.</summary>
+    ValueTask<T?> GetAsync<T>(string key, JsonTypeInfo<T> typeInfo, CancellationToken cancellationToken = default);
+
     /// <summary>Serializes <paramref name="value"/> and stores it under <paramref name="key"/>.</summary>
+    [RequiresDynamicCode("Uses reflection-based JSON serialization; use the JsonTypeInfo overload when publishing with NativeAOT.")]
+    [RequiresUnreferencedCode("Uses reflection-based JSON serialization; the type's members may be trimmed.")]
     ValueTask SetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, T value, CancellationToken cancellationToken = default);
+
+    /// <summary>Serializes <paramref name="value"/> and stores it under <paramref name="key"/> with
+    /// caller-supplied AOT-safe type metadata.</summary>
+    ValueTask SetAsync<T>(string key, T value, JsonTypeInfo<T> typeInfo, CancellationToken cancellationToken = default);
 
     /// <summary>Removes the entry stored under <paramref name="key"/> (a no-op when it does not exist).</summary>
     ValueTask RemoveAsync(string key, CancellationToken cancellationToken = default);

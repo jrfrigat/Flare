@@ -1,4 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Flare.Components;
 
@@ -12,6 +13,9 @@ namespace Flare.Components;
 /// </remarks>
 public sealed class DataGridPersistence<TItem>
 {
+    private static readonly JsonTypeInfo<DataGridPersistedState> StateJson =
+        DataGridJsonContext.Default.DataGridPersistedState;
+
     private readonly IBrowserStorage _storage;
     private readonly string _storageKey;
 
@@ -26,16 +30,12 @@ public sealed class DataGridPersistence<TItem>
     }
 
     /// <summary>Saves the current grid state to localStorage.</summary>
-    // The nested sort rows are read and written by System.Text.Json too, so a trimmed app keeps their members.
-    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties, typeof(PersistedSort))]
     public Task SaveAsync(DataGridPersistedState state) =>
-        _storage.SetAsync(_storageKey, state).AsTask();
+        _storage.SetAsync(_storageKey, state, StateJson).AsTask();
 
     /// <summary>Loads the persisted state from localStorage. Returns null if not found.</summary>
-    // The nested sort rows are read and written by System.Text.Json too, so a trimmed app keeps their members.
-    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties, typeof(PersistedSort))]
     public Task<DataGridPersistedState?> LoadAsync() =>
-        _storage.GetAsync<DataGridPersistedState>(_storageKey).AsTask();
+        _storage.GetAsync(_storageKey, StateJson).AsTask();
 
     /// <summary>Clears the persisted state from localStorage.</summary>
     public Task ClearAsync() =>
@@ -70,3 +70,9 @@ public sealed class PersistedSort
     /// <summary>Sort direction (Ascending/Descending).</summary>
     public string Direction { get; set; } = "Ascending";
 }
+
+// CamelCase on purpose: it is the shape BrowserStorage writes through its reflection path, so the
+// generated metadata keeps every grid layout already saved in a reader's browser readable.
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
+[JsonSerializable(typeof(DataGridPersistedState))]
+internal partial class DataGridJsonContext : JsonSerializerContext;
