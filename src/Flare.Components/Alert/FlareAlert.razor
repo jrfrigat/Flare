@@ -93,7 +93,6 @@
 
         if (AnimateDismiss)
         {
-            StateHasChanged();
             // Wait for the motion the ACTIVE THEME plays, not a constant: a slow exit used to lose its
             // last frames to the removal, and a reduced-motion one still waited the full 300ms.
             var delayMs = 0d;

@@ -11,6 +11,9 @@
     <IsTrimmable>true</IsTrimmable>
     <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <!-- BL0016: the JS interop exception policy is audited in TASK-815; these adapters guard the
+         calls they can and surface the rest to the caller. -->
+    <NoWarn>$(NoWarn);BL0016</NoWarn>
     <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
   </PropertyGroup>
 

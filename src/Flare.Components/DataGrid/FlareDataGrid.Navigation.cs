@@ -118,7 +118,6 @@ public partial class FlareDataGrid<TItem>
                 {
                     _selection.Clear();
                     await SelectedItemsChanged.InvokeAsync(_selection);
-                    StateHasChanged();
                 }
                 break;
             case "a" when e.CtrlKey:
@@ -128,7 +127,6 @@ public partial class FlareDataGrid<TItem>
                     foreach (var item in rows)
                         _selection.Add(item);
                     await SelectedItemsChanged.InvokeAsync(_selection);
-                    StateHasChanged();
                 }
                 break;
         }

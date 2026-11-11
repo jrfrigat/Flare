@@ -287,7 +287,9 @@ public partial class FlareTimePicker
             await ReleaseColumnsAsync();
             await Closed.InvokeAsync();
         }
+#pragma warning disable BL0012 // The public ToggleAsync caller is outside the renderer.
         StateHasChanged();
+#pragma warning restore BL0012
     }
 
     // A click in the field opens the popup as well. The list is a combobox and keeps focus in the field anyway;
@@ -377,7 +379,9 @@ public partial class FlareTimePicker
         _open = false;
         await ReleaseColumnsAsync();
         await Closed.InvokeAsync();
+#pragma warning disable BL0012 // The public CloseAsync/ClearAsync callers are outside the renderer.
         StateHasChanged();
+#pragma warning restore BL0012
     }
 
     // Escape anywhere in the popup drops the pick and puts focus back in the field.

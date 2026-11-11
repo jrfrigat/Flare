@@ -11,6 +11,8 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
     <IsTrimmable>true</IsTrimmable>
+    <!-- BL0016: the JS interop exception policy is audited in TASK-815. -->
+    <NoWarn>$(NoWarn);BL0016</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

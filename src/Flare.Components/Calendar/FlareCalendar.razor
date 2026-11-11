@@ -222,7 +222,6 @@
         await ViewDateChanged.InvokeAsync(_viewDate);
         if (ViewDateChanged.HasDelegate && ViewDate is { } date) _viewDate = date;
         RebuildCells();
-        StateHasChanged();
     }
 
     private async Task NextMonth()
@@ -231,7 +230,6 @@
         await ViewDateChanged.InvokeAsync(_viewDate);
         if (ViewDateChanged.HasDelegate && ViewDate is { } date) _viewDate = date;
         RebuildCells();
-        StateHasChanged();
     }
 
 }

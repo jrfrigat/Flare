@@ -13,6 +13,11 @@
     <FlareCssBundle>flare-components</FlareCssBundle>
     <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <!-- BL0016: the JS interop exception policy is audited in TASK-815. -->
+    <NoWarn>$(NoWarn);BL0016</NoWarn>
+    <!-- BL0011: Virtualize.ItemComparer exists only on net11.0; Flare multi-targets net8.0-net11.0,
+         and the DataGrid's IndexedRow record struct already compares by (Index, Item). -->
+    <NoWarn>$(NoWarn);BL0011</NoWarn>
     <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
   </PropertyGroup>
 

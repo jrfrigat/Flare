@@ -103,7 +103,9 @@ public partial class FlareDateTimePicker
         if (Inline || !_open) return;
         _open = false;
         await Closed.InvokeAsync();
+#pragma warning disable BL0012 // Public API: callers outside the renderer need this render.
         StateHasChanged();
+#pragma warning restore BL0012
     }
     /// <summary>Toggles the picker popup.</summary>
     public Task ToggleAsync() => TogglePanel();
@@ -358,7 +360,9 @@ public partial class FlareDateTimePicker
         // top layer, which keeps the popup on screen even under an ancestor with a transform.
         await Opened.InvokeAsync();
         // Called from OpenAsync/ToggleAsync as well as the toggle's click; only the click re-renders on its own.
+#pragma warning disable BL0012 // The public OpenAsync/ToggleAsync callers are outside the renderer.
         StateHasChanged();
+#pragma warning restore BL0012
     }
 
     // Every opening starts from the current Value: a pick dismissed by the scrim or Escape is dropped, and

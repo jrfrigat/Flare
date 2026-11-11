@@ -56,4 +56,10 @@
          from every coverage report. -->
     <None Include="$(RepoRoot)testconfig.json" Link="testconfig.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <!-- Test doubles call JS interop on purpose and assert the exceptions; BL0016 is about production
+         resilience and is tracked for the libraries in TASK-815. -->
+    <NoWarn>$(NoWarn);BL0016</NoWarn>
+  </PropertyGroup>
 </Project>

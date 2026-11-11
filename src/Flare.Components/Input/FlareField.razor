@@ -201,14 +201,12 @@
     private async Task HandleFocus(FocusEventArgs e)
     {
         _focused = true;
-        if (HelperTextOnFocus) StateHasChanged();
         await OnFocus.InvokeAsync(e);
     }
 
     private async Task HandleBlur(FocusEventArgs e)
     {
         _focused = false;
-        if (HelperTextOnFocus) StateHasChanged();
         await OnBlur.InvokeAsync(e);
     }
 

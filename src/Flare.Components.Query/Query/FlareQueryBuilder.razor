@@ -261,7 +261,6 @@
     private void Rebuild()
     {
         Revalidate();
-        StateHasChanged();
         if (SpecChanged.HasDelegate) SpecChanged.InvokeAsync(_emitted);
     }
 

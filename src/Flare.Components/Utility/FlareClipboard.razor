@@ -83,6 +83,5 @@
         await Task.Delay(FeedbackDurationMs);
         if (gen != _copyGen) return;
         _copied = false;
-        StateHasChanged();
     }
 }

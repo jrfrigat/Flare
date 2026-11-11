@@ -292,7 +292,9 @@
         _cursorY = null;
 
         await OnToggle.InvokeAsync(false);
+#pragma warning disable BL0012 // Public API: callers outside the renderer need this render.
         StateHasChanged();
+#pragma warning restore BL0012
     }
 
     /// <summary>Registers a child <see cref="FlareMenuItem"/> for keyboard navigation. Called by items on init.</summary>

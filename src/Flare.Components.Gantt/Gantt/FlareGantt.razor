@@ -366,7 +366,6 @@
     {
         _side = width;
         await SideWidthChanged.InvokeAsync(_side);
-        StateHasChanged();
     }
 
     private static string Pixels(double value) => Math.Round(value).ToString(CultureInfo.InvariantCulture) + "px";

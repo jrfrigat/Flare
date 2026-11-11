@@ -47,7 +47,13 @@
     internal void Unregister(FlareShortcutEntry entry) => _entries.Remove(entry);
 
     /// <summary>Toggles the help overlay showing all registered shortcuts.</summary>
-    public void ToggleHelp() { _showHelp = !_showHelp; StateHasChanged(); }
+    public void ToggleHelp()
+    {
+        _showHelp = !_showHelp;
+#pragma warning disable BL0012 // Public API: callers outside the renderer need this render.
+        StateHasChanged();
+#pragma warning restore BL0012
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
