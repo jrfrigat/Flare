@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net11.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
@@ -10,6 +10,13 @@
 		     are IsTrimmable, so a Release publish ships only the icons actually referenced (typed) here,
 		     not the whole ~3894-icon Material Symbols catalog. -->
 		<PublishTrimmed>true</PublishTrimmed>
+		<!--
+			BL0016: the Gallery is a standalone Blazor WebAssembly app - it never prerenders and its JS
+			runtime cannot be absent while a page is interactive. A JS interop failure here is a real
+			defect worth surfacing, not an SSR case to swallow. The library-side policy (catch, degrade)
+			lives in src and stays enforced by the library build.
+		-->
+		<NoWarn>$(NoWarn);BL0016</NoWarn>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 		<!--
 			The Gallery ships English/Russian and partial French consumer overrides. We keep the full ICU dataset (it includes the

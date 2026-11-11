@@ -141,11 +141,9 @@
     {
         if (_demo is null) return;
         _checking = true;
-        StateHasChanged();
         await _demo.CheckNowAsync();
         // If the check did not surface a newer version, drop back to the up-to-date state.
         if (_detected is null) _checking = false;
-        StateHasChanged();
     }
 
     // Mirrors the real "Update" action: a production app calls VersionCheck.ApplyUpdateAsync() to
@@ -159,7 +157,6 @@
         var target = _detected;
         _updating = true;
         _detected = null;          // leave the "new version" state, enter "updating..."
-        StateHasChanged();
 
         await _demo.ApplyUpdateAsync(); // no-op in generic mode; shown for parity with real usage
         await Task.Delay(1200);         // stand in for the service-worker activation + reload
@@ -168,7 +165,6 @@
         _nextVersion = BumpMinor(_currentVersion);
         _checks = 0;                // restart the cycle so the next version is not detected instantly
         _updating = false;
-        StateHasChanged();
 
         Snackbar.Show($"{GalleryStrings.Services_VersionCheckUpdatedTo} {target}", SnackbarSeverity.Success);
     }

@@ -14,6 +14,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareDataGrid.TableAriaLabel` names the table for assistive technology, and `DataGridTreeConfig.ToggleColumnTitle` puts the expand toggle in the column with that title instead of always the first.
 - The shipped libraries are marked AOT-compatible. Theme and palette JSON use source-generated serialization, `IBrowserStorage` accepts caller-supplied `JsonTypeInfo<T>` metadata, and DataGrid persistence no longer needs reflection, so a trimmed or NativeAOT app keeps its JSON paths. `ThemeJsonSerializer` no longer requires trimming suppressions.
 - `Flare.Components.Query` moves to Querio 0.2.0, which ships a `net11.0` asset and marks its packages AOT-compatible (except `Querio.Linq`, which Flare does not use). The Gallery takes the matching `Querio.Sql` and `Querio.OneC`.
+- The Gallery and the GitHub Pages site it publishes now target `net11.0`, so the documentation site runs on the .NET 11 WebAssembly runtime. Its demo pages also lost redundant `StateHasChanged` calls flagged by the .NET 11 Blazor analyzers.
 
 ### Changed
 

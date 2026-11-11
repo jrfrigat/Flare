@@ -21,7 +21,6 @@
     private async Task SaveAsync()
     {
         _loading = true;
-        StateHasChanged();
         await Task.Delay(1200);
         _loading = false;
     }

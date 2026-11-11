@@ -42,12 +42,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # The Gallery stays a net10 application, but global.json floors the SDK at 11; SDK 11 also
-      # carries the net10 targeting pack restore needs.
+      # The Gallery targets net11.0, so SDK 11 builds the site and its WebAssembly runtime. SDK 10
+      # stays installed because the ApiDocGen step runs a net10.0 tool: build succeeds under SDK 11,
+      # but running the tool needs the .NET 10 runtime.
       - name: Set up .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: |
+            10.0.x
+            11.0.x
 
       # A project Pages site is served from /<repo>/, not from the origin root, so the app has to
       # know its base path. This MUST happen BEFORE publish, not after: index.html is listed in

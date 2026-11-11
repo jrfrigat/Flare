@@ -87,7 +87,7 @@ does not access JavaScript, set process defaults, or share a user's culture with
 
 For WASM, initialize saved UI/format cultures before `RunAsync`. Include the ICU data needed by your
 formats (`BlazorWebAssemblyLoadAllGlobalizationData=true` supports all cultures). To switch into an
-unloaded satellite language without reloading, preload resources during startup. Gallery's .NET 10 host uses:
+unloaded satellite language without reloading, preload resources during startup. Gallery's .NET 11 host uses:
 
 ```javascript
 Blazor.start({

@@ -162,7 +162,6 @@
             ThemeService.RegisterPalette(ThemeService.GeneratePalette(
                 id, hex, new PaletteSeed(hex), GalleryStrings.Theme_PaletteGenerated));
         await ThemeService.SetPaletteAsync(id);
-        StateHasChanged();
     }
 
     private ButtonVariant ModeVariant(ThemeMode m) =>

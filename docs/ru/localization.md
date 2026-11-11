@@ -87,7 +87,7 @@ fallback. Оставляйте нейтральный override-файл пуст
 
 В WASM восстановите UI/format-культуры до `RunAsync`. Подключите нужные ICU-данные
 (`BlazorWebAssemblyLoadAllGlobalizationData=true` поддерживает все культуры). Чтобы переключаться
-на незагруженный satellite-язык без reload, загрузите ресурсы при старте. Gallery на .NET 10 использует:
+на незагруженный satellite-язык без reload, загрузите ресурсы при старте. Gallery на .NET 11 использует:
 
 ```javascript
 Blazor.start({
