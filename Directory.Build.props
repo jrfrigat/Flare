@@ -58,8 +58,9 @@
   </ItemGroup>
 
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
-    <!-- Test doubles call JS interop on purpose and assert the exceptions; BL0016 is about production
-         resilience and is tracked for the libraries in TASK-815. -->
+    <!-- Test doubles call JS interop on purpose and assert the exceptions. The library-side BL0016
+         policy lives in FlareJsModule and the best-effort services (TASK-815); test code is not
+         production code. -->
     <NoWarn>$(NoWarn);BL0016</NoWarn>
   </PropertyGroup>
 </Project>

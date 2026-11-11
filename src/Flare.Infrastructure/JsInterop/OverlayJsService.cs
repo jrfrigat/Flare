@@ -54,8 +54,10 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     private async ValueTask InvokeImmediateVoidAsync(string identifier, params object?[] args)
     {
         var module = await ModuleAsync();
+#pragma warning disable BL0016 // Strict: a failed immediate call surfaces; the caller owns the fallback.
         if (module is IJSInProcessObjectReference immediate) immediate.InvokeVoid(identifier, args);
         else await module.InvokeVoidAsync(identifier, args);
+#pragma warning restore BL0016
     }
 
     /// <inheritdoc />

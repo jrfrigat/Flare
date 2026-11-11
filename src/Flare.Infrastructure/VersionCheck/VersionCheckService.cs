@@ -75,7 +75,7 @@ public sealed class VersionCheckService : IVersionCheckService
                 try
                 {
                     var module = await GetModuleAsync(ct);
-                    await module.InvokeVoidAsync("register", ct, _options.ServiceWorkerPath);
+                    if (module is not null) await module.InvokeVoidAsync("register", ct, _options.ServiceWorkerPath);
                 }
                 catch (OperationCanceledException) { throw; }
                 catch { /* SW registration is best-effort */ }
@@ -92,8 +92,17 @@ public sealed class VersionCheckService : IVersionCheckService
         catch (OperationCanceledException) { /* stopped */ }
     }
 
-    private async ValueTask<IJSObjectReference> GetModuleAsync(CancellationToken ct)
-        => _module ??= await _js!.InvokeAsync<IJSObjectReference>("import", ct, ModulePath);
+    private async ValueTask<IJSObjectReference?> GetModuleAsync(CancellationToken ct)
+    {
+        if (_module is not null) return _module;
+        try
+        {
+            return _module = await _js!.InvokeAsync<IJSObjectReference>("import", ct, ModulePath);
+        }
+        catch (JSDisconnectedException) { return null; }
+        catch (JSException) { return null; }
+        catch (OperationCanceledException) { return null; }
+    }
 
     private async Task<string?> ProbeAsync(CancellationToken ct)
     {
@@ -101,7 +110,14 @@ public sealed class VersionCheckService : IVersionCheckService
         {
             if (_js is null) return null;
             var module = await GetModuleAsync(ct);
-            return await module.InvokeAsync<string?>("check", ct);
+            if (module is null) return null;
+            try
+            {
+                return await module.InvokeAsync<string?>("check", ct);
+            }
+            catch (JSDisconnectedException) { return null; }
+            catch (JSException) { return null; }
+            catch (OperationCanceledException) { return null; }
         }
 
         return _options.CheckForLatestVersion is not null
@@ -116,6 +132,7 @@ public sealed class VersionCheckService : IVersionCheckService
         try
         {
             var module = await GetModuleAsync(CancellationToken.None);
+            if (module is null) return;
             await module.InvokeVoidAsync("applyUpdate");
         }
         catch (JSDisconnectedException) { }

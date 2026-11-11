@@ -42,6 +42,7 @@ public abstract class FlareJsModule : IAsyncDisposable
         }
     }
 
+#pragma warning disable BL0016 // Strict helpers: interop failures, including a stale script, propagate to the caller's boundary.
     private async Task<IJSObjectReference> ImportModuleAsync() =>
         await _js.InvokeAsync<IJSObjectReference>("import", _modulePath);
 
@@ -52,6 +53,7 @@ public abstract class FlareJsModule : IAsyncDisposable
     /// <summary>Invokes an exported function with no return value.</summary>
     protected async ValueTask InvokeVoidAsync(string identifier, params object?[] args) =>
         await (await ModuleAsync()).InvokeVoidAsync(identifier, args);
+#pragma warning restore BL0016
 
     /// <summary>Disposes the cached module reference (best-effort; ignores teardown races). Override to
     /// release additional interop state (e.g. a self <see cref="DotNetObjectReference{T}"/>), then call

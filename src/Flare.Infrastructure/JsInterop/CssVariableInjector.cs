@@ -17,9 +17,27 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
     public CssVariableInjector(IJSRuntime js)
     {
         _js = js;
-        _moduleTask = new(() =>
-            js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js").AsTask());
+        _moduleTask = new(ImportAsync);
+    }
+
+    private async Task<IJSObjectReference> ImportAsync()
+    {
+        try
+        {
+            return await _js.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/Flare.Components/js/flare-theme.js");
+        }
+        catch (JSDisconnectedException ex)
+        {
+            // No circuit means the theme module can never load; the injectors below already treat a
+            // cancelled call as a quiet failure.
+            throw new TaskCanceledException("The circuit is disconnected.", ex);
+        }
+        catch (JSException ex)
+        {
+            // A stale or missing module is the same best-effort failure the injectors below swallow.
+            throw new TaskCanceledException("The theme module could not be loaded.", ex);
+        }
     }
 
     /// <summary>Injects the given theme CSS variable map onto the document root.</summary>
@@ -40,6 +58,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (OperationCanceledException) { }
     }
 
     /// <summary>Sets the static (non-variable) theme CSS block.</summary>
@@ -53,6 +72,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (OperationCanceledException) { }
     }
 
     /// <summary>Applies custom token overrides on top of the active theme.</summary>
@@ -66,6 +86,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (OperationCanceledException) { }
     }
 
     /// <summary>Removes previously applied custom token overrides.</summary>
@@ -79,6 +100,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (OperationCanceledException) { }
     }
 
     /// <summary>Disposes the injector and releases its JS interop module.</summary>

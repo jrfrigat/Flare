@@ -62,11 +62,13 @@ public sealed class GanttJsService : FlareJsModule, IGanttJsService
 
     private sealed class GanttView(IJSObjectReference handle) : IGanttView
     {
+#pragma warning disable BL0016 // TryAsync is the guard: it catches disconnected, JSException and cancellation.
         public ValueTask ScrollToAsync(double x) => TryAsync(() => handle.InvokeVoidAsync("scrollTo", x));
 
         public ValueTask ShiftAsync(double pixels) => TryAsync(() => handle.InvokeVoidAsync("shift", pixels));
 
         public ValueTask FocusItemAsync(string key) => TryAsync(() => handle.InvokeVoidAsync("focusItem", key));
+#pragma warning restore BL0016
 
         public async ValueTask<double?> PointerXAsync()
         {
@@ -78,7 +80,9 @@ public sealed class GanttJsService : FlareJsModule, IGanttJsService
 
         public async ValueTask DisposeAsync()
         {
+#pragma warning disable BL0016 // TryAsync is the guard: it catches disconnected, JSException and cancellation.
             await TryAsync(() => handle.InvokeVoidAsync("dispose"));
+#pragma warning restore BL0016
             try { await handle.DisposeAsync(); }
             catch (JSDisconnectedException) { }
             catch (JSException) { }

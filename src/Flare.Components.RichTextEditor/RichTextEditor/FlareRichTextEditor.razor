@@ -179,7 +179,9 @@
         if (string.Equals(value, _lastPushed, StringComparison.Ordinal)) return;
 
         _lastPushed = value;
+#pragma warning disable BL0016 // Strict: the caller's error boundary sees a failed content push.
         await _module.InvokeVoidAsync(Sanitize ? "setContent" : "setContentUnsafe", _editorId, value);
+#pragma warning restore BL0016
     }
 
     private async Task ExecAsync(string command, string? value = null)
