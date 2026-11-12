@@ -248,8 +248,11 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public bool Dense { get; set; }
     /// <summary>Draws vertical borders between columns.</summary>
     [Parameter] public bool Bordered { get; set; }
-    /// <summary>Stable identity selector for each row, used as the render key (improves diffing,
-    /// selection and virtualization). Defaults to the item reference when not set.</summary>
+    /// <summary>Stable identity selector for each row, used for row-level state such as an expanded
+    /// detail and as the Blazor render key. Left unset (the default), rows are not keyed: a sort or
+    /// reorder patches them in place instead of moving them, so the components inside a row are reused
+    /// rather than rebuilt. Set it to key the rows by this value; Blazor then moves a row's DOM nodes
+    /// with it, at the cost of recreating the components inside the row on every reorder.</summary>
     [Parameter] public Func<TItem, object>? RowKey { get; set; }
 
     /// <summary>Presentation of the records. <see cref="DataGridPresentation.Table"/> (the default)

@@ -12,6 +12,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- `FlareDataGrid` no longer keys its rows unless `RowKey` is set. Keying made a sort remove and re-insert every row together with the components in its cells: on the reference machine a 65-row grid with two action buttons per row spent a 111 ms task on a sort at 1x CPU and 513 ms at 4x. Unkeyed rows are patched in place - the same sort produces no long task at 1x and takes about 100-130 ms at 4x. Set `RowKey` when the DOM nodes must follow a row across reorders.
 - `FlareLazy` applies `content-visibility: auto` while its mounted content is off screen, so a long page does not re-lay out and repaint every demo on each reflow.
 
 ### Fixed

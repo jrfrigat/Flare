@@ -198,8 +198,12 @@
                             RowReorderable ? " " + Css.Classes.Drag.Item : "");
                         if (RowClassFunc?.Invoke(item) is { Length: > 0 } extraClass) rowClass += " " + extraClass;
                     }
-                    @* aria-rowindex is 1-based; +2 accounts for the header row and the 1-based offset. *@
-                    <tr @key="rowKey"
+                    @* aria-rowindex is 1-based; +2 accounts for the header row and the 1-based offset.
+                       A render key is opt-in through RowKey: Blazor moves a keyed row by removing and
+                       re-inserting it, which recreates every component inside the row, so a sort paid
+                       for every action button in it (65 rows: a 100+ ms task). Left unkeyed, the rows
+                       are matched by position and patched in place. *@
+                    <tr @key="(RowKey is null ? null : rowKey)"
                         role="row"
                         aria-rowindex="@(_rowIndexOffset + rowIdx + 2)"
                         aria-selected="@(SelectionMode == SelectionMode.None ? null : selected ? "true" : "false")"
@@ -229,15 +233,23 @@
                         {
                             var (col, baseClass) = bodyColumns[colIdx];
                             var isFocusCell = _focusRow == rowIdx && _focusCol == colIdx;
-                            var cellClass = string.Concat(baseClass,
-                                isEditing ? " " + Css.Classes.DataGrid.TdEdit : "",
-                                InCellRange(rowIdx, colIdx) ? " " + Css.Classes.DataGrid.CellRange : "",
-                                CellSelection && isFocusCell ? " " + Css.Classes.DataGrid.CellActive : "");
+                            var inRange = InCellRange(rowIdx, colIdx);
+                            var cellClass = isEditing || inRange || (CellSelection && isFocusCell) || col.ClassFunc is not null
+                                ? string.Concat(baseClass,
+                                    isEditing ? " " + Css.Classes.DataGrid.TdEdit : "",
+                                    inRange ? " " + Css.Classes.DataGrid.CellRange : "",
+                                    CellSelection && isFocusCell ? " " + Css.Classes.DataGrid.CellActive : "")
+                                : baseClass;
                             if (col.ClassFunc?.Invoke(item) is { Length: > 0 } extraCellClass) cellClass += " " + extraCellClass;
                             var (mouseDown, mouseEnter) = CellSelection ? CellMouseHandlers(rowIdx, colIdx) : default;
+                            var styleFunc = col.StyleFunc;
+                            var cellStyle = styleFunc is null && !_treeMode
+                                ? null
+                                : CombineStyle(GetTreeIndentStyle(col, item), styleFunc?.Invoke(item));
+                            if (string.IsNullOrEmpty(cellStyle)) cellStyle = null;
                             <td role="gridcell" class="@cellClass"
                                 data-label="@(_stacked && !string.IsNullOrWhiteSpace(col.Title) ? col.Title : null)"
-                                style="@CombineStyle(GetTreeIndentStyle(col, item), col.StyleFunc?.Invoke(item))"
+                                style="@cellStyle"
                                 tabindex="@(isFocusCell ? "0" : "-1")"
                                 @onmousedown="@mouseDown"
                                 @onmouseenter="@mouseEnter">
@@ -256,7 +268,33 @@
                                         <FlareIconView Value="@(expanded ? Tree!.ExpandedIcon : Tree!.CollapsedIcon)" />
                                     </span>
                                 }
-                                @RenderCellOrInput(col, item, isEditing)
+                                @if (isEditing && col.Editable)
+                                {
+                                    @RenderCellOrInput(col, item, true)
+                                }
+                                else if (col.IsComposite)
+                                {
+                                    @RenderCell(col, item)
+                                }
+                                else if (col.CellTemplate is not null)
+                                {
+                                    @col.CellTemplate(item)
+                                }
+                                else
+                                {
+                                    var value = col.Value?.Invoke(item);
+                                    var resolved = DataGridValueFormatter.Resolve(col.Type, value);
+                                    if (resolved == ColumnDataType.Boolean && value is bool boolValue)
+                                    {
+                                        <FlareIconView Value="@(boolValue ? FlareIcons.CheckBox : FlareIcons.CheckBoxOutlineBlank)"
+                                                       Class="@($"{Css.Classes.DataGrid.BoolCell} {(boolValue ? Css.Classes.DataGrid.BoolOn : Css.Classes.DataGrid.BoolOff)}")"
+                                                       AriaLabel="@(boolValue ? "true" : "false")" />
+                                    }
+                                    else
+                                    {
+                                        @DataGridValueFormatter.FormatText(value, resolved, col.Format, col.NullText, FormattingCulture)
+                                    }
+                                }
                             </td>
                         }
                         @if (inlineEditEnabled)
