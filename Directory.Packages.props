@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageVersion Include="Ical.Net" Version="5.2.4" />
     <GlobalPackageReference Include="MinVer" Version="8.0.0" />
-    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.402" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.404" />
   </ItemGroup>
   <ItemGroup>
     <!-- Roslyn source generator (samples/Flare.Gallery.Generators). These two are CEILINGED by the
@@ -39,9 +39,9 @@
          net11.0, so its WebAssembly runtime is the .NET 11 one. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="11.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.15" Condition="'$(TargetFramework)' != 'net11.0'" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.15" Condition="'$(TargetFramework)' != 'net11.0'" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
     <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
@@ -57,12 +57,12 @@
          runner. Under MTP a TRX report is an opt-in extension rather than a built-in logger, so it
          takes a package: without it the report flag in ci.yml is just an unknown option and CI
          uploads no test results. Keep it on the MTP version the platform itself resolves to. -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+    <PackageVersion Include="xunit.v3" Version="4.0.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.5.1" />
-    <PackageVersion Include="bunit" Version="2.11.3" />
-    <PackageVersion Include="Microsoft.Playwright" Version="1.63.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.5.3" />
+    <PackageVersion Include="bunit" Version="2.15.2" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.64.1" />
     <PackageVersion Include="coverlet.MTP" Version="10.1.0" />
     <!-- Build-time only: the FluentIconGen tool reads real Fluent UI System Icons SVG data from this package
          and generates a curated FluentUIIcons catalog. Not referenced by any shipped package. -->
