@@ -12,7 +12,7 @@ How the shell moves when an in-flow drawer changes the grid track it reserves. A
 | --- | --- | --- |
 | `Animated` | `0` | A: the track width transitions every frame, so the content column is re-laid out on every frame. This is the long-standing behavior and the default: existing pages keep their motion. |
 | `Instant` | `1` | A0: the track changes in one frame and no motion is shown. Use it on a page whose content is too heavy for any layout animation. |
-| `Surface` | `2` | B: the drawer surface moves with a compositor property (transform for push drawers, width of the drawer's own panel for a mini rail) while the grid track changes in one step. The content is re-laid out once per toggle instead of every frame. Use it when the content is heavy enough that re-laying it out every frame would be visible. |
+| `Surface` | `2` | B: the drawer surface moves with a compositor property (transform for push drawers, width of the drawer's own panel for a mini rail) while the grid track changes in one step. On opening the content makes room first, then the surface travels into it; on closing the surface leaves first, then the content reclaims the space. The content is re-laid out once per toggle instead of every frame, and the panel is never painted under the page. Use it when the content is heavy enough that re-laying it out every frame would be visible. |
 
 ## Used by components
 

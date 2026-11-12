@@ -19,9 +19,11 @@ public enum LayoutMotion
     Instant,
     /// <summary>
     /// B: the drawer surface moves with a compositor property (transform for push drawers, width of
-    /// the drawer's own panel for a mini rail) while the grid track changes in one step. The content
-    /// is re-laid out once per toggle instead of every frame. Use it when the content is heavy enough
-    /// that re-laying it out every frame would be visible.
+    /// the drawer's own panel for a mini rail) while the grid track changes in one step. On opening
+    /// the content makes room first, then the surface travels into it; on closing the surface leaves
+    /// first, then the content reclaims the space. The content is re-laid out once per toggle instead
+    /// of every frame, and the panel is never painted under the page. Use it when the content is heavy
+    /// enough that re-laying it out every frame would be visible.
     /// </summary>
     Surface,
 }

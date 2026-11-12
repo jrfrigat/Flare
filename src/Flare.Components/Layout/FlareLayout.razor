@@ -38,8 +38,10 @@
     /// every frame and the whole content column is re-laid out on each one. Use
     /// <see cref="LayoutMotion.Instant"/> (A0) to remove the motion entirely, or
     /// <see cref="LayoutMotion.Surface"/> (B) to move the drawer surface on the compositor and change
-    /// the track in one step. A floating drawer - the Temporary variant, or any drawer once the
-    /// layout is mobile - is an overlay and keeps its own slide in every mode.
+    /// the track in one step - on opening the content makes room before the surface arrives, on
+    /// closing the surface leaves before the content follows. A floating drawer - the Temporary
+    /// variant, or any drawer once the layout is mobile - is an overlay and keeps its own slide in
+    /// every mode.
     /// </summary>
     [Parameter] public LayoutMotion Motion { get; set; } = LayoutMotion.Animated;
 

@@ -20,7 +20,7 @@ public static class Layout
     /// grid track changes in one step (layout motion B).</summary>
     public const string MotionSurface = "flare-layout--motion-surface";
     /// <summary>The <c>flare-layout--track-closing</c> CSS class: in surface motion the grid track is
-    /// shrinking, so it changes at the start of the transition rather than at its end.</summary>
+    /// shrinking, so it changes at the end of the transition, after the drawer surface has left.</summary>
     public const string TrackClosing = "flare-layout--track-closing";
     /// <summary>The <c>flare-layout-appbar</c> CSS class.</summary>
     public const string AppBar = "flare-layout-appbar";

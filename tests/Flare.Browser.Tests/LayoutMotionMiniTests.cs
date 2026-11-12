@@ -9,11 +9,13 @@ namespace Flare.Browser.Tests;
 /// </summary>
 public sealed class LayoutMotionMiniTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
+    private const string LayoutRoot = Css.Classes.Layout.Root;
     private const string Drawer = Css.Classes.Layout.Drawer;
     private const string DrawerInner = Css.Classes.Layout.DrawerInner;
     private const string DrawerFloating = Css.Classes.Layout.DrawerFloating;
     private const string DrawerOpen = Css.Classes.Layout.DrawerOpenMod;
     private const string Content = Css.Classes.Layout.Content;
+    private const string TrackClosing = Css.Classes.Layout.TrackClosing;
 
     private async Task<IPage> OpenAsync(IBrowserContext context, int width)
     {
@@ -73,6 +75,59 @@ public sealed class LayoutMotionMiniTests(BrowserFixture fixture) : IClassFixtur
             $"the inner animated its width during the slide: min {metrics[1]:0.#} of {metrics[0]:0.#}");
         Assert.True(metrics[2] > 0, "the floating drawer lost its background");
         Assert.True(metrics[3] > 0, "the floating drawer lost its shadow");
+    }
+
+    [Fact]
+    public async Task Surface_MovesTheContentBeforeThePanelOnOpening_AndAfterItOnClosing()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await OpenAsync(context, width: 1200);
+        Assert.False(await page.EvaluateAsync<bool>(
+            $"() => document.querySelector('.{Drawer}').classList.contains('{DrawerOpen}')"));
+        var closedLeft = await page.Locator($".{Content}").EvaluateAsync<double>(
+            "el => el.getBoundingClientRect().left");
+        Assert.True(closedLeft < 120, $"the grid does not start with a rail: {closedLeft:0.#}");
+
+        await page.ClickAsync("#mini-toggle");
+        await page.WaitForFunctionAsync(
+            $"() => document.querySelector('.{Drawer}').classList.contains('{DrawerOpen}')");
+        var opening = await page.EvaluateAsync<double[]>(
+            $$"""
+            () => {
+                const layout = document.querySelector('.{{LayoutRoot}}');
+                const content = document.querySelector('.{{Content}}');
+                return [content.getBoundingClientRect().left,
+                        getComputedStyle(layout).transitionTimingFunction.includes('start') ? 1 : 0];
+            }
+            """);
+        Assert.True(opening[1] > 0, "opening has to step the grid track at the start of the move");
+        Assert.True(opening[0] > 200,
+            $"the content did not make room before the panel moved: {closedLeft:0.#} -> {opening[0]:0.#}");
+
+        await page.WaitForTimeoutAsync(600);
+        var openLeft = await page.Locator($".{Content}").EvaluateAsync<double>(
+            "el => el.getBoundingClientRect().left");
+
+        await page.ClickAsync("#mini-toggle");
+        await page.WaitForFunctionAsync(
+            $"() => document.querySelector('.{LayoutRoot}').classList.contains('{TrackClosing}')");
+        var closing = await page.EvaluateAsync<double[]>(
+            $$"""
+            () => {
+                const layout = document.querySelector('.{{LayoutRoot}}');
+                const content = document.querySelector('.{{Content}}');
+                return [content.getBoundingClientRect().left,
+                        getComputedStyle(layout).transitionTimingFunction.includes('start') ? 1 : 0];
+            }
+            """);
+        Assert.True(closing[1] == 0, "closing has to step the grid track at the end, after the panel leaves");
+        Assert.True(closing[0] > 200,
+            $"the content reclaimed the space before the panel left: {openLeft:0.#} -> {closing[0]:0.#}");
+
+        await page.WaitForTimeoutAsync(600);
+        var afterClose = await page.Locator($".{Content}").EvaluateAsync<double>(
+            "el => el.getBoundingClientRect().left");
+        Assert.True(afterClose < 120, $"the content did not reclaim the space after closing: {afterClose:0.#}");
     }
 
     [Fact]

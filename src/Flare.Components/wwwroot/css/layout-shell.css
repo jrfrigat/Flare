@@ -39,16 +39,18 @@
     }
 }
 
-/* Motion B (Surface): the track changes in one step - at the end of an opening transition and at the
-   start of a closing one - while the drawer surface itself moves. No per-frame layout of the
-   content. The direction comes from the drawer that toggled; the layout emits the closing class. */
+/* Motion B (Surface): the track changes in one step while the drawer surface itself moves, and the
+   two are ordered so the panel is never painted under the page. Opening steps at the START: the
+   content makes room in the first frame, then the surface travels in the space it left. Closing
+   steps at the END: the surface leaves first, then the content reclaims the space. The direction
+   comes from the drawer that toggled; the layout emits the closing class. */
 .flare-layout--motion-surface {
     transition: grid-template-columns var(--flare-motion-duration-enter-medium)
-                var(--flare-motion-easing-step-end);
+                var(--flare-motion-easing-step-start);
 }
 .flare-layout--motion-surface.flare-layout--track-closing {
     transition: grid-template-columns var(--flare-motion-duration-enter-medium)
-                var(--flare-motion-easing-step-start);
+                var(--flare-motion-easing-step-end);
 }
 
 /* AppBar spans the full width in row 1. */
