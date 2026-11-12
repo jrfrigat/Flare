@@ -1,0 +1,94 @@
+{
+  "group": "components",
+  "sourceLineUnion": {
+    "covered": 17666,
+    "valid": 21345,
+    "percent": 82.76
+  },
+  "perTfm": {
+    "net10.0": {
+      "covered": 17664,
+      "valid": 21343,
+      "percent": 82.76,
+      "branchCovered": 11782,
+      "branchValid": 15944
+    },
+    "net11.0": {
+      "covered": 17664,
+      "valid": 21343,
+      "percent": 82.76,
+      "branchCovered": 11782,
+      "branchValid": 15944
+    },
+    "net8.0": {
+      "covered": 17663,
+      "valid": 21342,
+      "percent": 82.76,
+      "branchCovered": 11781,
+      "branchValid": 15942
+    },
+    "net9.0": {
+      "covered": 17664,
+      "valid": 21343,
+      "percent": 82.76,
+      "branchCovered": 11782,
+      "branchValid": 15944
+    }
+  },
+  "categories": {
+    "authored": {
+      "Valid": 21345,
+      "Covered": 17666,
+      "Files": 410
+    },
+    "generated": {
+      "Valid": 17536,
+      "Covered": 6,
+      "Files": 6
+    }
+  },
+  "observedModules": [
+    "Flare.Abstractions",
+    "Flare.Components",
+    "Flare.Icons",
+    "Flare.Icons.FluentUI.Svg",
+    "Flare.Icons.FontAwesome.Symbols",
+    "Flare.Icons.MaterialDesign3.Svg",
+    "Flare.Icons.MaterialDesign3.Symbols",
+    "Flare.Infrastructure",
+    "Flare.Theming"
+  ],
+  "missingModules": [
+    "Flare",
+    "Flare.Components.Barcode",
+    "Flare.Components.Carousel",
+    "Flare.Components.Gantt",
+    "Flare.Components.IDE",
+    "Flare.Components.Kanban",
+    "Flare.Components.Media",
+    "Flare.Components.QrCode",
+    "Flare.Components.Query",
+    "Flare.Components.RichTextEditor",
+    "Flare.Components.Scheduler",
+    "Flare.Components.Scheduler.Ical",
+    "Flare.Components.Transfer",
+    "Flare.Icons.MaterialDesign2.Svg",
+    "Flare.Icons.MaterialDesign2.Symbols",
+    "Flare.Theme.Aero",
+    "Flare.Theme.FluentUI2",
+    "Flare.Theme.FluentUI2.Tokens",
+    "Flare.Theme.LiquidGlass",
+    "Flare.Theme.MaterialDesign2",
+    "Flare.Theme.MaterialDesign3",
+    "Flare.Theme.MaterialDesign3.Tokens",
+    "Flare.Theme.MaterialDesign3Expressive",
+    "Flare.Theme.VisualStudio"
+  ],
+  "missingProjects": [],
+  "missingTfms": [],
+  "partial": false,
+  "inputs": {
+    "files": 4,
+    "projects": 1
+  }
+}

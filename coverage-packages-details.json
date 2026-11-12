@@ -1,0 +1,100 @@
+{
+  "group": "packages",
+  "sourceLineUnion": {
+    "covered": 7603,
+    "valid": 27313,
+    "percent": 27.84
+  },
+  "perTfm": {
+    "net10.0": {
+      "covered": 7601,
+      "valid": 27311,
+      "percent": 27.83,
+      "branchCovered": 3923,
+      "branchValid": 19774
+    },
+    "net11.0": {
+      "covered": 4538,
+      "valid": 24754,
+      "percent": 18.33,
+      "branchCovered": 2909,
+      "branchValid": 18725
+    },
+    "net8.0": {
+      "covered": 4537,
+      "valid": 24753,
+      "percent": 18.33,
+      "branchCovered": 2908,
+      "branchValid": 18723
+    },
+    "net9.0": {
+      "covered": 4538,
+      "valid": 24754,
+      "percent": 18.33,
+      "branchCovered": 2909,
+      "branchValid": 18725
+    }
+  },
+  "categories": {
+    "authored": {
+      "Valid": 27313,
+      "Covered": 7603,
+      "Files": 511
+    },
+    "generated": {
+      "Valid": 4686,
+      "Covered": 0,
+      "Files": 5
+    },
+    "tool": {
+      "Valid": 770,
+      "Covered": 345,
+      "Files": 8
+    }
+  },
+  "observedModules": [
+    "Flare",
+    "Flare.Abstractions",
+    "Flare.ApiDocGen",
+    "Flare.Components",
+    "Flare.Components.Barcode",
+    "Flare.Components.Carousel",
+    "Flare.Components.Gantt",
+    "Flare.Components.IDE",
+    "Flare.Components.Kanban",
+    "Flare.Components.Media",
+    "Flare.Components.QrCode",
+    "Flare.Components.Query",
+    "Flare.Components.RichTextEditor",
+    "Flare.Components.Scheduler",
+    "Flare.Components.Scheduler.Ical",
+    "Flare.Components.Transfer",
+    "Flare.Icons",
+    "Flare.Infrastructure",
+    "Flare.Theme.MaterialDesign3",
+    "Flare.Theme.MaterialDesign3.Tokens",
+    "Flare.Theming"
+  ],
+  "missingModules": [
+    "Flare.Icons.FluentUI.Svg",
+    "Flare.Icons.FontAwesome.Symbols",
+    "Flare.Icons.MaterialDesign2.Svg",
+    "Flare.Icons.MaterialDesign2.Symbols",
+    "Flare.Icons.MaterialDesign3.Svg",
+    "Flare.Icons.MaterialDesign3.Symbols",
+    "Flare.Theme.Aero",
+    "Flare.Theme.FluentUI2",
+    "Flare.Theme.FluentUI2.Tokens",
+    "Flare.Theme.LiquidGlass",
+    "Flare.Theme.MaterialDesign2",
+    "Flare.Theme.MaterialDesign3Expressive",
+    "Flare.Theme.VisualStudio"
+  ],
+  "missingProjects": [],
+  "missingTfms": [],
+  "partial": false,
+  "inputs": {
+    "files": 42,
+    "projects": 12
+  }
+}
