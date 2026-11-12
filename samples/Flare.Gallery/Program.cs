@@ -66,6 +66,7 @@ builder.Services.AddSingleton<IStringLocalizer<GanttStrings>>(sp => new GalleryT
 builder.Services.AddSingleton<IStringLocalizer<SchedulerStrings>>(sp => new GalleryTranslations<SchedulerStrings>(sp.GetRequiredService<IStringLocalizerFactory>()));
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<RailLabelService>();
+builder.Services.AddScoped<NavigationMotionService>();
 builder.Services.AddSingleton<GallerySearchService>();
 builder.Services.AddSingleton<ChangelogService>();
 builder.Services.AddSingleton<ThemeDocService>();
@@ -85,6 +86,10 @@ await languageService.InitializeCultureAsync();
 // preferred variant (no flash from the default).
 var railLabelService = host.Services.GetRequiredService<RailLabelService>();
 await railLabelService.InitializeAsync();
+
+// Same for the navigation motion mode: the shell must start in the user's mode, not flash the default.
+var navigationMotionService = host.Services.GetRequiredService<NavigationMotionService>();
+await navigationMotionService.InitializeAsync();
 
 // Activate the palette follower so it subscribes to theme changes before the first user switch.
 _ = host.Services.GetRequiredService<ThemePaletteFollower>();

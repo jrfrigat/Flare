@@ -3013,6 +3013,24 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Nav_Rail_IconsOnly" xml:space="preserve">
     <value>Icons only</value>
   </data>
+  <data name="Nav_Motion_Title" xml:space="preserve">
+    <value>Navigation animation</value>
+  </data>
+  <data name="Nav_Motion_Desc" xml:space="preserve">
+    <value>How the shell moves when a navigation panel opens or closes. The animated track slides the content every frame, so heavy pages re-layout the whole column; the instant mode has no motion; the moving surface slides only the panel and changes the track in one step.</value>
+  </data>
+  <data name="Nav_Motion_Animated" xml:space="preserve">
+    <value>A - Track</value>
+  </data>
+  <data name="Nav_Motion_Instant" xml:space="preserve">
+    <value>A0 - Instant</value>
+  </data>
+  <data name="Nav_Motion_Surface" xml:space="preserve">
+    <value>B - Surface</value>
+  </data>
+  <data name="Nav_Motion_OverlayNote" xml:space="preserve">
+    <value>The overlay drawer (D) is a drawer variant, not a motion mode: it is selected as Temporary on the drawer itself.</value>
+  </data>
   <data name="Settings_Version" xml:space="preserve">
     <value>Version</value>
   </data>

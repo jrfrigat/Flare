@@ -1,0 +1,17 @@
+@page "/layout-motion"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareLayout Responsive="false" Motion="LayoutMotion.Surface">
+        <FlareLayoutDrawer @bind-Open="_open" Variant="DrawerVariant.Persistent" Width="16rem">
+            <nav id="surface-panel">panel</nav>
+        </FlareLayoutDrawer>
+        <FlareLayoutContent>
+            <button id="surface-toggle" type="button" @onclick="() => _open = !_open">toggle</button>
+            <div id="surface-content">content</div>
+        </FlareLayoutContent>
+    </FlareLayout>
+</FlareThemeProvider>
+
+@code {
+    private bool _open = true;
+}

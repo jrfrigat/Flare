@@ -36,6 +36,12 @@ public static partial class Motion
     public const string EasingSubtleAccelerate = "--flare-motion-easing-subtle-accelerate";
     /// <summary>CSS custom-property name for the constant-rate curve.</summary>
     public const string EasingLinear = "--flare-motion-easing-linear";
+    /// <summary>CSS custom-property name for the curve that holds its start value and changes once at
+    /// the end.</summary>
+    public const string EasingStepEnd = "--flare-motion-easing-step-end";
+    /// <summary>CSS custom-property name for the curve that changes once at the start and holds its
+    /// new value.</summary>
+    public const string EasingStepStart = "--flare-motion-easing-step-start";
 
 
     /// <summary>CSS custom-property name for the fast spring duration token.</summary>

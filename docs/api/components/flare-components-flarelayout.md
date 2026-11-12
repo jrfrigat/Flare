@@ -8,8 +8,8 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AnimateTrack` | `bool` | `false` | Parameter |  | Whether the shell animates a change of its grid tracks when a drawer opens or collapses. Off by default: a track transition is a layout animation, so every frame re-lays out the whole content column, and a page with heavy mounted content drops frames. Turn it on only when the page is known to be light; leaving it off keeps the layout change to one frame. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The composed layout: a FlareLayoutAppBar, one or more FlareLayoutDrawer, and a FlareLayoutContent. Place start drawers before the content and end drawers after it (markup order = visual order). |
+| `Motion` | `LayoutMotion` | `LayoutMotion.Animated` | Parameter |  | How the shell moves when an in-flow drawer changes its grid track. Defaults to Animated (A), the long-standing behavior: the track transitions every frame and the whole content column is re-laid out on each one. Use Instant (A0) to remove the motion entirely, or Surface (B) to move the drawer surface on the compositor and change the track in one step. A floating drawer - the Temporary variant, or any drawer once the layout is mobile - is an overlay and keeps its own slide in every mode. |
 | `Responsive` | `bool` | `true` | Parameter |  | When true (default) the layout watches the viewport and turns push drawers into off-canvas overlays below the mobile breakpoint (960px); set false to manage drawers entirely yourself. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

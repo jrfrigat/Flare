@@ -7012,7 +7012,61 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Nav_Rail_Labeled", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A - Track.
+        /// </summary>
+        public static string Nav_Motion_Animated {
+            get {
+                return ResourceManager.GetString("Nav_Motion_Animated", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на How the shell moves when a navigation panel opens or closes..
+        /// </summary>
+        public static string Nav_Motion_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Motion_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A0 - Instant.
+        /// </summary>
+        public static string Nav_Motion_Instant {
+            get {
+                return ResourceManager.GetString("Nav_Motion_Instant", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The overlay drawer (D) is a drawer variant, not a motion mode..
+        /// </summary>
+        public static string Nav_Motion_OverlayNote {
+            get {
+                return ResourceManager.GetString("Nav_Motion_OverlayNote", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на B - Surface.
+        /// </summary>
+        public static string Nav_Motion_Surface {
+            get {
+                return ResourceManager.GetString("Nav_Motion_Surface", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Navigation animation.
+        /// </summary>
+        public static string Nav_Motion_Title {
+            get {
+                return ResourceManager.GetString("Nav_Motion_Title", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Services.
         /// </summary>

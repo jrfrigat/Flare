@@ -102,6 +102,8 @@ internal class LiquidGlassTokens
         EasingSubtleDecelerate = CurveDecelerate,
         EasingSubtleAccelerate = CurveAccelerate,
         EasingLinear = "linear",
+        EasingStepEnd = "steps(1, end)",
+        EasingStepStart = "steps(1, start)",
 
         DurationStateChange = "150ms",
         DurationSmallMove = "250ms",

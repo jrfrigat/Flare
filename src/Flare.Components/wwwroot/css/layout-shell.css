@@ -22,13 +22,12 @@
     color: var(--flare-color-on-background);
 }
 
-/* Opt-in track animation. A transition on grid-template-columns is a layout animation: every frame
-   changes the width of the content track, so the browser re-lays out the whole content column, and
-   the cost is whatever the page happens to have mounted. Measured on the Gallery's DataGrid page with
-   all demos mounted, the animated track produced 11 frames over 20 ms in a 300 ms open (max 50 ms),
-   all of it layout; the same toggle with the track changing in one frame did one reflow and no
-   per-frame work. A track COUNT change (a drawer mounting/unmounting, or the mobile switch) always
-   snaps, which is what we want. FlareLayout.AnimateTrack emits this class. */
+/* Motion A (Animated, the default): the grid track itself animates. A transition on
+   grid-template-columns is a layout animation: every frame changes the width of the content track,
+   so the browser re-lays out the whole content column, and the cost is whatever the page has
+   mounted. Measured on the Gallery's DataGrid page with all demos mounted, this produced 11 frames
+   over 20 ms in a 300 ms open (max 50 ms), all of it layout. FlareLayout.Motion =
+   LayoutMotion.Animated emits this class. */
 .flare-layout--animate-track {
     transition: grid-template-columns var(--flare-motion-duration-enter-medium)
                 var(--flare-motion-easing-emphasized);
@@ -38,6 +37,18 @@
     .flare-layout--animate-track {
         transition: none;
     }
+}
+
+/* Motion B (Surface): the track changes in one step - at the end of an opening transition and at the
+   start of a closing one - while the drawer surface itself moves. No per-frame layout of the
+   content. The direction comes from the drawer that toggled; the layout emits the closing class. */
+.flare-layout--motion-surface {
+    transition: grid-template-columns var(--flare-motion-duration-enter-medium)
+                var(--flare-motion-easing-step-end);
+}
+.flare-layout--motion-surface.flare-layout--track-closing {
+    transition: grid-template-columns var(--flare-motion-duration-enter-medium)
+                var(--flare-motion-easing-step-start);
 }
 
 /* AppBar spans the full width in row 1. */
@@ -153,6 +164,107 @@
     width: 100%;
     transition: width var(--flare-motion-duration-enter-medium)
                 var(--flare-motion-easing-emphasized);
+}
+
+/* --- Surface motion (B): the container is only the reserved grid track; the visible panel is the
+   inner surface. The track changes in one step (see the layout rule) while the surface moves with a
+   compositor property, so the page content is laid out once per toggle, not on every frame. --- */
+.flare-layout--motion-surface .flare-layout-drawer--persistent:not(.flare-layout-drawer--floating),
+.flare-layout--motion-surface .flare-layout-drawer--responsive:not(.flare-layout-drawer--floating),
+.flare-layout--motion-surface .flare-layout-drawer--mini:not(.flare-layout-drawer--floating) {
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+    border-inline-width: 0;
+}
+
+/* Push drawers: the inner slides over the content while the track holds its old width; the panel
+   owns the surface (background, divider, edge shadow). The closed panel is skipped from layout and
+   paint, but the skip waits out the closing slide so the content does not vanish mid-animation. */
+.flare-layout--motion-surface .flare-layout-drawer--persistent:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner,
+.flare-layout--motion-surface .flare-layout-drawer--responsive:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 0;
+    height: auto;
+    width: var(--fld-w, var(--flare-layout-drawer-width));
+    background: var(--flare-layout-drawer-bg);
+    border-inline-end: var(--flare-layout-drawer-border);
+    box-shadow:
+        calc(var(--_drawer-shadow-dir) * var(--flare-layout-drawer-shadow-offset))
+        0
+        var(--flare-layout-drawer-shadow-blur)
+        var(--flare-layout-drawer-shadow-color);
+    transform: translateX(-100%);
+    content-visibility: hidden;
+    transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard),
+                content-visibility 0s var(--flare-motion-duration-enter-medium);
+    transition-behavior: allow-discrete;
+}
+
+.flare-layout--motion-surface .flare-layout-drawer--persistent:not(.flare-layout-drawer--floating).flare-layout-drawer--open .flare-layout-drawer__inner,
+.flare-layout--motion-surface .flare-layout-drawer--responsive:not(.flare-layout-drawer--floating).flare-layout-drawer--open .flare-layout-drawer__inner {
+    transform: none;
+    content-visibility: visible;
+    transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard),
+                content-visibility 0s;
+}
+
+/* End-anchored push drawers start off the trailing edge and carry the divider on the leading one. */
+.flare-layout--motion-surface .flare-layout-drawer--persistent.flare-layout-drawer--end:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner,
+.flare-layout--motion-surface .flare-layout-drawer--responsive.flare-layout-drawer--end:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    border-inline-end: none;
+    border-inline-start: var(--flare-layout-drawer-border);
+    transform: translateX(100%);
+}
+.flare-layout--motion-surface .flare-layout-drawer--persistent.flare-layout-drawer--end.flare-layout-drawer--open:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner,
+.flare-layout--motion-surface .flare-layout-drawer--responsive.flare-layout-drawer--end.flare-layout-drawer--open:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner {
+    transform: none;
+}
+
+/* In RTL a start drawer sits on the right and leaves toward it; an end drawer mirrors the other way. */
+:dir(rtl) .flare-layout--motion-surface .flare-layout-drawer--persistent:not(.flare-layout-drawer--floating):not(.flare-layout-drawer--end) .flare-layout-drawer__inner,
+:dir(rtl) .flare-layout--motion-surface .flare-layout-drawer--responsive:not(.flare-layout-drawer--floating):not(.flare-layout-drawer--end) .flare-layout-drawer__inner {
+    transform: translateX(100%);
+}
+:dir(rtl) .flare-layout--motion-surface .flare-layout-drawer--persistent.flare-layout-drawer--end:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner,
+:dir(rtl) .flare-layout--motion-surface .flare-layout-drawer--responsive.flare-layout-drawer--end:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner {
+    transform: translateX(-100%);
+}
+
+/* Mini: the panel is always the rail, and opening grows its own width to the full track. Only the
+   drawer's content is re-laid out during the growth; the page content waits for the track step.
+   A floating Mini (the responsive layout below the mobile breakpoint) is an overlay, not a track:
+   it keeps its own surface and slides in at full width, so every rule here excludes it. Without the
+   guard the inner grew 88px to 256px while the panel was still sliding in. */
+.flare-layout--motion-surface .flare-layout-drawer--mini:not(.flare-layout-drawer--floating) .flare-layout-drawer__inner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 0;
+    height: auto;
+    width: var(--fld-rail-w, var(--flare-layout-drawer-rail-width));
+    background: var(--flare-layout-rail-bg);
+    border-inline-end: var(--flare-layout-drawer-border);
+    box-shadow:
+        calc(var(--_drawer-shadow-dir) * var(--flare-layout-drawer-shadow-offset))
+        0
+        var(--flare-layout-drawer-shadow-blur)
+        var(--flare-layout-drawer-shadow-color);
+    transition: width var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized);
+}
+.flare-layout--motion-surface .flare-layout-drawer--mini:not(.flare-layout-drawer--floating).flare-layout-drawer--open .flare-layout-drawer__inner {
+    width: var(--fld-w, var(--flare-layout-drawer-width));
+    background: var(--flare-layout-drawer-bg);
+}
+.flare-layout--motion-surface .flare-layout-drawer--mini:not(.flare-layout-drawer--floating).flare-layout-drawer--end .flare-layout-drawer__inner {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    border-inline-end: none;
+    border-inline-start: var(--flare-layout-drawer-border);
 }
 
 /* --- Floating drawers: the Temporary variant always, and any push drawer once the layout is mobile.

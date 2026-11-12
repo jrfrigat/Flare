@@ -4113,8 +4113,8 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AnimateTrack", @"bool", @"false", @"Whether the shell animates a change of its grid tracks when a drawer opens or collapses. Off by default: a track transition is a layout animation, so every frame re-lays out the whole content column, and a page with heavy mounted content drops frames. Turn it on only when the page is known to be light; leaving it off keeps the layout change to one frame.", null, false, false, false, @"FlareLayout"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The composed layout: a FlareLayoutAppBar, one or more FlareLayoutDrawer, and a FlareLayoutContent. Place start drawers before the content and end drawers after it (markup order = visual order).", null, false, false, false, @"FlareLayout"),
+                new ApiParameterInfo(@"Motion", @"LayoutMotion", @"LayoutMotion.Animated", @"How the shell moves when an in-flow drawer changes its grid track. Defaults to Animated (A), the long-standing behavior: the track transitions every frame and the whole content column is re-laid out on each one. Use Instant (A0) to remove the motion entirely, or Surface (B) to move the drawer surface on the compositor and change the track in one step. A floating drawer - the Temporary variant, or any drawer once the layout is mobile - is an overlay and keeps its own slide in every mode.", null, false, false, false, @"FlareLayout"),
                 new ApiParameterInfo(@"Responsive", @"bool", @"true", @"When true (default) the layout watches the viewport and turns push drawers into off-canvas overlays below the mobile breakpoint (960px); set false to manage drawers entirely yourself.", null, false, false, false, @"FlareLayout"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -10431,6 +10431,23 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareLayoutContent",
+            });
+
+        e[@"LayoutMotion"] = new ApiEnumInfo(
+            @"LayoutMotion",
+            @"Flare.Components.LayoutMotion",
+            @"Flare.Components",
+            @"How the shell moves when an in-flow drawer changes the grid track it reserves. A floating drawer - the Temporary variant, or any drawer once the layout is mobile - is an overlay and keeps its own slide in every mode.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Animated", @"0", @"A: the track width transitions every frame, so the content column is re-laid out on every frame. This is the long-standing behavior and the default: existing pages keep their motion."),
+                new ApiEnumMember(@"Instant", @"1", @"A0: the track changes in one frame and no motion is shown. Use it on a page whose content is too heavy for any layout animation."),
+                new ApiEnumMember(@"Surface", @"2", @"B: the drawer surface moves with a compositor property (transform for push drawers, width of the drawer's own panel for a mini rail) while the grid track changes in one step. The content is re-laid out once per toggle instead of every frame. Use it when the content is heavy enough that re-laying it out every frame would be visible."),
+            },
+            new string[]
+            {
+                @"FlareLayout",
             });
 
         e[@"LinearProgressVariant"] = new ApiEnumInfo(

@@ -7,16 +7,20 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
-- `FlareLayout.AnimateTrack` brings back the animated grid-track change; it is off by default because a `grid-template-columns` transition re-lays out the whole content column every frame.
+- `MotionTokens` gains `EasingStepEnd` and `EasingStepStart`, the curves that hold a value and change it in one discrete step, which `LayoutMotion.Surface` uses to change a grid track at the end of an opening and at the start of a closing movement.
+- `FlareLayout.Motion` chooses how the shell moves when a drawer opens or closes. `LayoutMotion.Animated` (the default) keeps the long-standing animated grid track, which re-lays out the content column every frame; `LayoutMotion.Instant` removes the motion; `LayoutMotion.Surface` moves the drawer surface on the compositor and changes the track in one step, so heavy content is re-laid out once per toggle instead of every frame. A floating drawer (`DrawerVariant.Temporary`, or any drawer on a mobile layout) is an overlay and keeps its own slide in every mode.
 
 ### Changed
 
-- `FlareLayout` changes its grid tracks in one frame by default. The animated track remains available through `AnimateTrack`, which the Gallery uses.
 - `FlareLazy` applies `content-visibility: auto` while its mounted content is off screen, so a long page does not re-lay out and repaint every demo on each reflow.
 
 ### Fixed
 
-- Expanding or collapsing the Gallery navigation no longer stutters on the DataGrid page: the drawer track no longer forces a per-frame layout of every mounted demo.
+- Expanding or collapsing the Gallery navigation no longer stutters on the DataGrid page: demos that are off screen no longer take part in the per-frame layout of the content column.
+
+### Breaking changes
+
+- A theme that builds its own `MotionTokens` must set the two new required members `EasingStepEnd` and `EasingStepStart`; the built-in themes use `steps(1, end)` and `steps(1, start)`.
 
 ## [0.56.0] - 2026-11-11
 

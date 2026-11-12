@@ -1,0 +1,17 @@
+@page "/layout-motion-mini"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareLayout Motion="LayoutMotion.Surface">
+        <FlareLayoutDrawer @bind-Open="_open" Variant="DrawerVariant.Mini" Width="16rem" RailWidth="5.5rem">
+            <nav id="mini-panel">panel</nav>
+        </FlareLayoutDrawer>
+        <FlareLayoutContent>
+            <button id="mini-toggle" type="button" @onclick="() => _open = !_open">toggle</button>
+            <div id="mini-content">content</div>
+        </FlareLayoutContent>
+    </FlareLayout>
+</FlareThemeProvider>
+
+@code {
+    private bool _open;
+}

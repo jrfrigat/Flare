@@ -117,6 +117,8 @@ public class MaterialDesign3Tokens
         EasingSubtleDecelerate = "cubic-bezier(0, 0, 0.2, 1)", // legacy-decelerate
         EasingSubtleAccelerate = "cubic-bezier(0.4, 0, 1, 1)", // legacy-accelerate
         EasingLinear = "linear",                            // linear
+        EasingStepEnd = "steps(1, end)",                    // discrete change at the end
+        EasingStepStart = "steps(1, start)",                // discrete change at the start
 
         DurationStateChange = "100ms", // short2
         DurationSmallMove = "200ms",   // short4

@@ -3013,6 +3013,24 @@
   <data name="Nav_Rail_IconsOnly" xml:space="preserve">
     <value>Только иконки</value>
   </data>
+  <data name="Nav_Motion_Title" xml:space="preserve">
+    <value>Анимация навигации</value>
+  </data>
+  <data name="Nav_Motion_Desc" xml:space="preserve">
+    <value>Как оболочка двигается при открытии и закрытии панели навигации. Анимированный трек двигает контент каждый кадр, и тяжелые страницы пересчитывают всю колонку; мгновенный режим убирает движение; движущаяся панель двигает только саму панель и меняет трек одним шагом.</value>
+  </data>
+  <data name="Nav_Motion_Animated" xml:space="preserve">
+    <value>A - трек</value>
+  </data>
+  <data name="Nav_Motion_Instant" xml:space="preserve">
+    <value>A0 - сразу</value>
+  </data>
+  <data name="Nav_Motion_Surface" xml:space="preserve">
+    <value>B - панель</value>
+  </data>
+  <data name="Nav_Motion_OverlayNote" xml:space="preserve">
+    <value>Оверлейный дровер (D) - это вариант дровера, а не режим анимации: он выбирается как Temporary у самого дровера.</value>
+  </data>
   <data name="Settings_Version" xml:space="preserve">
     <value>Версия</value>
   </data>

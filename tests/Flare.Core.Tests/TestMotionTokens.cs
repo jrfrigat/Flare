@@ -37,6 +37,8 @@ internal static class TestMotionTokens
         EasingSubtleDecelerate = "ease-out",
         EasingSubtleAccelerate = "ease-in",
         EasingLinear = "linear",
+        EasingStepEnd = "steps(1, end)",
+        EasingStepStart = "steps(1, start)",
         DurationStateChange = "100ms",
         DurationSmallMove = "200ms",
         DurationEnterSmall = "250ms",

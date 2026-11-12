@@ -2,6 +2,7 @@
 @inherits LocalizedPage
 @inject IThemeService ThemeService
 @inject Flare.Gallery.Services.RailLabelService RailLabels
+@inject Flare.Gallery.Services.NavigationMotionService NavMotion
 @using Flare.Theming
 
 <PageTitle>@GalleryStrings.Settings_Title - Flare</PageTitle>
@@ -119,6 +120,33 @@
                             <ChildContent>@GalleryStrings.Nav_Rail_IconsOnly</ChildContent>
                         </FlareButton>
                     </FlareStack>
+
+                    <FlareStack Gap="FlareSpacing.None">
+                        <FlareText Typo="TypographyScale.LabelLarge" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.25rem" Block>@GalleryStrings.Nav_Motion_Title</FlareText>
+                        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" Block>@GalleryStrings.Nav_Motion_Desc</FlareText>
+                    </FlareStack>
+                    <FlareStack Gap="FlareSpacing.XSmall">
+                        <FlareToggleGroup TValue="LayoutMotion?"
+                                          Value="NavMotion.Motion"
+                                          ValueChanged="SetMotionAsync"
+                                          FullWidth="true"
+                                          Mandatory="true"
+                                          AriaLabel="@GalleryStrings.Nav_Motion_Title">
+                            <FlareToggleButton Value="LayoutMotion.Animated">
+                                <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Speed" Size="1.1rem" /></OffIcon>
+                                <ChildContent>@GalleryStrings.Nav_Motion_Animated</ChildContent>
+                            </FlareToggleButton>
+                            <FlareToggleButton Value="LayoutMotion.Instant">
+                                <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Bolt" Size="1.1rem" /></OffIcon>
+                                <ChildContent>@GalleryStrings.Nav_Motion_Instant</ChildContent>
+                            </FlareToggleButton>
+                            <FlareToggleButton Value="LayoutMotion.Surface">
+                                <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Layers" Size="1.1rem" /></OffIcon>
+                                <ChildContent>@GalleryStrings.Nav_Motion_Surface</ChildContent>
+                            </FlareToggleButton>
+                        </FlareToggleGroup>
+                        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" Block>@GalleryStrings.Nav_Motion_OverlayNote</FlareText>
+                    </FlareStack>
                 </FlareStack>
             </ChildContent>
         </FlareTab>
@@ -152,6 +180,15 @@
     {
         await RailLabels.SetShowLabelsAsync(showLabels);
         StateHasChanged();
+    }
+
+    // The group reports null only if it could clear its selection; Mandatory keeps one chosen, and the
+    // service already holds a mode, so a null report is ignored rather than stored. The page re-renders
+    // on the event itself, so the changed mode is shown without asking for a render here.
+    private async Task SetMotionAsync(LayoutMotion? motion)
+    {
+        if (motion is null) return;
+        await NavMotion.SetMotionAsync(motion.Value);
     }
 
     private async Task GenerateAsync()

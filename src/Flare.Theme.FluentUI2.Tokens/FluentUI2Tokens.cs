@@ -104,6 +104,8 @@ public class FluentUI2Tokens
         EasingSubtleDecelerate = "cubic-bezier(0.33, 0, 0.1, 1)",     // curveDecelerateMin
         EasingSubtleAccelerate = CurveAccelerateMin,                  // curveAccelerateMin
         EasingLinear = "linear",                                      // curveLinear
+        EasingStepEnd = "steps(1, end)",
+        EasingStepStart = "steps(1, start)",
 
         DurationStateChange = "100ms", // durationFaster
         DurationSmallMove = "200ms",   // durationNormal

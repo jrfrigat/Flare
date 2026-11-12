@@ -6,10 +6,11 @@
 @inject ISnackbarService Snackbar
 @inject IBrowserViewportService Viewport
 @inject Flare.Gallery.Services.RailLabelService RailLabels
+@inject Flare.Gallery.Services.NavigationMotionService NavMotion
 @using Flare.Gallery.Models
 @using Microsoft.JSInterop
 
-<FlareLayout AnimateTrack="true">
+<FlareLayout Motion="NavMotion.Motion">
     <FlareLayoutAppBar DrawerToggle="true">
         <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" FlexGrow="1" FlexBasis="0" MinWidth="0">
             <FlareLink Href="" Underline="LinkUnderline.None" Color="FlareColor.Default">
@@ -105,8 +106,9 @@
         // The service polls in the background; surface any new version as a toast.
         VersionCheck.NewVersionAvailable += OnNewVersionAsync;
         VersionCheck.Start();
-        // Re-render the rail when the user changes the labeled/icon-only preference in Settings.
+        // Re-render the shell when a navigation preference changes in Settings.
         RailLabels.Changed += OnRailLabelsChanged;
+        NavMotion.Changed += OnNavigationMotionChanged;
         // Highlight the rail trigger for the current route's section, updated on every navigation.
         _routeSection = GallerySections.FromPath(NavManager.ToBaseRelativePath(NavManager.Uri));
         // Open the matching secondary panel on direct load / reload, not just on a trigger click.
@@ -151,6 +153,10 @@
 
     private void OnRailLabelsChanged() => InvokeAsync(StateHasChanged);
 
+    // FlareLayout swaps its motion class on this re-render; the drawers keep their state, so the
+    // switch applies to the next open or close without a reload.
+    private void OnNavigationMotionChanged() => InvokeAsync(StateHasChanged);
+
     // Actionable, persistent toast: "Update" applies the waiting service worker and reloads (the service
     // owns the service-worker plumbing - the app just calls ApplyUpdateAsync). Once a newer version is
     // known there is nothing more to discover, so stop the background polling.
@@ -190,6 +196,7 @@
     {
         VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
         RailLabels.Changed -= OnRailLabelsChanged;
+        NavMotion.Changed -= OnNavigationMotionChanged;
         NavManager.LocationChanged -= OnLocationChanged;
     }
 

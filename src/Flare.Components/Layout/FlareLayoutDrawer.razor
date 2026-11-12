@@ -199,6 +199,7 @@
 
     protected override void OnParametersSet()
     {
+        var openChanged = _hasParameterSnapshot && Open != _lastParamOpen;
         var changed = _hasParameterSnapshot
             && (Open != _lastParamOpen || Width != _lastWidth || RailWidth != _lastRailWidth
                 || Variant != _lastVariant || Anchor != _lastAnchor);
@@ -217,7 +218,8 @@
 
         // The first pass runs while the parent header is still rendering; notifying then would ask the
         // shell to render in the middle of its own render.
-        if (changed) Layout?.NotifyStateChanged();
+        if (openChanged) Layout?.NotifyTrackChanged(_open);
+        else if (changed) Layout?.NotifyStateChanged();
     }
 
     /// <summary>Sets the open state, raises <see cref="OpenChanged"/>, and notifies the layout. No-op when unchanged.</summary>
@@ -227,7 +229,7 @@
         _open = open;
         _lastParamOpen = open;
         await OpenChanged.InvokeAsync(_open);
-        Layout?.NotifyStateChanged();
+        Layout?.NotifyTrackChanged(_open);
         StateHasChanged();
     }
 

@@ -99,6 +99,8 @@ internal class VisualStudioTokens
         EasingSubtleDecelerate = CurveDecelerate,
         EasingSubtleAccelerate = CurveAccelerate,
         EasingLinear = "linear",
+        EasingStepEnd = "steps(1, end)",
+        EasingStepStart = "steps(1, start)",
 
         DurationStateChange = "80ms",
         DurationSmallMove = "120ms",

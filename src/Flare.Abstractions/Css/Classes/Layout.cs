@@ -12,9 +12,16 @@ public static class Layout
     /// overlay, so the scrim is shown over the content.</summary>
     public const string ScrimOpen = "flare-layout--scrim-open";
     /// <summary>The <c>flare-layout--animate-track</c> CSS class: the shell animates a change of its
-    /// grid tracks. A track transition is a layout animation, so it re-lays out the whole content
-    /// column every frame; the layout emits it only when <c>FlareLayout.AnimateTrack</c> is set.</summary>
+    /// grid tracks every frame (layout motion A). A track transition is a layout animation, so it
+    /// re-lays out the whole content column on every frame; the layout emits it for
+    /// <c>LayoutMotion.Animated</c>.</summary>
     public const string AnimateTrack = "flare-layout--animate-track";
+    /// <summary>The <c>flare-layout--motion-surface</c> CSS class: the drawer surface moves while the
+    /// grid track changes in one step (layout motion B).</summary>
+    public const string MotionSurface = "flare-layout--motion-surface";
+    /// <summary>The <c>flare-layout--track-closing</c> CSS class: in surface motion the grid track is
+    /// shrinking, so it changes at the start of the transition rather than at its end.</summary>
+    public const string TrackClosing = "flare-layout--track-closing";
     /// <summary>The <c>flare-layout-appbar</c> CSS class.</summary>
     public const string AppBar = "flare-layout-appbar";
     /// <summary>The <c>flare-layout-appbar--dense</c> CSS class: a slimmer app bar.</summary>

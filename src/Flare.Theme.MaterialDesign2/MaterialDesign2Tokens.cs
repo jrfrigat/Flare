@@ -126,6 +126,8 @@ internal static class MaterialDesign2Tokens
         EasingSubtleDecelerate = CurveDecelerate,
         EasingSubtleAccelerate = CurveAccelerate,
         EasingLinear = "linear",
+        EasingStepEnd = "steps(1, end)",
+        EasingStepStart = "steps(1, start)",
 
         DurationStateChange = "100ms",
         DurationSmallMove = "150ms",

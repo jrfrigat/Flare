@@ -32,6 +32,12 @@ public sealed record MotionTokens
     [CssVar(Motion.EasingSubtleAccelerate)] public required string EasingSubtleAccelerate { get; init; }
     /// <summary>Constant-rate curve, for loops and for fades that must not ease.</summary>
     [CssVar(Motion.EasingLinear)] public required string EasingLinear { get; init; }
+    /// <summary>Curve that holds its start value and changes once at the end, for a discrete change
+    /// that waits for a movement to finish.</summary>
+    [CssVar(Motion.EasingStepEnd)] public required string EasingStepEnd { get; init; }
+    /// <summary>Curve that changes once at the start and holds its new value, for a discrete change
+    /// that lands before a movement.</summary>
+    [CssVar(Motion.EasingStepStart)] public required string EasingStepStart { get; init; }
 
 
     /// <summary>Time of the feedback to hover, press and focus: a state layer, a color or an outline changing.</summary>

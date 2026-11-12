@@ -11,6 +11,7 @@ public sealed class FlareLayoutContext
 {
     private readonly List<FlareLayoutDrawer> _drawers = new();
     private bool _isMobile;
+    private bool? _lastTrackOpen;
 
     /// <summary>Raised when the registry, a drawer's state, or the breakpoint changes.</summary>
     public event Action? StateChanged;
@@ -47,6 +48,21 @@ public sealed class FlareLayoutContext
 
     /// <summary>Notifies the layout that a registered drawer changed its open/variant state.</summary>
     public void NotifyStateChanged() => StateChanged?.Invoke();
+
+    /// <summary>
+    /// The open state of the drawer whose last change moved the reserved tracks, or <c>null</c>
+    /// before any drawer has been toggled. Surface motion reads it to decide whether the track grows
+    /// (snap at the end of the transition) or shrinks (snap at its start).
+    /// </summary>
+    public bool? LastTrackOpen => _lastTrackOpen;
+
+    /// <summary>Notifies the layout that a drawer opened or closed and records the direction of the
+    /// track change before asking the shell to render it.</summary>
+    public void NotifyTrackChanged(bool open)
+    {
+        _lastTrackOpen = open;
+        StateChanged?.Invoke();
+    }
 
     /// <summary>
     /// The grid track list for the layout body: one track per in-flow drawer (in markup order),
