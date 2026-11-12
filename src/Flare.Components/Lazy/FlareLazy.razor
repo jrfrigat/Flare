@@ -44,7 +44,9 @@
     /// When true (default) the content stays rendered once revealed -- the cheap, flicker-free mode
     /// that simply defers the initial mount. When false the content is unmounted again whenever it
     /// scrolls out of view, capping memory for very long pages at the cost of re-mounting (and
-    /// losing transient UI state) on each pass.
+    /// losing transient UI state) on each pass. With either mode, a mounted wrapper that is off screen
+    /// skips layout and paint (<c>content-visibility: auto</c>), so it does not charge every reflow
+    /// of the page for content nobody is looking at.
     /// </summary>
     [Parameter] public bool KeepRendered { get; set; } = true;
 

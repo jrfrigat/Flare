@@ -3,6 +3,21 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `FlareLayout.AnimateTrack` brings back the animated grid-track change; it is off by default because a `grid-template-columns` transition re-lays out the whole content column every frame.
+
+### Changed
+
+- `FlareLayout` changes its grid tracks in one frame by default. The animated track remains available through `AnimateTrack`, which the Gallery uses.
+- `FlareLazy` applies `content-visibility: auto` while its mounted content is off screen, so a long page does not re-lay out and repaint every demo on each reflow.
+
+### Fixed
+
+- Expanding or collapsing the Gallery navigation no longer stutters on the DataGrid page: the drawer track no longer forces a per-frame layout of every mounted demo.
+
 ## [0.56.0] - 2026-11-11
 
 ### Added

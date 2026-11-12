@@ -8,7 +8,7 @@
    its own @bind-Open), and a FlareLayoutContent. The layout reserves a grid track for every in-flow
    drawer so the content is pushed aside rather than covered. *@
 <CascadingValue Value="_ctx" IsFixed="true">
-    <div class="@BuildCssClass(_mobileClass, _scrimClass)"
+    <div class="@BuildCssClass(_mobileClass, _scrimClass, _animateTrackClass)"
          style="@($"{Css.Tokens.LocalVars.LayoutCols}:{_ctx.GridTemplateColumns};{Style}")"
          @attributes="AdditionalAttributes">
         @ChildContent
@@ -32,9 +32,18 @@
     /// </summary>
     [Parameter] public bool Responsive { get; set; } = true;
 
+    /// <summary>
+    /// Whether the shell animates a change of its grid tracks when a drawer opens or collapses.
+    /// Off by default: a track transition is a layout animation, so every frame re-lays out the whole
+    /// content column, and a page with heavy mounted content drops frames. Turn it on only when the
+    /// page is known to be light; leaving it off keeps the layout change to one frame.
+    /// </summary>
+    [Parameter] public bool AnimateTrack { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Layout.Root;
     private string _mobileClass => _isMobile ? Css.Classes.Layout.Mobile : string.Empty;
     private string _scrimClass => _ctx.AnyOverlayOpen ? Css.Classes.Layout.ScrimOpen : string.Empty;
+    private string? _animateTrackClass => AnimateTrack ? Css.Classes.Layout.AnimateTrack : null;
 
     private readonly FlareLayoutContext _ctx = new();
     private IAsyncDisposable? _subscription;

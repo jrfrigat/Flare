@@ -2,4 +2,19 @@
    near the viewport. The min-height that reserves space while hidden is applied inline. */
 .flare-lazy {
     display: block;
+    /* Mounting is only half the cost of a demo page: a mounted section that has scrolled away still
+       takes part in every reflow and repaint of the document. On the Gallery's DataGrid page that was
+       31 sections, some 45 000-90 000 px tall, and a nav-drawer track animation re-laid all of them
+       out per frame. `auto` skips layout, paint and hit-testing while the wrapper is off screen and
+       lays it out again as it approaches the viewport. The remembered size (`auto`) is the size the
+       wrapper last had when laid out, so after the first pass heights and the scrollbar do not move. */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+}
+
+/* Printing walks the whole document, including sections that are off screen now. */
+@media print {
+    .flare-lazy {
+        content-visibility: visible;
+    }
 }

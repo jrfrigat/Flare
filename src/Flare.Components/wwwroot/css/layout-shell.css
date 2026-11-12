@@ -20,10 +20,24 @@
     overflow: hidden;
     background: var(--flare-layout-shell-bg);
     color: var(--flare-color-on-background);
-    /* Animate track WIDTH changes (rail collapse/expand, push open/close). A change in track COUNT
-       (a drawer mounting/unmounting, or the mobile switch) snaps -- which is what we want. */
+}
+
+/* Opt-in track animation. A transition on grid-template-columns is a layout animation: every frame
+   changes the width of the content track, so the browser re-lays out the whole content column, and
+   the cost is whatever the page happens to have mounted. Measured on the Gallery's DataGrid page with
+   all demos mounted, the animated track produced 11 frames over 20 ms in a 300 ms open (max 50 ms),
+   all of it layout; the same toggle with the track changing in one frame did one reflow and no
+   per-frame work. A track COUNT change (a drawer mounting/unmounting, or the mobile switch) always
+   snaps, which is what we want. FlareLayout.AnimateTrack emits this class. */
+.flare-layout--animate-track {
     transition: grid-template-columns var(--flare-motion-duration-enter-medium)
                 var(--flare-motion-easing-emphasized);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flare-layout--animate-track {
+        transition: none;
+    }
 }
 
 /* AppBar spans the full width in row 1. */

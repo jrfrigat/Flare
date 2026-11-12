@@ -11,6 +11,10 @@ public static class Layout
     /// <summary>The <c>flare-layout--scrim-open</c> CSS class: a drawer is currently a floating
     /// overlay, so the scrim is shown over the content.</summary>
     public const string ScrimOpen = "flare-layout--scrim-open";
+    /// <summary>The <c>flare-layout--animate-track</c> CSS class: the shell animates a change of its
+    /// grid tracks. A track transition is a layout animation, so it re-lays out the whole content
+    /// column every frame; the layout emits it only when <c>FlareLayout.AnimateTrack</c> is set.</summary>
+    public const string AnimateTrack = "flare-layout--animate-track";
     /// <summary>The <c>flare-layout-appbar</c> CSS class.</summary>
     public const string AppBar = "flare-layout-appbar";
     /// <summary>The <c>flare-layout-appbar--dense</c> CSS class: a slimmer app bar.</summary>

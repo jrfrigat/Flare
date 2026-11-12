@@ -8,6 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AnimateTrack` | `bool` | `false` | Parameter |  | Whether the shell animates a change of its grid tracks when a drawer opens or collapses. Off by default: a track transition is a layout animation, so every frame re-lays out the whole content column, and a page with heavy mounted content drops frames. Turn it on only when the page is known to be light; leaving it off keeps the layout change to one frame. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The composed layout: a FlareLayoutAppBar, one or more FlareLayoutDrawer, and a FlareLayoutContent. Place start drawers before the content and end drawers after it (markup order = visual order). |
 | `Responsive` | `bool` | `true` | Parameter |  | When true (default) the layout watches the viewport and turns push drawers into off-canvas overlays below the mobile breakpoint (960px); set false to manage drawers entirely yourself. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
