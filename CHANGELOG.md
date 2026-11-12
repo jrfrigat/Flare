@@ -3,11 +3,11 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.57.0] - 2026-11-12
 
 ### Added
 
-- `MotionTokens` gains `EasingStepEnd` and `EasingStepStart`, the curves that hold a value and change it in one discrete step, which `LayoutMotion.Surface` uses to change a grid track at the end of an opening and at the start of a closing movement.
+- `MotionTokens` gains `EasingStepEnd` and `EasingStepStart`, the curves that hold a value and change it in one discrete step, which `LayoutMotion.Surface` uses to change a grid track at the start of an opening movement and at the end of a closing one.
 - `FlareLayout.Motion` chooses how the shell moves when a drawer opens or closes. `LayoutMotion.Animated` (the default) keeps the long-standing animated grid track, which re-lays out the content column every frame; `LayoutMotion.Instant` removes the motion; `LayoutMotion.Surface` moves the drawer surface on the compositor and changes the track in one step, so heavy content is re-laid out once per toggle instead of every frame. On opening the content makes room before the surface arrives; on closing the surface leaves before the content follows, so the panel is never painted under the page. A floating drawer (`DrawerVariant.Temporary`, or any drawer on a mobile layout) is an overlay and keeps its own slide in every mode.
 
 ### Changed
