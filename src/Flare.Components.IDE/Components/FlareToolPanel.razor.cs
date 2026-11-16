@@ -16,6 +16,9 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
     /// <summary>The enclosing IDE layout, when this panel is used in one of its regions.</summary>
     [CascadingParameter] internal FlareIdeLayout? Layout { get; set; }
 
+    /// <summary>The enclosing tabbed group, when this panel is one of its tabs.</summary>
+    [CascadingParameter] internal FlareToolPanelGroup? Group { get; set; }
+
     /// <summary>Panel title displayed in the header (and on the collapsed rail inside a layout).</summary>
     [Parameter] public string? Title { get; set; }
 
@@ -45,17 +48,33 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
 
     protected override string ComponentCssClass => Css.Classes.Ide.ToolPanel.Root;
 
+    private readonly string _tabSuffix = Guid.NewGuid().ToString("N")[..8];
+    internal string TabId => $"flare-toolpanel-tab-{_tabSuffix}";
+    internal string PanelId => $"flare-toolpanel-panel-{_tabSuffix}";
+    internal ElementReference TabElement { get; set; }
+
+    private FlareToolPanelGroup? _registeredGroup;
+
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
+        if (!ReferenceEquals(_registeredGroup, Group))
+        {
+            _registeredGroup?.Unregister(this);
+            _registeredGroup = Group;
+        }
+        _registeredGroup?.Register(this);
+
         // Inside a layout the panel only renders while expanded; report its title/mode so the layout
-        // can label the collapsed rail and decide docked-vs-flyout sizing.
-        Layout?.RegisterPanel(this, Position, Title, Mode);
+        // can label the collapsed rail and decide docked-vs-flyout sizing. A group owns the region
+        // position, so its panels do not repeat it.
+        Layout?.RegisterPanel(this, Group?.Position ?? Position, Title, Mode);
     }
 
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
     {
+        _registeredGroup?.Unregister(this);
         Layout?.UnregisterPanel(this);
         return base.DisposeAsync();
     }

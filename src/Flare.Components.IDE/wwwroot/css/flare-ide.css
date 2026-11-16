@@ -153,7 +153,8 @@
     overflow: auto;
 }
 
-.flare-ide-layout__panel-body > .flare-toolpanel {
+.flare-ide-layout__panel-body > .flare-toolpanel,
+.flare-ide-layout__panel-body > .flare-toolpanel-group {
     flex: 1 1 0;
     min-height: 0;
     height: auto;
@@ -635,6 +636,68 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+}
+
+/* Several tool panels as one tabbed area. Panel bodies stay mounted and hidden; the group header
+   carries the collapse button because the individual panel headers are replaced by tabs. */
+.flare-toolpanel-group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.flare-toolpanel-group__header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+}
+
+.flare-toolpanel-group__tabs {
+    display: flex;
+    flex: 1;
+    min-inline-size: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.flare-toolpanel-group__tab {
+    flex-shrink: 0;
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-ide-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-ide-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
+}
+
+.flare-toolpanel-group__tab:hover {
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
+}
+
+.flare-toolpanel-group__tab--active {
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    border-bottom-color: var(--flare-ide-primary, var(--flare-color-primary));
+}
+
+.flare-toolpanel-group__body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.flare-toolpanel-group__body > .flare-toolpanel {
+    height: 100%;
 }
 
 .flare-toolpanel__header {

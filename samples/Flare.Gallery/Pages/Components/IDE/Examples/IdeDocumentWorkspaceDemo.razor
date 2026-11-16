@@ -12,10 +12,15 @@
             <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
         </MenuBar>
         <LeftToolPanel>
-            <FlareToolPanel Title="@GalleryStrings.IdeWorkspace_Commands">
-                <FlareShortcutEditor @bind-Value="_shortcut" DefaultValue="ctrl+shift+p"
-                                     AssignedShortcuts="@(new[] { "ctrl+shift+k" })" />
-            </FlareToolPanel>
+            <FlareToolPanelGroup Position="ToolPanelPosition.Left">
+                <FlareToolPanel Title="@GalleryStrings.IdeWorkspace_Commands">
+                    <FlareShortcutEditor @bind-Value="_shortcut" DefaultValue="ctrl+shift+p"
+                                         AssignedShortcuts="@(new[] { "ctrl+shift+k" })" />
+                </FlareToolPanel>
+                <FlareToolPanel Title="@GalleryStrings.IdeWorkspace_Open">
+                    <FlareTextField Label="@GalleryStrings.IdeWorkspace_Notes" />
+                </FlareToolPanel>
+            </FlareToolPanelGroup>
         </LeftToolPanel>
         <ChildContent>
             <FlareStack Padding="FlareSpacing.Large">

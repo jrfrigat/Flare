@@ -1,30 +1,50 @@
 @namespace Flare.Components.IDE
 @inherits FlareLocalizedComponentBase
 
-<div class="@Css.Classes.Ide.ToolPanel.Root @BuildCssClass(_positionClass, _collapsedClass)"
-     style="@_rootStyle"
-     @attributes="AdditionalAttributes">
-    <div class="@Css.Classes.Ide.ToolPanel.Header">
-        @if (!string.IsNullOrEmpty(Title))
+@if (Group is null)
+{
+    <div class="@Css.Classes.Ide.ToolPanel.Root @BuildCssClass(_positionClass, _collapsedClass)"
+         style="@_rootStyle"
+         @attributes="AdditionalAttributes">
+        <div class="@Css.Classes.Ide.ToolPanel.Header">
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <span class="@Css.Classes.Ide.ToolPanel.Title">@Title</span>
+            }
+            @if (ShowToolbar)
+            {
+                <div class="@Css.Classes.Ide.ToolPanel.Toolbar">
+                    @ToolbarContent
+                </div>
+            }
+            <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
+                         OnClick="@ToggleCollapsed"
+                         AriaLabel="@(Collapsed ? IdeText["ToolPanel_Expand"].Value : IdeText["ToolPanel_Collapse"].Value)">
+                <FlareIconView Value="@(Collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandLess)" Size="1rem" />
+            </FlareButton>
+        </div>
+        @if (!Collapsed)
         {
-            <span class="@Css.Classes.Ide.ToolPanel.Title">@Title</span>
-        }
-        @if (ShowToolbar)
-        {
-            <div class="@Css.Classes.Ide.ToolPanel.Toolbar">
-                @ToolbarContent
+            <div class="@Css.Classes.Ide.ToolPanel.Content">
+                @ChildContent
             </div>
         }
-        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
-                     OnClick="@ToggleCollapsed"
-                     AriaLabel="@(Collapsed ? IdeText["ToolPanel_Expand"].Value : IdeText["ToolPanel_Collapse"].Value)">
-            <FlareIconView Value="@(Collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandLess)" Size="1rem" />
-        </FlareButton>
     </div>
-    @if (!Collapsed)
-    {
+}
+else
+{
+    <div class="@Css.Classes.Ide.ToolPanel.Root" role="tabpanel" id="@PanelId" aria-labelledby="@TabId"
+         style="@Style" hidden="@(!Group.IsActive(this))" @attributes="AdditionalAttributes">
+        @if (ShowToolbar)
+        {
+            <div class="@Css.Classes.Ide.ToolPanel.Header">
+                <div class="@Css.Classes.Ide.ToolPanel.Toolbar">
+                    @ToolbarContent
+                </div>
+            </div>
+        }
         <div class="@Css.Classes.Ide.ToolPanel.Content">
             @ChildContent
         </div>
-    }
-</div>
+    </div>
+}

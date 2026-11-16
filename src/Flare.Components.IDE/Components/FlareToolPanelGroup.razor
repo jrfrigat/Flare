@@ -1,0 +1,35 @@
+@namespace Flare.Components.IDE
+@inherits FlareLocalizedComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.ToolPanelGroup.Header">
+        <div class="@Css.Classes.Ide.ToolPanelGroup.Tabs" role="tablist" aria-orientation="horizontal"
+             aria-label="@IdeText["ToolPanelGroup_Label"].Value" @ref="_bar"
+             data-flare-keyboard-fallback="@(_keyboardRegistered ? null : "true")"
+             @onkeydown="HandleFallbackKeyDownAsync">
+            @foreach (var panel in Panels)
+            {
+                var active = IsActive(panel);
+                <button @key="panel" type="button" class="@TabClass(panel)" id="@panel.TabId"
+                        role="tab" aria-selected="@(active ? "true" : "false")"
+                        aria-controls="@panel.PanelId" tabindex="@(active ? 0 : -1)"
+                        @ref="panel.TabElement" @onclick="@(() => SelectAsync(panel, focus: false))">
+                    @TabLabel(panel)
+                </button>
+            }
+        </div>
+        @if (Layout is not null)
+        {
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                         OnClick="CollapseAsync"
+                         AriaLabel="@IdeText["ToolPanel_Collapse"].Value">
+                <FlareIconView Value="FlareIcons.ExpandLess" Size="1rem" />
+            </FlareButton>
+        }
+    </div>
+    <div class="@Css.Classes.Ide.ToolPanelGroup.Body">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
