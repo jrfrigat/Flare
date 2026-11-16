@@ -1,6 +1,18 @@
 @namespace Flare.Components.IDE
 @inherits FlareComponentBase
 
-<div class="@Css.Classes.Ide.MenuBar.Root" style="@Style" @attributes="AdditionalAttributes">
-    @ChildContent
-</div>
+<CascadingValue Value="_context" IsFixed="true">
+    <div class="@BuildCssClass(_openClass)" style="@Style" @attributes="AdditionalAttributes">
+        @* One backdrop for the whole bar: the open menu does not render its own, and flare-ide.css
+           raises the bar's menus above this element so the next title stays clickable. *@
+        @if (_context.HasOpenMenu)
+        {
+            <div data-flare-backdrop class="@Css.Classes.Menu.Backdrop"
+                 @onclick="CloseOpenMenuAsync"
+                 @oncontextmenu="CloseOpenMenuAsync"
+                 @oncontextmenu:preventDefault="true"
+                 aria-hidden="true"></div>
+        }
+        @ChildContent
+    </div>
+</CascadingValue>

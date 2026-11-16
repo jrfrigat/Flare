@@ -121,7 +121,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareMaskedField`](components/flare-components-flaremaskedfield.md)
 - [`FlareMediaQuery`](components/flare-components-flaremediaquery.md)
 - [`FlareMenu`](components/flare-components-flaremenu.md)
-- [`FlareMenuBar`](components/flare-components-ide-flaremenubar.md) — Horizontal menu bar rendered below the ribbon. Typically contains top-level menus (File, Edit, View, etc.) using FlareMenu components. Composed from base Flare CSS classes - no custom tokens.
+- [`FlareMenuBar`](components/flare-components-ide-flaremenubar.md) — Horizontal menu bar rendered below the ribbon. It coordinates the top-level FlareMenu instances it contains through one shared FlareMenuBarContext: only one menu is open at a time, another top-level menu switches on click or hover, and a single backdrop closes the open menu on an outside click. Typically contains File, Edit, View, etc.; composed from base Flare CSS classes - no custom tokens.
 - [`FlareMenuGroup`](components/flare-components-flaremenugroup.md)
 - [`FlareMenuItem`](components/flare-components-flaremenuitem.md)
 - [`FlareMenuSeparator`](components/flare-components-flaremenuseparator.md) — A non-interactive rule between groups of entries in a FlareMenu or FlareSubMenu panel. It reports role="separator" and takes no part in the menu's keyboard model: it does not register as an entry, so the roving highlight skips it, and it has no tab stop. Its look and spacing come from theme tokens.

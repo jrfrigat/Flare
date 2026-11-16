@@ -1,7 +1,7 @@
 @using Flare.Components.IDE
 
-@* FlareMenuBar: a thin horizontal bar of top-level menus (File / Edit / View). Each menu is a base
-   FlareMenu whose activator is a text button and whose items are FlareMenuItem entries. *@
+@* FlareMenuBar: a real top-level menu bar. The bar coordinates its FlareMenu activators: one menu is
+   open at a time, and clicking or hovering another title switches straight to it in one step. *@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
         <FlareMenuBar>
@@ -10,9 +10,11 @@
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" @attributes="context.Attributes">File</FlareButton>
                 </Activator>
                 <ChildContent>
-                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NoteAdd" OnClick="@(() => Set("File > New"))">New</FlareMenuItem>
-                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.FolderOpen" OnClick="@(() => Set("File > Open"))">Open</FlareMenuItem>
-                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Save" OnClick="@(() => Set("File > Save"))">Save</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NoteAdd" Shortcut="Ctrl+N" OnClick="@(() => Set("File > New"))">New</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.FolderOpen" Shortcut="Ctrl+O" OnClick="@(() => Set("File > Open"))">Open</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Save" Shortcut="Ctrl+S" OnClick="@(() => Set("File > Save"))">Save</FlareMenuItem>
+                    <FlareMenuSeparator />
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Logout" Shortcut="Alt+F4" OnClick="@(() => Set("File > Exit"))">Exit</FlareMenuItem>
                 </ChildContent>
             </FlareMenu>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="Edit menu">
@@ -20,9 +22,9 @@
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" @attributes="context.Attributes">Edit</FlareButton>
                 </Activator>
                 <ChildContent>
-                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" OnClick="@(() => Set("Edit > Cut"))">Cut</FlareMenuItem>
-                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCopy" OnClick="@(() => Set("Edit > Copy"))">Copy</FlareMenuItem>
-                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentPaste" OnClick="@(() => Set("Edit > Paste"))">Paste</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" Shortcut="Ctrl+X" OnClick="@(() => Set("Edit > Cut"))">Cut</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCopy" Shortcut="Ctrl+C" OnClick="@(() => Set("Edit > Copy"))">Copy</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentPaste" Shortcut="Ctrl+V" OnClick="@(() => Set("Edit > Paste"))">Paste</FlareMenuItem>
                 </ChildContent>
             </FlareMenu>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="View menu">
@@ -32,6 +34,8 @@
                 <ChildContent>
                     <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.AccountTree" OnClick="@(() => Set("View > Solution Explorer"))">Solution Explorer</FlareMenuItem>
                     <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Terminal" OnClick="@(() => Set("View > Terminal"))">Terminal</FlareMenuItem>
+                    <FlareMenuSeparator />
+                    <FlareMenuItem Checked="_wordWrap" AutoClose="false" Shortcut="Alt+Z" OnClick="@(() => _wordWrap = !_wordWrap)">Word wrap</FlareMenuItem>
                 </ChildContent>
             </FlareMenu>
         </FlareMenuBar>
@@ -44,6 +48,7 @@
 
 @code {
     private string _status = "(none)";
+    private bool _wordWrap;
 
     private void Set(string action) => _status = action;
 }

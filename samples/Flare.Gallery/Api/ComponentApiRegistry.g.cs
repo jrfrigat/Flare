@@ -4680,7 +4680,7 @@ public static class ComponentApiRegistry
             @"FlareMenuBar",
             @"Flare.Components.IDE.FlareMenuBar",
             @"Flare.Components.IDE",
-            @"Horizontal menu bar rendered below the ribbon. Typically contains top-level menus (File, Edit, View, etc.) using FlareMenu components. Composed from base Flare CSS classes - no custom tokens.",
+            @"Horizontal menu bar rendered below the ribbon. It coordinates the top-level FlareMenu instances it contains through one shared FlareMenuBarContext: only one menu is open at a time, another top-level menu switches on click or hover, and a single backdrop closes the open menu on an outside click. Typically contains File, Edit, View, etc.; composed from base Flare CSS classes - no custom tokens.",
             null,
             new ApiParameterInfo[]
             {

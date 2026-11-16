@@ -8,13 +8,19 @@
        cannot take the focus, and ARIA on such an element announces nothing at all. *@
     <div class="@Css.Classes.Menu.Activator" @ref="_activatorEl"
          @onclick="HandleActivatorClick"
+         @onmouseenter="HandleActivatorMouseEnter"
          @oncontextmenu="HandleActivatorContextMenu"
          @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)">
         @Activator?.Invoke(ActivatorContext)
     </div>
-    @if (_open)
+    @* A coordinated menu (inside a bar) leaves the backdrop to the bar: one element covers the page
+       and the bar's own menus are raised above it, so another title stays clickable. *@
+    @if (_open && MenuBarContext is null)
     {
         <div data-flare-backdrop class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
+    }
+    @if (_open)
+    {
         <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
              aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
              @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="_ownsKeyboard">
@@ -101,6 +107,14 @@
     private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
+    // Present when this menu sits inside a coordinating bar; then the bar owns which menu is open and
+    // the shared backdrop, and a pointer entering another title switches menus.
+    [CascadingParameter] private FlareMenuBarContext? MenuBarContext { get; set; }
+    // A top-level menu opened by the pointer moving onto its title. A click that follows confirms that
+    // switch instead of toggling the menu shut.
+    private bool _openedByHover;
+    // Set while another menu takes over: focus belongs to the new menu, not back on this activator.
+    private bool _suppressActivatorFocus;
     // What the activator slot is handed. Rebuilt only when the open state moves: the slot re-renders
     // together with its parent, and a fresh dictionary every frame would allocate for three values that
     // did not change.
@@ -142,6 +156,7 @@
             if (_openedByKeyboard)
                 _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
             try { await _panelEl.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
+            _suppressActivatorFocus = false;
             StateHasChanged();
         }
         else if (!_open && _wasOpen)
@@ -151,8 +166,11 @@
             // document body and a keyboard user resumes from the top of the page instead of from the
             // button they pressed. The menu asks the wrapper for its first focusable element rather than
             // holding a reference of its own, because which element the activator is belongs to whoever
-            // filled the slot.
-            try { await Overlay.FocusFirstAsync(_activatorEl); } catch (JSException) { }
+            // filled the slot. A menu that closed because another took over skips this: the new menu
+            // owns the focus now.
+            if (!_suppressActivatorFocus)
+                try { await Overlay.FocusFirstAsync(_activatorEl); } catch (JSException) { }
+            _suppressActivatorFocus = false;
         }
 
         // The open menu owns Escape: it registers as the topmost layer, so a dialog around it stays open even
@@ -185,6 +203,9 @@
     public override async ValueTask DisposeAsync()
     {
         _disposing = true;
+        // A menu removed while it is the bar's open one must give that state up: the bar would otherwise
+        // keep a backdrop pointing at a component that no longer exists.
+        MenuBarContext?.NotifyClosed(this);
         if (_escapeLayerRegistered)
         {
             try { await Overlay.RemovePopupLayerAsync(_panelId); }
@@ -234,8 +255,30 @@
     // Left-click activation only toggles when Activation is LeftClick; RightClick uses oncontextmenu.
     private async Task HandleActivatorClick(MouseEventArgs e)
     {
-        if (Activation == MenuActivation.LeftClick)
-            await Toggle(e);
+        if (Activation != MenuActivation.LeftClick) return;
+        // The pointer already switched to this menu on the way in; the click confirms that switch
+        // instead of toggling the menu shut and making the user click a third time.
+        if (_open && _openedByHover)
+        {
+            _openedByHover = false;
+            return;
+        }
+        await Toggle(e);
+    }
+
+    // A real menu bar opens another top-level menu as soon as the pointer reaches its title while one
+    // is already open; with nothing open, hovering a title does nothing and the user clicks it.
+    private async Task HandleActivatorMouseEnter()
+    {
+        if (Activation != MenuActivation.LeftClick) return;
+        if (_open || MenuBarContext is not { HasOpenMenu: true } bar) return;
+        _openedByHover = true;
+        _openedByKeyboard = false;
+        _cursorX = null;
+        _cursorY = null;
+        _open = true;
+        await bar.NotifyOpenedAsync(this);
+        await OnToggle.InvokeAsync(true);
     }
 
     private async Task HandleActivatorContextMenu(MouseEventArgs e)
@@ -262,7 +305,9 @@
         }
         // Enter/Space on the activator raises a click with no click count; a real press reports at least one.
         _openedByKeyboard = e.Detail == 0;
+        _openedByHover = false;
         _open = true;
+        if (MenuBarContext is { } bar) await bar.NotifyOpenedAsync(this);
         await OnToggle.InvokeAsync(true);
         StateHasChanged();
     }
@@ -274,7 +319,9 @@
         // Opened from code, with no way to know what the user was doing: leave the highlight off, the same
         // as a click. A keyboard user's first arrow key still lands on the first item.
         _openedByKeyboard = false;
+        _openedByHover = false;
         _open = true;
+        if (MenuBarContext is { } bar) await bar.NotifyOpenedAsync(this);
         await OnToggle.InvokeAsync(true);
         StateHasChanged();
     }
@@ -285,6 +332,8 @@
     {
         if (!_open) return;
         _open = false;
+        _openedByHover = false;
+        MenuBarContext?.NotifyClosed(this);
         _items.Clear();
         _focusedItem = null;
         _openedByKeyboard = false;
@@ -295,6 +344,15 @@
 #pragma warning disable BL0012 // Public API: callers outside the renderer need this render.
         StateHasChanged();
 #pragma warning restore BL0012
+    }
+
+    // Called by the bar when another top-level menu takes over. The focus must not snap back to this
+    // menu's activator: the replacement is about to move it into its own panel.
+    internal async Task CloseFromMenuBarAsync()
+    {
+        if (!_open) return;
+        _suppressActivatorFocus = true;
+        await CloseAsync();
     }
 
     /// <summary>Registers a child <see cref="FlareMenuItem"/> for keyboard navigation. Called by items on init.</summary>
