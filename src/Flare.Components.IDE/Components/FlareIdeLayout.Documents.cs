@@ -5,6 +5,8 @@ namespace Flare.Components.IDE;
 
 public partial class FlareIdeLayout
 {
+    [Inject] private IJSRuntime Js { get; set; } = default!;
+
     /// <summary>Enables docking and supplies documents keyed within this layout.</summary>
     [Parameter] public IReadOnlyList<IdeDocument>? Documents { get; set; }
 
@@ -60,6 +62,8 @@ public partial class FlareIdeLayout
     private string? _draggedDocument;
     private IdeDocumentMove? _pendingDocumentMove;
     private string? _focusDocument;
+    private IJSObjectReference? _ideModule;
+    private bool _dragModuleRequested;
 
     private bool Docking => Documents is not null;
 
@@ -130,13 +134,23 @@ public partial class FlareIdeLayout
 
     private void EndDocumentDrag() => _draggedDocument = null;
 
-    private Task DropDocumentAsync(IdeDocumentRegion destination)
+    private async Task DropDocumentAsync(IdeDocumentRegion destination)
     {
         var key = _draggedDocument;
         EndDocumentDrag();
-        return key is not null && FindDocument(key) is { } document
-            ? RequestDocumentMoveAsync(document, destination)
-            : Task.CompletedTask;
+
+        // A tab dragged from a host FlareDocumentTabs carries its key through the IDE module; the
+        // layout's own dock tabs use the field above. Reading even when the field won clears a stale
+        // external key on an internal drop.
+        if (_ideModule is not null)
+        {
+            try { key ??= await _ideModule.InvokeAsync<string?>("takeDroppedDocument"); }
+            catch (JSException) { }
+            catch (ObjectDisposedException) { }
+        }
+
+        if (key is not null && FindDocument(key) is { } document)
+            await RequestDocumentMoveAsync(document, destination);
     }
 
     private async Task RequestDocumentMoveAsync(IdeDocument document, IdeDocumentRegion destination)
@@ -153,10 +167,25 @@ public partial class FlareIdeLayout
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (Docking && _ideModule is null && !_dragModuleRequested)
+            await RegisterDragSourceAsync();
+
         if (_focusDocument is not { } key || !_documentHeaders.TryGetValue(key, out var header)) return;
         _focusDocument = null;
         try { await header.FocusAsync(preventScroll: false); }
         catch (InvalidOperationException) { }
         catch (JSException) { }
+    }
+
+    private async Task RegisterDragSourceAsync()
+    {
+        _dragModuleRequested = true;
+        try
+        {
+            _ideModule = await Js.InvokeAsync<IJSObjectReference>("import", IdeInterop.ModulePath);
+            await _ideModule.InvokeVoidAsync("registerDocumentDragSource");
+        }
+        catch (InvalidOperationException) { _ideModule = null; }
+        catch (JSException) { _ideModule = null; }
     }
 }

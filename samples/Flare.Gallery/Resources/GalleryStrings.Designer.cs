@@ -14662,7 +14662,7 @@ namespace Flare.Gallery.Resources {
         public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
         /// <summary>Document workspace</summary>
         public static string IdeWorkspace_Title { get { return ResourceManager.GetString("IdeWorkspace_Title", resourceCulture); } }
-        /// <summary>A host-owned main tab header controls the center documents and returns to the main content; switch the left tool tabs, dock documents to the sides, close them from their dock tabs, and edit shortcuts without running commands.</summary>
+        /// <summary>A host-owned tab strip controls the documents: drag a tab onto a side region or use its move menu, close it, or return to the main content; the left dock has tabbed tools and shortcuts can be edited without running commands.</summary>
         public static string IdeWorkspace_Description { get { return ResourceManager.GetString("IdeWorkspace_Description", resourceCulture); } }
         /// <summary>Activate document</summary>
         public static string IdeWorkspace_Activate { get { return ResourceManager.GetString("IdeWorkspace_Activate", resourceCulture); } }
@@ -14672,6 +14672,10 @@ namespace Flare.Gallery.Resources {
         public static string IdeWorkspace_Main { get { return ResourceManager.GetString("IdeWorkspace_Main", resourceCulture); } }
         /// <summary>Main content area</summary>
         public static string IdeWorkspace_MainContent { get { return ResourceManager.GetString("IdeWorkspace_MainContent", resourceCulture); } }
+        /// <summary>Left</summary>
+        public static string IdeWorkspace_Left { get { return ResourceManager.GetString("IdeWorkspace_Left", resourceCulture); } }
+        /// <summary>Right</summary>
+        public static string IdeWorkspace_Right { get { return ResourceManager.GetString("IdeWorkspace_Right", resourceCulture); } }
         /// <summary>Notes</summary>
         public static string IdeWorkspace_Notes { get { return ResourceManager.GetString("IdeWorkspace_Notes", resourceCulture); } }
         /// <summary>Commands</summary>

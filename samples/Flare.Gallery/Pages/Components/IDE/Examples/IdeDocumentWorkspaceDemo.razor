@@ -2,6 +2,21 @@
 @inherits LocalizedPage
 
 <FlareStack Gap="FlareSpacing.Medium">
+    <FlareDocumentTabs ActiveKey="_stripActive" ActiveKeyChanged="SelectFromStrip"
+                        Reorderable="true" Dockable="true" OnCloseRequested="CloseDocumentKey"
+                        DockTargets="DockTargets" OnDockRequested="DockFromTab">
+        <ContextMenuContent Context="key">
+            <FlareMenuItem OnClick="@(() => SelectFromStrip(key))">@GalleryStrings.IdeWorkspace_Activate</FlareMenuItem>
+            <FlareMenuItem OnClick="@(() => CloseDocumentKey(key))">@GalleryStrings.IdeWorkspace_Close</FlareMenuItem>
+        </ContextMenuContent>
+        <ChildContent>
+            @foreach (var document in _documents)
+            {
+                <FlareDocumentTab @key="document.Key" Key="@document.Key" Title="@document.Title"
+                                  Modified="@document.Modified" />
+            }
+        </ChildContent>
+    </FlareDocumentTabs>
     <FlareIdeLayout Height="34rem" LeftPanelWidth="18rem" RightPanelWidth="12rem" BottomPanelHeight="15rem"
                     Documents="_documents" ActiveDocuments="_activeDocuments"
                     OnActiveDocumentChanged="SelectionChanged" OnDocumentMove="MoveDocument"
@@ -45,10 +60,17 @@
     private string? _shortcut = "ctrl+shift+p";
     private IReadOnlyList<string>? _groupOrder;
     private IdeDiagnostic? _selected;
+    private string? _stripActive = "main";
     private IdeDocument[] _documents =
         [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right, Modified: true)];
     private Dictionary<IdeDocumentRegion, string?> _activeDocuments =
         new() { [IdeDocumentRegion.Center] = "main" };
+
+    private IReadOnlyList<FlareDocumentDockTarget> DockTargets =>
+    [
+        new("left", GalleryStrings.IdeWorkspace_Left),
+        new("right", GalleryStrings.IdeWorkspace_Right)
+    ];
 
     private RenderFragment CenterHeader => @<FlareStack Row="true" Align="FlareAlignItems.Center"
         Gap="FlareSpacing.XSmall" Padding="FlareSpacing.XSmall">
@@ -82,9 +104,13 @@
     private RenderFragment StatusContent => @<FlareText>@(_selected is { } entry
         ? $"{entry.DocumentTitle}:{entry.Line}:{entry.Column}" : GalleryStrings.IdeWorkspace_Ready)</FlareText>;
 
-    private void MoveDocument(IdeDocumentMove request) => _documents = _documents
-        .Select(document => document.Key == request.Document.Key ? document with { Region = request.Destination } : document)
-        .ToArray();
+    private void MoveDocument(IdeDocumentMove request)
+    {
+        _documents = _documents
+            .Select(document => document.Key == request.Document.Key ? document with { Region = request.Destination } : document)
+            .ToArray();
+        SelectionChanged(new IdeDocumentSelection(request.Destination, request.Document.Key));
+    }
 
     private bool KeepDocumentMounted(IdeDocument document) => document.Key == "guide";
 
@@ -98,8 +124,36 @@
 
     private void SelectCenter(string key) => SelectionChanged(new IdeDocumentSelection(IdeDocumentRegion.Center, key));
 
-    private void CloseDocument(IdeDocument document) =>
+    private void SelectFromStrip(string key)
+    {
+        _stripActive = key;
+        if (_documents.FirstOrDefault(document => document.Key == key) is { } document)
+            SelectionChanged(new IdeDocumentSelection(document.Region, document.Key));
+    }
+
+    private void DockFromTab(FlareDocumentDockRequest request)
+    {
+        if (_documents.FirstOrDefault(document => document.Key == request.DocumentKey) is not { } document)
+            return;
+        var destination = request.Target.Key == "left" ? IdeDocumentRegion.Left : IdeDocumentRegion.Right;
+        MoveDocument(new IdeDocumentMove(document, destination));
+    }
+
+    private void CloseDocumentKey(string key)
+    {
+        if (_documents.FirstOrDefault(document => document.Key == key) is { } document)
+            CloseDocument(document);
+    }
+
+    private void CloseDocument(IdeDocument document)
+    {
         _documents = _documents.Where(item => item.Key != document.Key).ToArray();
+        _activeDocuments = _activeDocuments.ToDictionary(
+            pair => pair.Key,
+            pair => pair.Value == document.Key ? null : pair.Value);
+        if (_stripActive == document.Key)
+            _stripActive = _documents.FirstOrDefault()?.Key;
+    }
 
     private RenderFragment<IdeDocument> DocumentMenu => document => @<FlareMenuItem OnClick="@(() => CloseDocument(document))">
         @GalleryStrings.IdeWorkspace_Close

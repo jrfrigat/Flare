@@ -10,6 +10,7 @@ namespace Flare.Components.IDE;
 public partial class FlareDocumentTabs
 {
     [Inject] private IUiJsService Ui { get; set; } = default!;
+    [Inject] private IJSRuntime Js { get; set; } = default!;
 
     /// <summary>Declares the document tabs, using a Blazor key for each dynamically rendered document.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -34,6 +35,20 @@ public partial class FlareDocumentTabs
 
     /// <summary>Whether documents can be moved within the strip using drag or Alt+Arrow.</summary>
     [Parameter] public bool Reorderable { get; set; }
+
+    /// <summary>Makes every tab a drag source for <see cref="FlareIdeLayout"/> docking even when
+    /// <see cref="Reorderable"/> is off. Each dockable tab needs an explicit <see cref="FlareDocumentTab.Key"/>;
+    /// the key is what the layout receives through <see cref="FlareIdeLayout.OnDocumentMove"/>. The host
+    /// must declare the same key in <see cref="FlareIdeLayout.Documents"/>.</summary>
+    [Parameter] public bool Dockable { get; set; }
+
+    /// <summary>Destinations offered in each tab's move menu. Set <see cref="OnDockRequested"/> too;
+    /// without it no menu is rendered. The strip does not move the document itself - the host updates
+    /// its document list and layout selection.</summary>
+    [Parameter] public IReadOnlyList<FlareDocumentDockTarget>? DockTargets { get; set; }
+
+    /// <summary>Reports the document key and the destination the user chose in a tab's move menu.</summary>
+    [Parameter] public EventCallback<FlareDocumentDockRequest> OnDockRequested { get; set; }
 
     /// <summary>Controlled document key order. Unlisted documents follow in declaration order.</summary>
     [Parameter] public IReadOnlyList<string>? TabOrder { get; set; }
@@ -61,6 +76,8 @@ public partial class FlareDocumentTabs
     private FlareDocumentTab? _focusTarget;
     private ElementReference _bar;
     private DotNetObjectReference<FlareDocumentTabs>? _reference;
+    private IJSObjectReference? _ideModule;
+    private bool _dragSourceRequested;
     private bool _registeredKeyboard;
     private bool _overflowing;
     private bool _atStart = true;
@@ -120,6 +137,9 @@ public partial class FlareDocumentTabs
         await OnCloseRequested.InvokeAsync(tab.EffectiveKey);
         await OnTabClose.InvokeAsync(tab.Title);
     }
+
+    private Task RequestDockAsync(FlareDocumentTab tab, FlareDocumentDockTarget target) =>
+        OnDockRequested.InvokeAsync(new(tab.EffectiveKey, target));
 
     private void BeginDrag(FlareDocumentTab tab)
     {
@@ -220,6 +240,9 @@ public partial class FlareDocumentTabs
             catch (JSException) { }
         }
 
+        if (Dockable && _ideModule is null && !_dragSourceRequested)
+            await RegisterDragSourceAsync();
+
         if (_focusTarget is not { } tab || !_tabs.Contains(tab)) return;
         _focusTarget = null;
         try
@@ -229,6 +252,20 @@ public partial class FlareDocumentTabs
         }
         catch (InvalidOperationException) { }
         catch (JSException) { }
+    }
+
+    // The module's delegated dragstart reads data-flare-doc-key and writes both the DOM data transfer
+    // and the module's own state; the layout reads that state back on drop.
+    private async Task RegisterDragSourceAsync()
+    {
+        _dragSourceRequested = true;
+        try
+        {
+            _ideModule = await Js.InvokeAsync<IJSObjectReference>("import", IdeInterop.ModulePath);
+            await _ideModule.InvokeVoidAsync("registerDocumentDragSource");
+        }
+        catch (InvalidOperationException) { _ideModule = null; }
+        catch (JSException) { _ideModule = null; }
     }
 
     /// <inheritdoc />
@@ -245,6 +282,12 @@ public partial class FlareDocumentTabs
             catch (InvalidOperationException) { }
             catch (JSException) { }
             _reference.Dispose();
+        }
+        if (_ideModule is not null)
+        {
+            try { await _ideModule.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
         await base.DisposeAsync();
     }

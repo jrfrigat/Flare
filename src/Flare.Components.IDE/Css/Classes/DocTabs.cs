@@ -13,6 +13,8 @@ public static class DocTabs
     public const string Icon = "flare-doc-tabs__icon";
     public const string Label = "flare-doc-tabs__label";
     public const string Modified = "flare-doc-tabs__modified";
+    /// <summary>Wrapper of the per-tab move menu offered for host dock targets.</summary>
+    public const string Move = "flare-doc-tabs__move";
     public const string Panel = "flare-doc-tabs__panel";
     public const string Panels = "flare-doc-tabs__panels";
     public const string Tab = "flare-doc-tabs__tab";

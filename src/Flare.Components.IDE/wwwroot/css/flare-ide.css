@@ -535,6 +535,11 @@
     font-weight: bold;
 }
 
+.flare-doc-tabs__move {
+    display: inline-flex;
+    align-items: center;
+}
+
 .flare-ide-layout__dock-close,
 .flare-doc-tabs__close {
     display: flex;

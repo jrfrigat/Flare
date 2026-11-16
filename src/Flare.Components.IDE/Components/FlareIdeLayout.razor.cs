@@ -1,5 +1,6 @@
 using Flare.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Flare.Components.IDE;
 
@@ -149,10 +150,16 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     });
 
     /// <inheritdoc />
-    public override ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         _disposed = true;
-        return base.DisposeAsync();
+        if (_ideModule is not null)
+        {
+            try { await _ideModule.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        await base.DisposeAsync();
     }
 
     // Panels mounted in the layout, in first-registration (markup) order. A region may host several.
