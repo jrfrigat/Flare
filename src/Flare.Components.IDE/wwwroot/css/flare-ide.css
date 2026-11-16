@@ -60,6 +60,7 @@
 .flare-ide-layout__document[data-region="Left"] { grid-column: 1; }
 .flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__main,
 .flare-ide-layout__dock-tabs[data-region="Center"],
+.flare-ide-layout__center-header,
 .flare-ide-layout__document[data-region="Center"] { grid-column: 3; }
 .flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__panel--right,
 .flare-ide-layout__dock-tabs[data-region="Right"],
@@ -77,6 +78,20 @@
     overflow-x: auto;
     min-inline-size: 0;
     background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+}
+
+/* A host tab strip replaces the built-in Center strip in the same docking row and column. */
+.flare-ide-layout__center-header {
+    grid-row: 1;
+    display: flex;
+    min-inline-size: 0;
+    overflow: hidden;
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+}
+
+.flare-ide-layout__center-header > * {
+    flex: 1;
+    min-inline-size: 0;
 }
 
 .flare-ide-layout__document {

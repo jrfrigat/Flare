@@ -2,22 +2,11 @@
 @inherits LocalizedPage
 
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareDocumentTabs @bind-ActiveKey="_activeTab" @bind-TabOrder="_tabOrder" Reorderable="true" KeepAlive="true">
-        <ContextMenuContent Context="key">
-            <FlareMenuItem OnClick="@(() => _activeTab = key)">@GalleryStrings.IdeWorkspace_Activate</FlareMenuItem>
-        </ContextMenuContent>
-        <ChildContent>
-            <FlareDocumentTab Key="a" Title="Program.cs">
-                <FlareTextField Label="@GalleryStrings.IdeWorkspace_Notes" />
-            </FlareDocumentTab>
-            <FlareDocumentTab Key="b" Title="Program.cs">
-                <FlareTextField Label="@GalleryStrings.IdeWorkspace_Notes" />
-            </FlareDocumentTab>
-        </ChildContent>
-    </FlareDocumentTabs>
     <FlareIdeLayout Height="34rem" LeftPanelWidth="18rem" RightPanelWidth="12rem" BottomPanelHeight="15rem"
-                    Documents="_documents" OnDocumentMove="MoveDocument"
-                    OnDocumentCloseRequested="CloseDocument" DocumentContextMenu="DocumentMenu">
+                    Documents="_documents" ActiveDocuments="_activeDocuments"
+                    OnActiveDocumentChanged="SelectionChanged" OnDocumentMove="MoveDocument"
+                    OnDocumentCloseRequested="CloseDocument" DocumentContextMenu="DocumentMenu"
+                    CenterDockHeader="CenterHeader">
         <MenuBar>
             <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
         </MenuBar>
@@ -27,6 +16,11 @@
                                      AssignedShortcuts="@(new[] { "ctrl+shift+k" })" />
             </FlareToolPanel>
         </LeftToolPanel>
+        <ChildContent>
+            <FlareStack Padding="FlareSpacing.Large">
+                <FlareText>@GalleryStrings.IdeWorkspace_MainContent</FlareText>
+            </FlareStack>
+        </ChildContent>
         <DocumentContent Context="document">
             <FlareTextField Label="@document.Title" />
         </DocumentContent>
@@ -42,13 +36,26 @@
 </FlareStack>
 
 @code {
-    private string? _activeTab;
     private string? _shortcut = "ctrl+shift+p";
-    private IReadOnlyList<string>? _tabOrder;
     private IReadOnlyList<string>? _groupOrder;
     private IdeDiagnostic? _selected;
     private IdeDocument[] _documents =
         [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right, Modified: true)];
+    private Dictionary<IdeDocumentRegion, string?> _activeDocuments =
+        new() { [IdeDocumentRegion.Center] = "main" };
+
+    private RenderFragment CenterHeader => @<FlareStack Row="true" Align="FlareAlignItems.Center"
+        Gap="FlareSpacing.XSmall" Padding="FlareSpacing.XSmall">
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                     OnClick="ShowMain">@GalleryStrings.IdeWorkspace_Main</FlareButton>
+        @foreach (var document in _documents.Where(item => item.Region == IdeDocumentRegion.Center))
+        {
+            <FlareButton @key="document.Key" Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                         OnClick="@(() => SelectCenter(document.Key))">
+                @($"{document.Title}{(document.Modified ? " *" : string.Empty)}")
+            </FlareButton>
+        }
+    </FlareStack>;
 
     private IReadOnlyList<IdeToolbarGroup> Groups =>
     [
@@ -72,6 +79,16 @@
     private void MoveDocument(IdeDocumentMove request) => _documents = _documents
         .Select(document => document.Key == request.Document.Key ? document with { Region = request.Destination } : document)
         .ToArray();
+
+    private void SelectionChanged(IdeDocumentSelection selection) =>
+        _activeDocuments = new Dictionary<IdeDocumentRegion, string?>(_activeDocuments)
+        {
+            [selection.Region] = selection.Key
+        };
+
+    private void ShowMain() => SelectionChanged(new IdeDocumentSelection(IdeDocumentRegion.Center, null));
+
+    private void SelectCenter(string key) => SelectionChanged(new IdeDocumentSelection(IdeDocumentRegion.Center, key));
 
     private void CloseDocument(IdeDocument document) =>
         _documents = _documents.Where(item => item.Key != document.Key).ToArray();

@@ -14662,12 +14662,16 @@ namespace Flare.Gallery.Resources {
         public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
         /// <summary>Document workspace</summary>
         public static string IdeWorkspace_Title { get { return ResourceManager.GetString("IdeWorkspace_Title", resourceCulture); } }
-        /// <summary>Reorder document tabs, drag a document between regions, and edit shortcuts without running commands.</summary>
+        /// <summary>A host-owned main tab header controls the center documents and returns to the main content; dock documents to the sides, close them from their dock tabs, and edit shortcuts without running commands.</summary>
         public static string IdeWorkspace_Description { get { return ResourceManager.GetString("IdeWorkspace_Description", resourceCulture); } }
         /// <summary>Activate document</summary>
         public static string IdeWorkspace_Activate { get { return ResourceManager.GetString("IdeWorkspace_Activate", resourceCulture); } }
         /// <summary>Close document</summary>
         public static string IdeWorkspace_Close { get { return ResourceManager.GetString("IdeWorkspace_Close", resourceCulture); } }
+        /// <summary>Main</summary>
+        public static string IdeWorkspace_Main { get { return ResourceManager.GetString("IdeWorkspace_Main", resourceCulture); } }
+        /// <summary>Main content area</summary>
+        public static string IdeWorkspace_MainContent { get { return ResourceManager.GetString("IdeWorkspace_MainContent", resourceCulture); } }
         /// <summary>Notes</summary>
         public static string IdeWorkspace_Notes { get { return ResourceManager.GetString("IdeWorkspace_Notes", resourceCulture); } }
         /// <summary>Commands</summary>

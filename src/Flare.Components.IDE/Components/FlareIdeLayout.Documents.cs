@@ -8,6 +8,19 @@ public partial class FlareIdeLayout
     /// <summary>Enables docking and supplies documents keyed within this layout.</summary>
     [Parameter] public IReadOnlyList<IdeDocument>? Documents { get; set; }
 
+    /// <summary>Whether the layout draws its built-in Center dock strip. Set it to false when the host
+    /// renders the main document tabs in <see cref="ChildContent"/>. In that mode the Center region has
+    /// no layout controls: its selection is read only from <see cref="ActiveDocuments"/>, and no entry
+    /// (or a null one) shows <see cref="ChildContent"/>. The host must provide the control that returns
+    /// to the main content, because the built-in Center button is gone.</summary>
+    [Parameter] public bool ShowCenterDockStrip { get; set; } = true;
+
+    /// <summary>Content rendered in place of the built-in Center dock strip - a host tab strip for the
+    /// main document area. The fragment occupies the Center column of the layout's dock row. It wins over
+    /// <see cref="ShowCenterDockStrip"/>; as with a suppressed strip, Center selection comes only from
+    /// <see cref="ActiveDocuments"/> and the host supplies the return-to-main-content control.</summary>
+    [Parameter] public RenderFragment? CenterDockHeader { get; set; }
+
     /// <summary>Renders each document. The rendered instance stays mounted while its key stays in <see cref="Documents"/>.</summary>
     [Parameter] public RenderFragment<IdeDocument>? DocumentContent { get; set; }
 
@@ -54,8 +67,19 @@ public partial class FlareIdeLayout
 
     private IdeDocument? FindDocument(string key) => Documents?.FirstOrDefault(doc => doc.Key == key);
 
+    // The built-in Center strip is the only control that returns from a Center document to the main
+    // content. Without it the host owns that control, so the layout never guesses a Center document.
+    private bool UsesDefaultCenterStrip => ShowCenterDockStrip && CenterDockHeader is null;
+
     private string? ActiveDocument(IdeDocumentRegion region)
     {
+        if (region == IdeDocumentRegion.Center && !UsesDefaultCenterStrip)
+            return ActiveDocuments is { } controlled &&
+                   controlled.TryGetValue(region, out var selected) && selected is not null &&
+                   FindDocument(selected)?.Region == region
+                ? selected
+                : null;
+
         var selection = ActiveDocuments ?? _documentSelection;
         if (selection.TryGetValue(region, out var key) &&
             (key is null || FindDocument(key)?.Region == region))

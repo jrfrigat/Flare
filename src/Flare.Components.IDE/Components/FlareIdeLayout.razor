@@ -24,7 +24,14 @@
             {
                 @foreach (var region in DocumentRegions)
                 {
-                    @RenderDockTabs(region)
+                    if (region == IdeDocumentRegion.Center && CenterDockHeader is not null)
+                    {
+                        <div class="@Css.Classes.Ide.Layout.CenterHeader" data-region="@region">@CenterDockHeader</div>
+                    }
+                    else if (region != IdeDocumentRegion.Center || ShowCenterDockStrip)
+                    {
+                        @RenderDockTabs(region)
+                    }
                 }
             }
             @if (LeftToolPanel is not null || Docking)

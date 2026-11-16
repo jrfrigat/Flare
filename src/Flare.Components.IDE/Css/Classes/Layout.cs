@@ -6,6 +6,8 @@ public static class Layout
     public const string Root = "flare-ide-layout";
     public const string Body = "flare-ide-layout__body";
     public const string Bottom = "flare-ide-layout__bottom";
+    /// <summary>Slot in the Center dock row that hosts a custom main tab strip.</summary>
+    public const string CenterHeader = "flare-ide-layout__center-header";
     public const string Content = "flare-ide-layout__content";
     /// <summary>Document panel that remains mounted across moves.</summary>
     public const string Document = "flare-ide-layout__document";
