@@ -175,6 +175,9 @@
 
 /* Drag-resize dividers between a docked region and the document. */
 .flare-ide-layout__resizer {
+    --flare-splitter-color: var(--flare-ide-surface, var(--flare-color-surface));
+    --flare-splitter-grip-color: var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+    --flare-splitter-grip-pressed-color: var(--flare-splitter-grip-color);
     z-index: 5;
 }
 

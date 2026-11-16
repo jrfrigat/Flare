@@ -33,6 +33,23 @@ public class IdeLayoutResizerTests : FlareTestContext
     }
 
     [Fact]
+    public void DividersHaveNoStepControls()
+    {
+        var cut = Render<FlareIdeLayout>(p => p
+            .Add(x => x.LeftToolPanel, Panel(ToolPanelPosition.Left))
+            .Add(x => x.RightToolPanel, Panel(ToolPanelPosition.Right))
+            .Add(x => x.BottomPanel, Panel(ToolPanelPosition.Bottom)));
+
+        var dividers = cut.FindAll("[role=separator]");
+        Assert.Equal(3, dividers.Count);
+        Assert.All(dividers, divider =>
+        {
+            Assert.Equal("0", divider.GetAttribute("tabindex"));
+            Assert.Empty(divider.QuerySelectorAll("[data-flare-splitter-step]"));
+        });
+    }
+
+    [Fact]
     public void Divider_HasALocalizedNameAndItsSizeAsValue()
     {
         var left = RenderLayout().FindAll("[role=separator]")[0];

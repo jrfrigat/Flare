@@ -9,6 +9,26 @@ namespace Flare.Browser.Tests;
 public sealed class IdeRegionPanelsTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
     [Theory]
+    [InlineData("light", "rgb(255, 255, 255)", "rgb(228, 228, 232)")]
+    [InlineData("dark", "rgb(30, 30, 30)", "rgb(63, 63, 70)")]
+    public async Task SplittersFollowTheVisualStudioSurfaceAndOutline(string mode, string surface, string outline)
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        await context.AddInitScriptAsync($"""
+            localStorage.setItem('flare-theme', 'visualstudio');
+            localStorage.setItem('flare-palette', 'vs-blue');
+            localStorage.setItem('flare-mode', '{mode}');
+            """);
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/ide-region");
+
+        var handle = page.Locator($"#resize .{Css.Classes.Ide.Layout.Resizer}").First;
+        await Expect(handle).ToHaveCSSAsync("background-color", surface);
+        await Expect(handle.Locator($".{Css.Classes.Splitter.GutterBar}")).ToHaveCSSAsync("background-color", outline);
+        await Expect(handle.Locator("[data-flare-splitter-step]")).ToHaveCountAsync(0);
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public async Task SharedSplittersResizeAllRegionsAndKeepSizesAfterRerender(bool touch)
