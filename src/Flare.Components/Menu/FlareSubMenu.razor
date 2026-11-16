@@ -111,6 +111,9 @@
 
     private FlareMenuContext? _menuContext;
     private FlareMenuContext? _parentMenuContext;
+    // Set when an item closed the chain: its action may have moved focus into a dialog or a field, so
+    // the trigger gets it back only if nothing claimed it.
+    private bool _restoreFocusIfUnclaimed;
     private readonly CancelScope _hideCts = new();
     // The submenu is its own topmost Escape layer while open: the parent menu's layer stays underneath,
     // so one Escape closes the submenu and not the whole menu. A C# key handler cannot do this alone -
@@ -122,7 +125,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _menuContext = new FlareMenuContext(CloseAllAsync, RegisterItem, UnregisterItem);
+        _menuContext = new FlareMenuContext(CloseAllAsync, CloseAllFromItemAsync, RegisterItem, UnregisterItem);
         _parentMenuContext = ParentMenuContext;
         _parentMenuContext?.Register(this);
     }
@@ -146,7 +149,15 @@
         else if (!_open && _wasOpen)
         {
             _wasOpen = false;
-            try { await _activatorEl.FocusAsync(); } catch { }
+            try
+            {
+                if (_restoreFocusIfUnclaimed)
+                    await Overlay.FocusFirstIfUnclaimedAsync(_activatorEl);
+                else
+                    await _activatorEl.FocusAsync();
+            }
+            catch { }
+            _restoreFocusIfUnclaimed = false;
         }
 
         if (_open && !_escapeLayerRegistered)
@@ -204,6 +215,8 @@
 
     internal async Task CloseSubmenuAsync()
     {
+        // A keyboard or pointer close is not an item action: its restore is unconditional.
+        _restoreFocusIfUnclaimed = false;
         if (!_open) return;
         _hideCts.Cancel();
         _open = false;
@@ -231,14 +244,21 @@
         }, TaskScheduler.Default);
     }
 
-    private async Task CloseAllAsync()
+    private Task CloseAllAsync() => CloseAllCoreAsync(itemActivated: false, parent => parent.Close());
+
+    // An item's action may have moved the focus away from the panels; the whole chain restores it only
+    // where nothing else claimed it, so a dialog the item opened keeps its focus.
+    private Task CloseAllFromItemAsync() => CloseAllCoreAsync(itemActivated: true, parent => parent.CloseFromItem());
+
+    private async Task CloseAllCoreAsync(bool itemActivated, Func<FlareMenuContext, Task> closeParent)
     {
+        _restoreFocusIfUnclaimed = itemActivated;
         _hideCts.Cancel();
         _open = false;
         _items.Clear();
         _focusedItem = null;
         if (_parentMenuContext is not null)
-            await _parentMenuContext.Close();
+            await closeParent(_parentMenuContext);
     }
 
     internal void RegisterItem(IMenuEntry item)

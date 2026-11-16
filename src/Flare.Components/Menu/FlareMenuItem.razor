@@ -115,7 +115,9 @@ else
     [CascadingParameter] private FlareMenuContext? MenuContext { get; set; }
     [CascadingParameter(Name = "MenuFocusedItem")] private IMenuEntry? MenuFocusedItem { get; set; }
     private FlareMenuContext? _context;
-    private Func<Task>? CloseMenu => _context?.Close;
+    // A menu item always closes after its action ran, so the menu may restore the activator only when
+    // that action did not move the focus somewhere else.
+    private Func<Task>? CloseMenu => _context?.CloseFromItem;
 
     protected override string ComponentCssClass => Css.Classes.Menu.Item;
 

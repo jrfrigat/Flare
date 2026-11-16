@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import {
     trapFocus, releaseFocusTrap, registerDialogEscHandler, removeDialogEscHandler,
-    pushPopupLayer, removePopupLayer, restoreFocusOutside,
+    pushPopupLayer, removePopupLayer, restoreFocusOutside, focusFirstIfUnclaimed,
 } from '../../src/Flare.Components/wwwroot/js/flare-overlay.js';
 
 const ids = [];
@@ -156,6 +156,58 @@ it('does not move focus that is already outside the closing subtree', () => {
     restoreFocusOutside(drawer);
 
     expect(document.activeElement).toBe(toggle);
+});
+
+// A menu closes after an item's action ran. If that action opened a dialog (or moved focus into a field),
+// the dialog has the focus by the time the panel is gone and the menu must not pull it back.
+it('leaves a menu activator alone when an action already claimed the focus', () => {
+    const menu = visible(document.createElement('div'));
+    const trigger = visible(document.createElement('button'));
+    menu.append(trigger);
+    document.body.append(menu);
+    trigger.focus();
+
+    const dialogButton = visible(document.createElement('button'));
+    document.body.append(dialogButton);
+    dialogButton.focus();
+
+    focusFirstIfUnclaimed(menu);
+
+    expect(document.activeElement).toBe(dialogButton);
+});
+
+// Escape, an outside click or a plain command leave the focus on the body once the panel that held it
+// is gone; that is the one case where the activator has to get it back.
+it('restores the menu activator after the focused panel is gone', () => {
+    const menu = visible(document.createElement('div'));
+    const trigger = visible(document.createElement('button'));
+    menu.append(trigger);
+    document.body.append(menu);
+    trigger.focus();
+
+    const panel = visible(document.createElement('div'));
+    panel.tabIndex = -1;
+    document.body.append(panel);
+    panel.focus();
+    panel.remove();
+    expect(document.activeElement).toBe(document.body);
+
+    focusFirstIfUnclaimed(menu);
+
+    expect(document.activeElement).toBe(trigger);
+});
+
+it('restores the menu activator when the focus is still inside it', () => {
+    const menu = visible(document.createElement('div'));
+    const trigger = visible(document.createElement('button'));
+    menu.append(trigger);
+    document.body.append(menu);
+    menu.tabIndex = -1;
+    menu.focus();
+
+    focusFirstIfUnclaimed(menu);
+
+    expect(document.activeElement).toBe(trigger);
 });
 
 it('keeps an open dialog above a drawer that becomes modal underneath it', () => {

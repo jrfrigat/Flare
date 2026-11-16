@@ -33,6 +33,10 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     public ValueTask FocusFirstAsync(ElementReference container) => InvokeVoidAsync("focusFirstInDialog", container);
 
     /// <inheritdoc />
+    public ValueTask FocusFirstIfUnclaimedAsync(ElementReference container)
+        => InvokeVoidAsync("focusFirstIfUnclaimed", container);
+
+    /// <inheritdoc />
     public ValueTask RestoreFocusOutsideAsync(ElementReference container)
         => InvokeImmediateVoidAsync("restoreFocusOutside", container);
 

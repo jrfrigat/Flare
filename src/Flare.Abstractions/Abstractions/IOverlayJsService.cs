@@ -38,6 +38,16 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <summary>Focuses the first focusable element inside <paramref name="container"/>.</summary>
     ValueTask FocusFirstAsync(ElementReference container);
 
+    /// <summary>
+    /// Focuses the first focusable element inside <paramref name="container"/> only while nothing else
+    /// has claimed the focus: an element outside <paramref name="container"/> that holds focus is left
+    /// alone. A menu uses this when an item's action may have opened a dialog or moved focus into a
+    /// field. The document body means the panel that held the focus has closed and nothing took over, so
+    /// the activator gets it back; focus that the action moved elsewhere stays there.
+    /// </summary>
+    /// <param name="container">The element whose first focusable content receives focus when it is free.</param>
+    ValueTask FocusFirstIfUnclaimedAsync(ElementReference container);
+
     /// <summary>Moves focus out of <paramref name="container"/> - to the last element focused outside it -
     /// so a subtree that is about to become <c>inert</c> does not strand the keyboard on the page body.</summary>
     ValueTask RestoreFocusOutsideAsync(ElementReference container);

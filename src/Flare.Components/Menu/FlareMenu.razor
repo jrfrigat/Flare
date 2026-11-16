@@ -115,6 +115,9 @@
     private bool _openedByHover;
     // Set while another menu takes over: focus belongs to the new menu, not back on this activator.
     private bool _suppressActivatorFocus;
+    // Set when an item closed the menu: its action may have moved focus into a dialog or a field, so the
+    // activator is restored only if nothing claimed the focus.
+    private bool _restoreFocusIfUnclaimed;
     // What the activator slot is handed. Rebuilt only when the open state moves: the slot re-renders
     // together with its parent, and a fresh dictionary every frame would allocate for three values that
     // did not change.
@@ -128,7 +131,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _menuContext = new FlareMenuContext(CloseAsync, RegisterItem, UnregisterItem);
+        _menuContext = new FlareMenuContext(CloseAsync, CloseFromItemAsync, RegisterItem, UnregisterItem);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -167,9 +170,20 @@
             // button they pressed. The menu asks the wrapper for its first focusable element rather than
             // holding a reference of its own, because which element the activator is belongs to whoever
             // filled the slot. A menu that closed because another took over skips this: the new menu
-            // owns the focus now.
+            // owns the focus now. An item close restores only an unclaimed focus, so a dialog or a field
+            // the action opened keeps it.
             if (!_suppressActivatorFocus)
-                try { await Overlay.FocusFirstAsync(_activatorEl); } catch (JSException) { }
+            {
+                try
+                {
+                    if (_restoreFocusIfUnclaimed)
+                        await Overlay.FocusFirstIfUnclaimedAsync(_activatorEl);
+                    else
+                        await Overlay.FocusFirstAsync(_activatorEl);
+                }
+                catch (JSException) { }
+            }
+            _restoreFocusIfUnclaimed = false;
             _suppressActivatorFocus = false;
         }
 
@@ -328,9 +342,16 @@
 
     /// <summary>Closes the menu (also callable programmatically), clears registered items and keyboard
     /// focus, and raises <see cref="OnToggle"/>.</summary>
-    public async Task CloseAsync()
+    public Task CloseAsync() => CloseCoreAsync(itemActivated: false);
+
+    // An item's action has already run by the time its menu closes. That action may have moved the focus
+    // into a dialog or a field, so the close asks the browser to restore only an unclaimed focus.
+    internal Task CloseFromItemAsync() => CloseCoreAsync(itemActivated: true);
+
+    private async Task CloseCoreAsync(bool itemActivated)
     {
         if (!_open) return;
+        _restoreFocusIfUnclaimed = itemActivated;
         _open = false;
         _openedByHover = false;
         MenuBarContext?.NotifyClosed(this);

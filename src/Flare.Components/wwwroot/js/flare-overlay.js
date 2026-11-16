@@ -233,6 +233,16 @@ export function focusFirstInDialog(dialogEl) {
     (focusable || dialogEl)?.focus({ preventScroll: true });
 }
 
+// A menu hands focus back to its activator when its panel closes, but an item's action may have put
+// the focus somewhere that matters - a dialog, a field, another view - and the panel that held it is
+// already gone by then. The document body means nobody claimed it (Escape, an outside click, a plain
+// command), so only that case gets the activator; a focus that moved elsewhere is left alone.
+export function focusFirstIfUnclaimed(container) {
+    const active = document.activeElement;
+    if (active && active !== document.body && !container?.contains(active)) return;
+    focusFirstInDialog(container);
+}
+
 // Sends focus out of a subtree that is becoming inert. The last element focused outside it is where the
 // user came from (a toggle, usually); without one the active element is simply blurred rather than left
 // inside a subtree that can no longer take focus.

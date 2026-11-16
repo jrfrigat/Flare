@@ -7,8 +7,10 @@ namespace Flare.Components;
 /// cascade because it changes as focus moves, whereas these callbacks are constant for the menu's
 /// lifetime.
 /// </summary>
-/// <param name="Close">Closes the (sub)menu.</param>
+/// <param name="Close">Closes the (sub)menu, restoring focus to its activator.</param>
+/// <param name="CloseFromItem">Closes the (sub)menu after one of its items ran its action; focus returns to
+/// the activator only if the action did not move it elsewhere.</param>
 /// <param name="Register">Registers a menu item so the parent can drive roving-tabindex focus.</param>
 /// <param name="Unregister">Removes an item that left the tree, so arrows and Enter never target a stale element.</param>
 internal sealed record FlareMenuContext(
-    Func<Task> Close, Action<IMenuEntry> Register, Action<IMenuEntry> Unregister);
+    Func<Task> Close, Func<Task> CloseFromItem, Action<IMenuEntry> Register, Action<IMenuEntry> Unregister);
