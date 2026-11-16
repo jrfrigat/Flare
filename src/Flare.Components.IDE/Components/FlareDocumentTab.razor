@@ -6,7 +6,7 @@
     var active = Tabs.IsTabActive(this);
     _visited |= active;
 }
-@if (active || ShouldKeepAlive)
+@if (!Tabs.StripOnly && (active || ShouldKeepAlive))
 {
     <div class="@Css.Classes.Ide.DocTabs.Panel" id="@PanelId" role="tabpanel"
          aria-labelledby="@TabButtonId" @attributes="AdditionalAttributes" hidden="@(!active)">

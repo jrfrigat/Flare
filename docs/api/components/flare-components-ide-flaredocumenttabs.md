@@ -23,6 +23,7 @@ Displays document tabs with optional controlled selection, ordering and retained
 | `OnTabClose` | `EventCallback<string>` | `` | Callback |  | Reports the title of the document requested to close. |
 | `OverflowBehavior` | `TabOverflowBehavior` | `TabOverflowBehavior.Scroll` | Parameter |  | How to navigate when the strip overflows. |
 | `Reorderable` | `bool` | `false` | Parameter |  | Whether documents can be moved within the strip using drag or Alt+Arrow. |
+| `StripOnly` | `bool` | `false` | Parameter |  | Renders only the tab strip and no panel region. The FlareDocumentTab children still declare the documents (key, title, icon, closeable) and stay mounted, but neither their content nor a tabpanel element is rendered - the host renders the document itself, so KeepAlive and each tab's content are ignored in this mode. Use it as CenterDockHeader: the layout then takes the Center selection only from ActiveDocuments, so write the key reported by ActiveKeyChanged into that selection, and return to the main content by setting the Center entry to null. |
 | `TabOrder` | `IReadOnlyList<string>?` | `` | Parameter |  | Controlled document key order. Unlisted documents follow in declaration order. |
 | `TabOrderChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Reports a requested order containing the keys of the current documents. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

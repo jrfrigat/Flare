@@ -62,6 +62,16 @@ public partial class FlareDocumentTabs
     /// <summary>Keeps previously activated panels mounted while hidden.</summary>
     [Parameter] public bool KeepAlive { get; set; }
 
+    /// <summary>Renders only the tab strip and no panel region. The <see cref="FlareDocumentTab"/> children
+    /// still declare the documents (key, title, icon, closeable) and stay mounted, but neither their content
+    /// nor a tabpanel element is rendered - the host renders the document itself, so <see cref="KeepAlive"/>
+    /// and each tab's content are ignored in this mode.
+    /// <para>Use it as <see cref="FlareIdeLayout.CenterDockHeader"/>: the layout then takes the Center
+    /// selection only from <see cref="FlareIdeLayout.ActiveDocuments"/>, so write the key reported by
+    /// <see cref="ActiveKeyChanged"/> into that selection, and return to the main content by setting the
+    /// Center entry to null.</para></summary>
+    [Parameter] public bool StripOnly { get; set; }
+
     /// <summary>The active document's title, or null when there are no documents.</summary>
     public string? ActiveTabTitle => _active?.Title;
 

@@ -54,18 +54,28 @@
     </div>
 </div>
 
-<div class="@Css.Classes.Ide.DocTabs.Panels">
+@if (StripOnly)
+{
+    @* The children still mount and register their document metadata; they render no panel. *@
     <CascadingValue Value="this">
         @ChildContent
     </CascadingValue>
-</div>
+}
+else
+{
+    <div class="@Css.Classes.Ide.DocTabs.Panels">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </div>
+}
 
 @code {
     private RenderFragment RenderTab(FlareDocumentTab tab, bool? menuOpen) => @<div
         @key="tab" @ref="tab.Header" class="@TabClass(tab)" id="@tab.TabButtonId"
         role="tab" tabindex="@(IsTabActive(tab) ? 0 : -1)" aria-selected="@(IsTabActive(tab) ? "true" : "false")"
         aria-label="@(tab.Modified ? $"{tab.Title} ({Text["DocTabs_Modified"]})" : tab.Title)"
-        aria-controls="@(IsTabActive(tab) || tab.ShouldKeepAlive ? tab.PanelId : null)"
+        aria-controls="@(StripOnly ? null : IsTabActive(tab) || tab.ShouldKeepAlive ? tab.PanelId : null)"
         aria-haspopup="@(menuOpen.HasValue ? "menu" : null)"
         aria-expanded="@(menuOpen.HasValue ? menuOpen.Value ? "true" : "false" : null)"
         aria-keyshortcuts="@(Reorderable ? "Alt+ArrowLeft Alt+ArrowRight" : null)"

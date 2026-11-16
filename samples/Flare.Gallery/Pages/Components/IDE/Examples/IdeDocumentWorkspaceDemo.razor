@@ -72,17 +72,25 @@
         new("right", GalleryStrings.IdeWorkspace_Right)
     ];
 
-    private RenderFragment CenterHeader => @<FlareStack Row="true" Align="FlareAlignItems.Center"
+    private RenderFragment CenterHeader => @<FlareStack Row="true" Align="FlareAlignItems.Center" StretchLast="true"
         Gap="FlareSpacing.XSmall" Padding="FlareSpacing.XSmall">
         <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
                      OnClick="ShowMain">@GalleryStrings.IdeWorkspace_Main</FlareButton>
-        @foreach (var document in _documents.Where(item => item.Region == IdeDocumentRegion.Center))
-        {
-            <FlareButton @key="document.Key" Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
-                         OnClick="@(() => SelectCenter(document.Key))">
-                @($"{document.Title}{(document.Modified ? " *" : string.Empty)}")
-            </FlareButton>
-        }
+        <FlareDocumentTabs StripOnly="true" ActiveKey="@_stripActive" ActiveKeyChanged="SelectFromStrip"
+                            Reorderable="true" Dockable="true" OnCloseRequested="CloseDocumentKey"
+                            DockTargets="DockTargets" OnDockRequested="DockFromTab">
+            <ContextMenuContent Context="key">
+                <FlareMenuItem OnClick="@(() => SelectFromStrip(key))">@GalleryStrings.IdeWorkspace_Activate</FlareMenuItem>
+                <FlareMenuItem OnClick="@(() => CloseDocumentKey(key))">@GalleryStrings.IdeWorkspace_Close</FlareMenuItem>
+            </ContextMenuContent>
+            <ChildContent>
+                @foreach (var document in _documents.Where(item => item.Region == IdeDocumentRegion.Center))
+                {
+                    <FlareDocumentTab @key="document.Key" Key="@document.Key" Title="@document.Title"
+                                      Modified="@document.Modified" />
+                }
+            </ChildContent>
+        </FlareDocumentTabs>
     </FlareStack>;
 
     private IReadOnlyList<IdeToolbarGroup> Groups =>
@@ -121,8 +129,6 @@
         };
 
     private void ShowMain() => SelectionChanged(new IdeDocumentSelection(IdeDocumentRegion.Center, null));
-
-    private void SelectCenter(string key) => SelectionChanged(new IdeDocumentSelection(IdeDocumentRegion.Center, key));
 
     private void SelectFromStrip(string key)
     {
