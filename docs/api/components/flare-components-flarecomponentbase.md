@@ -82,6 +82,7 @@ This component exposes no documented public methods.
 - `FlareDateTimePicker`
 - `FlareDescriptionItem`
 - `FlareDescriptionList`
+- `FlareDiagnosticList`
 - `FlareDialog`
 - `FlareDialogCloseGuard`
 - `FlareDialogProvider`
@@ -193,6 +194,7 @@ This component exposes no documented public methods.
 - `FlareSection`
 - `FlareSelect`
 - `FlareSheetTabs`
+- `FlareShortcutEditor`
 - `FlareShortcuts`
 - `FlareSignaturePad`
 - `FlareSkeleton`

@@ -1,22 +1,114 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
-@* A horizontal icon command bar (the classic toolbar found in Visual Studio, Access and many editors).
-   Distinct from the ribbon: a single dense row of buttons and small controls. Structural only - place
-   FlareButton items, separators (FlareRibbonSeparator) or small inputs inside. *@
-<div class="@Css.Classes.Ide.Toolbar.Root @BuildCssClass(_denseClass)" role="toolbar" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(Dense ? Css.Classes.Ide.Toolbar.Dense : null)" role="toolbar" style="@Style" @attributes="AdditionalAttributes">
     @ChildContent
+    @for (var index = 0; index < _ordered.Count; index++)
+    {
+        var group = _ordered[index];
+        var position = index;
+        <div @key="group.Key" role="group" aria-label="@group.Label" class="@Css.Classes.Ide.Toolbar.Group"
+             @ondragover:preventDefault="@CanReorder" @ondrop="@(() => DropAsync(position))">
+            @if (Reorderable)
+            {
+                <FlareMenu>
+                    <Activator Context="menu">
+                        <button type="button" @ref="_handles[group.Key]" @attributes="menu.Attributes"
+                                class="@Css.Classes.Ide.Toolbar.Handle" aria-label="@($"{Text["Group_Move"]}: {group.Label}")"
+                                disabled="@(!CanReorder)" draggable="@(CanReorder ? "true" : null)"
+                                @ondragstart="@(() => BeginDrag(group))" @ondragend="@EndDrag">
+                            <FlareIconView Value="FlareIcons.MoreVert" />
+                        </button>
+                    </Activator>
+                    <ChildContent>
+                        <FlareMenuItem Disabled="@(position == 0 || !CanReorder)"
+                                       OnClick="@(() => MoveAsync(group, position - 1))">@Text["Group_Earlier"]</FlareMenuItem>
+                        <FlareMenuItem Disabled="@(position == _ordered.Count - 1 || !CanReorder)"
+                                       OnClick="@(() => MoveAsync(group, position + 1))">@Text["Group_Later"]</FlareMenuItem>
+                    </ChildContent>
+                </FlareMenu>
+            }
+            @group.Content
+        </div>
+    }
 </div>
 
 @code {
-    /// <summary>The toolbar's command buttons and controls.</summary>
+    /// <summary>Command buttons and controls with fixed positions.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>Tightens spacing and button size for a denser bar.</summary>
     [Parameter] public bool Dense { get; set; }
 
-    private string _denseClass => Dense ? Css.Classes.Ide.Toolbar.Dense : string.Empty;
+    /// <summary>Groups in their default order. Keys must be unique within the toolbar.</summary>
+    [Parameter] public IReadOnlyList<IdeToolbarGroup>? Groups { get; set; }
 
-    /// <inheritdoc />
+    /// <summary>Enables group drag handles and accessible move actions.</summary>
+    [Parameter] public bool Reorderable { get; set; }
+
+    /// <summary>Disables group movement. The host controls the availability of the commands themselves.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Controlled order of group keys. Unknown keys are ignored and newly added groups follow.</summary>
+    [Parameter] public IReadOnlyList<string>? GroupOrder { get; set; }
+
+    /// <summary>Reports the updated sequence of all current group keys.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<string>> GroupOrderChanged { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Ide.Toolbar.Root;
+
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> Text => Localizer<IdeStrings>();
+    private IReadOnlyList<IdeToolbarGroup> _ordered = [];
+    private IReadOnlyList<string>? _internalOrder;
+    private IdeToolbarGroup? _dragged;
+    private string? _focusGroup;
+    private readonly Dictionary<string, ElementReference> _handles = new(StringComparer.Ordinal);
+
+    private bool CanReorder => Reorderable && !Disabled;
+
+    protected override void OnParametersSet()
+    {
+        _ordered = IdeItemOrder.Apply(Groups ?? [], GroupOrder ?? _internalOrder, static group => group.Key);
+        foreach (var key in _handles.Keys.Where(key => !_ordered.Any(group => group.Key == key)).ToArray())
+            _handles.Remove(key);
+        if (!CanReorder) EndDrag();
+    }
+
+    private void BeginDrag(IdeToolbarGroup group)
+    {
+        if (CanReorder) _dragged = group;
+    }
+
+    private void EndDrag() => _dragged = null;
+
+    private Task DropAsync(int index)
+    {
+        var group = _dragged;
+        EndDrag();
+        return group is null ? Task.CompletedTask : MoveAsync(group, index);
+    }
+
+    private async Task MoveAsync(IdeToolbarGroup group, int index)
+    {
+        if (!CanReorder) return;
+        var order = IdeItemOrder.Move(_ordered, group, index, static item => item.Key);
+        if (order is null) return;
+        if (GroupOrder is null)
+        {
+            _internalOrder = order;
+            _ordered = IdeItemOrder.Apply(_ordered, order, static item => item.Key);
+        }
+
+        _focusGroup = group.Key;
+        await GroupOrderChanged.InvokeAsync(order);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusGroup is not { } key || !_handles.TryGetValue(key, out var handle)) return;
+        _focusGroup = null;
+        try { await handle.FocusAsync(preventScroll: true); }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
 }

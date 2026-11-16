@@ -27,6 +27,89 @@
     overflow: hidden;
 }
 
+.flare-ide-layout__body[data-flare-ide-docking] {
+    display: grid;
+    grid-template-columns: var(--flare-ide-left-width) auto minmax(0, 1fr) auto var(--flare-ide-right-width);
+    grid-template-rows: auto minmax(0, 1fr);
+}
+
+.flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
+    grid-template-columns: var(--flare-ide-rail) auto minmax(0, 1fr) auto var(--flare-ide-right-width);
+}
+
+.flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--right:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
+    grid-template-columns: var(--flare-ide-left-width) auto minmax(0, 1fr) auto var(--flare-ide-rail);
+}
+
+.flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)):has(> .flare-ide-layout__panel--right:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
+    grid-template-columns: var(--flare-ide-rail) auto minmax(0, 1fr) auto var(--flare-ide-rail);
+}
+
+.flare-ide-layout__body[data-flare-ide-docking] > :is(.flare-ide-layout__panel, .flare-ide-layout__main, .flare-ide-layout__document) {
+    grid-row: 2;
+}
+
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__resizer {
+    grid-row: 1 / span 2;
+}
+
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__resizer[data-region="Left"] { grid-column: 2; }
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__resizer[data-region="Right"] { grid-column: 4; }
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__panel--left,
+.flare-ide-layout__dock-tabs[data-region="Left"],
+.flare-ide-layout__document[data-region="Left"] { grid-column: 1; }
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__main,
+.flare-ide-layout__dock-tabs[data-region="Center"],
+.flare-ide-layout__document[data-region="Center"] { grid-column: 3; }
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__panel--right,
+.flare-ide-layout__dock-tabs[data-region="Right"],
+.flare-ide-layout__document[data-region="Right"] { grid-column: 5; }
+
+.flare-ide-layout__dock-tabs,
+.flare-ide-layout__dock-tab,
+.flare-toolbar__group {
+    display: flex;
+    align-items: center;
+}
+
+.flare-ide-layout__dock-tabs {
+    grid-row: 1;
+    overflow-x: auto;
+    min-inline-size: 0;
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+}
+
+.flare-ide-layout__document {
+    min-inline-size: 0;
+    overflow: auto;
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+}
+
+.flare-ide-layout__dock-select,
+.flare-toolbar__handle {
+    border: none;
+    color: inherit;
+    font: inherit;
+    background: transparent;
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2));
+    white-space: nowrap;
+}
+
+.flare-ide-layout__dock-select[aria-pressed="true"] {
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+}
+
+.flare-ide-layout__dock-select[draggable="true"],
+.flare-toolbar__handle[draggable="true"] {
+    cursor: grab;
+}
+
+.flare-diagnostic-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-ide-spacing-2, var(--flare-spacing-2));
+}
+
 .flare-ide-layout__main {
     flex: 1;
     min-width: 0;
@@ -372,8 +455,20 @@
     flex-direction: column;
 }
 
+.flare-doc-tabs__strip {
+    display: flex;
+    align-items: center;
+    min-inline-size: 0;
+}
+
+.flare-doc-tabs__strip:dir(rtl) > .flare-btn svg {
+    scale: -1 1;
+}
+
 .flare-doc-tabs__bar {
     display: flex;
+    flex: 1;
+    min-inline-size: 0;
     overflow-x: auto;
     gap: 1px;
     background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
@@ -386,6 +481,7 @@
 
 .flare-doc-tabs__tab {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     gap: var(--flare-ide-spacing-3, var(--flare-spacing-3));
     padding: var(--flare-ide-spacing-3, var(--flare-spacing-3)) var(--flare-ide-spacing-6, var(--flare-spacing-6));
@@ -444,7 +540,7 @@
         opacity: 0;
     }
 
-    .flare-doc-tabs__tab:hover .flare-doc-tabs__close {
+    .flare-doc-tabs__tab:is(:hover, :focus-within) .flare-doc-tabs__close {
         opacity: 1;
     }
 }

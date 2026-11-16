@@ -1,0 +1,83 @@
+@page "/ide-workspace"
+@using Flare.Components.IDE
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="narrow" style="width:240px;" dir="rtl">
+        <FlareDocumentTabs @bind-ActiveKey="_active" @bind-TabOrder="_order" Reorderable="true" KeepAlive="true">
+            <ContextMenuContent Context="key">
+                <FlareMenuItem OnClick="@(() => _contextKey = key)">Show document</FlareMenuItem>
+            </ContextMenuContent>
+            <ChildContent>
+                <FlareDocumentTab Key="a" Title="@_title"><input id="first-tab-input" /></FlareDocumentTab>
+                <FlareDocumentTab Key="b" Title="same-name.cs"><input id="other-tab-input" /></FlareDocumentTab>
+                <FlareDocumentTab Key="c" Title="A long new example document.cs"><span>Last document</span></FlareDocumentTab>
+            </ChildContent>
+        </FlareDocumentTabs>
+    </div>
+    <button id="rename" @onclick="@(() => _title = "renamed.cs")">Rename</button>
+    <output id="tab-key">@_active</output>
+    <output id="context-key">@_contextKey</output>
+
+    <div id="toolbar" dir="rtl">
+        <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
+    </div>
+
+    <FlareIdeLayout id="dock" Height="300px" LeftPanelWidth="160px" RightPanelWidth="200px"
+                    Documents="_documents" OnDocumentMove="MoveDocument">
+        <DocumentContent Context="document"><input id="@($"editor-{document.Key}")" /></DocumentContent>
+        <RightToolPanel><FlareToolPanel Position="ToolPanelPosition.Right" Title="Details">Tool panel</FlareToolPanel></RightToolPanel>
+    </FlareIdeLayout>
+    <FlareIdeLayout id="other-dock" Height="120px" Documents="_otherDocuments"
+                    OnDocumentMove="@(() => _movedOther = true)">
+        <DocumentContent Context="document">@document.Title</DocumentContent>
+    </FlareIdeLayout>
+    <output id="other-moved">@_movedOther.ToString()</output>
+
+    <FlareDiagnosticList id="diagnostics" Items="Diagnostics" OnDiagnosticSelected="@SelectDiagnostic" Height="160px" />
+    <output id="diagnostic-key">@_selectedDiagnostic</output>
+
+    <FlareShortcuts>
+        <FlareShortcutEntry Keys="ctrl+shift+k" OnActivated="@(() => _runs++)" />
+        <FlareShortcutEditor id="shortcut" @bind-Value="_shortcut" DefaultValue="ctrl+shift+p"
+                             AssignedShortcuts="@(new[] { "Ctrl+Shift+K" })" />
+        <FlareShortcutEditor id="shortcut-other" @bind-Value="_otherShortcut" />
+        <button id="shortcut-run">Command surface</button>
+    </FlareShortcuts>
+    <output id="runs">@_runs</output>
+</FlareThemeProvider>
+
+@code {
+    private string? _active = "a";
+    private string _title = "same-name.cs";
+    private string? _contextKey;
+    private IReadOnlyList<string>? _order;
+    private IReadOnlyList<string>? _groupOrder;
+    private bool _movedOther;
+    private string? _selectedDiagnostic;
+    private string? _shortcut = "ctrl+shift+p";
+    private string? _otherShortcut;
+    private int _runs;
+    private IdeDocument[] _documents = [new("a", "Document A"), new("b", "Document B")];
+    private readonly IdeDocument[] _otherDocuments = [new("a", "Other editor")];
+
+    private static IReadOnlyList<IdeToolbarGroup> Groups { get; } =
+    [
+        new("a", "A", builder => builder.AddContent(0, "Open")),
+        new("b", "B", builder => builder.AddContent(0, "Search")),
+        new("c", "C", builder => builder.AddContent(0, "Run"))
+    ];
+
+    private static IReadOnlyList<IdeDiagnostic> Diagnostics { get; } =
+    [
+        new("syntax", "main", "Main.cs", 12, 3, IdeDiagnosticSeverity.Error, "Undefined symbol"),
+        new("heading", "guide", "Guide.md", 7, 1, IdeDiagnosticSeverity.Warning, "Missing heading"),
+        .. Enumerable.Range(1, 600).Select(line =>
+            new IdeDiagnostic($"info-{line}", "log", "Run.log", line, null, IdeDiagnosticSeverity.Information, "Run entry"))
+    ];
+
+    private void MoveDocument(IdeDocumentMove move) => _documents = _documents
+        .Select(document => document.Key == move.Document.Key ? document with { Region = move.Destination } : document)
+        .ToArray();
+
+    private void SelectDiagnostic(IdeDiagnostic entry) => _selectedDiagnostic = $"{entry.DocumentKey}:{entry.Line}:{entry.Column}";
+}

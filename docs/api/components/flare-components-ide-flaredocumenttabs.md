@@ -4,21 +4,61 @@
 
 `Flare.Components.IDE.FlareDocumentTabs`
 
+Displays document tabs with optional controlled selection, ordering and retained panels.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `ChildContent` | `RenderFragment?` | `` | Parameter |  | — |
-| `OnTabChanged` | `EventCallback<string>` | `` | Callback |  | — |
-| `OnTabClose` | `EventCallback<string>` | `` | Callback |  | — |
-| `OverflowBehavior` | `TabOverflowBehavior` | `TabOverflowBehavior.Scroll` | Parameter |  | — |
+| `ActiveKey` | `string?` | `` | Parameter |  | Active document key. Null starts with the first document and permits internal selection. |
+| `ActiveKeyChanged` | `EventCallback<string>` | `` | Callback |  | Reports the selected document's key. |
+| `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declares the document tabs, using a Blazor key for each dynamically rendered document. |
+| `ContextMenuContent` | `RenderFragment<string>?` | `` | Parameter |  | Context menu entries rendered for the given document key. |
+| `KeepAlive` | `bool` | `false` | Parameter |  | Keeps previously activated panels mounted while hidden. |
+| `OnCloseRequested` | `EventCallback<string>` | `` | Callback |  | Reports a request to close the document by key. The host removes its declaration. |
+| `OnTabChanged` | `EventCallback<string>` | `` | Callback |  | Reports the title of the selected document. |
+| `OnTabClose` | `EventCallback<string>` | `` | Callback |  | Reports the title of the document requested to close. |
+| `OverflowBehavior` | `TabOverflowBehavior` | `TabOverflowBehavior.Scroll` | Parameter |  | How to navigate when the strip overflows. |
+| `Reorderable` | `bool` | `false` | Parameter |  | Whether documents can be moved within the strip using drag or Alt+Arrow. |
+| `TabOrder` | `IReadOnlyList<string>?` | `` | Parameter |  | Controlled document key order. Unlisted documents follow in declaration order. |
+| `TabOrderChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Reports a requested order containing the keys of the current documents. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
-This component exposes no documented public methods.
+### `OnTabNavigation(string key, bool rtl)`
+
+Handles the orientation-aware keys reported by the tab strip.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | — |
+| `rtl` | `bool` | — |
+
+### `OnTabReorder(string key, bool rtl)`
+
+Moves the active tab by one position for an orientation-aware Alt+Arrow.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | — |
+| `rtl` | `bool` | — |
+
+### `OnTabScrollState(bool overflowing, bool atStart, bool atEnd)`
+
+Receives changes to the measured scroll extent and its edges.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `overflowing` | `bool` | — |
+| `atStart` | `bool` | — |
+| `atEnd` | `bool` | — |
+
 
 ## Inheritance
 

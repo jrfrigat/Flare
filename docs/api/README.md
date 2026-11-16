@@ -69,12 +69,13 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDateTimePicker`](components/flare-components-flaredatetimepicker.md) — Date and time field: a masked text input with a popup holding a calendar and a time pane, either as tabs or side by side. The value is a DateTimeOffset; edits change its wall date and time and keep its offset.
 - [`FlareDescriptionItem`](components/flare-components-flaredescriptionitem.md)
 - [`FlareDescriptionList`](components/flare-components-flaredescriptionlist.md)
+- [`FlareDiagnosticList`](components/flare-components-ide-flarediagnosticlist.md)
 - [`FlareDialog`](components/flare-components-flaredialog.md)
 - [`FlareDialogCloseGuard`](components/flare-components-flaredialogcloseguard.md) — Confirms closing a dialog with unsaved changes. Place inside a dialog, and inside its EditForm to use EditContext.IsModified automatically. After saving, clear HasUnsavedChanges or call EditContext.MarkAsUnmodified before closing. Requires a FlareDialogProvider for the default prompt.
 - [`FlareDialogProvider`](components/flare-components-flaredialogprovider.md)
 - [`FlareDivider`](components/flare-components-flaredivider.md)
 - [`FlareDocumentTab`](components/flare-components-ide-flaredocumenttab.md)
-- [`FlareDocumentTabs`](components/flare-components-ide-flaredocumenttabs.md)
+- [`FlareDocumentTabs`](components/flare-components-ide-flaredocumenttabs.md) — Displays document tabs with optional controlled selection, ordering and retained panels.
 - [`FlareDragContext`](components/flare-components-flaredragcontext.md)
 - [`FlareDragHandle`](components/flare-components-flaredraghandle.md)
 - [`FlareDraggable`](components/flare-components-flaredraggable.md)
@@ -182,6 +183,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareSection`](components/flare-components-flaresection.md)
 - [`FlareSelect`](components/flare-components-flareselect.md) — Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned "no value" row, so a filter select expresses "all" without a sentinel value.
 - [`FlareSheetTabs`](components/flare-components-ide-flaresheettabs.md)
+- [`FlareShortcutEditor`](components/flare-components-ide-flareshortcuteditor.md) — Captures and validates a shortcut assignment without executing the associated command.
 - [`FlareShortcutEntry`](components/flare-components-flareshortcutentry.md) — One keyboard shortcut: a key combination, what it invokes, and the description the help overlay lists it under. It registers with the enclosing FlareShortcuts scope and renders nothing.
 - [`FlareShortcuts`](components/flare-components-flareshortcuts.md) — Keyboard-shortcut scope: the entries declared inside it register their key combinations here, and it listens for them, dispatches to the matching entry and can show the resulting list as a help overlay.
 - [`FlareSignaturePad`](components/flare-components-flaresignaturepad.md)
@@ -324,6 +326,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.Gantt.GanttScheduleMode`](enums/flare-components-gantt-ganttschedulemode.md) — How a change to one item moves the items that depend on it.
 - [`Flare.Components.Gantt.GanttValidationCode`](enums/flare-components-gantt-ganttvalidationcode.md) — Why a proposed link was refused.
 - [`Flare.Components.GaugeShape`](enums/flare-components-gaugeshape.md) — How a FlareGauge lays its scale out. One component with three shapes rather than three components: the scale, bands, ticks, target marker and readout are the same in all three, and only the projection from value to screen differs.
+- [`Flare.Components.IDE.IdeDiagnosticSeverity`](enums/flare-components-ide-idediagnosticseverity.md) — Severity of a document diagnostic.
+- [`Flare.Components.IDE.IdeDocumentRegion`](enums/flare-components-ide-idedocumentregion.md) — Region in which an IDE document can be displayed.
 - [`Flare.Components.IDE.IdePanelMode`](enums/flare-components-ide-idepanelmode.md) — Controls how a docked tool panel in FlareIdeLayout behaves when expanded.
 - [`Flare.Components.ImageObjectFit`](enums/flare-components-imageobjectfit.md) — How a FlareImage is fitted into its box (maps to CSS object-fit).
 - [`Flare.Components.InputVariant`](enums/flare-components-inputvariant.md) — Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). Default keeps the theme's own field style; Filled and Outlined ask for the active theme's filled or outlined field, so the same variant follows each design language.

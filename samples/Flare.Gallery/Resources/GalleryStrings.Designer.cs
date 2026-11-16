@@ -14660,5 +14660,27 @@ namespace Flare.Gallery.Resources {
         public static string Scheduler_MoreEvents { get { return ResourceManager.GetString("Scheduler_MoreEvents", resourceCulture); } }
         /// <summary>Close</summary>
         public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
+        /// <summary>Document workspace</summary>
+        public static string IdeWorkspace_Title { get { return ResourceManager.GetString("IdeWorkspace_Title", resourceCulture); } }
+        /// <summary>Reorder document tabs, drag a document between regions, and edit shortcuts without running commands.</summary>
+        public static string IdeWorkspace_Description { get { return ResourceManager.GetString("IdeWorkspace_Description", resourceCulture); } }
+        /// <summary>Activate document</summary>
+        public static string IdeWorkspace_Activate { get { return ResourceManager.GetString("IdeWorkspace_Activate", resourceCulture); } }
+        /// <summary>Notes</summary>
+        public static string IdeWorkspace_Notes { get { return ResourceManager.GetString("IdeWorkspace_Notes", resourceCulture); } }
+        /// <summary>Commands</summary>
+        public static string IdeWorkspace_Commands { get { return ResourceManager.GetString("IdeWorkspace_Commands", resourceCulture); } }
+        /// <summary>Diagnostics</summary>
+        public static string IdeWorkspace_Diagnostics { get { return ResourceManager.GetString("IdeWorkspace_Diagnostics", resourceCulture); } }
+        /// <summary>Open</summary>
+        public static string IdeWorkspace_Open { get { return ResourceManager.GetString("IdeWorkspace_Open", resourceCulture); } }
+        /// <summary>Run</summary>
+        public static string IdeWorkspace_Run { get { return ResourceManager.GetString("IdeWorkspace_Run", resourceCulture); } }
+        /// <summary>Undefined symbol</summary>
+        public static string IdeWorkspace_ParseError { get { return ResourceManager.GetString("IdeWorkspace_ParseError", resourceCulture); } }
+        /// <summary>Missing heading</summary>
+        public static string IdeWorkspace_HeadingError { get { return ResourceManager.GetString("IdeWorkspace_HeadingError", resourceCulture); } }
+        /// <summary>Ready</summary>
+        public static string IdeWorkspace_Ready { get { return ResourceManager.GetString("IdeWorkspace_Ready", resourceCulture); } }
     }
 }

@@ -1,0 +1,98 @@
+@namespace Flare.Components.IDE
+@inherits FlareLocalizedComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <FlareSelect TValue="string" Label="@Text["Diagnostic_Severity"]" Items="Filters" ItemLabel="FilterLabel"
+                 Value="@_filter" ValueChanged="SetFilter" Size="FieldSize.Sm" />
+    <FlareDataGrid TItem="IdeDiagnostic" Items="@_visible" Virtual="true" Height="@Height"
+                   RowKey="@(static entry => entry.Key)" TableAriaLabel="@Text["Diagnostic_List"]">
+        <Columns>
+            <FlareColumn TItem="IdeDiagnostic" Id="severity" Title="@Text["Diagnostic_Severity"]">
+                <Template Context="entry">@FilterLabel(entry.Severity.ToString())</Template>
+            </FlareColumn>
+            <FlareColumn TItem="IdeDiagnostic" Id="document" Title="@Text["Diagnostic_Document"]"
+                         Field="@(entry => entry.DocumentTitle)" />
+            <FlareColumn TItem="IdeDiagnostic" Id="line" Title="@Text["Diagnostic_Line"]" Field="@(entry => entry.Line)" />
+            <FlareColumn TItem="IdeDiagnostic" Id="column" Title="@Text["Diagnostic_Column"]" Field="@(entry => entry.Column)" />
+            <FlareColumn TItem="IdeDiagnostic" Id="message" Title="@Text["Diagnostic_Message"]">
+                <Template Context="entry">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                                 aria-pressed="@(entry.Key == (SelectedKey ?? _selection) ? "true" : "false")"
+                                 OnClick="@(() => SelectAsync(entry))">
+                        @if (MessageContent is not null)
+                        {
+                            @MessageContent(entry)
+                        }
+                        else
+                        {
+                            @entry.Message
+                        }
+                    </FlareButton>
+                </Template>
+            </FlareColumn>
+        </Columns>
+        <EmptyStateContent>
+            @if (EmptyContent is not null)
+            {
+                @EmptyContent
+            }
+            else
+            {
+                <FlareText>@Text["Diagnostic_Empty"]</FlareText>
+            }
+        </EmptyStateContent>
+    </FlareDataGrid>
+</div>
+
+@code {
+    /// <summary>Diagnostics shown in this list. Each entry has a unique key.</summary>
+    [Parameter] public IReadOnlyList<IdeDiagnostic> Items { get; set; } = [];
+
+    /// <summary>Height of the scrollable diagnostic grid as a CSS length.</summary>
+    [Parameter] public string Height { get; set; } = "16rem";
+
+    /// <summary>Selected diagnostic key; null permits internal selection.</summary>
+    [Parameter] public string? SelectedKey { get; set; }
+
+    /// <summary>Reports selection by diagnostic key.</summary>
+    [Parameter] public EventCallback<string> SelectedKeyChanged { get; set; }
+
+    /// <summary>Invoked when the user activates a diagnostic to navigate to its document position.</summary>
+    [Parameter] public EventCallback<IdeDiagnostic> OnDiagnosticSelected { get; set; }
+
+    /// <summary>Optional message presentation inside the activation control.</summary>
+    [Parameter] public RenderFragment<IdeDiagnostic>? MessageContent { get; set; }
+
+    /// <summary>Optional content when the current sources and filter yield no diagnostics.</summary>
+    [Parameter] public RenderFragment? EmptyContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Ide.Diagnostics.Root;
+
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> Text => Localizer<IdeStrings>();
+    private static readonly string[] Filters = ["All", nameof(IdeDiagnosticSeverity.Error),
+        nameof(IdeDiagnosticSeverity.Warning), nameof(IdeDiagnosticSeverity.Information)];
+    private string _filter = "All";
+    private string? _selection;
+    private IReadOnlyList<IdeDiagnostic> _visible = [];
+
+    protected override void OnParametersSet() => Refresh();
+
+    private string FilterLabel(string value) => Text[$"Diagnostic_{value}"];
+
+    private void SetFilter(string value)
+    {
+        _filter = value;
+        Refresh();
+    }
+
+    private void Refresh() => _visible = Enum.TryParse<IdeDiagnosticSeverity>(_filter, out var severity)
+        ? Items.Where(item => item.Severity == severity).ToArray()
+        : Items;
+
+    private async Task SelectAsync(IdeDiagnostic entry)
+    {
+        if (SelectedKey is null) _selection = entry.Key;
+        await SelectedKeyChanged.InvokeAsync(entry.Key);
+        await OnDiagnosticSelected.InvokeAsync(entry);
+    }
+}

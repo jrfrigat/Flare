@@ -2,16 +2,23 @@
 @inherits FlareComponentBase
 @implements IDisposable
 
-@if (Tabs.IsTabActive(this))
+@{
+    var active = Tabs.IsTabActive(this);
+    _visited |= active;
+}
+@if (active || ShouldKeepAlive)
 {
     <div class="@Css.Classes.Ide.DocTabs.Panel" id="@PanelId" role="tabpanel"
-         aria-labelledby="@TabButtonId" @attributes="AdditionalAttributes">
+         aria-labelledby="@TabButtonId" @attributes="AdditionalAttributes" hidden="@(!active)">
         @ChildContent
     </div>
 }
 
 @code {
     [CascadingParameter] private FlareDocumentTabs Tabs { get; set; } = default!;
+
+    /// <summary>Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents.</summary>
+    [Parameter] public string? Key { get; set; }
 
     /// <summary>Display title for the document tab.</summary>
     [Parameter] public string Title { get; set; } = "";
@@ -31,20 +38,35 @@
     protected override string ComponentCssClass => Css.Classes.Ide.DocTabs.Panel;
 
     internal string TabId { get; } = Guid.NewGuid().ToString("N")[..8];
+    internal string EffectiveKey => string.IsNullOrEmpty(Key) ? TabId : Key;
+    internal ElementReference Header { get; set; }
     internal string PanelId => $"flare-doc-panel-{TabId}";
 
     // The tab strip labels the panel, so both ends of that link are built here. The panel used to have
     // no label at all, which leaves a tab panel unnamed to a screen reader.
     internal string TabButtonId => $"flare-doc-tab-{TabId}";
 
-    protected override void OnInitialized()
+    private (string?, string, FlareIcon?, bool, bool)? _registration;
+    private bool _visited;
+    internal bool ShouldKeepAlive => Tabs.KeepAlive && _visited;
+
+    protected override void OnParametersSet()
     {
-        base.OnInitialized();
-        Tabs.RegisterTab(this);
+        var registration = (Key, Title, Icon, Modified, Closeable);
+        if (_registration == registration) return;
+        _registration = registration;
+        Tabs.Register(this);
     }
 
     public void Dispose()
     {
-        Tabs.UnregisterTab(this);
+        Tabs.Unregister(this);
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        Dispose();
+        await base.DisposeAsync();
     }
 }

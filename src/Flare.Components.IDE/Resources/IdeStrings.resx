@@ -15,4 +15,31 @@
   <data name="SheetTabs_Add" xml:space="preserve"><value>Add sheet</value></data>
   <data name="ToolPanel_Expand" xml:space="preserve"><value>Expand</value></data>
   <data name="ToolPanel_Collapse" xml:space="preserve"><value>Collapse</value></data>
+  <data name="Dock_Center" xml:space="preserve"><value>Documents</value></data>
+  <data name="Dock_Left" xml:space="preserve"><value>Left tools</value></data>
+  <data name="Dock_Right" xml:space="preserve"><value>Right tools</value></data>
+  <data name="Dock_Move" xml:space="preserve"><value>Move document</value></data>
+  <data name="Group_Move" xml:space="preserve"><value>Reorder group</value></data>
+  <data name="Group_Earlier" xml:space="preserve"><value>Move earlier</value></data>
+  <data name="Group_Later" xml:space="preserve"><value>Move later</value></data>
+  <data name="Diagnostic_All" xml:space="preserve"><value>All levels</value></data>
+  <data name="Diagnostic_Error" xml:space="preserve"><value>Error</value></data>
+  <data name="Diagnostic_Warning" xml:space="preserve"><value>Warning</value></data>
+  <data name="Diagnostic_Information" xml:space="preserve"><value>Information</value></data>
+  <data name="Diagnostic_List" xml:space="preserve"><value>Document diagnostics</value></data>
+  <data name="Diagnostic_Severity" xml:space="preserve"><value>Severity</value></data>
+  <data name="Diagnostic_Document" xml:space="preserve"><value>Document</value></data>
+  <data name="Diagnostic_Line" xml:space="preserve"><value>Line</value></data>
+  <data name="Diagnostic_Column" xml:space="preserve"><value>Column</value></data>
+  <data name="Diagnostic_Message" xml:space="preserve"><value>Message</value></data>
+  <data name="Diagnostic_Empty" xml:space="preserve"><value>No diagnostics</value></data>
+  <data name="Shortcut_Label" xml:space="preserve"><value>Keyboard shortcut</value></data>
+  <data name="Shortcut_Empty" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Shortcut_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Shortcut_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Shortcut_Record" xml:space="preserve"><value>Press a shortcut. Press Escape to cancel.</value></data>
+  <data name="Shortcut_Hint" xml:space="preserve"><value>Focus the field to record a shortcut.</value></data>
+  <data name="Shortcut_Reserved" xml:space="preserve"><value>This shortcut is reserved.</value></data>
+  <data name="Shortcut_Conflict" xml:space="preserve"><value>This shortcut is already assigned.</value></data>
+  <data name="Shortcut_Invalid" xml:space="preserve"><value>Use a function key or a combination with Ctrl, Meta or Alt.</value></data>
 </root>

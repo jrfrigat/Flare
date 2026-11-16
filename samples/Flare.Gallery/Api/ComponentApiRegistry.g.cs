@@ -1831,6 +1831,7 @@ public static class ComponentApiRegistry
                 @"FlareDateTimePicker",
                 @"FlareDescriptionItem",
                 @"FlareDescriptionList",
+                @"FlareDiagnosticList",
                 @"FlareDialog",
                 @"FlareDialogCloseGuard",
                 @"FlareDialogProvider",
@@ -1942,6 +1943,7 @@ public static class ComponentApiRegistry
                 @"FlareSection",
                 @"FlareSelect",
                 @"FlareSheetTabs",
+                @"FlareShortcutEditor",
                 @"FlareShortcuts",
                 @"FlareSignaturePad",
                 @"FlareSkeleton",
@@ -2628,6 +2630,36 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareDiagnosticList"] = new ApiComponentInfo(
+            @"FlareDiagnosticList",
+            @"Flare.Components.IDE.FlareDiagnosticList",
+            @"Flare.Components.IDE",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"EmptyContent", @"RenderFragment?", null, @"Optional content when the current sources and filter yield no diagnostics.", null, false, false, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"Height", @"string", @"""16rem""", @"Height of the scrollable diagnostic grid as a CSS length.", null, false, false, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"Items", @"IReadOnlyList<IdeDiagnostic>", null, @"Diagnostics shown in this list. Each entry has a unique key.", null, false, false, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"MessageContent", @"RenderFragment<IdeDiagnostic>?", null, @"Optional message presentation inside the activation control.", null, false, false, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"OnDiagnosticSelected", @"EventCallback<IdeDiagnostic>", null, @"Invoked when the user activates a diagnostic to navigate to its document position.", null, false, true, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"SelectedKey", @"string?", null, @"Selected diagnostic key; null permits internal selection.", null, false, false, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"SelectedKeyChanged", @"EventCallback<string>", null, @"Reports selection by diagnostic key.", null, false, true, false, @"FlareDiagnosticList"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareDialog"] = new ApiComponentInfo(
             @"FlareDialog",
             @"Flare.Components.FlareDialog",
@@ -2771,6 +2803,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered inside the document panel.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Closeable", @"bool", @"true", @"Whether the tab can be closed by the user.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in the tab header - any provider. Defaults to the built-in description icon.", null, false, false, false, @"FlareDocumentTab"),
+                new ApiParameterInfo(@"Key", @"string?", null, @"Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Modified", @"bool", @"false", @"Whether the document has unsaved changes (shows a dot/asterisk indicator).", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Display title for the document tab.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -2791,19 +2824,48 @@ public static class ComponentApiRegistry
             @"FlareDocumentTabs",
             @"Flare.Components.IDE.FlareDocumentTabs",
             @"Flare.Components.IDE",
-            null,
+            @"Displays document tabs with optional controlled selection, ordering and retained panels.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, null, null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OnTabChanged", @"EventCallback<string>", null, null, null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, null, null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OverflowBehavior", @"TabOverflowBehavior", @"TabOverflowBehavior.Scroll", null, null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"ActiveKey", @"string?", null, @"Active document key. Null starts with the first document and permits internal selection.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"ActiveKeyChanged", @"EventCallback<string>", null, @"Reports the selected document's key.", null, false, true, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declares the document tabs, using a Blazor key for each dynamically rendered document.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"ContextMenuContent", @"RenderFragment<string>?", null, @"Context menu entries rendered for the given document key.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"KeepAlive", @"bool", @"false", @"Keeps previously activated panels mounted while hidden.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"OnCloseRequested", @"EventCallback<string>", null, @"Reports a request to close the document by key. The host removes its declaration.", null, false, true, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"OnTabChanged", @"EventCallback<string>", null, @"Reports the title of the selected document.", null, false, true, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, @"Reports the title of the document requested to close.", null, false, true, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"OverflowBehavior", @"TabOverflowBehavior", @"TabOverflowBehavior.Scroll", @"How to navigate when the strip overflows.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"Reorderable", @"bool", @"false", @"Whether documents can be moved within the strip using drag or Alt+Arrow.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"TabOrder", @"IReadOnlyList<string>?", null, @"Controlled document key order. Unlisted documents follow in declaration order.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"TabOrderChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Reports a requested order containing the keys of the current documents.", null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Handles the orientation-aware keys reported by the tab strip.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", null),
+                        new ApiMethodParameter(@"rtl", @"bool", null),
+                    }),
+                new ApiMethodInfo(@"OnTabReorder", @"OnTabReorder(string key, bool rtl)", @"Task", null, @"Moves the active tab by one position for an orientation-aware Alt+Arrow.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", null),
+                        new ApiMethodParameter(@"rtl", @"bool", null),
+                    }),
+                new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"Task", null, @"Receives changes to the measured scroll extent and its edges.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"overflowing", @"bool", null),
+                        new ApiMethodParameter(@"atStart", @"bool", null),
+                        new ApiMethodParameter(@"atEnd", @"bool", null),
+                    }),
+            },
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -3963,12 +4025,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"ActiveDocuments", @"IReadOnlyDictionary<IdeDocumentRegion, string?>?", null, @"Controlled selection per region. A null value in the dictionary selects the existing tool or main content.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomCollapsed", @"bool", @"false", @"Whether the bottom region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomCollapsedChanged", @"EventCallback<bool>", null, @"Raised when BottomCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomPanel", @"RenderFragment?", null, @"Bottom panel (e.g. Output, Terminal).", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomPanelHeight", @"string", @"""200px""", @"Height of the bottom panel. Default 200px.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomResizable", @"bool", @"true", @"Whether the bottom region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main document/content area.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"DocumentContent", @"RenderFragment<IdeDocument>?", null, @"Renders each document. The rendered instance stays mounted while its key stays in Documents.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"Documents", @"IReadOnlyList<IdeDocument>?", null, @"Enables docking and supplies documents keyed within this layout.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Height", @"string?", null, @"Height of the layout frame as a CSS length (e.g. ""520px"" or ""100%""). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"LeftCollapsed", @"bool", @"false", @"Whether the left region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"LeftCollapsedChanged", @"EventCallback<bool>", null, @"Raised when LeftCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
@@ -3977,6 +4042,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LeftToolPanel", @"RenderFragment?", null, @"Left tool panel (e.g. Solution Explorer).", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"MenuBar", @"RenderFragment?", null, @"Menu bar rendered below the ribbon.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"MinPanelSize", @"int", @"120", @"Smallest size (px) a region can be dragged to. Default 120.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"OnActiveDocumentChanged", @"EventCallback<IdeDocumentSelection>", null, @"Reports the user's selection in a region.", null, false, true, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"OnDocumentMove", @"EventCallback<IdeDocumentMove>", null, @"Requests a move. Accept it by changing the document's region in Documents.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RailSize", @"string", @"""32px""", @"Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Ribbon", @"RenderFragment?", null, @"Top ribbon area rendered above the menu bar.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightCollapsed", @"bool", @"false", @"Whether the right region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
@@ -6836,6 +6903,36 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareShortcutEditor"] = new ApiComponentInfo(
+            @"FlareShortcutEditor",
+            @"Flare.Components.IDE.FlareShortcutEditor",
+            @"Flare.Components.IDE",
+            @"Captures and validates a shortcut assignment without executing the associated command.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AssignedShortcuts", @"IEnumerable<string>", null, @"Assignments of other commands in this scope. Exclude the command currently being edited.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"DefaultValue", @"string?", null, @"Assignment restored by Reset.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables capture, clearing and resetting.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Accessible label for the capture field.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"ReservedShortcuts", @"IEnumerable<string>", null, @"Additional host-reserved shortcuts. Browser navigation keys are reserved by default.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"Value", @"string?", null, @"Current shortcut, using the same gesture format as Keys.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Reports a new shortcut or null when the assignment is cleared.", null, false, true, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareShortcutEntry"] = new ApiComponentInfo(
             @"FlareShortcutEntry",
             @"Flare.Components.FlareShortcutEntry",
@@ -8346,8 +8443,13 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The toolbar's command buttons and controls.", null, false, false, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Command buttons and controls with fixed positions.", null, false, false, false, @"FlareToolbar"),
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Tightens spacing and button size for a denser bar.", null, false, false, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables group movement. The host controls the availability of the commands themselves.", null, false, false, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"GroupOrder", @"IReadOnlyList<string>?", null, @"Controlled order of group keys. Unknown keys are ignored and newly added groups follow.", null, false, false, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"GroupOrderChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Reports the updated sequence of all current group keys.", null, false, true, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"Groups", @"IReadOnlyList<IdeToolbarGroup>?", null, @"Groups in their default order. Keys must be unique within the toolbar.", null, false, false, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"Reorderable", @"bool", @"false", @"Enables group drag handles and accessible move actions.", null, false, false, false, @"FlareToolbar"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -8355,6 +8457,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -10325,6 +10428,37 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareGauge",
+            });
+
+        e[@"IdeDiagnosticSeverity"] = new ApiEnumInfo(
+            @"IdeDiagnosticSeverity",
+            @"Flare.Components.IDE.IdeDiagnosticSeverity",
+            @"Flare.Components.IDE",
+            @"Severity of a document diagnostic.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Information", @"0", @"Informational message."),
+                new ApiEnumMember(@"Warning", @"1", @"Warning."),
+                new ApiEnumMember(@"Error", @"2", @"Error."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"IdeDocumentRegion"] = new ApiEnumInfo(
+            @"IdeDocumentRegion",
+            @"Flare.Components.IDE.IdeDocumentRegion",
+            @"Flare.Components.IDE",
+            @"Region in which an IDE document can be displayed.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Center", @"0", @"The main document area."),
+                new ApiEnumMember(@"Left", @"1", @"The left tool area."),
+                new ApiEnumMember(@"Right", @"2", @"The right tool area."),
+            },
+            new string[]
+            {
+                @"FlareIdeLayout",
             });
 
         e[@"IdePanelMode"] = new ApiEnumInfo(

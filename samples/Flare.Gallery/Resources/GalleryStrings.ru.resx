@@ -4962,4 +4962,15 @@
   <data name="Scheduler_SaveRetained" xml:space="preserve"><value>Событие не сохранено. Проверьте поля или разрешите сохранение и повторите попытку. Черновик сохранен.</value></data>
   <data name="Scheduler_MoreEvents" xml:space="preserve"><value>Остальные события</value></data>
   <data name="Scheduler_Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="IdeWorkspace_Title" xml:space="preserve"><value>Рабочая область документов</value></data>
+  <data name="IdeWorkspace_Description" xml:space="preserve"><value>Переставьте вкладки, переместите документ между областями и измените сочетание клавиш.</value></data>
+  <data name="IdeWorkspace_Activate" xml:space="preserve"><value>Активировать документ</value></data>
+  <data name="IdeWorkspace_Notes" xml:space="preserve"><value>Заметки</value></data>
+  <data name="IdeWorkspace_Commands" xml:space="preserve"><value>Команды</value></data>
+  <data name="IdeWorkspace_Diagnostics" xml:space="preserve"><value>Диагностика</value></data>
+  <data name="IdeWorkspace_Open" xml:space="preserve"><value>Открыть</value></data>
+  <data name="IdeWorkspace_Run" xml:space="preserve"><value>Запустить</value></data>
+  <data name="IdeWorkspace_ParseError" xml:space="preserve"><value>Неизвестный символ</value></data>
+  <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Нет заголовка</value></data>
+  <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Готово</value></data>
 </root>

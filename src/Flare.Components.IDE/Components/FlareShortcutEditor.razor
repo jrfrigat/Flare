@@ -1,0 +1,20 @@
+@namespace Flare.Components.IDE
+@inherits FlareLocalizedComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <FlareStack Row="true" Gap="FlareSpacing.XSmall">
+        <div @ref="_capture" data-flare-shortcut-capture="" @onkeydown="CaptureAsync"
+             @onfocusin="@BeginCapture" @onfocusout="@CancelCapture" @onpointerdown="@BeginCapture">
+            <FlareTextField Label="@(Label ?? Text["Shortcut_Label"])" Value="@Value" ReadOnly="true"
+                            Placeholder="@Text["Shortcut_Empty"]" Disabled="@Disabled"
+                            aria-describedby="@_statusId" />
+        </div>
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value is null)"
+                     OnClick="@(() => SetValueAsync(null))">@Text["Shortcut_Clear"]</FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value == DefaultValue)"
+                     OnClick="@ResetAsync">@Text["Shortcut_Reset"]</FlareButton>
+    </FlareStack>
+    <FlareText Element="p" Typo="TypographyScale.BodySmall" id="@_statusId" role="status">
+        @Text[_message ?? (_recording ? "Shortcut_Record" : "Shortcut_Hint")]
+    </FlareText>
+</div>

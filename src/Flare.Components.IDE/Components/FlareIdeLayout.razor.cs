@@ -90,8 +90,8 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
 
     private bool ShowResizer(ToolPanelPosition position) => position switch
     {
-        ToolPanelPosition.Left => LeftToolPanel is not null && LeftResizable && !LeftCollapsed && !IsFloating(ToolPanelPosition.Left),
-        ToolPanelPosition.Right => RightToolPanel is not null && RightResizable && !RightCollapsed && !IsFloating(ToolPanelPosition.Right),
+        ToolPanelPosition.Left => (LeftToolPanel is not null || Docking) && LeftResizable && !LeftCollapsed && !IsFloating(ToolPanelPosition.Left),
+        ToolPanelPosition.Right => (RightToolPanel is not null || Docking) && RightResizable && !RightCollapsed && !IsFloating(ToolPanelPosition.Right),
         ToolPanelPosition.Bottom => BottomPanel is not null && BottomResizable && !BottomCollapsed && !IsFloating(ToolPanelPosition.Bottom),
         _ => false,
     };
@@ -270,7 +270,8 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
 
     // A region floats (overlay) when expanded in auto-hide mode.
     private bool IsFloating(ToolPanelPosition position) =>
-        !IsCollapsed(position) && ModeOf(position) == IdePanelMode.AutoHide;
+        !IsCollapsed(position) && ModeOf(position) == IdePanelMode.AutoHide &&
+        !DocumentFillsRegion(position);
 
     private string _rootStyle =>
         $"{Css.Tokens.Ide.Layout.LeftWidth}:{EffectiveLeftWidth};{Css.Tokens.Ide.Layout.RightWidth}:{EffectiveRightWidth};" +

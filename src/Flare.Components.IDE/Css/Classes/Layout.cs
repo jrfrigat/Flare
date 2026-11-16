@@ -7,6 +7,14 @@ public static class Layout
     public const string Body = "flare-ide-layout__body";
     public const string Bottom = "flare-ide-layout__bottom";
     public const string Content = "flare-ide-layout__content";
+    /// <summary>Document panel that remains mounted across moves.</summary>
+    public const string Document = "flare-ide-layout__document";
+    /// <summary>Document controls in a dock region.</summary>
+    public const string DockTabs = "flare-ide-layout__dock-tabs";
+    /// <summary>Container for one dock tab and its actions.</summary>
+    public const string DockTab = "flare-ide-layout__dock-tab";
+    /// <summary>Button that selects the document represented by a dock tab.</summary>
+    public const string DockSelect = "flare-ide-layout__dock-select";
     public const string Main = "flare-ide-layout__main";
     public const string MenuBar = "flare-ide-layout__menubar";
     public const string Panel = "flare-ide-layout__panel";

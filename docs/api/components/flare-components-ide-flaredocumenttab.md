@@ -11,6 +11,7 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the document panel. |
 | `Closeable` | `bool` | `true` | Parameter |  | Whether the tab can be closed by the user. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in the tab header - any provider. Defaults to the built-in description icon. |
+| `Key` | `string?` | `` | Parameter |  | Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents. |
 | `Modified` | `bool` | `false` | Parameter |  | Whether the document has unsaved changes (shows a dot/asterisk indicator). |
 | `Title` | `string` | `""` | Parameter |  | Display title for the document tab. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

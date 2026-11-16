@@ -19,8 +19,15 @@
                 @MenuBar
             </div>
         }
-        <div class="@Css.Classes.Ide.Layout.Body">
-            @if (LeftToolPanel is not null)
+        <div class="@Css.Classes.Ide.Layout.Body" data-flare-ide-docking="@(Docking ? "true" : null)">
+            @if (Docking)
+            {
+                @foreach (var region in DocumentRegions)
+                {
+                    @RenderDockTabs(region)
+                }
+            }
+            @if (LeftToolPanel is not null || Docking)
             {
                 <div class="@PanelClass(ToolPanelPosition.Left, Css.Classes.Ide.Layout.PanelLeft)">
                     @if (LeftCollapsed)
@@ -29,7 +36,7 @@
                     }
                     else
                     {
-                        <div class="@Css.Classes.Ide.Layout.PanelBody">@LeftToolPanel</div>
+                        <div class="@Css.Classes.Ide.Layout.PanelBody" inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
                     }
                 </div>
             }
@@ -37,7 +44,7 @@
             {
                 @RenderResizer(ToolPanelPosition.Left)
             }
-            <div class="@Css.Classes.Ide.Layout.Main">
+            <div class="@Css.Classes.Ide.Layout.Main" inert="@ToolContentCovered(IdeDocumentRegion.Center)">
                 <div class="@Css.Classes.Ide.Layout.Content">
                     @ChildContent
                 </div>
@@ -46,7 +53,7 @@
             {
                 @RenderResizer(ToolPanelPosition.Right)
             }
-            @if (RightToolPanel is not null)
+            @if (RightToolPanel is not null || Docking)
             {
                 <div class="@PanelClass(ToolPanelPosition.Right, Css.Classes.Ide.Layout.PanelRight)">
                     @if (RightCollapsed)
@@ -55,9 +62,19 @@
                     }
                     else
                     {
-                        <div class="@Css.Classes.Ide.Layout.PanelBody">@RightToolPanel</div>
+                        <div class="@Css.Classes.Ide.Layout.PanelBody" inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
                     }
                 </div>
+            }
+            @if (Documents is not null)
+            {
+                @foreach (var document in Documents)
+                {
+                    <div @key="document.Key" class="@Css.Classes.Ide.Layout.Document" data-region="@document.Region"
+                         hidden="@(!DocumentVisible(document))">
+                        @DocumentContent?.Invoke(document)
+                    </div>
+                }
             }
         </div>
         @if (ShowResizer(ToolPanelPosition.Bottom))
@@ -90,6 +107,7 @@
     private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     private RenderFragment RenderResizer(ToolPanelPosition position) =>@<FlareSplitter
         Class="@Css.Classes.Ide.Layout.Resizer"
+        data-region="@position"
         Orientation="@(position == ToolPanelPosition.Bottom ? FlareSplitter.SplitterOrientation.Vertical : FlareSplitter.SplitterOrientation.Horizontal)"
         Value="@SizePx(position)" ValueTarget="@SizeTarget(position)" ValueVariable="@SizeVariable(position)"
         ValueScope="@($".{Css.Classes.Ide.Layout.Root}")" Reverse="@(position != ToolPanelPosition.Left)"
@@ -104,4 +122,44 @@
             <span class="@Css.Classes.Ide.Layout.RailTitle">@title</span>
         }
     </button>;
+
+    private RenderFragment RenderDockTabs(IdeDocumentRegion region) => @<div
+        class="@Css.Classes.Ide.Layout.DockTabs" data-region="@region"
+        role="group" aria-label="@IdeText[$"Dock_{region}"]"
+        @ondragover:preventDefault="true" @ondrop="@(() => DropDocumentAsync(region))">
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" aria-pressed="@(ActiveDocument(region) is null ? "true" : "false")"
+                     OnClick="@(() => SelectDocumentAsync(region, null))">@IdeText[$"Dock_{region}"]</FlareButton>
+        @foreach (var document in Documents!.Where(doc => doc.Region == region))
+        {
+            <div @key="document.Key" class="@Css.Classes.Ide.Layout.DockTab">
+                <button type="button" class="@Css.Classes.Ide.Layout.DockSelect" @ref="_documentHeaders[document.Key]"
+                        draggable="@(OnDocumentMove.HasDelegate ? "true" : null)"
+                        aria-pressed="@(ActiveDocument(region) == document.Key ? "true" : "false")"
+                        @onclick="@(() => SelectDocumentAsync(region, document.Key))"
+                        @ondragstart="@(() => BeginDocumentDrag(document.Key))" @ondragend="@EndDocumentDrag">
+                    @document.Title
+                </button>
+                @if (OnDocumentMove.HasDelegate)
+                {
+                    <FlareMenu>
+                        <Activator Context="menu">
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" @attributes="menu.Attributes"
+                                         AriaLabel="@($"{IdeText["Dock_Move"]}: {document.Title}")">
+                                <FlareIconView Value="FlareIcons.ExpandMore" />
+                            </FlareButton>
+                        </Activator>
+                        <ChildContent>
+                            @foreach (var destination in DocumentRegions)
+                            {
+                                if (destination == region) continue;
+                                <FlareMenuItem OnClick="@(() => RequestDocumentMoveAsync(document, destination))">
+                                    @IdeText[$"Dock_{destination}"]
+                                </FlareMenuItem>
+                            }
+                        </ChildContent>
+                    </FlareMenu>
+                }
+            </div>
+        }
+    </div>;
 }

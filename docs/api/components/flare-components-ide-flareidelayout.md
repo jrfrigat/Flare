@@ -10,12 +10,15 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `ActiveDocuments` | `IReadOnlyDictionary<IdeDocumentRegion, string?>?` | `` | Parameter |  | Controlled selection per region. A null value in the dictionary selects the existing tool or main content. |
 | `BottomCollapsed` | `bool` | `false` | Parameter |  | Whether the bottom region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `BottomCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when BottomCollapsed changes. |
 | `BottomPanel` | `RenderFragment?` | `` | Parameter |  | Bottom panel (e.g. Output, Terminal). |
 | `BottomPanelHeight` | `string` | `"200px"` | Parameter |  | Height of the bottom panel. Default 200px. |
 | `BottomResizable` | `bool` | `true` | Parameter |  | Whether the bottom region can be drag-resized. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main document/content area. |
+| `DocumentContent` | `RenderFragment<IdeDocument>?` | `` | Parameter |  | Renders each document. The rendered instance stays mounted while its key stays in Documents. |
+| `Documents` | `IReadOnlyList<IdeDocument>?` | `` | Parameter |  | Enables docking and supplies documents keyed within this layout. |
 | `Height` | `string?` | `` | Parameter |  | Height of the layout frame as a CSS length (e.g. "520px" or "100%"). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen. |
 | `LeftCollapsed` | `bool` | `false` | Parameter |  | Whether the left region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `LeftCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when LeftCollapsed changes. |
@@ -24,6 +27,8 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `LeftToolPanel` | `RenderFragment?` | `` | Parameter |  | Left tool panel (e.g. Solution Explorer). |
 | `MenuBar` | `RenderFragment?` | `` | Parameter |  | Menu bar rendered below the ribbon. |
 | `MinPanelSize` | `int` | `120` | Parameter |  | Smallest size (px) a region can be dragged to. Default 120. |
+| `OnActiveDocumentChanged` | `EventCallback<IdeDocumentSelection>` | `` | Callback |  | Reports the user's selection in a region. |
+| `OnDocumentMove` | `EventCallback<IdeDocumentMove>` | `` | Callback |  | Requests a move. Accept it by changing the document's region in Documents. |
 | `RailSize` | `string` | `"32px"` | Parameter |  | Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px. |
 | `Ribbon` | `RenderFragment?` | `` | Parameter |  | Top ribbon area rendered above the menu bar. |
 | `RightCollapsed` | `bool` | `false` | Parameter |  | Whether the right region is collapsed (only a thin rail is shown). Two-way bindable. |

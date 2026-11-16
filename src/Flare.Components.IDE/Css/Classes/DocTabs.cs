@@ -4,6 +4,8 @@ namespace Flare.Css.Classes.Ide;
 public static class DocTabs
 {
     public const string Root = "flare-doc-tabs";
+    /// <summary>Row containing the scrollable headers and overflow controls.</summary>
+    public const string Strip = "flare-doc-tabs__strip";
     public const string Bar = "flare-doc-tabs__bar";
     public const string Close = "flare-doc-tabs__close";
     public const string Dropdown = "flare-doc-tabs__dropdown";

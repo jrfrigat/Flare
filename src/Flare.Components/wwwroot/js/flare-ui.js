@@ -22,9 +22,19 @@ export function registerTabKeyboard(bar, dotNetRef) {
         globalThis.console?.warn?.('Flare: tab keyboard navigation could not reach .NET.', error);
     };
     const keydown = e => {
-        if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing) return;
+        if (e.ctrlKey || e.metaKey || e.isComposing) return;
         const tab = e.target.closest('[role="tab"]');
         if (!tab || tab.closest('[role="tablist"]') !== bar || tab.disabled) return;
+        const documentStrip = bar.hasAttribute('data-flare-reveal-active');
+        if (documentStrip && e.target !== tab && e.target.closest('button,input,textarea,select,[contenteditable]')) return;
+        if (e.altKey) {
+            if (bar.dataset.flareTabReorder === 'true' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+                e.preventDefault();
+                dotNetRef.invokeMethodAsync('OnTabReorder', e.key, getComputedStyle(bar).direction === 'rtl').catch(reportFailure);
+            }
+            return;
+        }
+        if (e.key === ' ' && documentStrip) e.preventDefault();
         const vertical = bar.getAttribute('aria-orientation') === 'vertical';
         const handled = e.key === 'Home' || e.key === 'End' || (e.key === 'Delete' && tab.dataset.closeable === 'true')
             || (vertical ? e.key === 'ArrowUp' || e.key === 'ArrowDown'
@@ -135,6 +145,10 @@ export function focusTreeItem(root, index, timeoutMs = 1000) {
 export function revealFocusedTab(bar) {
     const tab = document.activeElement;
     if (!bar || !tab?.matches('[role="tab"]') || tab.closest('[role="tablist"]') !== bar) return;
+    revealTab(bar, tab);
+}
+
+function revealTab(bar, tab) {
     const box = bar.getBoundingClientRect(), item = tab.getBoundingClientRect();
     const horizontal = item.left < box.left ? item.left - box.left : item.right > box.right ? item.right - box.right : 0;
     const vertical = item.top < box.top ? item.top - box.top : item.bottom > box.bottom ? item.bottom - box.bottom : 0;
@@ -147,9 +161,9 @@ export function revealFocusedTab(bar) {
 // removes the rest.
 export function registerTabScroller(bar, dotNetRef) {
     if (!bar) return;
-    let last = null, ticking = false;
+    let last = null, frame = 0;
     function update() {
-        ticking = false;
+        frame = 0;
         const overflowing = bar.scrollWidth > bar.clientWidth + 1;
         const extent = Math.max(0, bar.scrollWidth - bar.clientWidth);
         const offset = Math.min(extent, Math.max(0, getComputedStyle(bar).direction === 'rtl' ? -bar.scrollLeft : bar.scrollLeft));
@@ -159,10 +173,28 @@ export function registerTabScroller(bar, dotNetRef) {
         last = [overflowing, atStart, atEnd];
         if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabScrollState', overflowing, atStart, atEnd).catch(() => { });
     }
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
     const ro = new ResizeObserver(onScroll);
     ro.observe(bar);
-    _tabScrollers.keep(bar, all(listen(bar, 'scroll', onScroll, { passive: true }), () => ro.disconnect()));
+    let observer;
+    if (bar.hasAttribute('data-flare-reveal-active')) {
+        const observeTabs = () => {
+            ro.disconnect();
+            ro.observe(bar);
+            for (const child of bar.children) ro.observe(child);
+            const active = bar.querySelector('[role="tab"][aria-selected="true"]');
+            if (active) revealTab(bar, active);
+            onScroll();
+        };
+        observer = new MutationObserver(observeTabs);
+        observer.observe(bar, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-selected'] });
+        observeTabs();
+    }
+    _tabScrollers.keep(bar, all(listen(bar, 'scroll', onScroll, { passive: true }), () => {
+        ro.disconnect();
+        observer?.disconnect();
+        if (frame) cancelAnimationFrame(frame);
+    }));
     update();
 }
 
@@ -345,7 +377,7 @@ export function removeShortcutListener(id) {
 }
 
 function _handleShortcutKeyDown(e) {
-    if (!_shortcutOwners.size) return;
+    if (!_shortcutOwners.size || e.target.closest?.('[data-flare-shortcut-capture]')) return;
     const parts = [];
     if (e.ctrlKey || e.metaKey) parts.push('ctrl');
     if (e.altKey) parts.push('alt');

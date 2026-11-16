@@ -8,8 +8,13 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `ChildContent` | `RenderFragment?` | `` | Parameter |  | The toolbar's command buttons and controls. |
+| `ChildContent` | `RenderFragment?` | `` | Parameter |  | Command buttons and controls with fixed positions. |
 | `Dense` | `bool` | `false` | Parameter |  | Tightens spacing and button size for a denser bar. |
+| `Disabled` | `bool` | `false` | Parameter |  | Disables group movement. The host controls the availability of the commands themselves. |
+| `GroupOrder` | `IReadOnlyList<string>?` | `` | Parameter |  | Controlled order of group keys. Unknown keys are ignored and newly added groups follow. |
+| `GroupOrderChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Reports the updated sequence of all current group keys. |
+| `Groups` | `IReadOnlyList<IdeToolbarGroup>?` | `` | Parameter |  | Groups in their default order. Keys must be unique within the toolbar. |
+| `Reorderable` | `bool` | `false` | Parameter |  | Enables group drag handles and accessible move actions. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
@@ -20,6 +25,7 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

@@ -1,0 +1,75 @@
+@using Flare.Components.IDE
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareDocumentTabs @bind-ActiveKey="_activeTab" @bind-TabOrder="_tabOrder" Reorderable="true" KeepAlive="true">
+        <ContextMenuContent Context="key">
+            <FlareMenuItem OnClick="@(() => _activeTab = key)">@GalleryStrings.IdeWorkspace_Activate</FlareMenuItem>
+        </ContextMenuContent>
+        <ChildContent>
+            <FlareDocumentTab Key="a" Title="Program.cs">
+                <FlareTextField Label="@GalleryStrings.IdeWorkspace_Notes" />
+            </FlareDocumentTab>
+            <FlareDocumentTab Key="b" Title="Program.cs">
+                <FlareTextField Label="@GalleryStrings.IdeWorkspace_Notes" />
+            </FlareDocumentTab>
+        </ChildContent>
+    </FlareDocumentTabs>
+    <FlareIdeLayout Height="34rem" LeftPanelWidth="18rem" RightPanelWidth="12rem" BottomPanelHeight="15rem"
+                    Documents="_documents" OnDocumentMove="MoveDocument">
+        <MenuBar>
+            <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
+        </MenuBar>
+        <LeftToolPanel>
+            <FlareToolPanel Title="@GalleryStrings.IdeWorkspace_Commands">
+                <FlareShortcutEditor @bind-Value="_shortcut" DefaultValue="ctrl+shift+p"
+                                     AssignedShortcuts="@(new[] { "ctrl+shift+k" })" />
+            </FlareToolPanel>
+        </LeftToolPanel>
+        <DocumentContent Context="document">
+            <FlareTextField Label="@document.Title" />
+        </DocumentContent>
+        <BottomPanel>
+            <FlareToolPanel Position="ToolPanelPosition.Bottom" Title="@GalleryStrings.IdeWorkspace_Diagnostics">
+                <FlareDiagnosticList Items="Diagnostics" Height="9rem" OnDiagnosticSelected="@OpenDiagnostic" />
+            </FlareToolPanel>
+        </BottomPanel>
+        <StatusBar>
+            <FlareStatusBar LeftContent="@StatusContent" />
+        </StatusBar>
+    </FlareIdeLayout>
+</FlareStack>
+
+@code {
+    private string? _activeTab;
+    private string? _shortcut = "ctrl+shift+p";
+    private IReadOnlyList<string>? _tabOrder;
+    private IReadOnlyList<string>? _groupOrder;
+    private IdeDiagnostic? _selected;
+    private IdeDocument[] _documents = [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right)];
+
+    private IReadOnlyList<IdeToolbarGroup> Groups =>
+    [
+        new("open", GalleryStrings.IdeWorkspace_Open, OpenGroup),
+        new("run", GalleryStrings.IdeWorkspace_Run, RunGroup)
+    ];
+
+    private IReadOnlyList<IdeDiagnostic> Diagnostics =>
+    [
+        new("parse", "main", "Main.cs", 13, 5, IdeDiagnosticSeverity.Error, GalleryStrings.IdeWorkspace_ParseError),
+        new("heading", "guide", "Guide.md", 2, 1, IdeDiagnosticSeverity.Warning, GalleryStrings.IdeWorkspace_HeadingError)
+    ];
+
+    private RenderFragment OpenGroup => @<FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+        OnClick="@(() => _selected = null)">@GalleryStrings.IdeWorkspace_Open</FlareButton>;
+    private RenderFragment RunGroup => @<FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+        OnClick="@(() => _selected = Diagnostics[0])">@GalleryStrings.IdeWorkspace_Run</FlareButton>;
+    private RenderFragment StatusContent => @<FlareText>@(_selected is { } entry
+        ? $"{entry.DocumentTitle}:{entry.Line}:{entry.Column}" : GalleryStrings.IdeWorkspace_Ready)</FlareText>;
+
+    private void MoveDocument(IdeDocumentMove request) => _documents = _documents
+        .Select(document => document.Key == request.Document.Key ? document with { Region = request.Destination } : document)
+        .ToArray();
+
+    private void OpenDiagnostic(IdeDiagnostic diagnostic) => _selected = diagnostic;
+}
