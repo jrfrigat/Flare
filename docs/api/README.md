@@ -329,6 +329,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.Gantt.GanttValidationCode`](enums/flare-components-gantt-ganttvalidationcode.md) — Why a proposed link was refused.
 - [`Flare.Components.GaugeShape`](enums/flare-components-gaugeshape.md) — How a FlareGauge lays its scale out. One component with three shapes rather than three components: the scale, bands, ticks, target marker and readout are the same in all three, and only the projection from value to screen differs.
 - [`Flare.Components.IDE.IdeDiagnosticSeverity`](enums/flare-components-ide-idediagnosticseverity.md) — Severity of a document diagnostic.
+- [`Flare.Components.IDE.IdeDockCaptionMode`](enums/flare-components-ide-idedockcaptionmode.md) — How FlareIdeLayout draws the caption of a side dock strip - the control above the left or right tool region that returns to the tools while a docked document covers them. The Center strip is configured separately with ShowCenterDockStrip and CenterDockHeader.
 - [`Flare.Components.IDE.IdeDocumentMounting`](enums/flare-components-ide-idedocumentmounting.md) — How FlareIdeLayout mounts the content of docked documents.
 - [`Flare.Components.IDE.IdeDocumentRegion`](enums/flare-components-ide-idedocumentregion.md) — Region in which an IDE document can be displayed.
 - [`Flare.Components.IDE.IdePanelMode`](enums/flare-components-ide-idepanelmode.md) — Controls how a docked tool panel in FlareIdeLayout behaves when expanded.

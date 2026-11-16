@@ -5019,4 +5019,13 @@
   <data name="IdeWorkspace_ParseError" xml:space="preserve"><value>Неизвестный символ</value></data>
   <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Нет заголовка</value></data>
   <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Готово</value></data>
+  <data name="IdeDockCaptions_Title" xml:space="preserve"><value>Подписи боковых панелей</value></data>
+  <data name="IdeDockCaptions_Description" xml:space="preserve"><value>Переключите подписи полос левой и правой областей. Режим "Скрыто" убирает подпись и пустую боковую полосу, а подписанный элемент возврата к инструментам остается доступен вспомогательным технологиям, пока инструменты закрыты документом. Полоса "Основное" сохраняет свою кнопку "Документы".</value></data>
+  <data name="IdeDockCaptions_Text" xml:space="preserve"><value>Текст</value></data>
+  <data name="IdeDockCaptions_IconOnly" xml:space="preserve"><value>Только значок</value></data>
+  <data name="IdeDockCaptions_Hidden" xml:space="preserve"><value>Скрыто</value></data>
+  <data name="IdeDockCaptions_Tools" xml:space="preserve"><value>Инструменты</value></data>
+  <data name="IdeDockCaptions_ToolsBody" xml:space="preserve"><value>Содержимое инструментов остается в левой области.</value></data>
+  <data name="IdeDockCaptions_Properties" xml:space="preserve"><value>Свойства</value></data>
+  <data name="IdeDockCaptions_PropertiesBody" xml:space="preserve"><value>В правой области нет документов, поэтому режим "Скрыто" не рисует над ней полосу.</value></data>
 </root>

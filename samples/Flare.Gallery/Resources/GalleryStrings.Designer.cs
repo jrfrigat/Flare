@@ -14813,5 +14813,23 @@ namespace Flare.Gallery.Resources {
         public static string IdeWorkspace_HeadingError { get { return ResourceManager.GetString("IdeWorkspace_HeadingError", resourceCulture); } }
         /// <summary>Ready</summary>
         public static string IdeWorkspace_Ready { get { return ResourceManager.GetString("IdeWorkspace_Ready", resourceCulture); } }
+        /// <summary>Side dock captions</summary>
+        public static string IdeDockCaptions_Title { get { return ResourceManager.GetString("IdeDockCaptions_Title", resourceCulture); } }
+        /// <summary>Switch the Left and Right dock strip captions. Hidden removes the caption and any empty side strip; while a docked document covers the tools, the labelled return control stays available to assistive technology. The Center strip keeps its own Documents button.</summary>
+        public static string IdeDockCaptions_Description { get { return ResourceManager.GetString("IdeDockCaptions_Description", resourceCulture); } }
+        /// <summary>Text</summary>
+        public static string IdeDockCaptions_Text { get { return ResourceManager.GetString("IdeDockCaptions_Text", resourceCulture); } }
+        /// <summary>Icon only</summary>
+        public static string IdeDockCaptions_IconOnly { get { return ResourceManager.GetString("IdeDockCaptions_IconOnly", resourceCulture); } }
+        /// <summary>Hidden</summary>
+        public static string IdeDockCaptions_Hidden { get { return ResourceManager.GetString("IdeDockCaptions_Hidden", resourceCulture); } }
+        /// <summary>Tools</summary>
+        public static string IdeDockCaptions_Tools { get { return ResourceManager.GetString("IdeDockCaptions_Tools", resourceCulture); } }
+        /// <summary>Tool content stays in the left region.</summary>
+        public static string IdeDockCaptions_ToolsBody { get { return ResourceManager.GetString("IdeDockCaptions_ToolsBody", resourceCulture); } }
+        /// <summary>Properties</summary>
+        public static string IdeDockCaptions_Properties { get { return ResourceManager.GetString("IdeDockCaptions_Properties", resourceCulture); } }
+        /// <summary>The right region has no documents, so Hidden draws no strip above it.</summary>
+        public static string IdeDockCaptions_PropertiesBody { get { return ResourceManager.GetString("IdeDockCaptions_PropertiesBody", resourceCulture); } }
     }
 }

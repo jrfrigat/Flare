@@ -4040,6 +4040,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"BottomResizable", @"bool", @"true", @"Whether the bottom region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"CenterDockHeader", @"RenderFragment?", null, @"Content rendered in place of the built-in Center dock strip - a host tab strip for the main document area. The fragment occupies the Center column of the layout's dock row. It wins over ShowCenterDockStrip; as with a suppressed strip, Center selection comes only from ActiveDocuments and the host supplies the return-to-main-content control.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main document/content area.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"DockCaptionMode", @"IdeDockCaptionMode", @"IdeDockCaptionMode.Text", @"How the side dock strips draw their region caption - the ""Left tools"" / ""Right tools"" control that returns to the tools while a docked document covers the region. Text keeps the caption as visible text; IconOnly shows an icon and keeps the localized name as the accessible name; Hidden paints no caption while the labelled return control stays available to assistive technology, and a side region with no documents draws no strip at all. The Center strip is controlled by ShowCenterDockStrip and CenterDockHeader. Default Text.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"DocumentContent", @"RenderFragment<IdeDocument>?", null, @"Renders each document. Which documents invoke it is chosen by DocumentMounting.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"DocumentContextMenu", @"RenderFragment<IdeDocument>?", null, @"Context menu entries rendered for a docked document when its dock tab is right-clicked. The host decides which actions to offer, including close variants or confirmation.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"DocumentMounting", @"IdeDocumentMounting", @"IdeDocumentMounting.All", @"Whether every document mounts its content or only the active document of each region. The default, All, preserves each document's state at one content instance per document. ActiveOnly disposes the content of a document that becomes inactive, so its transient state is lost when it mounts again; a document that stays active across a region move remains mounted.", null, false, false, false, @"FlareIdeLayout"),
@@ -10532,6 +10533,23 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Error", @"2", @"Error."),
             },
             System.Array.Empty<string>());
+
+        e[@"IdeDockCaptionMode"] = new ApiEnumInfo(
+            @"IdeDockCaptionMode",
+            @"Flare.Components.IDE.IdeDockCaptionMode",
+            @"Flare.Components.IDE",
+            @"How FlareIdeLayout draws the caption of a side dock strip - the control above the left or right tool region that returns to the tools while a docked document covers them. The Center strip is configured separately with ShowCenterDockStrip and CenterDockHeader.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Text", @"0", @"The caption is the button's visible text. This is the default."),
+                new ApiEnumMember(@"IconOnly", @"1", @"The button shows only an icon; the localized region name stays its accessible name."),
+                new ApiEnumMember(@"Hidden", @"2", @"The caption is not painted. The return-to-tools button keeps its localized accessible name and stays available to assistive technology while a docked document covers the region, and a side region without documents draws no strip at all, so no empty row is painted."),
+            },
+            new string[]
+            {
+                @"FlareIdeLayout",
+            });
 
         e[@"IdeDocumentMounting"] = new ApiEnumInfo(
             @"IdeDocumentMounting",

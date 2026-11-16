@@ -1,0 +1,56 @@
+@using Flare.Components.IDE
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareToggleGroup TValue="string" @bind-Value="_mode">
+        <FlareToggleButton Value="@("text")">@GalleryStrings.IdeDockCaptions_Text</FlareToggleButton>
+        <FlareToggleButton Value="@("icon")">@GalleryStrings.IdeDockCaptions_IconOnly</FlareToggleButton>
+        <FlareToggleButton Value="@("hidden")">@GalleryStrings.IdeDockCaptions_Hidden</FlareToggleButton>
+    </FlareToggleGroup>
+
+    <FlareIdeLayout Height="320px" LeftPanelWidth="220px" RightPanelWidth="180px"
+                    Documents="_documents" ActiveDocuments="_selection" DockCaptionMode="CaptionMode"
+                    OnActiveDocumentChanged="SelectionChanged">
+        <LeftToolPanel>
+            <FlareToolPanel Title="@GalleryStrings.IdeDockCaptions_Tools" Position="ToolPanelPosition.Left">
+                <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                    @GalleryStrings.IdeDockCaptions_ToolsBody
+                </FlareText>
+            </FlareToolPanel>
+        </LeftToolPanel>
+        <RightToolPanel>
+            <FlareToolPanel Title="@GalleryStrings.IdeDockCaptions_Properties" Position="ToolPanelPosition.Right">
+                <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                    @GalleryStrings.IdeDockCaptions_PropertiesBody
+                </FlareText>
+            </FlareToolPanel>
+        </RightToolPanel>
+        <ChildContent>
+            <FlareText>@GalleryStrings.IdeWorkspace_MainContent</FlareText>
+        </ChildContent>
+        <DocumentContent Context="document">
+            <FlareTextField Label="@document.Title" />
+        </DocumentContent>
+    </FlareIdeLayout>
+</FlareStack>
+
+@code {
+    private string? _mode = "text";
+    private readonly IdeDocument[] _documents =
+        [new("query", "Query.sql", IdeDocumentRegion.Left), new("main", "Main.cs")];
+    private Dictionary<IdeDocumentRegion, string?> _selection =
+        new() { [IdeDocumentRegion.Left] = null, [IdeDocumentRegion.Center] = "main" };
+
+    private IdeDockCaptionMode CaptionMode => _mode switch
+    {
+        "icon" => IdeDockCaptionMode.IconOnly,
+        "hidden" => IdeDockCaptionMode.Hidden,
+        _ => IdeDockCaptionMode.Text,
+    };
+
+    private void SelectionChanged(IdeDocumentSelection selection) =>
+        _selection = new Dictionary<IdeDocumentRegion, string?>(_selection)
+        {
+            [selection.Region] = selection.Key
+        };
+}

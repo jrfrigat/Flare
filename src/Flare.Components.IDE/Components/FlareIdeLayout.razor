@@ -151,8 +151,7 @@
         class="@Css.Classes.Ide.Layout.DockTabs" data-region="@region"
         role="group" aria-label="@IdeText[$"Dock_{region}"]"
         @ondragover:preventDefault="true" @ondrop="@(() => DropDocumentAsync(region))">
-        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" aria-pressed="@(ActiveDocument(region) is null ? "true" : "false")"
-                     OnClick="@(() => SelectDocumentAsync(region, null))">@IdeText[$"Dock_{region}"]</FlareButton>
+        @RenderDockCaption(region)
         @foreach (var document in Documents!.Where(doc => doc.Region == region))
         {
             if (DocumentContextMenu is null)
@@ -169,6 +168,37 @@
             }
         }
     </div>;
+
+    // The caption is the side region's return-to-tools control. The Center strip is owned by
+    // ShowCenterDockStrip/CenterDockHeader, so the mode never changes its text button. A hidden
+    // caption keeps the localized accessible name and stays in the accessibility tree while it can
+    // actually return from a covering document; otherwise it would be a pointless tab stop.
+    private RenderFragment RenderDockCaption(IdeDocumentRegion region)
+    {
+        var caption = IdeText[$"Dock_{region}"].Value;
+        var pressed = ActiveDocument(region) is null;
+        if (region != IdeDocumentRegion.Center && DockCaptionMode != IdeDockCaptionMode.Text)
+        {
+            if (DockCaptionMode == IdeDockCaptionMode.IconOnly)
+            {
+                return @<FlareIconButton Icon="FlareIcons.ViewColumn" Variant="ButtonVariant.Text"
+                                        Size="ButtonSize.Xs" AriaLabel="@caption" AriaPressed="@pressed"
+                                        OnClick="@(() => SelectDocumentAsync(region, null))" />;
+            }
+            if (!pressed)
+            {
+                return @<FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                    Class="@Css.Classes.Visually.Hidden" AriaLabel="@caption"
+                                    aria-pressed="false"
+                                    OnClick="@(() => SelectDocumentAsync(region, null))">@caption</FlareButton>;
+            }
+            return _ => { };
+        }
+
+        return @<FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                            aria-pressed="@(pressed ? "true" : "false")"
+                            OnClick="@(() => SelectDocumentAsync(region, null))">@caption</FlareButton>;
+    }
 
     private RenderFragment RenderDockTab(IdeDocument document, IdeDocumentRegion region,
         FlareMenuActivatorContext? menu) => @<div @key="document.Key" class="@Css.Classes.Ide.Layout.DockTab">

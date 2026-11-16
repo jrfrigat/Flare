@@ -5019,4 +5019,13 @@ Read the card, check the tests, and report what is left.</value>
   <data name="IdeWorkspace_ParseError" xml:space="preserve"><value>Undefined symbol</value></data>
   <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Missing heading</value></data>
   <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Ready</value></data>
+  <data name="IdeDockCaptions_Title" xml:space="preserve"><value>Side dock captions</value></data>
+  <data name="IdeDockCaptions_Description" xml:space="preserve"><value>Switch the Left and Right dock strip captions. Hidden removes the caption and any empty side strip; while a docked document covers the tools, the labelled return control stays available to assistive technology. The Center strip keeps its own Documents button.</value></data>
+  <data name="IdeDockCaptions_Text" xml:space="preserve"><value>Text</value></data>
+  <data name="IdeDockCaptions_IconOnly" xml:space="preserve"><value>Icon only</value></data>
+  <data name="IdeDockCaptions_Hidden" xml:space="preserve"><value>Hidden</value></data>
+  <data name="IdeDockCaptions_Tools" xml:space="preserve"><value>Tools</value></data>
+  <data name="IdeDockCaptions_ToolsBody" xml:space="preserve"><value>Tool content stays in the left region.</value></data>
+  <data name="IdeDockCaptions_Properties" xml:space="preserve"><value>Properties</value></data>
+  <data name="IdeDockCaptions_PropertiesBody" xml:space="preserve"><value>The right region has no documents, so Hidden draws no strip above it.</value></data>
 </root>

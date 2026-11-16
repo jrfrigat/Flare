@@ -23,6 +23,16 @@ public partial class FlareIdeLayout
     /// <see cref="ActiveDocuments"/> and the host supplies the return-to-main-content control.</summary>
     [Parameter] public RenderFragment? CenterDockHeader { get; set; }
 
+    /// <summary>How the side dock strips draw their region caption - the "Left tools" / "Right tools"
+    /// control that returns to the tools while a docked document covers the region.
+    /// <see cref="IdeDockCaptionMode.Text"/> keeps the caption as visible text;
+    /// <see cref="IdeDockCaptionMode.IconOnly"/> shows an icon and keeps the localized name as the
+    /// accessible name; <see cref="IdeDockCaptionMode.Hidden"/> paints no caption while the labelled
+    /// return control stays available to assistive technology, and a side region with no documents draws
+    /// no strip at all. The Center strip is controlled by <see cref="ShowCenterDockStrip"/> and
+    /// <see cref="CenterDockHeader"/>. Default <see cref="IdeDockCaptionMode.Text"/>.</summary>
+    [Parameter] public IdeDockCaptionMode DockCaptionMode { get; set; } = IdeDockCaptionMode.Text;
+
     /// <summary>Renders each document. Which documents invoke it is chosen by <see cref="DocumentMounting"/>.</summary>
     [Parameter] public RenderFragment<IdeDocument>? DocumentContent { get; set; }
 
@@ -134,13 +144,19 @@ public partial class FlareIdeLayout
     };
 
     // A region reserving only its rail has no width for a dock strip; its controls would spill into
-    // the neighboring column. The rail is the only control until the region is expanded.
+    // the neighboring column. The rail is the only control until the region is expanded. A hidden
+    // caption leaves nothing but the document tabs, so a side region without documents draws no
+    // strip and no empty row is painted.
     private bool RegionShowsDockStrip(IdeDocumentRegion region)
     {
         if (region == IdeDocumentRegion.Center) return true;
         var position = SidePosition(region);
-        return !IsCollapsed(position) && !IsFloating(position);
+        return !IsCollapsed(position) && !IsFloating(position) &&
+            (DockCaptionMode != IdeDockCaptionMode.Hidden || HasDocuments(region));
     }
+
+    private bool HasDocuments(IdeDocumentRegion region) =>
+        Documents?.Any(document => document.Region == region) == true;
 
     private async Task SelectDocumentAsync(IdeDocumentRegion region, string? key)
     {
