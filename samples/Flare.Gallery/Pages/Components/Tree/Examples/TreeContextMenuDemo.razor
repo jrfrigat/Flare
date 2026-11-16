@@ -1,0 +1,32 @@
+@* The context-menu event belongs to the row: a child row raises its own, and the empty part of an
+   expanded branch raises nothing. While the handler is present the browser menu is suppressed. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        Right-click any row. The event names that row and the pointer position, and the browser's own menu
+        stays closed so a custom one can replace it.
+    </FlareText>
+
+    <FlareTreeView AriaLabel="Context menu tree">
+        <FlareTreeItem Label="Sales" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                       OnContextMenu="@(e => ShowContextMenu("Sales", e))" />
+        <FlareTreeItem Label="Orders" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                       OnContextMenu="@(e => ShowContextMenu("Orders", e))" />
+        <FlareTreeItem Label="Customers" Icon="@MaterialDesign3Icons.Regular.TableChart">
+            <ChildContent>
+                <FlareTreeItem Label="Contacts" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                               OnContextMenu="@(e => ShowContextMenu("Contacts", e))" />
+            </ChildContent>
+        </FlareTreeItem>
+    </FlareTreeView>
+
+    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">
+        @(_contextMessage ?? "No row right-clicked yet.")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string? _contextMessage;
+
+    private void ShowContextMenu(string row, MouseEventArgs e) =>
+        _contextMessage = $"Context menu for {row} at {e.ClientX:0},{e.ClientY:0}.";
+}

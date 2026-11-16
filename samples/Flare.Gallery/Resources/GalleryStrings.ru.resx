@@ -1951,6 +1951,9 @@
   <data name="Tree_ControlledExpansion" xml:space="preserve">
     <value>Управляемое разворачивание</value>
   </data>
+  <data name="Tree_ContextMenu" xml:space="preserve">
+    <value>Контекстное меню</value>
+  </data>
   <data name="Tree_MultiSelect" xml:space="preserve">
     <value>Множественный выбор</value>
   </data>

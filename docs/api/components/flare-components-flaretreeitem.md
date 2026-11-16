@@ -16,6 +16,8 @@
 | `Label` | `string?` | `` | Parameter |  | Text label displayed for this tree item. |
 | `Level` | `int` | `1` | Cascading |  | Current nesting depth of this item; propagated automatically via CascadingValue. Level 1 is the top-most level (root items inside FlareTreeView). |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the item row is clicked. |
+| `OnContextMenu` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback raised when this row is right-clicked. It fires for the row only - a child row raises its own - and does not select, expand or raise OnClick. When PreventContextMenuDefault is true the browser's own menu is suppressed. |
+| `PreventContextMenuDefault` | `bool` | `true` | Parameter |  | Suppresses the browser's own context menu while OnContextMenu is handled, so a custom menu can replace it. Set to false to keep the native menu alongside the callback. Has no effect when no context-menu callback is set. |
 | `Selected` | `bool` | `false` | Parameter |  | Whether this item is currently selected. |
 | `SelectedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the selected state changes. |
 | `TrailingContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the row after the label and before the drag handle, for per-row actions or a status indicator. The host owns click propagation for its controls: a click inside the slot bubbles to the row and selects or expands the item unless the control stops it with onclick:stopPropagation. The slot adds no tab order or accessible name of its own, so controls stay focusable and keep the labels the host gives them. |

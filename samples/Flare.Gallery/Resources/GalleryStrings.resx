@@ -1951,6 +1951,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Tree_ControlledExpansion" xml:space="preserve">
     <value>Controlled expansion</value>
   </data>
+  <data name="Tree_ContextMenu" xml:space="preserve">
+    <value>Context menu</value>
+  </data>
   <data name="Tree_MultiSelect" xml:space="preserve">
     <value>Multi-select</value>
   </data>

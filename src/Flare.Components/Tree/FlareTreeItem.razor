@@ -19,7 +19,9 @@
        measured on the ROW; this marks it. Without it every point in a 300px branch is in its top third. *@
     <div class="@Css.Classes.Tree.ItemRow @(Selected ? Css.Classes.TreeView.Row : "")"
          data-flare-drag-hit="@(Draggable ? "true" : null)"
-         @onclick="HandleRowClickAsync">
+         @onclick="HandleRowClickAsync"
+         @oncontextmenu="HandleRowContextMenuAsync"
+         @oncontextmenu:preventDefault="@(OnContextMenu.HasDelegate && PreventContextMenuDefault)">
         @if (HasChildren)
         {
             <button type="button"
@@ -91,6 +93,14 @@
     [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
     /// <summary>Callback raised when the item row is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
+    /// <summary>Callback raised when this row is right-clicked. It fires for the row only - a child row
+    /// raises its own - and does not select, expand or raise <see cref="OnClick"/>. When
+    /// <see cref="PreventContextMenuDefault"/> is true the browser's own menu is suppressed.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }
+    /// <summary>Suppresses the browser's own context menu while <see cref="OnContextMenu"/> is handled, so a
+    /// custom menu can replace it. Set to false to keep the native menu alongside the callback. Has no
+    /// effect when no context-menu callback is set.</summary>
+    [Parameter] public bool PreventContextMenuDefault { get; set; } = true;
     /// <summary>Optional data object associated with this item for drag-and-drop events.</summary>
     [Parameter] public object? ItemData { get; set; }
     /// <summary>Current nesting depth of this item; propagated automatically via CascadingValue.
@@ -150,6 +160,12 @@
             await SelectedChanged.InvokeAsync(true);
         if (OnClick.HasDelegate) await OnClick.InvokeAsync();
         if (HasChildren) await ToggleAsync();
+    }
+
+    private async Task HandleRowContextMenuAsync(MouseEventArgs e)
+    {
+        if (OnContextMenu.HasDelegate)
+            await OnContextMenu.InvokeAsync(e);
     }
 
     private async Task HandleKeyDownAsync(KeyboardEventArgs e)

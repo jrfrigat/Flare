@@ -11964,6 +11964,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Context menu.
+        /// </summary>
+        public static string Tree_ContextMenu {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenu", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Controlled expansion.
         /// </summary>
         public static string Tree_ControlledExpansion {
