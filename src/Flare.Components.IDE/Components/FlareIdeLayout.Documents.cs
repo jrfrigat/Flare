@@ -21,8 +21,19 @@ public partial class FlareIdeLayout
     /// <see cref="ActiveDocuments"/> and the host supplies the return-to-main-content control.</summary>
     [Parameter] public RenderFragment? CenterDockHeader { get; set; }
 
-    /// <summary>Renders each document. The rendered instance stays mounted while its key stays in <see cref="Documents"/>.</summary>
+    /// <summary>Renders each document. Which documents invoke it is chosen by <see cref="DocumentMounting"/>.</summary>
     [Parameter] public RenderFragment<IdeDocument>? DocumentContent { get; set; }
+
+    /// <summary>Whether every document mounts its content or only the active document of each region.
+    /// The default, <see cref="IdeDocumentMounting.All"/>, preserves each document's state at one content
+    /// instance per document. <see cref="IdeDocumentMounting.ActiveOnly"/> disposes the content of a
+    /// document that becomes inactive, so its transient state is lost when it mounts again; a document
+    /// that stays active across a region move remains mounted.</summary>
+    [Parameter] public IdeDocumentMounting DocumentMounting { get; set; } = IdeDocumentMounting.All;
+
+    /// <summary>Documents whose content stays mounted in <see cref="IdeDocumentMounting.ActiveOnly"/> mode
+    /// even while they are not the active document of their region. Ignored when every document mounts.</summary>
+    [Parameter] public Func<IdeDocument, bool>? RetainDocumentContent { get; set; }
 
     /// <summary>Controlled selection per region. A null value in the dictionary selects the existing tool or main content.</summary>
     [Parameter] public IReadOnlyDictionary<IdeDocumentRegion, string?>? ActiveDocuments { get; set; }
@@ -89,6 +100,11 @@ public partial class FlareIdeLayout
 
     private bool DocumentVisible(IdeDocument document) => document.Key == ActiveDocument(document.Region) &&
         (document.Region == IdeDocumentRegion.Center || !IsCollapsed(SidePosition(document.Region)));
+
+    private bool DocumentContentMounted(IdeDocument document) =>
+        DocumentMounting == IdeDocumentMounting.All ||
+        document.Key == ActiveDocument(document.Region) ||
+        (RetainDocumentContent?.Invoke(document) ?? false);
 
     private bool ToolContentCovered(IdeDocumentRegion region) =>
         Docking && ActiveDocument(region) is not null &&

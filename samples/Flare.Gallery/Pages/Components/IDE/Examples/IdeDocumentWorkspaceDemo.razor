@@ -6,7 +6,8 @@
                     Documents="_documents" ActiveDocuments="_activeDocuments"
                     OnActiveDocumentChanged="SelectionChanged" OnDocumentMove="MoveDocument"
                     OnDocumentCloseRequested="CloseDocument" DocumentContextMenu="DocumentMenu"
-                    CenterDockHeader="CenterHeader">
+                    DocumentMounting="IdeDocumentMounting.ActiveOnly"
+                    RetainDocumentContent="KeepDocumentMounted" CenterDockHeader="CenterHeader">
         <MenuBar>
             <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
         </MenuBar>
@@ -79,6 +80,8 @@
     private void MoveDocument(IdeDocumentMove request) => _documents = _documents
         .Select(document => document.Key == request.Document.Key ? document with { Region = request.Destination } : document)
         .ToArray();
+
+    private bool KeepDocumentMounted(IdeDocument document) => document.Key == "guide";
 
     private void SelectionChanged(IdeDocumentSelection selection) =>
         _activeDocuments = new Dictionary<IdeDocumentRegion, string?>(_activeDocuments)

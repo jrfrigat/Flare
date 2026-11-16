@@ -79,7 +79,10 @@
                 {
                     <div @key="document.Key" class="@Css.Classes.Ide.Layout.Document" data-region="@document.Region"
                          hidden="@(!DocumentVisible(document))">
-                        @DocumentContent?.Invoke(document)
+                        @if (DocumentContentMounted(document))
+                        {
+                            @DocumentContent?.Invoke(document)
+                        }
                     </div>
                 }
             }
