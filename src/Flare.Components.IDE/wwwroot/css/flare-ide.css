@@ -666,6 +666,13 @@
     overflow: hidden;
 }
 
+/* A group keeps its inactive panels mounted and marks them with the hidden attribute. The author
+   display rule above outranks the user-agent [hidden] rule, so the attribute needs a declaration
+   here to actually remove the inactive panel from the layout. */
+.flare-toolpanel[hidden] {
+    display: none;
+}
+
 /* Several tool panels as one tabbed area. Panel bodies stay mounted and hidden; the group header
    carries the collapse button because the individual panel headers are replaced by tabs. */
 .flare-toolpanel-group {

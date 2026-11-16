@@ -1,0 +1,19 @@
+@page "/ide-toolpanel-group"
+@using Flare.Components.IDE
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareIdeLayout id="group" Height="360px" LeftPanelWidth="280px">
+        <ChildContent><p>Document</p></ChildContent>
+        <LeftToolPanel>
+            <FlareToolPanelGroup Position="ToolPanelPosition.Left">
+                <FlareToolPanel Title="Explorer" Key="explorer">
+                    <input id="explorer-input" />
+                    <p id="explorer-text">Explorer body</p>
+                </FlareToolPanel>
+                <FlareToolPanel Title="Properties" Key="properties">
+                    <p id="properties-text">Properties body</p>
+                </FlareToolPanel>
+            </FlareToolPanelGroup>
+        </LeftToolPanel>
+    </FlareIdeLayout>
+</FlareThemeProvider>
