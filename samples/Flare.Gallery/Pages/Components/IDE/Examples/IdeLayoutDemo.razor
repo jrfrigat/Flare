@@ -26,21 +26,40 @@
                     <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.GridOn" Tooltip="Grid lines" />
                     <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.WrapText" Tooltip="Word wrap" />
                 </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Panels">
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.Folder" Label="Explorer"
+                                       Tooltip="Show Explorer" IsLarge="true"
+                                       OnClick="@(() => SelectTool("explorer"))" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.Search" Label="Search"
+                                       Tooltip="Show Search" IsLarge="true"
+                                       OnClick="@(() => SelectTool("search"))" />
+                </FlareRibbonGroup>
             </FlareRibbonTab>
         </FlareRibbon>
     </Ribbon>
 
     <LeftToolPanel>
-        <FlareToolPanel Title="Explorer">
-            <FlareTreeView AriaLabel="Explorer">
-                <FlareTreeItem Label="src" Icon="@FlareIcons.Folder" Expanded="true">
-                    <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
-                    <FlareTreeItem Label="Startup.cs" Icon="@FlareIcons.Description" />
-                </FlareTreeItem>
-                <FlareTreeItem Label="wwwroot" Icon="@FlareIcons.Folder" />
-                <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />
-            </FlareTreeView>
-        </FlareToolPanel>
+        <FlareToolPanelGroup ActiveKey="@_activeTool" ActiveKeyChanged="OnActiveToolChanged"
+                             OnActiveChanged="OnActiveToolTitle">
+            <FlareToolPanel Title="Explorer" Key="explorer">
+                <FlareTreeView AriaLabel="Explorer">
+                    <FlareTreeItem Label="src" Icon="@FlareIcons.Folder" Expanded="true">
+                        <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
+                        <FlareTreeItem Label="Startup.cs" Icon="@FlareIcons.Description" />
+                    </FlareTreeItem>
+                    <FlareTreeItem Label="wwwroot" Icon="@FlareIcons.Folder" />
+                    <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />
+                </FlareTreeView>
+            </FlareToolPanel>
+            <FlareToolPanel Title="Search" Key="search">
+                <FlareStack Gap="FlareSpacing.Small" Padding="FlareSpacing.Small">
+                    <FlareTextField Label="Find in files" />
+                    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                        Pick View &gt; Panels &gt; Explorer or Search to switch this group from a ribbon command.
+                    </FlareText>
+                </FlareStack>
+            </FlareToolPanel>
+        </FlareToolPanelGroup>
     </LeftToolPanel>
 
     <ChildContent>
@@ -122,8 +141,12 @@ Listening on http://localhost:5000</FlareText>
 
 @code {
     private string _status = "Ready";
+    private string? _activeTool = "explorer";
 
     private void Set(string action) => _status = action;
     private void OnRibbonTab(string? title) => _status = $"Ribbon: {title}";
     private void OnDocTab(string title) => _status = $"Opened {title}";
+    private void SelectTool(string key) => _activeTool = key;
+    private void OnActiveToolChanged(string? key) => _activeTool = key;
+    private void OnActiveToolTitle(string? title) => _status = $"Tool: {title}";
 }

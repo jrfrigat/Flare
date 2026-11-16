@@ -13,6 +13,7 @@ A collapsible tool panel for the IDE sidebar. Wraps content with a header bar co
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the panel body. |
 | `Collapsed` | `bool` | `false` | Parameter |  | Whether the panel is currently collapsed. Used for standalone (no-layout) collapsing; inside a layout the layout owns the collapsed state. |
 | `CollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback when the collapsed state changes (standalone use). |
+| `Key` | `string?` | `` | Parameter |  | Stable key that ActiveKey uses to select this panel. When unset the panel is addressed by Title, which is enough for a fixed, untranslated title; set an explicit key when titles are localized, repeat or change at run time. |
 | `Mode` | `IdePanelMode` | `IdePanelMode.Docked` | Parameter |  | How the panel occupies space inside a FlareIdeLayout: Docked (takes space when expanded) or AutoHide (flies out as an overlay). Ignored when the panel is used standalone (outside a layout). |
 | `Position` | `ToolPanelPosition` | `ToolPanelPosition.Left` | Parameter |  | Position of the panel in the IDE layout. |
 | `ShowToolbar` | `bool` | `false` | Parameter |  | Whether to show the toolbar area. |

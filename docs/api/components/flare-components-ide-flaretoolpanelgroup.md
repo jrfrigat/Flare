@@ -10,7 +10,10 @@ Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `ActiveKey` | `string?` | `` | Parameter |  | Effective key (Key, or the title when that is unset) of the panel to show. Null or empty keeps the group's own selection. A key that matches no panel keeps the current one, so a stale or not-yet-registered key never leaves the body empty. Bind it with ActiveKeyChanged and set it from a host command to select a tool. |
+| `ActiveKeyChanged` | `EventCallback<string?>` | `` | Callback |  | Reports the effective key of the panel the user activated. Bind it to ActiveKey to accept the choice; in controlled mode the group moves only after the parent sets the new key. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Tool panels shown as tabs. Every child is a FlareToolPanel; its content stays mounted while another tab is active. |
+| `OnActiveChanged` | `EventCallback<string?>` | `` | Callback |  | Reports the title of the panel the user activated, for a status line or command state. Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour. |
 | `Position` | `ToolPanelPosition` | `ToolPanelPosition.Left` | Parameter |  | Region that hosts the group inside a FlareIdeLayout. The hosted panels use this position for rail labels, auto-hide and collapse instead of their own Position. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

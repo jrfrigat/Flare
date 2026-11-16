@@ -29,6 +29,21 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     /// <see cref="FlareToolPanel.Position"/>.</summary>
     [Parameter] public ToolPanelPosition Position { get; set; } = ToolPanelPosition.Left;
 
+    /// <summary>Effective key (<see cref="FlareToolPanel.Key"/>, or the title when that is unset) of the
+    /// panel to show. Null or empty keeps the group's own selection. A key that matches no panel keeps
+    /// the current one, so a stale or not-yet-registered key never leaves the body empty. Bind it with
+    /// <see cref="ActiveKeyChanged"/> and set it from a host command to select a tool.</summary>
+    [Parameter] public string? ActiveKey { get; set; }
+
+    /// <summary>Reports the effective key of the panel the user activated. Bind it to
+    /// <see cref="ActiveKey"/> to accept the choice; in controlled mode the group moves only after the
+    /// parent sets the new key.</summary>
+    [Parameter] public EventCallback<string?> ActiveKeyChanged { get; set; }
+
+    /// <summary>Reports the title of the panel the user activated, for a status line or command state.
+    /// Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour.</summary>
+    [Parameter] public EventCallback<string?> OnActiveChanged { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Ide.ToolPanelGroup.Root;
 
     private IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
@@ -45,7 +60,18 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     private bool _keyboardRegistered;
     private bool _disposed;
 
-    /// <summary>Called by a hosted panel when it mounts or its title changes.</summary>
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (string.IsNullOrEmpty(ActiveKey)) return;
+        if (FindByKey(ActiveKey) is { } requested)
+            _active = requested;
+        else if (_active is null && _panels.Count > 0)
+            _active = _panels[0];
+    }
+
+    /// <summary>Called by a hosted panel when it mounts or its title or key changes.</summary>
     internal void Register(FlareToolPanel panel)
     {
         var isNew = !_panels.Contains(panel);
@@ -53,7 +79,28 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         _titles.TryGetValue(panel, out var previousTitle);
         var changed = isNew || previousTitle != panel.Title;
         _titles[panel] = panel.Title;
-        if (isNew && _active is null) _active = panel;
+
+        // Children register after the parent's OnParametersSet, so a controlled key that names a panel
+        // which is still mounting first resolves here.
+        if (!string.IsNullOrEmpty(ActiveKey))
+        {
+            var requested = FindByKey(ActiveKey);
+            if (requested is not null && !ReferenceEquals(_active, requested))
+            {
+                _active = requested;
+                changed = true;
+            }
+            else if (_active is null && _panels.Count > 0)
+            {
+                _active = _panels[0];
+                changed = true;
+            }
+        }
+        else if (isNew && _active is null)
+        {
+            _active = panel;
+        }
+
         if (changed && !_disposed) StateHasChanged();
     }
 
@@ -78,13 +125,22 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         ? IdeText["ToolPanelGroup_Untitled"].Value
         : panel.Title!;
 
+    private FlareToolPanel? FindByKey(string key) =>
+        _panels.Find(panel => string.Equals(panel.EffectiveKey, key, StringComparison.Ordinal));
+
     private async Task SelectAsync(FlareToolPanel panel, bool focus)
     {
         if (!_panels.Contains(panel)) return;
         if (!ReferenceEquals(_active, panel))
         {
-            _active = panel;
-            StateHasChanged();
+            // Uncontrolled selection moves here; a controlled one moves when the parent sets ActiveKey.
+            if (string.IsNullOrEmpty(ActiveKey))
+            {
+                _active = panel;
+                StateHasChanged();
+            }
+            await ActiveKeyChanged.InvokeAsync(panel.EffectiveKey);
+            await OnActiveChanged.InvokeAsync(panel.Title);
         }
         if (!focus) return;
 

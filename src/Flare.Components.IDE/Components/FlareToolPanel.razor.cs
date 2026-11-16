@@ -22,6 +22,11 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
     /// <summary>Panel title displayed in the header (and on the collapsed rail inside a layout).</summary>
     [Parameter] public string? Title { get; set; }
 
+    /// <summary>Stable key that <see cref="FlareToolPanelGroup.ActiveKey"/> uses to select this panel.
+    /// When unset the panel is addressed by <see cref="Title"/>, which is enough for a fixed, untranslated
+    /// title; set an explicit key when titles are localized, repeat or change at run time.</summary>
+    [Parameter] public string? Key { get; set; }
+
     /// <summary>Content rendered inside the panel body.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -52,6 +57,11 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
     internal string TabId => $"flare-toolpanel-tab-{_tabSuffix}";
     internal string PanelId => $"flare-toolpanel-panel-{_tabSuffix}";
     internal ElementReference TabElement { get; set; }
+
+    /// <summary>Identity of the panel inside its group: <see cref="Key"/> when set, otherwise
+    /// <see cref="Title"/>; null when the panel has neither.</summary>
+    internal string? EffectiveKey =>
+        !string.IsNullOrEmpty(Key) ? Key : string.IsNullOrEmpty(Title) ? null : Title;
 
     private FlareToolPanelGroup? _registeredGroup;
 
