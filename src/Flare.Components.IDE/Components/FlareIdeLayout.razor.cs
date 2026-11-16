@@ -66,6 +66,18 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     /// <summary>Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px.</summary>
     [Parameter] public string RailSize { get; set; } = "32px";
 
+    /// <summary>Whether the left region is rendered. When false, the layout draws no left panel, dock
+    /// strip, documents or resizer, and its documents stay in <see cref="Documents"/> unmounted; the
+    /// document area takes the freed space. Unlike <see cref="LeftCollapsed"/>, a hidden region keeps no
+    /// rail, so it represents a View command that closes the dock. Default true.</summary>
+    [Parameter] public bool LeftRegionVisible { get; set; } = true;
+
+    /// <summary>Whether the right region is rendered. When false, the layout draws no right panel, dock
+    /// strip, documents or resizer, and its documents stay in <see cref="Documents"/> unmounted; the
+    /// document area takes the freed space. Unlike <see cref="RightCollapsed"/>, a hidden region keeps no
+    /// rail, so it represents a View command that closes the dock. Default true.</summary>
+    [Parameter] public bool RightRegionVisible { get; set; } = true;
+
     /// <summary>Whether the left region can be drag-resized (a divider sits between it and the document).</summary>
     [Parameter] public bool LeftResizable { get; set; } = true;
     /// <summary>Whether the right region can be drag-resized.</summary>
@@ -91,8 +103,8 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
 
     private bool ShowResizer(ToolPanelPosition position) => position switch
     {
-        ToolPanelPosition.Left => (LeftToolPanel is not null || Docking) && LeftResizable && !LeftCollapsed && !IsFloating(ToolPanelPosition.Left),
-        ToolPanelPosition.Right => (RightToolPanel is not null || Docking) && RightResizable && !RightCollapsed && !IsFloating(ToolPanelPosition.Right),
+        ToolPanelPosition.Left => LeftRegionVisible && (LeftToolPanel is not null || Docking) && LeftResizable && !LeftCollapsed && !IsFloating(ToolPanelPosition.Left),
+        ToolPanelPosition.Right => RightRegionVisible && (RightToolPanel is not null || Docking) && RightResizable && !RightCollapsed && !IsFloating(ToolPanelPosition.Right),
         ToolPanelPosition.Bottom => BottomPanel is not null && BottomResizable && !BottomCollapsed && !IsFloating(ToolPanelPosition.Bottom),
         _ => false,
     };
@@ -284,6 +296,14 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
         $"{Css.Tokens.Ide.Layout.LeftWidth}:{EffectiveLeftWidth};{Css.Tokens.Ide.Layout.RightWidth}:{EffectiveRightWidth};" +
         $"{Css.Tokens.Ide.Layout.BottomHeight}:{EffectiveBottomHeight};{Css.Tokens.Ide.Layout.Rail}:{RailSize};" +
         (string.IsNullOrWhiteSpace(Height) ? string.Empty : $"height:{Height};") + Style;
+
+    private string BodyClass()
+    {
+        var cls = Css.Classes.Ide.Layout.Body;
+        if (!LeftRegionVisible) cls += " " + Css.Classes.Ide.Layout.BodyHideLeft;
+        if (!RightRegionVisible) cls += " " + Css.Classes.Ide.Layout.BodyHideRight;
+        return cls;
+    }
 
     private string PanelClass(ToolPanelPosition position, string sideClass)
     {

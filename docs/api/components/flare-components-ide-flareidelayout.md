@@ -26,6 +26,7 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `LeftCollapsed` | `bool` | `false` | Parameter |  | Whether the left region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `LeftCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when LeftCollapsed changes. |
 | `LeftPanelWidth` | `string` | `"300px"` | Parameter |  | Width of the left tool panel. Default 300px. |
+| `LeftRegionVisible` | `bool` | `true` | Parameter |  | Whether the left region is rendered. When false, the layout draws no left panel, dock strip, documents or resizer, and its documents stay in Documents unmounted; the document area takes the freed space. Unlike LeftCollapsed, a hidden region keeps no rail, so it represents a View command that closes the dock. Default true. |
 | `LeftResizable` | `bool` | `true` | Parameter |  | Whether the left region can be drag-resized (a divider sits between it and the document). |
 | `LeftToolPanel` | `RenderFragment?` | `` | Parameter |  | Left tool panel (e.g. Solution Explorer). |
 | `MenuBar` | `RenderFragment?` | `` | Parameter |  | Menu bar rendered below the ribbon. |
@@ -39,6 +40,7 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `RightCollapsed` | `bool` | `false` | Parameter |  | Whether the right region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `RightCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when RightCollapsed changes. |
 | `RightPanelWidth` | `string` | `"300px"` | Parameter |  | Width of the right tool panel. Default 300px. |
+| `RightRegionVisible` | `bool` | `true` | Parameter |  | Whether the right region is rendered. When false, the layout draws no right panel, dock strip, documents or resizer, and its documents stay in Documents unmounted; the document area takes the freed space. Unlike RightCollapsed, a hidden region keeps no rail, so it represents a View command that closes the dock. Default true. |
 | `RightResizable` | `bool` | `true` | Parameter |  | Whether the right region can be drag-resized. |
 | `RightToolPanel` | `RenderFragment?` | `` | Parameter |  | Right tool panel (e.g. Properties). |
 | `ShowCenterDockStrip` | `bool` | `true` | Parameter |  | Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone. |

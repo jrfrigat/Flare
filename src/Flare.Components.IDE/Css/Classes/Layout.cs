@@ -5,6 +5,10 @@ public static class Layout
 {
     public const string Root = "flare-ide-layout";
     public const string Body = "flare-ide-layout__body";
+    /// <summary>Body modifier that removes the left docking column.</summary>
+    public const string BodyHideLeft = "flare-ide-layout__body--hide-left";
+    /// <summary>Body modifier that removes the right docking column.</summary>
+    public const string BodyHideRight = "flare-ide-layout__body--hide-right";
     public const string Bottom = "flare-ide-layout__bottom";
     /// <summary>Slot in the Center dock row that hosts a custom main tab strip.</summary>
     public const string CenterHeader = "flare-ide-layout__center-header";

@@ -2,6 +2,10 @@
 @inherits LocalizedPage
 
 <FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+        <FlareSwitch @bind-Value="_showLeftRegion" Label="@GalleryStrings.IdeWorkspace_LeftRegion" />
+        <FlareSwitch @bind-Value="_showRightRegion" Label="@GalleryStrings.IdeWorkspace_RightRegion" />
+    </FlareStack>
     <FlareDocumentTabs ActiveKey="_stripActive" ActiveKeyChanged="SelectFromStrip"
                         Reorderable="true" Dockable="true" OnCloseRequested="CloseDocumentKey"
                         DockTargets="DockTargets" OnDockRequested="DockFromTab">
@@ -19,6 +23,7 @@
     </FlareDocumentTabs>
     <FlareIdeLayout Height="34rem" LeftPanelWidth="18rem" RightPanelWidth="12rem" BottomPanelHeight="15rem"
                     Documents="_documents" ActiveDocuments="_activeDocuments"
+                    LeftRegionVisible="_showLeftRegion" RightRegionVisible="_showRightRegion"
                     OnActiveDocumentChanged="SelectionChanged" OnDocumentMove="MoveDocument"
                     OnDocumentCloseRequested="CloseDocument" DocumentContextMenu="DocumentMenu"
                     DocumentMounting="IdeDocumentMounting.ActiveOnly"
@@ -61,6 +66,8 @@
     private IReadOnlyList<string>? _groupOrder;
     private IdeDiagnostic? _selected;
     private string? _stripActive = "main";
+    private bool _showLeftRegion = true;
+    private bool _showRightRegion = true;
     private IdeDocument[] _documents =
         [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right, Modified: true)];
     private Dictionary<IdeDocumentRegion, string?> _activeDocuments =

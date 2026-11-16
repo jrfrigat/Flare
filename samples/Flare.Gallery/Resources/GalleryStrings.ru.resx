@@ -4970,6 +4970,8 @@
   <data name="IdeWorkspace_MainContent" xml:space="preserve"><value>Область основного содержимого</value></data>
   <data name="IdeWorkspace_Left" xml:space="preserve"><value>Слева</value></data>
   <data name="IdeWorkspace_Right" xml:space="preserve"><value>Справа</value></data>
+  <data name="IdeWorkspace_LeftRegion" xml:space="preserve"><value>Левая область</value></data>
+  <data name="IdeWorkspace_RightRegion" xml:space="preserve"><value>Правая область</value></data>
   <data name="IdeWorkspace_Notes" xml:space="preserve"><value>Заметки</value></data>
   <data name="IdeWorkspace_Commands" xml:space="preserve"><value>Команды</value></data>
   <data name="IdeWorkspace_Diagnostics" xml:space="preserve"><value>Диагностика</value></data>

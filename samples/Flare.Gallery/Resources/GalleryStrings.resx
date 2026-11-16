@@ -4970,6 +4970,8 @@ Read the card, check the tests, and report what is left.</value>
   <data name="IdeWorkspace_MainContent" xml:space="preserve"><value>Main content area</value></data>
   <data name="IdeWorkspace_Left" xml:space="preserve"><value>Left</value></data>
   <data name="IdeWorkspace_Right" xml:space="preserve"><value>Right</value></data>
+  <data name="IdeWorkspace_LeftRegion" xml:space="preserve"><value>Left region</value></data>
+  <data name="IdeWorkspace_RightRegion" xml:space="preserve"><value>Right region</value></data>
   <data name="IdeWorkspace_Notes" xml:space="preserve"><value>Notes</value></data>
   <data name="IdeWorkspace_Commands" xml:space="preserve"><value>Commands</value></data>
   <data name="IdeWorkspace_Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>

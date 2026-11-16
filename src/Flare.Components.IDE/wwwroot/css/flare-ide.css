@@ -27,22 +27,31 @@
     overflow: hidden;
 }
 
+/* The docking row reads each side's track from a variable, so a collapsed rail and a hidden region
+   can change their own column without replacing the whole template - and they compose. */
 .flare-ide-layout__body[data-flare-ide-docking] {
     display: grid;
-    grid-template-columns: var(--flare-ide-left-width) auto minmax(0, 1fr) auto var(--flare-ide-right-width);
+    --flare-ide-left-track: var(--flare-ide-left-width);
+    --flare-ide-right-track: var(--flare-ide-right-width);
+    grid-template-columns: var(--flare-ide-left-track) auto minmax(0, 1fr) auto var(--flare-ide-right-track);
     grid-template-rows: auto minmax(0, 1fr);
 }
 
 .flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
-    grid-template-columns: var(--flare-ide-rail) auto minmax(0, 1fr) auto var(--flare-ide-right-width);
+    --flare-ide-left-track: var(--flare-ide-rail);
 }
 
 .flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--right:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
-    grid-template-columns: var(--flare-ide-left-width) auto minmax(0, 1fr) auto var(--flare-ide-rail);
+    --flare-ide-right-track: var(--flare-ide-rail);
 }
 
-.flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)):has(> .flare-ide-layout__panel--right:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
-    grid-template-columns: var(--flare-ide-rail) auto minmax(0, 1fr) auto var(--flare-ide-rail);
+/* A hidden region renders no panel, so :has() above cannot reopen its track. */
+.flare-ide-layout__body[data-flare-ide-docking].flare-ide-layout__body--hide-left {
+    --flare-ide-left-track: 0px;
+}
+
+.flare-ide-layout__body[data-flare-ide-docking].flare-ide-layout__body--hide-right {
+    --flare-ide-right-track: 0px;
 }
 
 .flare-ide-layout__body[data-flare-ide-docking] > :is(.flare-ide-layout__panel, .flare-ide-layout__main, .flare-ide-layout__document) {

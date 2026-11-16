@@ -19,11 +19,15 @@
                 @MenuBar
             </div>
         }
-        <div class="@Css.Classes.Ide.Layout.Body" data-flare-ide-docking="@(Docking ? "true" : null)">
+        <div class="@BodyClass()" data-flare-ide-docking="@(Docking ? "true" : null)">
             @if (Docking)
             {
                 @foreach (var region in DocumentRegions)
                 {
+                    if (!RegionVisible(region))
+                    {
+                        continue;
+                    }
                     if (region == IdeDocumentRegion.Center && CenterDockHeader is not null)
                     {
                         <div class="@Css.Classes.Ide.Layout.CenterHeader" data-region="@region">@CenterDockHeader</div>
@@ -36,7 +40,7 @@
                     }
                 }
             }
-            @if (LeftToolPanel is not null || Docking)
+            @if (LeftRegionVisible && (LeftToolPanel is not null || Docking))
             {
                 <div class="@PanelClass(ToolPanelPosition.Left, Css.Classes.Ide.Layout.PanelLeft)">
                     @if (LeftCollapsed)
@@ -62,7 +66,7 @@
             {
                 @RenderResizer(ToolPanelPosition.Right)
             }
-            @if (RightToolPanel is not null || Docking)
+            @if (RightRegionVisible && (RightToolPanel is not null || Docking))
             {
                 <div class="@PanelClass(ToolPanelPosition.Right, Css.Classes.Ide.Layout.PanelRight)">
                     @if (RightCollapsed)
@@ -79,6 +83,10 @@
             {
                 @foreach (var document in Documents)
                 {
+                    if (!RegionVisible(document.Region))
+                    {
+                        continue;
+                    }
                     <div @key="document.Key" class="@Css.Classes.Ide.Layout.Document" data-region="@document.Region"
                          hidden="@(!DocumentVisible(document))">
                         @if (DocumentContentMounted(document))

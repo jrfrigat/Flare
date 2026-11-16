@@ -125,6 +125,14 @@ public partial class FlareIdeLayout
         _ => false
     });
 
+    // A region the host hid draws no dock controls, documents or resizer; the Center column remains.
+    private bool RegionVisible(IdeDocumentRegion region) => region switch
+    {
+        IdeDocumentRegion.Left => LeftRegionVisible,
+        IdeDocumentRegion.Right => RightRegionVisible,
+        _ => true,
+    };
+
     // A region reserving only its rail has no width for a dock strip; its controls would spill into
     // the neighboring column. The rail is the only control until the region is expanded.
     private bool RegionShowsDockStrip(IdeDocumentRegion region)
