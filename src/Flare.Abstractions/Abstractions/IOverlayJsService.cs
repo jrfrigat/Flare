@@ -44,9 +44,14 @@ public interface IOverlayJsService : IAsyncDisposable
     /// alone. A menu uses this when an item's action may have opened a dialog or moved focus into a
     /// field. The document body means the panel that held the focus has closed and nothing took over, so
     /// the activator gets it back; focus that the action moved elsewhere stays there.
+    /// <para>
+    /// The default restores the focus unconditionally, which is the older behavior: an adapter that
+    /// cannot tell whether the focus was claimed keeps compiling and keeps working, and only the shipped
+    /// browser adapter implements the guarded variant.
+    /// </para>
     /// </summary>
     /// <param name="container">The element whose first focusable content receives focus when it is free.</param>
-    ValueTask FocusFirstIfUnclaimedAsync(ElementReference container);
+    ValueTask FocusFirstIfUnclaimedAsync(ElementReference container) => FocusFirstAsync(container);
 
     /// <summary>Moves focus out of <paramref name="container"/> - to the last element focused outside it -
     /// so a subtree that is about to become <c>inert</c> does not strand the keyboard on the page body.</summary>
