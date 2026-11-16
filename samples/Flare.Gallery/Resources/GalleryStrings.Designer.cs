@@ -11962,7 +11962,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Tree_Basic", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Controlled expansion.
+        /// </summary>
+        public static string Tree_ControlledExpansion {
+            get {
+                return ResourceManager.GetString("Tree_ControlledExpansion", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Multi-select.
         /// </summary>

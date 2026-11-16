@@ -8616,7 +8616,8 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child tree items nested under this item.", null, false, false, false, @"FlareTreeItem"),
-                new ApiParameterInfo(@"Expanded", @"bool", @"false", @"Whether the item starts in an expanded state.", null, false, false, false, @"FlareTreeItem"),
+                new ApiParameterInfo(@"Expanded", @"bool", @"false", @"Whether the item is expanded. When a parent listens to ExpandedChanged the parameter is authoritative (@bind-Expanded); without a listener the item keeps its own state and adopts a real change of the parameter.", null, false, false, false, @"FlareTreeItem"),
+                new ApiParameterInfo(@"ExpandedChanged", @"EventCallback<bool>", null, @"Raised when a user gesture changes the expanded state - a row click, the toggle button, Enter or Space, or the Left/Right arrows - enabling @bind-Expanded.", null, false, true, false, @"FlareTreeItem"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown beside the label - any provider (a bare string is a Material Symbols name).", null, false, false, false, @"FlareTreeItem"),
                 new ApiParameterInfo(@"ItemData", @"object?", null, @"Optional data object associated with this item for drag-and-drop events.", null, false, false, false, @"FlareTreeItem"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Text label displayed for this tree item.", null, false, false, false, @"FlareTreeItem"),

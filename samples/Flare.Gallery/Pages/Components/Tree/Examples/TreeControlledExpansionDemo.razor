@@ -1,0 +1,46 @@
+@* Expansion is a normal two-way parameter: the host can open or close a node after mount, and
+   ExpandedChanged reports every toggle the user makes on the row, the chevron or the arrow keys. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        The button below changes Expanded after mount; expanding or collapsing Schemas on the tree reports
+        the new value back through ExpandedChanged.
+    </FlareText>
+
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small">
+        <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="ToggleSchemas">
+            <ChildContent>@(_schemasExpanded ? "Collapse schemas" : "Expand schemas")</ChildContent>
+        </FlareButton>
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">
+            Schemas expanded: @(_schemasExpanded ? "yes" : "no") / Last toggle observed: @(_lastToggle?.ToString() ?? "none")
+        </FlareText>
+    </FlareStack>
+
+    <FlareTreeView AriaLabel="Controlled expansion">
+        <FlareTreeItem Label="Main" Icon="@MaterialDesign3Icons.Regular.Storage" Expanded="true">
+            <ChildContent>
+                <FlareTreeItem Label="Schemas" Icon="@MaterialDesign3Icons.Regular.Folder"
+                               Expanded="@_schemasExpanded"
+                               ExpandedChanged="OnSchemasExpandedChanged">
+                    <ChildContent>
+                        <FlareTreeItem Label="dbo" Icon="@MaterialDesign3Icons.Regular.TableChart" />
+                        <FlareTreeItem Label="sales" Icon="@MaterialDesign3Icons.Regular.TableChart" />
+                    </ChildContent>
+                </FlareTreeItem>
+                <FlareTreeItem Label="Programmability" Icon="@MaterialDesign3Icons.Regular.Folder" />
+            </ChildContent>
+        </FlareTreeItem>
+    </FlareTreeView>
+</FlareStack>
+
+@code {
+    private bool _schemasExpanded;
+    private bool? _lastToggle;
+
+    private void ToggleSchemas() => _schemasExpanded = !_schemasExpanded;
+
+    private void OnSchemasExpandedChanged(bool value)
+    {
+        _schemasExpanded = value;
+        _lastToggle = value;
+    }
+}

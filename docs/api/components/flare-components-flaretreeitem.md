@@ -9,7 +9,8 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Child tree items nested under this item. |
-| `Expanded` | `bool` | `false` | Parameter |  | Whether the item starts in an expanded state. |
+| `Expanded` | `bool` | `false` | Parameter |  | Whether the item is expanded. When a parent listens to ExpandedChanged the parameter is authoritative (@bind-Expanded); without a listener the item keeps its own state and adopts a real change of the parameter. |
+| `ExpandedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when a user gesture changes the expanded state - a row click, the toggle button, Enter or Space, or the Left/Right arrows - enabling @bind-Expanded. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown beside the label - any provider (a bare string is a Material Symbols name). |
 | `ItemData` | `object?` | `` | Parameter |  | Optional data object associated with this item for drag-and-drop events. |
 | `Label` | `string?` | `` | Parameter |  | Text label displayed for this tree item. |

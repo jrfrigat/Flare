@@ -82,8 +82,13 @@
     [Parameter] public bool Selected { get; set; }
     /// <summary>Callback raised when the selected state changes.</summary>
     [Parameter] public EventCallback<bool> SelectedChanged { get; set; }
-    /// <summary>Whether the item starts in an expanded state.</summary>
+    /// <summary>Whether the item is expanded. When a parent listens to <see cref="ExpandedChanged"/> the
+    /// parameter is authoritative (<c>@bind-Expanded</c>); without a listener the item keeps its own state
+    /// and adopts a real change of the parameter.</summary>
     [Parameter] public bool Expanded { get; set; }
+    /// <summary>Raised when a user gesture changes the expanded state - a row click, the toggle button,
+    /// Enter or Space, or the Left/Right arrows - enabling <c>@bind-Expanded</c>.</summary>
+    [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
     /// <summary>Callback raised when the item row is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
     /// <summary>Optional data object associated with this item for drag-and-drop events.</summary>
@@ -103,7 +108,7 @@
     protected override string ComponentCssClass => Css.Classes.TreeView.Item;
 
     private bool _expanded;
-    private bool _expandedInitialized;
+    private bool _lastExpanded;
     private readonly string _dragId = $"ft-{Guid.NewGuid():N}";
     private TreeDragRegistry? _registeredWith;
 
@@ -117,11 +122,14 @@
 
     protected override void OnParametersSet()
     {
-        if (!_expandedInitialized)
-        {
+        // Two-way state contract (docs/ru/component-conventions.md): controlled follows the parameter;
+        // uncontrolled follows local state until the parameter itself changes. _lastExpanded mirrors the
+        // PARAMETER, so it is assigned here and never from an event handler.
+        if (ExpandedChanged.HasDelegate)
             _expanded = Expanded;
-            _expandedInitialized = true;
-        }
+        else if (Expanded != _lastExpanded)
+            _expanded = Expanded;
+        _lastExpanded = Expanded;
 
         var registry = Draggable ? TreeContext?.DragRegistry : null;
         if (ReferenceEquals(registry, _registeredWith)) return;
@@ -133,7 +141,7 @@
     private async Task ToggleAsync()
     {
         _expanded = !_expanded;
-        await Task.CompletedTask;
+        await ExpandedChanged.InvokeAsync(_expanded);
     }
 
     private async Task HandleRowClickAsync()

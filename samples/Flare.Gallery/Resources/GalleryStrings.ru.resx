@@ -1948,6 +1948,9 @@
   <data name="Tree_Basic" xml:space="preserve">
     <value>Вложенные элементы и одиночный выбор</value>
   </data>
+  <data name="Tree_ControlledExpansion" xml:space="preserve">
+    <value>Управляемое разворачивание</value>
+  </data>
   <data name="Tree_MultiSelect" xml:space="preserve">
     <value>Множественный выбор</value>
   </data>
