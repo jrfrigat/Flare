@@ -4963,7 +4963,7 @@
   <data name="Scheduler_MoreEvents" xml:space="preserve"><value>Остальные события</value></data>
   <data name="Scheduler_Close" xml:space="preserve"><value>Закрыть</value></data>
   <data name="IdeWorkspace_Title" xml:space="preserve"><value>Рабочая область документов</value></data>
-  <data name="IdeWorkspace_Description" xml:space="preserve"><value>Собственная полоса вкладок управляет документами: перетащите вкладку в боковую область или выберите пункт меню, закройте ее или вернитесь к основному содержимому; в левой области есть вкладки инструментов, а сочетание клавиш можно изменить без запуска команд.</value></data>
+  <data name="IdeWorkspace_Description" xml:space="preserve"><value>Собственная полоса вкладок управляет документами: перетащите вкладку в боковую область или на ее свернутую панель (либо выберите пункт меню вкладки), закройте ее или вернитесь к основному содержимому; в левой области есть вкладки инструментов, а сочетание клавиш можно изменить без запуска команд.</value></data>
   <data name="IdeWorkspace_Activate" xml:space="preserve"><value>Активировать документ</value></data>
   <data name="IdeWorkspace_Close" xml:space="preserve"><value>Закрыть документ</value></data>
   <data name="IdeWorkspace_Main" xml:space="preserve"><value>Основное</value></data>

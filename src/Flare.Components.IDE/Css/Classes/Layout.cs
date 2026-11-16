@@ -30,6 +30,8 @@ public static class Layout
     public const string PanelRight = "flare-ide-layout__panel--right";
     public const string PanelBody = "flare-ide-layout__panel-body";
     public const string Rail = "flare-ide-layout__rail";
+    /// <summary>Rail highlighted while a document is dragged over it.</summary>
+    public const string RailDropTarget = "flare-ide-layout__rail--drop-target";
     public const string RailTitle = "flare-ide-layout__rail-title";
     public const string Resizer = "flare-ide-layout__resizer";
     public const string Ribbon = "flare-ide-layout__ribbon";

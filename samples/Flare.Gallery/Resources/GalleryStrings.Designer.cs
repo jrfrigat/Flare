@@ -14662,7 +14662,7 @@ namespace Flare.Gallery.Resources {
         public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
         /// <summary>Document workspace</summary>
         public static string IdeWorkspace_Title { get { return ResourceManager.GetString("IdeWorkspace_Title", resourceCulture); } }
-        /// <summary>A host-owned tab strip controls the documents: drag a tab onto a side region or use its move menu, close it, or return to the main content; the left dock has tabbed tools and shortcuts can be edited without running commands.</summary>
+        /// <summary>A host-owned tab strip controls the documents: drag a tab onto a side region or its collapsed rail (or use the tab's move menu), close it, or return to the main content; the left dock has tabbed tools and shortcuts can be edited without running commands.</summary>
         public static string IdeWorkspace_Description { get { return ResourceManager.GetString("IdeWorkspace_Description", resourceCulture); } }
         /// <summary>Activate document</summary>
         public static string IdeWorkspace_Activate { get { return ResourceManager.GetString("IdeWorkspace_Activate", resourceCulture); } }

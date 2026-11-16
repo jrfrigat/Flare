@@ -258,6 +258,18 @@
     background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
+/* A rail is one drop target: its children take no pointer events, so crossing the icon or a title
+   cannot fire dragleave/enter and flicker the highlight. */
+.flare-ide-layout__rail > * {
+    pointer-events: none;
+}
+
+.flare-ide-layout__rail.flare-ide-layout__rail--drop-target {
+    background: color-mix(in srgb, var(--flare-ide-primary, var(--flare-color-primary)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
+    outline: var(--flare-ide-border-width, var(--flare-border-width)) solid var(--flare-ide-primary, var(--flare-color-primary));
+    outline-offset: calc(var(--flare-ide-border-width, var(--flare-border-width)) * -1);
+}
+
 .flare-ide-layout__rail-title {
     writing-mode: vertical-rl;
     font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));

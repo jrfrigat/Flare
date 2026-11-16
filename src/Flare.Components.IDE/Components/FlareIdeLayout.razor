@@ -124,8 +124,12 @@
         MinSize="@($"{MinPanelSize}px")" MaxSize="85%" KeyboardStep="8" KeyboardLargeStep="24" ShowStepButtons="false"
         OnSizeChanged="@(size => ResizePanel(position.ToString(), ParsePx(size, MinPanelSize)))" />;
 
-    private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@Css.Classes.Ide.Layout.Rail"
-            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value">
+    private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@RailClass(position)"
+            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value"
+            @ondragover:preventDefault="@(DocumentRegionOf(position) is not null)"
+            @ondragenter="@(() => SetRailDropTarget(position, true))"
+            @ondragleave="@(() => SetRailDropTarget(position, false))"
+            @ondrop="@(() => DropOnRailAsync(position))">
         <FlareIconView Value="RailIcon(position)" />
         @foreach (var title in TitlesOf(position))
         {

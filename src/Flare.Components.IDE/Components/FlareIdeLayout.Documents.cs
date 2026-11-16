@@ -62,6 +62,7 @@ public partial class FlareIdeLayout
     private string? _draggedDocument;
     private IdeDocumentMove? _pendingDocumentMove;
     private string? _focusDocument;
+    private ToolPanelPosition? _railDropTarget;
     private IJSObjectReference? _ideModule;
     private bool _dragModuleRequested;
 
@@ -158,6 +159,34 @@ public partial class FlareIdeLayout
         if (document.Region == destination || !OnDocumentMove.HasDelegate) return;
         _pendingDocumentMove = new(document, destination);
         await OnDocumentMove.InvokeAsync(_pendingDocumentMove);
+    }
+
+    private static IdeDocumentRegion? DocumentRegionOf(ToolPanelPosition position) => position switch
+    {
+        ToolPanelPosition.Left => IdeDocumentRegion.Left,
+        ToolPanelPosition.Right => IdeDocumentRegion.Right,
+        _ => null
+    };
+
+    private string RailClass(ToolPanelPosition position) => _railDropTarget == position
+        ? $"{Css.Classes.Ide.Layout.Rail} {Css.Classes.Ide.Layout.RailDropTarget}"
+        : Css.Classes.Ide.Layout.Rail;
+
+    private void SetRailDropTarget(ToolPanelPosition position, bool over)
+    {
+        if (DocumentRegionOf(position) is null) return;
+        var target = over ? position : (ToolPanelPosition?)null;
+        if (_railDropTarget == target) return;
+        _railDropTarget = target;
+        StateHasChanged();
+    }
+
+    private async Task DropOnRailAsync(ToolPanelPosition position)
+    {
+        _railDropTarget = null;
+        StateHasChanged();
+        if (DocumentRegionOf(position) is { } region)
+            await DropDocumentAsync(region);
     }
 
     private Task RequestDocumentCloseAsync(IdeDocument document) =>
