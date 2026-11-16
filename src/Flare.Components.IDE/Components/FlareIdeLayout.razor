@@ -131,35 +131,66 @@
                      OnClick="@(() => SelectDocumentAsync(region, null))">@IdeText[$"Dock_{region}"]</FlareButton>
         @foreach (var document in Documents!.Where(doc => doc.Region == region))
         {
-            <div @key="document.Key" class="@Css.Classes.Ide.Layout.DockTab">
-                <button type="button" class="@Css.Classes.Ide.Layout.DockSelect" @ref="_documentHeaders[document.Key]"
-                        draggable="@(OnDocumentMove.HasDelegate ? "true" : null)"
-                        aria-pressed="@(ActiveDocument(region) == document.Key ? "true" : "false")"
-                        @onclick="@(() => SelectDocumentAsync(region, document.Key))"
-                        @ondragstart="@(() => BeginDocumentDrag(document.Key))" @ondragend="@EndDocumentDrag">
-                    @document.Title
-                </button>
-                @if (OnDocumentMove.HasDelegate)
-                {
-                    <FlareMenu>
-                        <Activator Context="menu">
-                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" @attributes="menu.Attributes"
-                                         AriaLabel="@($"{IdeText["Dock_Move"]}: {document.Title}")">
-                                <FlareIconView Value="FlareIcons.ExpandMore" />
-                            </FlareButton>
-                        </Activator>
-                        <ChildContent>
-                            @foreach (var destination in DocumentRegions)
-                            {
-                                if (destination == region) continue;
-                                <FlareMenuItem OnClick="@(() => RequestDocumentMoveAsync(document, destination))">
-                                    @IdeText[$"Dock_{destination}"]
-                                </FlareMenuItem>
-                            }
-                        </ChildContent>
-                    </FlareMenu>
-                }
-            </div>
+            if (DocumentContextMenu is null)
+            {
+                @RenderDockTab(document, region, null)
+            }
+            else
+            {
+                <FlareMenu @key="document.Key" Activation="MenuActivation.RightClick" PositionAtCursor="true"
+                           AriaLabel="@document.Title">
+                    <Activator Context="menu">@RenderDockTab(document, region, menu)</Activator>
+                    <ChildContent>@DocumentContextMenu(document)</ChildContent>
+                </FlareMenu>
+            }
         }
     </div>;
+
+    private RenderFragment RenderDockTab(IdeDocument document, IdeDocumentRegion region,
+        FlareMenuActivatorContext? menu) => @<div @key="document.Key" class="@Css.Classes.Ide.Layout.DockTab">
+        <button type="button" class="@Css.Classes.Ide.Layout.DockSelect" @ref="_documentHeaders[document.Key]"
+                draggable="@(OnDocumentMove.HasDelegate ? "true" : null)"
+                aria-pressed="@(ActiveDocument(region) == document.Key ? "true" : "false")"
+                aria-label="@(document.Modified ? $"{document.Title} ({IdeText["DocTabs_Modified"]})" : document.Title)"
+                @attributes="menu?.Attributes ?? EmptyAttributes"
+                @onclick="@(() => SelectDocumentAsync(region, document.Key))"
+                @ondragstart="@(() => BeginDocumentDrag(document.Key))" @ondragend="@EndDocumentDrag">
+            @document.Title
+            @if (document.Modified)
+            {
+                <span class="@Css.Classes.Ide.Layout.DockModified" aria-hidden="true">*</span>
+            }
+        </button>
+        @if (OnDocumentMove.HasDelegate)
+        {
+            <FlareMenu>
+                <Activator Context="moveMenu">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" @attributes="moveMenu.Attributes"
+                                 AriaLabel="@($"{IdeText["Dock_Move"]}: {document.Title}")">
+                        <FlareIconView Value="FlareIcons.ExpandMore" />
+                    </FlareButton>
+                </Activator>
+                <ChildContent>
+                    @foreach (var destination in DocumentRegions)
+                    {
+                        if (destination == region) continue;
+                        <FlareMenuItem OnClick="@(() => RequestDocumentMoveAsync(document, destination))">
+                            @IdeText[$"Dock_{destination}"]
+                        </FlareMenuItem>
+                    }
+                </ChildContent>
+            </FlareMenu>
+        }
+        @if (document.Closeable && OnDocumentCloseRequested.HasDelegate)
+        {
+            <button type="button" class="@Css.Classes.Ide.Layout.DockClose"
+                    @onclick="@(() => RequestDocumentCloseAsync(document))"
+                    @onclick:stopPropagation="true" @onkeydown:stopPropagation="true"
+                    aria-label="@($"{IdeText["DocTabs_Close"]}: {document.Title}")">
+                <FlareIconView Value="FlareIcons.Close" Size="0.875rem" />
+            </button>
+        }
+    </div>;
+
+    private static readonly IReadOnlyDictionary<string, object> EmptyAttributes = new Dictionary<string, object>();
 }

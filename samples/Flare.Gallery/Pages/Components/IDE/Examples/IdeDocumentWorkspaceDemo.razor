@@ -16,7 +16,8 @@
         </ChildContent>
     </FlareDocumentTabs>
     <FlareIdeLayout Height="34rem" LeftPanelWidth="18rem" RightPanelWidth="12rem" BottomPanelHeight="15rem"
-                    Documents="_documents" OnDocumentMove="MoveDocument">
+                    Documents="_documents" OnDocumentMove="MoveDocument"
+                    OnDocumentCloseRequested="CloseDocument" DocumentContextMenu="DocumentMenu">
         <MenuBar>
             <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
         </MenuBar>
@@ -46,7 +47,8 @@
     private IReadOnlyList<string>? _tabOrder;
     private IReadOnlyList<string>? _groupOrder;
     private IdeDiagnostic? _selected;
-    private IdeDocument[] _documents = [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right)];
+    private IdeDocument[] _documents =
+        [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right, Modified: true)];
 
     private IReadOnlyList<IdeToolbarGroup> Groups =>
     [
@@ -70,6 +72,13 @@
     private void MoveDocument(IdeDocumentMove request) => _documents = _documents
         .Select(document => document.Key == request.Document.Key ? document with { Region = request.Destination } : document)
         .ToArray();
+
+    private void CloseDocument(IdeDocument document) =>
+        _documents = _documents.Where(item => item.Key != document.Key).ToArray();
+
+    private RenderFragment<IdeDocument> DocumentMenu => document => @<FlareMenuItem OnClick="@(() => CloseDocument(document))">
+        @GalleryStrings.IdeWorkspace_Close
+    </FlareMenuItem>;
 
     private void OpenDiagnostic(IdeDiagnostic diagnostic) => _selected = diagnostic;
 }

@@ -14666,6 +14666,8 @@ namespace Flare.Gallery.Resources {
         public static string IdeWorkspace_Description { get { return ResourceManager.GetString("IdeWorkspace_Description", resourceCulture); } }
         /// <summary>Activate document</summary>
         public static string IdeWorkspace_Activate { get { return ResourceManager.GetString("IdeWorkspace_Activate", resourceCulture); } }
+        /// <summary>Close document</summary>
+        public static string IdeWorkspace_Close { get { return ResourceManager.GetString("IdeWorkspace_Close", resourceCulture); } }
         /// <summary>Notes</summary>
         public static string IdeWorkspace_Notes { get { return ResourceManager.GetString("IdeWorkspace_Notes", resourceCulture); } }
         /// <summary>Commands</summary>

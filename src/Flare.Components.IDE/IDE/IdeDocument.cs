@@ -4,7 +4,14 @@ namespace Flare.Components.IDE;
 /// <param name="Key">Stable key, unique within the layout.</param>
 /// <param name="Title">Document title displayed in the tab strip.</param>
 /// <param name="Region">Current region.</param>
-public sealed record IdeDocument(string Key, string Title, IdeDocumentRegion Region = IdeDocumentRegion.Center);
+/// <param name="Closeable">Whether the layout offers a close button for the document's dock tab.</param>
+/// <param name="Modified">Whether the document has unsaved changes; the dock tab marks it and announces it.</param>
+public sealed record IdeDocument(
+    string Key,
+    string Title,
+    IdeDocumentRegion Region = IdeDocumentRegion.Center,
+    bool Closeable = true,
+    bool Modified = false);
 
 /// <summary>Region in which an IDE document can be displayed.</summary>
 public enum IdeDocumentRegion

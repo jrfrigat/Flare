@@ -4965,6 +4965,7 @@ Read the card, check the tests, and report what is left.</value>
   <data name="IdeWorkspace_Title" xml:space="preserve"><value>Document workspace</value></data>
   <data name="IdeWorkspace_Description" xml:space="preserve"><value>Reorder document tabs, drag a document between regions, and edit shortcuts without running commands.</value></data>
   <data name="IdeWorkspace_Activate" xml:space="preserve"><value>Activate document</value></data>
+  <data name="IdeWorkspace_Close" xml:space="preserve"><value>Close document</value></data>
   <data name="IdeWorkspace_Notes" xml:space="preserve"><value>Notes</value></data>
   <data name="IdeWorkspace_Commands" xml:space="preserve"><value>Commands</value></data>
   <data name="IdeWorkspace_Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>

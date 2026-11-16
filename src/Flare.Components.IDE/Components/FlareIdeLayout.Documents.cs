@@ -20,6 +20,14 @@ public partial class FlareIdeLayout
     /// <summary>Requests a move. Accept it by changing the document's region in <see cref="Documents"/>.</summary>
     [Parameter] public EventCallback<IdeDocumentMove> OnDocumentMove { get; set; }
 
+    /// <summary>Reports a request to close a document from its dock tab. Accept it by removing the document
+    /// from <see cref="Documents"/>; the layout keeps the document until the host does so.</summary>
+    [Parameter] public EventCallback<IdeDocument> OnDocumentCloseRequested { get; set; }
+
+    /// <summary>Context menu entries rendered for a docked document when its dock tab is right-clicked.
+    /// The host decides which actions to offer, including close variants or confirmation.</summary>
+    [Parameter] public RenderFragment<IdeDocument>? DocumentContextMenu { get; set; }
+
     private static readonly IdeDocumentRegion[] DocumentRegions =
         [IdeDocumentRegion.Left, IdeDocumentRegion.Center, IdeDocumentRegion.Right];
 
@@ -97,6 +105,11 @@ public partial class FlareIdeLayout
         _pendingDocumentMove = new(document, destination);
         await OnDocumentMove.InvokeAsync(_pendingDocumentMove);
     }
+
+    private Task RequestDocumentCloseAsync(IdeDocument document) =>
+        document.Closeable && OnDocumentCloseRequested.HasDelegate
+            ? OnDocumentCloseRequested.InvokeAsync(document)
+            : Task.CompletedTask;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

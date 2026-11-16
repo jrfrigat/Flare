@@ -513,11 +513,13 @@
     font-size: 1rem;
 }
 
+.flare-ide-layout__dock-modified,
 .flare-doc-tabs__modified {
     color: var(--flare-ide-primary, var(--flare-color-primary));
     font-weight: bold;
 }
 
+.flare-ide-layout__dock-close,
 .flare-doc-tabs__close {
     display: flex;
     align-items: center;
@@ -536,15 +538,18 @@
    touch screen got opacity 0 with the button still taking taps: invisible, and closing the document
    anyway when a finger landed on it. Outside a hover context it stays visible. */
 @media (hover: hover) {
+    .flare-ide-layout__dock-close,
     .flare-doc-tabs__close {
         opacity: 0;
     }
 
+    .flare-ide-layout__dock-tab:is(:hover, :focus-within) .flare-ide-layout__dock-close,
     .flare-doc-tabs__tab:is(:hover, :focus-within) .flare-doc-tabs__close {
         opacity: 1;
     }
 }
 
+.flare-ide-layout__dock-close:hover,
 .flare-doc-tabs__close:hover {
     background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-pressed-opacity, var(--flare-state-pressed-opacity)) * 100%), transparent);
 }
@@ -552,10 +557,12 @@
 /* 18px is a mouse target. The button cannot grow - it would grow the tab strip with it - so the hit
    area grows instead, the same centred pseudo-element the core chrome uses. */
 @media (pointer: coarse) {
+    .flare-ide-layout__dock-close,
     .flare-doc-tabs__close {
         position: relative;
     }
 
+    .flare-ide-layout__dock-close::after,
     .flare-doc-tabs__close::after {
         content: '';
         position: absolute;

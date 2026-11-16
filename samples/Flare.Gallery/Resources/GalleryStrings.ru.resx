@@ -4965,6 +4965,7 @@
   <data name="IdeWorkspace_Title" xml:space="preserve"><value>Рабочая область документов</value></data>
   <data name="IdeWorkspace_Description" xml:space="preserve"><value>Переставьте вкладки, переместите документ между областями и измените сочетание клавиш.</value></data>
   <data name="IdeWorkspace_Activate" xml:space="preserve"><value>Активировать документ</value></data>
+  <data name="IdeWorkspace_Close" xml:space="preserve"><value>Закрыть документ</value></data>
   <data name="IdeWorkspace_Notes" xml:space="preserve"><value>Заметки</value></data>
   <data name="IdeWorkspace_Commands" xml:space="preserve"><value>Команды</value></data>
   <data name="IdeWorkspace_Diagnostics" xml:space="preserve"><value>Диагностика</value></data>

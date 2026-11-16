@@ -15,6 +15,10 @@ public static class Layout
     public const string DockTab = "flare-ide-layout__dock-tab";
     /// <summary>Button that selects the document represented by a dock tab.</summary>
     public const string DockSelect = "flare-ide-layout__dock-select";
+    /// <summary>Unsaved-changes marker in a dock tab.</summary>
+    public const string DockModified = "flare-ide-layout__dock-modified";
+    /// <summary>Close button in a dock tab.</summary>
+    public const string DockClose = "flare-ide-layout__dock-close";
     public const string Main = "flare-ide-layout__main";
     public const string MenuBar = "flare-ide-layout__menubar";
     public const string Panel = "flare-ide-layout__panel";
