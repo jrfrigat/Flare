@@ -17,3 +17,4 @@ Position of a tool panel within the IDE layout.
 ## Used by components
 
 - `FlareToolPanel`
+- `FlareToolPanelGroup`

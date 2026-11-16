@@ -1976,6 +1976,7 @@ public static class ComponentApiRegistry
                 @"FlareToggleButton",
                 @"FlareToggleGroup",
                 @"FlareToolPanel",
+                @"FlareToolPanelGroup",
                 @"FlareToolbar",
                 @"FlareTooltip",
                 @"FlareTransfer",
@@ -2832,8 +2833,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ActiveKeyChanged", @"EventCallback<string>", null, @"Reports the selected document's key.", null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declares the document tabs, using a Blazor key for each dynamically rendered document.", null, false, false, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"ContextMenuContent", @"RenderFragment<string>?", null, @"Context menu entries rendered for the given document key.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"DockTargets", @"IReadOnlyList<FlareDocumentDockTarget>?", null, @"Destinations offered in each tab's move menu. Set OnDockRequested too; without it no menu is rendered. The strip does not move the document itself - the host updates its document list and layout selection.", null, false, false, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"Dockable", @"bool", @"false", @"Makes every tab a drag source for FlareIdeLayout docking even when Reorderable is off. Each dockable tab needs an explicit Key; the key is what the layout receives through OnDocumentMove. The host must declare the same key in Documents.", null, false, false, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"KeepAlive", @"bool", @"false", @"Keeps previously activated panels mounted while hidden.", null, false, false, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"OnCloseRequested", @"EventCallback<string>", null, @"Reports a request to close the document by key. The host removes its declaration.", null, false, true, false, @"FlareDocumentTabs"),
+                new ApiParameterInfo(@"OnDockRequested", @"EventCallback<FlareDocumentDockRequest>", null, @"Reports the document key and the destination the user chose in a tab's move menu.", null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"OnTabChanged", @"EventCallback<string>", null, @"Reports the title of the selected document.", null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, @"Reports the title of the document requested to close.", null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"OverflowBehavior", @"TabOverflowBehavior", @"TabOverflowBehavior.Scroll", @"How to navigate when the strip overflows.", null, false, false, false, @"FlareDocumentTabs"),
@@ -4031,8 +4035,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"BottomPanel", @"RenderFragment?", null, @"Bottom panel (e.g. Output, Terminal).", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomPanelHeight", @"string", @"""200px""", @"Height of the bottom panel. Default 200px.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"BottomResizable", @"bool", @"true", @"Whether the bottom region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"CenterDockHeader", @"RenderFragment?", null, @"Content rendered in place of the built-in Center dock strip - a host tab strip for the main document area. The fragment occupies the Center column of the layout's dock row. It wins over ShowCenterDockStrip; as with a suppressed strip, Center selection comes only from ActiveDocuments and the host supplies the return-to-main-content control.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main document/content area.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"DocumentContent", @"RenderFragment<IdeDocument>?", null, @"Renders each document. The rendered instance stays mounted while its key stays in Documents.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"DocumentContent", @"RenderFragment<IdeDocument>?", null, @"Renders each document. Which documents invoke it is chosen by DocumentMounting.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"DocumentContextMenu", @"RenderFragment<IdeDocument>?", null, @"Context menu entries rendered for a docked document when its dock tab is right-clicked. The host decides which actions to offer, including close variants or confirmation.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"DocumentMounting", @"IdeDocumentMounting", @"IdeDocumentMounting.All", @"Whether every document mounts its content or only the active document of each region. The default, All, preserves each document's state at one content instance per document. ActiveOnly disposes the content of a document that becomes inactive, so its transient state is lost when it mounts again; a document that stays active across a region move remains mounted.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Documents", @"IReadOnlyList<IdeDocument>?", null, @"Enables docking and supplies documents keyed within this layout.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Height", @"string?", null, @"Height of the layout frame as a CSS length (e.g. ""520px"" or ""100%""). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"LeftCollapsed", @"bool", @"false", @"Whether the left region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
@@ -4043,14 +4050,17 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MenuBar", @"RenderFragment?", null, @"Menu bar rendered below the ribbon.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"MinPanelSize", @"int", @"120", @"Smallest size (px) a region can be dragged to. Default 120.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"OnActiveDocumentChanged", @"EventCallback<IdeDocumentSelection>", null, @"Reports the user's selection in a region.", null, false, true, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"OnDocumentCloseRequested", @"EventCallback<IdeDocument>", null, @"Reports a request to close a document from its dock tab. Accept it by removing the document from Documents; the layout keeps the document until the host does so.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"OnDocumentMove", @"EventCallback<IdeDocumentMove>", null, @"Requests a move. Accept it by changing the document's region in Documents.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RailSize", @"string", @"""32px""", @"Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"RetainDocumentContent", @"Func<IdeDocument, bool>?", null, @"Documents whose content stays mounted in ActiveOnly mode even while they are not the active document of their region. Ignored when every document mounts.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Ribbon", @"RenderFragment?", null, @"Top ribbon area rendered above the menu bar.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightCollapsed", @"bool", @"false", @"Whether the right region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightCollapsedChanged", @"EventCallback<bool>", null, @"Raised when RightCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightPanelWidth", @"string", @"""300px""", @"Width of the right tool panel. Default 300px.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightResizable", @"bool", @"true", @"Whether the right region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightToolPanel", @"RenderFragment?", null, @"Right tool panel (e.g. Properties).", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"ShowCenterDockStrip", @"bool", @"true", @"Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"StatusBar", @"RenderFragment?", null, @"Status bar at the bottom of the IDE.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -8435,6 +8445,39 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareToolPanelGroup"] = new ApiComponentInfo(
+            @"FlareToolPanelGroup",
+            @"Flare.Components.IDE.FlareToolPanelGroup",
+            @"Flare.Components.IDE",
+            @"Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a single visible panel and the panel bodies kept mounted while hidden. Inside a FlareIdeLayout region the hosted panels still report their titles and modes, so the region rail and auto-hide behavior are unchanged; the group draws the region's collapse button because the individual panel headers are replaced by the tabs.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Tool panels shown as tabs. Every child is a FlareToolPanel; its content stays mounted while another tab is active.", null, false, false, false, @"FlareToolPanelGroup"),
+                new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Region that hosts the group inside a FlareIdeLayout. The hosted panels use this position for rail labels, auto-hide and collapse instead of their own Position.", null, false, false, false, @"FlareToolPanelGroup"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Activates and focuses the tab addressed by an orientation-aware navigation key.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"The navigation key whose native scroll behavior was prevented."),
+                        new ApiMethodParameter(@"rtl", @"bool", @"Whether the tablist resolves to right-to-left in the browser."),
+                    }),
+            },
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareToolbar"] = new ApiComponentInfo(
             @"FlareToolbar",
             @"Flare.Components.IDE.FlareToolbar",
@@ -10444,6 +10487,22 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"IdeDocumentMounting"] = new ApiEnumInfo(
+            @"IdeDocumentMounting",
+            @"Flare.Components.IDE.IdeDocumentMounting",
+            @"Flare.Components.IDE",
+            @"How FlareIdeLayout mounts the content of docked documents.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"All", @"0", @"Every document in Documents invokes its content and stays mounted while it exists, hidden when inactive. State is preserved at one component instance per document."),
+                new ApiEnumMember(@"ActiveOnly", @"1", @"Only the active document of each region - plus documents retained by RetainDocumentContent - invokes its content. An inactive document's content is disposed, so its transient state is lost until it becomes active again. Keeps the cost of expensive editors proportional to the visible documents."),
+            },
+            new string[]
+            {
+                @"FlareIdeLayout",
+            });
+
         e[@"IdeDocumentRegion"] = new ApiEnumInfo(
             @"IdeDocumentRegion",
             @"Flare.Components.IDE.IdeDocumentRegion",
@@ -11508,6 +11567,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareToolPanel",
+                @"FlareToolPanelGroup",
             });
 
         e[@"TrackSize"] = new ApiEnumInfo(

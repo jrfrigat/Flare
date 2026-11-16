@@ -227,6 +227,7 @@ This component exposes no documented public methods.
 - `FlareToggleButton`
 - `FlareToggleGroup`
 - `FlareToolPanel`
+- `FlareToolPanelGroup`
 - `FlareToolbar`
 - `FlareTooltip`
 - `FlareTransfer`

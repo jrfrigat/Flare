@@ -221,6 +221,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareToggleButton`](components/flare-components-flaretogglebutton.md)
 - [`FlareToggleGroup`](components/flare-components-flaretogglegroup.md)
 - [`FlareToolPanel`](components/flare-components-ide-flaretoolpanel.md) — A collapsible tool panel for the IDE sidebar. Wraps content with a header bar containing title, optional toolbar, and collapse button. Composed from base Flare components - no custom tokens. When placed inside a FlareIdeLayout region the layout owns the collapsed state and the thin rail / auto-hide flyout, so collapsing frees the docked space.
+- [`FlareToolPanelGroup`](components/flare-components-ide-flaretoolpanelgroup.md) — Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a single visible panel and the panel bodies kept mounted while hidden. Inside a FlareIdeLayout region the hosted panels still report their titles and modes, so the region rail and auto-hide behavior are unchanged; the group draws the region's collapse button because the individual panel headers are replaced by the tabs.
 - [`FlareToolbar`](components/flare-components-ide-flaretoolbar.md)
 - [`FlareTooltip`](components/flare-components-flaretooltip.md)
 - [`FlareTransfer`](components/flare-components-flaretransfer.md)
@@ -327,6 +328,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.Gantt.GanttValidationCode`](enums/flare-components-gantt-ganttvalidationcode.md) — Why a proposed link was refused.
 - [`Flare.Components.GaugeShape`](enums/flare-components-gaugeshape.md) — How a FlareGauge lays its scale out. One component with three shapes rather than three components: the scale, bands, ticks, target marker and readout are the same in all three, and only the projection from value to screen differs.
 - [`Flare.Components.IDE.IdeDiagnosticSeverity`](enums/flare-components-ide-idediagnosticseverity.md) — Severity of a document diagnostic.
+- [`Flare.Components.IDE.IdeDocumentMounting`](enums/flare-components-ide-idedocumentmounting.md) — How FlareIdeLayout mounts the content of docked documents.
 - [`Flare.Components.IDE.IdeDocumentRegion`](enums/flare-components-ide-idedocumentregion.md) — Region in which an IDE document can be displayed.
 - [`Flare.Components.IDE.IdePanelMode`](enums/flare-components-ide-idepanelmode.md) — Controls how a docked tool panel in FlareIdeLayout behaves when expanded.
 - [`Flare.Components.ImageObjectFit`](enums/flare-components-imageobjectfit.md) — How a FlareImage is fitted into its box (maps to CSS object-fit).

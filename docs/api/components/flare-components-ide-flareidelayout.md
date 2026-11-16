@@ -16,8 +16,11 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `BottomPanel` | `RenderFragment?` | `` | Parameter |  | Bottom panel (e.g. Output, Terminal). |
 | `BottomPanelHeight` | `string` | `"200px"` | Parameter |  | Height of the bottom panel. Default 200px. |
 | `BottomResizable` | `bool` | `true` | Parameter |  | Whether the bottom region can be drag-resized. |
+| `CenterDockHeader` | `RenderFragment?` | `` | Parameter |  | Content rendered in place of the built-in Center dock strip - a host tab strip for the main document area. The fragment occupies the Center column of the layout's dock row. It wins over ShowCenterDockStrip; as with a suppressed strip, Center selection comes only from ActiveDocuments and the host supplies the return-to-main-content control. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main document/content area. |
-| `DocumentContent` | `RenderFragment<IdeDocument>?` | `` | Parameter |  | Renders each document. The rendered instance stays mounted while its key stays in Documents. |
+| `DocumentContent` | `RenderFragment<IdeDocument>?` | `` | Parameter |  | Renders each document. Which documents invoke it is chosen by DocumentMounting. |
+| `DocumentContextMenu` | `RenderFragment<IdeDocument>?` | `` | Parameter |  | Context menu entries rendered for a docked document when its dock tab is right-clicked. The host decides which actions to offer, including close variants or confirmation. |
+| `DocumentMounting` | `IdeDocumentMounting` | `IdeDocumentMounting.All` | Parameter |  | Whether every document mounts its content or only the active document of each region. The default, All, preserves each document's state at one content instance per document. ActiveOnly disposes the content of a document that becomes inactive, so its transient state is lost when it mounts again; a document that stays active across a region move remains mounted. |
 | `Documents` | `IReadOnlyList<IdeDocument>?` | `` | Parameter |  | Enables docking and supplies documents keyed within this layout. |
 | `Height` | `string?` | `` | Parameter |  | Height of the layout frame as a CSS length (e.g. "520px" or "100%"). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen. |
 | `LeftCollapsed` | `bool` | `false` | Parameter |  | Whether the left region is collapsed (only a thin rail is shown). Two-way bindable. |
@@ -28,14 +31,17 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `MenuBar` | `RenderFragment?` | `` | Parameter |  | Menu bar rendered below the ribbon. |
 | `MinPanelSize` | `int` | `120` | Parameter |  | Smallest size (px) a region can be dragged to. Default 120. |
 | `OnActiveDocumentChanged` | `EventCallback<IdeDocumentSelection>` | `` | Callback |  | Reports the user's selection in a region. |
+| `OnDocumentCloseRequested` | `EventCallback<IdeDocument>` | `` | Callback |  | Reports a request to close a document from its dock tab. Accept it by removing the document from Documents; the layout keeps the document until the host does so. |
 | `OnDocumentMove` | `EventCallback<IdeDocumentMove>` | `` | Callback |  | Requests a move. Accept it by changing the document's region in Documents. |
 | `RailSize` | `string` | `"32px"` | Parameter |  | Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px. |
+| `RetainDocumentContent` | `Func<IdeDocument, bool>?` | `` | Parameter |  | Documents whose content stays mounted in ActiveOnly mode even while they are not the active document of their region. Ignored when every document mounts. |
 | `Ribbon` | `RenderFragment?` | `` | Parameter |  | Top ribbon area rendered above the menu bar. |
 | `RightCollapsed` | `bool` | `false` | Parameter |  | Whether the right region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `RightCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when RightCollapsed changes. |
 | `RightPanelWidth` | `string` | `"300px"` | Parameter |  | Width of the right tool panel. Default 300px. |
 | `RightResizable` | `bool` | `true` | Parameter |  | Whether the right region can be drag-resized. |
 | `RightToolPanel` | `RenderFragment?` | `` | Parameter |  | Right tool panel (e.g. Properties). |
+| `ShowCenterDockStrip` | `bool` | `true` | Parameter |  | Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone. |
 | `StatusBar` | `RenderFragment?` | `` | Parameter |  | Status bar at the bottom of the IDE. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

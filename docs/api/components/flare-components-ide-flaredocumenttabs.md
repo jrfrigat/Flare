@@ -14,8 +14,11 @@ Displays document tabs with optional controlled selection, ordering and retained
 | `ActiveKeyChanged` | `EventCallback<string>` | `` | Callback |  | Reports the selected document's key. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declares the document tabs, using a Blazor key for each dynamically rendered document. |
 | `ContextMenuContent` | `RenderFragment<string>?` | `` | Parameter |  | Context menu entries rendered for the given document key. |
+| `DockTargets` | `IReadOnlyList<FlareDocumentDockTarget>?` | `` | Parameter |  | Destinations offered in each tab's move menu. Set OnDockRequested too; without it no menu is rendered. The strip does not move the document itself - the host updates its document list and layout selection. |
+| `Dockable` | `bool` | `false` | Parameter |  | Makes every tab a drag source for FlareIdeLayout docking even when Reorderable is off. Each dockable tab needs an explicit Key; the key is what the layout receives through OnDocumentMove. The host must declare the same key in Documents. |
 | `KeepAlive` | `bool` | `false` | Parameter |  | Keeps previously activated panels mounted while hidden. |
 | `OnCloseRequested` | `EventCallback<string>` | `` | Callback |  | Reports a request to close the document by key. The host removes its declaration. |
+| `OnDockRequested` | `EventCallback<FlareDocumentDockRequest>` | `` | Callback |  | Reports the document key and the destination the user chose in a tab's move menu. |
 | `OnTabChanged` | `EventCallback<string>` | `` | Callback |  | Reports the title of the selected document. |
 | `OnTabClose` | `EventCallback<string>` | `` | Callback |  | Reports the title of the document requested to close. |
 | `OverflowBehavior` | `TabOverflowBehavior` | `TabOverflowBehavior.Scroll` | Parameter |  | How to navigate when the strip overflows. |

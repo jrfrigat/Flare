@@ -3,6 +3,21 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `FlareIdeLayout` dock tabs can close a document, show an unsaved-changes marker and open a host context menu; `IdeDocument` gains `Closeable` and `Modified`.
+- `FlareIdeLayout` can suppress or replace its Center dock strip with a host-owned tab header; Center selection is then controlled through `ActiveDocuments`.
+- `FlareIdeLayout` can mount only the active document's content (`IdeDocumentMounting.ActiveOnly`), with an optional retention predicate for documents that must stay mounted.
+- `FlareToolPanelGroup` presents several tool panels as keyboard-accessible tabs with one visible panel, while keeping the region's collapse, rail and auto-hide behavior.
+- `FlareDocumentTabs` tabs can be dragged into `FlareIdeLayout` regions (`Dockable`), and the tab move menu (`DockTargets`, `OnDockRequested`) provides the keyboard path.
+- Collapsed left and right `FlareIdeLayout` rails accept document drops and expand the destination.
+
+### Changed
+
+- A collapsed or floating IDE region no longer draws its dock strip inside the rail-width column; expand the region to see its document tabs.
+
 ## [0.58.0] - 2026-11-16
 
 ### Added

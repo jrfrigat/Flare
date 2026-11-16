@@ -95,6 +95,8 @@
 }
 
 .flare-ide-layout__document {
+    position: relative;
+    z-index: 1;
     min-inline-size: 0;
     overflow: auto;
     background: var(--flare-ide-surface, var(--flare-color-surface));

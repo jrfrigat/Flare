@@ -125,6 +125,15 @@ public partial class FlareIdeLayout
         _ => false
     });
 
+    // A region reserving only its rail has no width for a dock strip; its controls would spill into
+    // the neighboring column. The rail is the only control until the region is expanded.
+    private bool RegionShowsDockStrip(IdeDocumentRegion region)
+    {
+        if (region == IdeDocumentRegion.Center) return true;
+        var position = SidePosition(region);
+        return !IsCollapsed(position) && !IsFloating(position);
+    }
+
     private async Task SelectDocumentAsync(IdeDocumentRegion region, string? key)
     {
         if (ActiveDocuments is null) _documentSelection[region] = key;
@@ -135,7 +144,7 @@ public partial class FlareIdeLayout
 
     private void EndDocumentDrag() => _draggedDocument = null;
 
-    private async Task DropDocumentAsync(IdeDocumentRegion destination)
+    private async Task<bool> DropDocumentAsync(IdeDocumentRegion destination)
     {
         var key = _draggedDocument;
         EndDocumentDrag();
@@ -150,8 +159,12 @@ public partial class FlareIdeLayout
             catch (ObjectDisposedException) { }
         }
 
-        if (key is not null && FindDocument(key) is { } document)
-            await RequestDocumentMoveAsync(document, destination);
+        if (key is null || FindDocument(key) is not { } document ||
+            document.Region == destination || !OnDocumentMove.HasDelegate)
+            return false;
+
+        await RequestDocumentMoveAsync(document, destination);
+        return true;
     }
 
     private async Task RequestDocumentMoveAsync(IdeDocument document, IdeDocumentRegion destination)
@@ -185,8 +198,9 @@ public partial class FlareIdeLayout
     {
         _railDropTarget = null;
         StateHasChanged();
-        if (DocumentRegionOf(position) is { } region)
-            await DropDocumentAsync(region);
+        if (DocumentRegionOf(position) is not { } region) return;
+        if (await DropDocumentAsync(region))
+            await SetCollapsedAsync(position, false);
     }
 
     private Task RequestDocumentCloseAsync(IdeDocument document) =>

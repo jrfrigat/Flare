@@ -22,9 +22,12 @@ public class IdeLayoutRailDropTests : FlareTestContext
     public async Task LeftRail_AcceptsAnInternalDragAndHighlights()
     {
         IdeDocumentMove? moved = null;
+        bool? expanded = null;
         var cut = Render<FlareIdeLayout>(p => p
             .Add(x => x.Documents, [new("a", "A.cs")])
             .Add(x => x.LeftCollapsed, true)
+            .Add(x => x.LeftCollapsedChanged,
+                EventCallback.Factory.Create<bool>(this, value => expanded = value))
             .Add(x => x.OnDocumentMove,
                 EventCallback.Factory.Create<IdeDocumentMove>(this, value => moved = value)));
         var railSelector = RailSelector(Css.Classes.Ide.Layout.PanelLeft);
@@ -42,7 +45,8 @@ public class IdeLayoutRailDropTests : FlareTestContext
 
         Assert.Equal("a", moved!.Document.Key);
         Assert.Equal(IdeDocumentRegion.Left, moved.Destination);
-        Assert.DoesNotContain(Css.Classes.Ide.Layout.RailDropTarget, cut.Find(railSelector).ClassList);
+        Assert.False(expanded);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]"));
     }
 
     [Fact]
@@ -52,9 +56,12 @@ public class IdeLayoutRailDropTests : FlareTestContext
         module.SetupVoid("registerDocumentDragSource");
         module.Setup<string?>("takeDroppedDocument").SetResult("a");
         IdeDocumentMove? moved = null;
+        bool? expanded = null;
         var cut = Render<FlareIdeLayout>(p => p
             .Add(x => x.Documents, [new("a", "A.cs")])
             .Add(x => x.RightCollapsed, true)
+            .Add(x => x.RightCollapsedChanged,
+                EventCallback.Factory.Create<bool>(this, value => expanded = value))
             .Add(x => x.OnDocumentMove,
                 EventCallback.Factory.Create<IdeDocumentMove>(this, value => moved = value)));
 
@@ -65,6 +72,7 @@ public class IdeLayoutRailDropTests : FlareTestContext
 
         Assert.Equal("a", moved!.Document.Key);
         Assert.Equal(IdeDocumentRegion.Right, moved.Destination);
+        Assert.False(expanded);
     }
 
     [Fact]
@@ -91,6 +99,17 @@ public class IdeLayoutRailDropTests : FlareTestContext
 
         await cut.Find(railSelector).TriggerEventAsync("ondrop", new DragEventArgs());
         Assert.Null(moved);
+    }
+
+    [Fact]
+    public void CollapsedRegion_HidesItsDockStrip()
+    {
+        var cut = Render<FlareIdeLayout>(p => p
+            .Add(x => x.Documents, [])
+            .Add(x => x.LeftCollapsed, true));
+
+        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]"));
+        Assert.NotEmpty(cut.FindAll(RailSelector(Css.Classes.Ide.Layout.PanelLeft)));
     }
 
     [Fact]
