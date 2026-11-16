@@ -820,8 +820,9 @@
 
 /* While a menu is open the bar renders one shared backdrop. Raising the bar's own menus above it keeps
    every other title clickable: the next click switches menus instead of being swallowed by the
-   backdrop and needing a second click. */
-.flare-menubar--open > .flare-menu {
+   backdrop and needing a second click. A descendant selector keeps a title wrapped in a layout element
+   clickable too. */
+.flare-menubar--open .flare-menu {
     position: relative;
     z-index: calc(var(--flare-z-dropdown) + 1);
 }
