@@ -11982,6 +11982,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Double click.
+        /// </summary>
+        public static string Tree_DoubleClick {
+            get {
+                return ResourceManager.GetString("Tree_DoubleClick", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Multi-select.
         /// </summary>
         public static string Tree_MultiSelect {

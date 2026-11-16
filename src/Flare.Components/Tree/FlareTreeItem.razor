@@ -20,6 +20,7 @@
     <div class="@Css.Classes.Tree.ItemRow @(Selected ? Css.Classes.TreeView.Row : "")"
          data-flare-drag-hit="@(Draggable ? "true" : null)"
          @onclick="HandleRowClickAsync"
+         @ondblclick="HandleRowDoubleClickAsync"
          @oncontextmenu="HandleRowContextMenuAsync"
          @oncontextmenu:preventDefault="@(OnContextMenu.HasDelegate && PreventContextMenuDefault)">
         @if (HasChildren)
@@ -93,6 +94,11 @@
     [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
     /// <summary>Callback raised when the item row is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
+    /// <summary>Callback raised when the row is double-clicked. The browser raises the row click twice
+    /// before it, so <see cref="OnClick"/> and single-click selection run first. When this callback is set,
+    /// the second click of the gesture does not toggle expansion again, so a parent row does not expand and
+    /// immediately collapse.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnDoubleClick { get; set; }
     /// <summary>Callback raised when this row is right-clicked. It fires for the row only - a child row
     /// raises its own - and does not select, expand or raise <see cref="OnClick"/>. When
     /// <see cref="PreventContextMenuDefault"/> is true the browser's own menu is suppressed.</summary>
@@ -154,12 +160,23 @@
         await ExpandedChanged.InvokeAsync(_expanded);
     }
 
-    private async Task HandleRowClickAsync()
+    private async Task HandleRowClickAsync(MouseEventArgs e)
     {
         if (!Selected)
             await SelectedChanged.InvokeAsync(true);
         if (OnClick.HasDelegate) await OnClick.InvokeAsync();
-        if (HasChildren) await ToggleAsync();
+        if (HasChildren && !IsSecondClickOfDoubleClick(e)) await ToggleAsync();
+    }
+
+    // A double-click raises two clicks before dblclick. When the host uses the double-click callback,
+    // the second click must not undo the expansion the first one made.
+    private bool IsSecondClickOfDoubleClick(MouseEventArgs e) =>
+        e.Detail > 1 && OnDoubleClick.HasDelegate;
+
+    private async Task HandleRowDoubleClickAsync(MouseEventArgs e)
+    {
+        if (OnDoubleClick.HasDelegate)
+            await OnDoubleClick.InvokeAsync(e);
     }
 
     private async Task HandleRowContextMenuAsync(MouseEventArgs e)

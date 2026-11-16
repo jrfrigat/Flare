@@ -1,0 +1,31 @@
+@* A single click selects, a double click opens. The row reports the double-click after the two
+   clicks the browser raises, so the host gets both without a timer to disambiguate them. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        A single click selects a row; a double click opens it. Both states are reported below.
+    </FlareText>
+
+    <FlareTreeView AriaLabel="Double-click tree">
+        <FlareTreeItem Label="Orders" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                       Selected="@(_selected == "Orders")"
+                       OnClick="@(() => _selected = "Orders")"
+                       OnDoubleClick="@(() => _opened = "Orders")" />
+        <FlareTreeItem Label="Customers" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                       Selected="@(_selected == "Customers")"
+                       OnClick="@(() => _selected = "Customers")"
+                       OnDoubleClick="@(() => _opened = "Customers")" />
+        <FlareTreeItem Label="Invoices" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                       Selected="@(_selected == "Invoices")"
+                       OnClick="@(() => _selected = "Invoices")"
+                       OnDoubleClick="@(() => _opened = "Invoices")" />
+    </FlareTreeView>
+
+    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">
+        Selected: @(_selected ?? "none") / Opened: @(_opened ?? "none")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string? _selected;
+    private string? _opened;
+}

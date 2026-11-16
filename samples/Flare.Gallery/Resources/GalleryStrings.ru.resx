@@ -1954,6 +1954,9 @@
   <data name="Tree_ContextMenu" xml:space="preserve">
     <value>Контекстное меню</value>
   </data>
+  <data name="Tree_DoubleClick" xml:space="preserve">
+    <value>Двойной щелчок</value>
+  </data>
   <data name="Tree_MultiSelect" xml:space="preserve">
     <value>Множественный выбор</value>
   </data>

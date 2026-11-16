@@ -17,6 +17,7 @@
 | `Level` | `int` | `1` | Cascading |  | Current nesting depth of this item; propagated automatically via CascadingValue. Level 1 is the top-most level (root items inside FlareTreeView). |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the item row is clicked. |
 | `OnContextMenu` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback raised when this row is right-clicked. It fires for the row only - a child row raises its own - and does not select, expand or raise OnClick. When PreventContextMenuDefault is true the browser's own menu is suppressed. |
+| `OnDoubleClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback raised when the row is double-clicked. The browser raises the row click twice before it, so OnClick and single-click selection run first. When this callback is set, the second click of the gesture does not toggle expansion again, so a parent row does not expand and immediately collapse. |
 | `PreventContextMenuDefault` | `bool` | `true` | Parameter |  | Suppresses the browser's own context menu while OnContextMenu is handled, so a custom menu can replace it. Set to false to keep the native menu alongside the callback. Has no effect when no context-menu callback is set. |
 | `Selected` | `bool` | `false` | Parameter |  | Whether this item is currently selected. |
 | `SelectedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the selected state changes. |
