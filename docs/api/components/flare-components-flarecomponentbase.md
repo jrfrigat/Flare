@@ -136,6 +136,7 @@ This component exposes no documented public methods.
 - `FlareMenuBar`
 - `FlareMenuGroup`
 - `FlareMenuItem`
+- `FlareMenuSeparator`
 - `FlareMessageBoxProvider`
 - `FlareMeter`
 - `FlareMonthGrid`

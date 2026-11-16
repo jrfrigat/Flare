@@ -1,0 +1,6 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* A separator is deliberately not a menu entry: it does not register with FlareMenu/FlareSubMenu, so
+   the roving highlight and Enter never land on it, and the element takes no tab stop of its own. *@
+<div class="@BuildCssClass()" role="separator" aria-orientation="horizontal" style="@Style" @attributes="AdditionalAttributes"></div>

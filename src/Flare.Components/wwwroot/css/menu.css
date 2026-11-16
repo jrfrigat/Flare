@@ -80,6 +80,16 @@
 /* A MaxHeight-capped menu scrolls its items instead of overflowing the viewport. */
 .flare-menu__panel--scroll { overflow-y: auto; }
 
+/* A rule between groups of entries. It is not a menu entry - the roving highlight never lands on it -
+   and it stretches across the panel's content width. */
+.flare-menu-separator {
+    border: 0;
+    border-block-start: var(--flare-menu-separator-rule);
+    margin-block: var(--flare-menu-separator-spacing);
+    align-self: stretch;
+    flex-shrink: 0;
+}
+
 /* Submenu styles */
 .flare-submenu {
     position: relative;

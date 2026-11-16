@@ -15,7 +15,9 @@
             <FlareSubMenu Label="More Options" Icon="@MaterialDesign3Icons.Regular.MoreHoriz">
                 <FlareMenuItem OnClick="@(() => _lastAction = "Option 1")">Option 1</FlareMenuItem>
                 <FlareMenuItem OnClick="@(() => _lastAction = "Option 2")">Option 2</FlareMenuItem>
-                
+
+                <FlareMenuSeparator />
+
                 <FlareSubMenu Label="Advanced">
                     <FlareMenuItem OnClick="@(() => _lastAction = "Advanced 1")">Advanced 1</FlareMenuItem>
                     <FlareMenuItem OnClick="@(() => _lastAction = "Advanced 2")">Advanced 2</FlareMenuItem>

@@ -1885,6 +1885,7 @@ public static class ComponentApiRegistry
                 @"FlareMenuBar",
                 @"FlareMenuGroup",
                 @"FlareMenuItem",
+                @"FlareMenuSeparator",
                 @"FlareMessageBoxProvider",
                 @"FlareMeter",
                 @"FlareMonthGrid",
@@ -4741,6 +4742,28 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the menu item is clicked.", null, false, true, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Shortcut", @"string?", null, @"Keyboard shortcut shown at the trailing edge (e.g. ""Ctrl+S""). The text is the caller's display notation - the item neither executes nor parses it. Assistive technology receives it as the item's description, so the shortcut is announced with the label.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"HTML target for the anchor when Href is set (e.g. _blank to open an external link in a new tab). A _blank target automatically adds rel=""noopener noreferrer"". Ignored when the item renders as a button (no Href).", null, false, false, false, @"FlareMenuItem"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareMenuSeparator"] = new ApiComponentInfo(
+            @"FlareMenuSeparator",
+            @"Flare.Components.FlareMenuSeparator",
+            @"Flare.Components",
+            @"A non-interactive rule between groups of entries in a FlareMenu or FlareSubMenu panel. It reports role=""separator"" and takes no part in the menu's keyboard model: it does not register as an entry, so the roving highlight skips it, and it has no tab stop. Its look and spacing come from theme tokens.",
+            null,
+            new ApiParameterInfo[]
+            {
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

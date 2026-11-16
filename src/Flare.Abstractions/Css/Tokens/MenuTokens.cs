@@ -95,4 +95,9 @@ public static class MenuPanel
     public const string ItemCheckSize = "--flare-menu-item-check-size";
     /// <summary>CSS custom-property name for the check indicator color token.</summary>
     public const string ItemCheckColor = "--flare-menu-item-check-color";
+
+    /// <summary>CSS custom-property name for the separator rule token.</summary>
+    public const string SeparatorRule = "--flare-menu-separator-rule";
+    /// <summary>CSS custom-property name for the space above and below a separator token.</summary>
+    public const string SeparatorSpacing = "--flare-menu-separator-spacing";
 }

@@ -45,6 +45,8 @@ public static class Menu
     public const string ItemCheck = "flare-menu-item__check";
     /// <summary>The <c>flare-menu-item__check-icon</c> CSS class (the check glyph itself).</summary>
     public const string ItemCheckIcon = "flare-menu-item__check-icon";
+    /// <summary>The <c>flare-menu-separator</c> CSS class.</summary>
+    public const string Separator = "flare-menu-separator";
     /// <summary>The <c>flare-submenu</c> CSS class (submenu root; positioning anchor for the flyout panel).</summary>
     public const string Submenu = "flare-submenu";
     /// <summary>The <c>flare-submenu__activator</c> CSS class (the submenu trigger row).</summary>

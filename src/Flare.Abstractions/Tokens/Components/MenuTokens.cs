@@ -110,4 +110,9 @@ public sealed record MenuTokens
     [CssVar(MenuPanel.ItemCheckSize)] public string ItemCheckSize { get; init; } = Var(Css.Tokens.MenuPanel.ItemIconSize);
     /// <summary>Colour of the leading check indicator on a checked item.</summary>
     [CssVar(MenuPanel.ItemCheckColor)] public string ItemCheckColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
+
+    /// <summary>Rule drawn between groups of entries by a separator, as a CSS <c>border</c> shorthand.</summary>
+    [CssVar(MenuPanel.SeparatorRule)] public string SeparatorRule { get; init; } = Var(Css.Tokens.Border.Divider);
+    /// <summary>Space above and below a separator entry. The panel's item gap applies around it too.</summary>
+    [CssVar(MenuPanel.SeparatorSpacing)] public string SeparatorSpacing { get; init; } = Var(Css.Tokens.Spacing.S2);
 }
