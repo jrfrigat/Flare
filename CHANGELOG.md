@@ -3,6 +3,21 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.58.0] - 2026-11-16
+
+### Added
+
+- `FlareDocumentTabs` accepts stable document keys, controlled selection and ordering, and a context menu template. The strip measures overflow and can retain inactive editors.
+- `FlareIdeLayout` can move documents between the central, left and right regions while keeping their editors mounted.
+- `FlareToolbar` can reorder named command groups by pointer and keyboard, and accepts an order restored by the host.
+- `FlareDiagnosticList` filters and virtualizes diagnostics and reports the selected document position.
+- `FlareShortcutEditor` records, clears and resets assignments, and checks for conflicts and reserved combinations.
+
+### Fixed
+
+- IDE dividers follow the active theme and offer drag and keyboard resizing without step buttons. Standalone splitters can opt out of step buttons with `ShowStepButtons`.
+- Gallery table-of-contents links scroll to their demo sections again.
+
 ## [0.57.0] - 2026-11-12
 
 ### Added
