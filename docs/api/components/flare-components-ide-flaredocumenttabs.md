@@ -10,10 +10,11 @@ Displays document tabs with optional controlled selection, ordering and retained
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `ActiveKey` | `string?` | `` | Parameter |  | Active document key. Null starts with the first document and permits internal selection. |
+| `ActiveKey` | `string?` | `` | Parameter |  | Active document key. Null starts with the first document and permits internal selection; with ControlledSelection set, null means no active tab and the value is authoritative. |
 | `ActiveKeyChanged` | `EventCallback<string>` | `` | Callback |  | Reports the selected document's key. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declares the document tabs, using a Blazor key for each dynamically rendered document. |
 | `ContextMenuContent` | `RenderFragment<string>?` | `` | Parameter |  | Context menu entries rendered for the given document key. |
+| `ControlledSelection` | `bool` | `false` | Parameter |  | Whether ActiveKey is the only source of the selection. When true, null means no document is active and a click or navigation key only reports the key through ActiveKeyChanged - the host selects it by setting ActiveKey. A key that matches no declared document also leaves every tab inactive. The default false keeps the uncontrolled behavior: null starts with the first document and clicks select internally. |
 | `DockTargets` | `IReadOnlyList<FlareDocumentDockTarget>?` | `` | Parameter |  | Destinations offered in each tab's move menu. Set OnDockRequested too; without it no menu is rendered. The strip does not move the document itself - the host updates its document list and layout selection. |
 | `Dockable` | `bool` | `false` | Parameter |  | Makes every tab a drag source for FlareIdeLayout docking even when Reorderable is off. Each dockable tab needs an explicit Key; the key is what the layout receives through OnDocumentMove. The host must declare the same key in Documents. |
 | `KeepAlive` | `bool` | `false` | Parameter |  | Keeps previously activated panels mounted while hidden. |

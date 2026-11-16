@@ -18,8 +18,16 @@ public partial class FlareDocumentTabs
     /// <summary>How to navigate when the strip overflows.</summary>
     [Parameter] public TabOverflowBehavior OverflowBehavior { get; set; } = TabOverflowBehavior.Scroll;
 
-    /// <summary>Active document key. Null starts with the first document and permits internal selection.</summary>
+    /// <summary>Active document key. Null starts with the first document and permits internal selection;
+    /// with <see cref="ControlledSelection"/> set, null means no active tab and the value is authoritative.</summary>
     [Parameter] public string? ActiveKey { get; set; }
+
+    /// <summary>Whether <see cref="ActiveKey"/> is the only source of the selection. When true, null means
+    /// no document is active and a click or navigation key only reports the key through
+    /// <see cref="ActiveKeyChanged"/> - the host selects it by setting <see cref="ActiveKey"/>. A key that
+    /// matches no declared document also leaves every tab inactive. The default false keeps the
+    /// uncontrolled behavior: null starts with the first document and clicks select internally.</summary>
+    [Parameter] public bool ControlledSelection { get; set; }
 
     /// <summary>Reports the selected document's key.</summary>
     [Parameter] public EventCallback<string> ActiveKeyChanged { get; set; }
@@ -119,6 +127,11 @@ public partial class FlareDocumentTabs
     private void RefreshTabs(int fallbackIndex = 0)
     {
         _ordered = IdeItemOrder.Apply(_tabs, TabOrder ?? _internalOrder, static tab => tab.EffectiveKey);
+        if (ControlledSelection)
+        {
+            _active = ActiveKey is null ? null : _tabs.Find(tab => tab.EffectiveKey == ActiveKey);
+            return;
+        }
         var requested = ActiveKey is null ? _active : _tabs.Find(tab => tab.EffectiveKey == ActiveKey);
         _active = requested is not null && _tabs.Contains(requested)
             ? requested
@@ -126,6 +139,11 @@ public partial class FlareDocumentTabs
     }
 
     internal bool IsTabActive(FlareDocumentTab tab) => ReferenceEquals(tab, _active);
+
+    // With no active tab the first one is the entry point for the roving tab stop, so the strip stays
+    // keyboard reachable while aria-selected stays false on every tab.
+    private int TabIndex(FlareDocumentTab tab) =>
+        IsTabActive(tab) || (_active is null && _ordered.Count > 0 && ReferenceEquals(tab, _ordered[0])) ? 0 : -1;
 
     private string TabClass(FlareDocumentTab tab) => IsTabActive(tab)
         ? $"{Css.Classes.Ide.DocTabs.Tab} {Css.Classes.Ide.DocTabs.TabActive}"
@@ -135,7 +153,7 @@ public partial class FlareDocumentTabs
     {
         if (focus) _focusTarget = tab;
         if (IsTabActive(tab)) return;
-        if (ActiveKey is null) _active = tab;
+        if (ActiveKey is null && !ControlledSelection) _active = tab;
         await ActiveKeyChanged.InvokeAsync(tab.EffectiveKey);
         await OnTabChanged.InvokeAsync(tab.Title);
     }
@@ -198,17 +216,20 @@ public partial class FlareDocumentTabs
     [JSInvokable]
     public Task OnTabNavigation(string key, bool rtl) => InvokeAsync(async () =>
     {
-        if (_disposed || _active is null) return;
-        var index = _ordered.ToList().IndexOf(_active);
+        if (_disposed || _ordered.Count == 0) return;
+        var index = _active is null ? -1 : _ordered.ToList().IndexOf(_active);
         var forward = rtl ? "ArrowLeft" : "ArrowRight";
         var backward = rtl ? "ArrowRight" : "ArrowLeft";
         if (key == "Delete")
-            await CloseAsync(_active);
+        {
+            if (_active is not null) await CloseAsync(_active);
+        }
         else if (key == "Home" || key == "End" || key == forward || key == backward)
         {
             var count = _ordered.Count;
             var next = key == "Home" ? 0 : key == "End" ? count - 1
-                : (index + (key == forward ? 1 : -1) + count) % count;
+                : key == forward ? (index + 1 + count) % count
+                : index <= 0 ? count - 1 : index - 1;
             await ActivateAsync(_ordered[next], focus: true);
         }
         StateHasChanged();

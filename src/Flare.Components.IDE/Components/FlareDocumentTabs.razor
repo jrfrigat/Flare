@@ -73,7 +73,7 @@ else
 @code {
     private RenderFragment RenderTab(FlareDocumentTab tab, bool? menuOpen) => @<div
         @key="tab" @ref="tab.Header" class="@TabClass(tab)" id="@tab.TabButtonId"
-        role="tab" tabindex="@(IsTabActive(tab) ? 0 : -1)" aria-selected="@(IsTabActive(tab) ? "true" : "false")"
+        role="tab" tabindex="@TabIndex(tab)" aria-selected="@(IsTabActive(tab) ? "true" : "false")"
         aria-label="@(tab.Modified ? $"{tab.Title} ({Text["DocTabs_Modified"]})" : tab.Title)"
         aria-controls="@(StripOnly ? null : IsTabActive(tab) || tab.ShouldKeepAlive ? tab.PanelId : null)"
         aria-haspopup="@(menuOpen.HasValue ? "menu" : null)"
