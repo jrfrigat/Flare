@@ -1,0 +1,71 @@
+@* A row can carry its own status and actions without leaving FlareTreeItem: TrailingContent renders
+   inside the row after the label and before the drag handle. The row itself still selects and expands,
+   and the host decides whether a click on its own control should do the same. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        Each row shows its connection status and its own actions in TrailingContent. The row still selects
+        and expands on click; the host owns what a click on its controls does.
+    </FlareText>
+
+    <FlareTreeView AriaLabel="Database connections">
+        <FlareTreeItem Label="Production" Icon="@MaterialDesign3Icons.Regular.Storage" Expanded="true">
+            <ChildContent>
+                <FlareTreeItem Label="Sales" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                               Selected="@(_selected == "Sales")"
+                               OnClick="@(() => _selected = "Sales")">
+                    <TrailingContent>
+                        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                            <FlareBadge Color="FlareColor.Success" Dot="true" />
+                            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Live</FlareText>
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Disconnect Sales"
+                                         OnClick="@(() => _lastAction = "Disconnect Sales")">
+                                <FlareIconView Value="@MaterialDesign3Icons.Regular.LinkOff" Size="1rem" />
+                            </FlareButton>
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Forget Sales"
+                                         OnClick="@(() => _lastAction = "Forget Sales")">
+                                <FlareIconView Value="@FlareIcons.Delete" Size="1rem" />
+                            </FlareButton>
+                        </FlareStack>
+                    </TrailingContent>
+                </FlareTreeItem>
+                <FlareTreeItem Label="Warehouse" Icon="@MaterialDesign3Icons.Regular.TableChart"
+                               Selected="@(_selected == "Warehouse")"
+                               OnClick="@(() => _selected = "Warehouse")">
+                    <TrailingContent>
+                        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                            <FlareBadge Color="FlareColor.Success" Dot="true" />
+                            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Live</FlareText>
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Disconnect Warehouse"
+                                         OnClick="@(() => _lastAction = "Disconnect Warehouse")">
+                                <FlareIconView Value="@MaterialDesign3Icons.Regular.LinkOff" Size="1rem" />
+                            </FlareButton>
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Forget Warehouse"
+                                         OnClick="@(() => _lastAction = "Forget Warehouse")">
+                                <FlareIconView Value="@FlareIcons.Delete" Size="1rem" />
+                            </FlareButton>
+                        </FlareStack>
+                    </TrailingContent>
+                </FlareTreeItem>
+            </ChildContent>
+        </FlareTreeItem>
+        <FlareTreeItem Label="Staging" Icon="@MaterialDesign3Icons.Regular.Storage"
+                       Selected="@(_selected == "Staging")"
+                       OnClick="@(() => _selected = "Staging")">
+            <TrailingContent>
+                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                    <FlareBadge Color="FlareColor.Default" Dot="true" />
+                    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Offline</FlareText>
+                </FlareStack>
+            </TrailingContent>
+        </FlareTreeItem>
+    </FlareTreeView>
+
+    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">
+        Selected: @(_selected ?? "none") / Last action: @(_lastAction ?? "none")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string? _selected;
+    private string? _lastAction;
+}

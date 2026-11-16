@@ -1951,6 +1951,9 @@
   <data name="Tree_MultiSelect" xml:space="preserve">
     <value>Множественный выбор</value>
   </data>
+  <data name="Tree_RowContent" xml:space="preserve">
+    <value>Статус и действия в строке</value>
+  </data>
   <data name="Menu_Title" xml:space="preserve">
     <value>Меню</value>
   </data>

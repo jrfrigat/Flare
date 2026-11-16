@@ -11971,7 +11971,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Tree_MultiSelect", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Status and actions in a row.
+        /// </summary>
+        public static string Tree_RowContent {
+            get {
+                return ResourceManager.GetString("Tree_RowContent", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareTreeView with nested items, icons and multi-select..
         /// </summary>

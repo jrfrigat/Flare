@@ -35,14 +35,18 @@
         <FlareToolPanel Title="Solution Explorer">
             <FlareTreeView AriaLabel="Solution Explorer">
                 <FlareTreeItem Label="MyApp" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
-                    <FlareTreeItem Label="Properties" Icon="@MaterialDesign3Icons.Regular.Folder" />
-                    <FlareTreeItem Label="Pages" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
-                        <FlareTreeItem Label="Index.razor" Icon="@MaterialDesign3Icons.Regular.Description"
-                                       OnClick="@(() => _status = "Index.razor")" />
-                        <FlareTreeItem Label="Customers.razor" Icon="@MaterialDesign3Icons.Regular.Description"
-                                       OnClick="@(() => _status = "Customers.razor")" />
-                    </FlareTreeItem>
-                    <FlareTreeItem Label="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" />
+                    <ChildContent>
+                        <FlareTreeItem Label="Properties" Icon="@MaterialDesign3Icons.Regular.Folder" />
+                        <FlareTreeItem Label="Pages" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+                            <ChildContent>
+                                <FlareTreeItem Label="Index.razor" Icon="@MaterialDesign3Icons.Regular.Description"
+                                               OnClick="@(() => _status = "Index.razor")" />
+                                <FlareTreeItem Label="Customers.razor" Icon="@MaterialDesign3Icons.Regular.Description"
+                                               OnClick="@(() => _status = "Customers.razor")" />
+                            </ChildContent>
+                        </FlareTreeItem>
+                        <FlareTreeItem Label="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" />
+                    </ChildContent>
                 </FlareTreeItem>
             </FlareTreeView>
         </FlareToolPanel>

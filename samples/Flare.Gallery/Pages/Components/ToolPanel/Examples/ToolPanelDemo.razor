@@ -19,8 +19,10 @@
         <ChildContent>
             <FlareTreeView AriaLabel="Explorer">
                 <FlareTreeItem Label="src" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
-                    <FlareTreeItem Label="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" />
-                    <FlareTreeItem Label="App.razor" Icon="@MaterialDesign3Icons.Regular.Code" />
+                    <ChildContent>
+                        <FlareTreeItem Label="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" />
+                        <FlareTreeItem Label="App.razor" Icon="@MaterialDesign3Icons.Regular.Code" />
+                    </ChildContent>
                 </FlareTreeItem>
                 <FlareTreeItem Label="wwwroot" Icon="@MaterialDesign3Icons.Regular.Folder" />
                 <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />

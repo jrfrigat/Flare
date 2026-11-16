@@ -40,6 +40,7 @@
             <FlareIconView Value="Icon" Class="@Css.Classes.Tree.ItemIcon" />
         }
         <span class="@Css.Classes.TreeView.Label">@Label</span>
+        @TrailingContent
         @if (Draggable)
         {
             <FlareIconView Value="FlareIcons.DragIndicator" Class="@Css.Classes.TreeView.DragHandle" />
@@ -67,6 +68,12 @@
 @code {
     /// <summary>Child tree items nested under this item.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Content rendered inside the row after the label and before the drag handle, for per-row
+    /// actions or a status indicator. The host owns click propagation for its controls: a click inside the
+    /// slot bubbles to the row and selects or expands the item unless the control stops it with
+    /// <c>onclick:stopPropagation</c>. The slot adds no tab order or accessible name of its own, so controls
+    /// stay focusable and keep the labels the host gives them.</summary>
+    [Parameter] public RenderFragment? TrailingContent { get; set; }
     /// <summary>Text label displayed for this tree item.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Icon shown beside the label - any provider (a bare string is a Material Symbols name).</summary>

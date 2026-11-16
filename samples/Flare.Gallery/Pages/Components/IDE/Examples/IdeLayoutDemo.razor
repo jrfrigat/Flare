@@ -58,8 +58,10 @@
                                 Mode="@(_pinned ? IdePanelMode.Docked : IdePanelMode.AutoHide)">
                     <FlareTreeView AriaLabel="Explorer">
                         <FlareTreeItem Label="src" Icon="@FlareIcons.Folder" Expanded="true">
-                            <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
-                            <FlareTreeItem Label="Startup.cs" Icon="@FlareIcons.Description" />
+                            <ChildContent>
+                                <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
+                                <FlareTreeItem Label="Startup.cs" Icon="@FlareIcons.Description" />
+                            </ChildContent>
                         </FlareTreeItem>
                         <FlareTreeItem Label="wwwroot" Icon="@FlareIcons.Folder" />
                         <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />

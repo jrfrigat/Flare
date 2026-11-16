@@ -17,6 +17,7 @@
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the item row is clicked. |
 | `Selected` | `bool` | `false` | Parameter |  | Whether this item is currently selected. |
 | `SelectedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the selected state changes. |
+| `TrailingContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the row after the label and before the drag handle, for per-row actions or a status indicator. The host owns click propagation for its controls: a click inside the slot bubbles to the row and selects or expands the item unless the control stops it with onclick:stopPropagation. The slot adds no tab order or accessible name of its own, so controls stay focusable and keep the labels the host gives them. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

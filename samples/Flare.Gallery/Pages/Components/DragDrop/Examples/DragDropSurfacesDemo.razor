@@ -23,10 +23,12 @@
                     @foreach (var node in _tree)
                     {
                         <FlareTreeItem Label="@node.Label" ItemData="node" Expanded="true">
-                            @foreach (var child in node.Children)
-                            {
-                                <FlareTreeItem Label="@child.Label" ItemData="child" />
-                            }
+                            <ChildContent>
+                                @foreach (var child in node.Children)
+                                {
+                                    <FlareTreeItem Label="@child.Label" ItemData="child" />
+                                }
+                            </ChildContent>
                         </FlareTreeItem>
                     }
                 </FlareTreeView>
