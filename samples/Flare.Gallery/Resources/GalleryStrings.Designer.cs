@@ -12009,6 +12009,78 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Right-click any row: the page owns one shared menu and opens it at the pointer. Escape closes it and returns focus to the row..
+        /// </summary>
+        public static string Tree_ContextMenuHint {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared context menu tree.
+        /// </summary>
+        public static string Tree_ContextMenuTree {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuTree", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No row right-clicked yet..
+        /// </summary>
+        public static string Tree_ContextMenuEmpty {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuEmpty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Context menu for {0}..
+        /// </summary>
+        public static string Tree_ContextMenuOpened {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuOpened", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {1} for {0}..
+        /// </summary>
+        public static string Tree_ContextMenuAction {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuAction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Rename.
+        /// </summary>
+        public static string Tree_ContextMenuRename {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuRename", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duplicate.
+        /// </summary>
+        public static string Tree_ContextMenuDuplicate {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuDuplicate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete.
+        /// </summary>
+        public static string Tree_ContextMenuDelete {
+            get {
+                return ResourceManager.GetString("Tree_ContextMenuDelete", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareTreeView with nested items, icons and multi-select..
         /// </summary>
         public static string Tree_Subtitle {

@@ -40,6 +40,16 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     public ValueTask RestoreFocusOutsideAsync(ElementReference container)
         => InvokeImmediateVoidAsync("restoreFocusOutside", container);
 
+    /// <inheritdoc />
+    public ValueTask RememberFocusAsync(string id) => InvokeImmediateVoidAsync("rememberFocus", id);
+
+    /// <inheritdoc />
+    public ValueTask RestoreRememberedFocusAsync(string id, bool ifUnclaimed = false)
+        => InvokeImmediateVoidAsync("restoreRememberedFocus", id, ifUnclaimed);
+
+    /// <inheritdoc />
+    public ValueTask ForgetRememberedFocusAsync(string id) => InvokeImmediateVoidAsync("forgetRememberedFocus", id);
+
     // Options go across as a JSON string written without reflection (AnchoredPanelOptionsJson), and null as null: the
     // script's defaults are the same as AnchoredPanelOptions'.
 

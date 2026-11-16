@@ -120,7 +120,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareMarkdown`](components/flare-components-flaremarkdown.md)
 - [`FlareMaskedField`](components/flare-components-flaremaskedfield.md)
 - [`FlareMediaQuery`](components/flare-components-flaremediaquery.md)
-- [`FlareMenu`](components/flare-components-flaremenu.md)
+- [`FlareMenu`](components/flare-components-flaremenu.md) — A dropdown menu: an activator slot opens a panel of FlareMenuItem entries with arrow-key navigation and submenus, and a host can also open it at an explicit pointer position for a context menu it owns itself.
 - [`FlareMenuBar`](components/flare-components-ide-flaremenubar.md) — Horizontal menu bar rendered below the ribbon. It coordinates the top-level FlareMenu instances it contains through one shared FlareMenuBarContext: only one menu is open at a time, another top-level menu switches on click or hover, and a single backdrop closes the open menu on an outside click. Typically contains File, Edit, View, etc.; composed from base Flare CSS classes - no custom tokens.
 - [`FlareMenuGroup`](components/flare-components-flaremenugroup.md)
 - [`FlareMenuItem`](components/flare-components-flaremenuitem.md)

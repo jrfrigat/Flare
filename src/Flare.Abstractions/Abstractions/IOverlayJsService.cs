@@ -58,6 +58,41 @@ public interface IOverlayJsService : IAsyncDisposable
     ValueTask RestoreFocusOutsideAsync(ElementReference container);
 
     /// <summary>
+    /// Remembers the element that currently holds the focus, under <paramref name="id"/>, so a surface
+    /// that is about to take the focus can give it back when it closes. A menu opened by code at a
+    /// pointer position has no activator element to return to. A later call for the same id replaces
+    /// the entry; when the document body holds the focus nothing is remembered and any earlier entry is
+    /// dropped.
+    /// <para>
+    /// The default does nothing, so an adapter that cannot keep the element keeps compiling; a surface
+    /// using it then has no previous element to restore.
+    /// </para>
+    /// </summary>
+    /// <param name="id">A stable id identifying the surface that is taking the focus.</param>
+    ValueTask RememberFocusAsync(string id) => ValueTask.CompletedTask;
+
+    /// <summary>
+    /// Returns focus to the element remembered under <paramref name="id"/> and drops the entry. The
+    /// element is left alone when it is no longer in the document. With <paramref name="ifUnclaimed"/>
+    /// set, focus also stays where it is when anything other than the document body claimed it - the
+    /// guarded restore an item's action needs, because that action may have opened a dialog or moved
+    /// focus into a field.
+    /// <para>
+    /// The default does nothing, so an adapter that cannot keep the element keeps compiling.
+    /// </para>
+    /// </summary>
+    /// <param name="id">The id passed to <see cref="RememberFocusAsync"/>.</param>
+    /// <param name="ifUnclaimed">Whether to restore only while nothing else claimed the focus.</param>
+    ValueTask RestoreRememberedFocusAsync(string id, bool ifUnclaimed = false) => ValueTask.CompletedTask;
+
+    /// <summary>
+    /// Drops the element remembered under <paramref name="id"/> without moving the focus - for a surface
+    /// that closes because something else takes over, or that goes away while open.
+    /// </summary>
+    /// <param name="id">The id passed to <see cref="RememberFocusAsync"/>.</param>
+    ValueTask ForgetRememberedFocusAsync(string id) => ValueTask.CompletedTask;
+
+    /// <summary>
     /// Positions <paramref name="panel"/> as a fixed popup anchored to <paramref name="anchor"/>,
     /// flipping to the opposite side when there is not enough room, re-positioning on scroll/resize,
     /// and promoting the panel to the browser's top layer so no ancestor can clip or overpaint it.

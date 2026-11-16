@@ -1963,6 +1963,30 @@
   <data name="Tree_RowContent" xml:space="preserve">
     <value>Статус и действия в строке</value>
   </data>
+  <data name="Tree_ContextMenuHint" xml:space="preserve">
+    <value>Щелкните правой кнопкой любую строку: меню принадлежит странице и открывается в точке указателя. Escape закрывает его и возвращает фокус в строку.</value>
+  </data>
+  <data name="Tree_ContextMenuTree" xml:space="preserve">
+    <value>Дерево с общим контекстным меню</value>
+  </data>
+  <data name="Tree_ContextMenuEmpty" xml:space="preserve">
+    <value>Щелчков правой кнопкой по строкам еще не было.</value>
+  </data>
+  <data name="Tree_ContextMenuOpened" xml:space="preserve">
+    <value>Контекстное меню для {0}.</value>
+  </data>
+  <data name="Tree_ContextMenuAction" xml:space="preserve">
+    <value>{1} для {0}.</value>
+  </data>
+  <data name="Tree_ContextMenuRename" xml:space="preserve">
+    <value>Переименовать</value>
+  </data>
+  <data name="Tree_ContextMenuDuplicate" xml:space="preserve">
+    <value>Дублировать</value>
+  </data>
+  <data name="Tree_ContextMenuDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
   <data name="Menu_Title" xml:space="preserve">
     <value>Меню</value>
   </data>

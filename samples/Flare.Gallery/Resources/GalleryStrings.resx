@@ -1963,6 +1963,30 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Tree_RowContent" xml:space="preserve">
     <value>Status and actions in a row</value>
   </data>
+  <data name="Tree_ContextMenuHint" xml:space="preserve">
+    <value>Right-click any row: the page owns one shared menu and opens it at the pointer. Escape closes it and returns focus to the row.</value>
+  </data>
+  <data name="Tree_ContextMenuTree" xml:space="preserve">
+    <value>Shared context menu tree</value>
+  </data>
+  <data name="Tree_ContextMenuEmpty" xml:space="preserve">
+    <value>No row right-clicked yet.</value>
+  </data>
+  <data name="Tree_ContextMenuOpened" xml:space="preserve">
+    <value>Context menu for {0}.</value>
+  </data>
+  <data name="Tree_ContextMenuAction" xml:space="preserve">
+    <value>{1} for {0}.</value>
+  </data>
+  <data name="Tree_ContextMenuRename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Tree_ContextMenuDuplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="Tree_ContextMenuDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="Menu_Title" xml:space="preserve">
     <value>Menu</value>
   </data>

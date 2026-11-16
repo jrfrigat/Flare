@@ -257,6 +257,36 @@ export function restoreFocusOutside(element) {
     if (active && element.contains(active)) active.blur();
 }
 
+// A surface opened by code - a context menu pinned to the pointer - has no activator to hand the focus
+// back to when it closes. The element that held focus just before the surface took it is remembered
+// under the surface's id and returned when it closes, provided it is still in the document. The focus
+// history above belongs to the traps, is capped and is not a contract a menu may rely on, so this keeps
+// its own entry.
+const _rememberedFocus = new Map();
+
+export function rememberFocus(id) {
+    const active = document.activeElement;
+    if (active && active !== document.body) _rememberedFocus.set(id, active);
+    else _rememberedFocus.delete(id);
+}
+
+// `ifUnclaimed` is the guarded restore an item's action needs: a dialog or a field that took the focus
+// after the action ran keeps it, and only the body - nobody claimed it - gets the remembered element.
+export function restoreRememberedFocus(id, ifUnclaimed = false) {
+    const target = _rememberedFocus.get(id);
+    _rememberedFocus.delete(id);
+    if (!target || !target.isConnected) return;
+    if (ifUnclaimed) {
+        const active = document.activeElement;
+        if (active && active !== document.body) return;
+    }
+    target.focus({ preventScroll: true });
+}
+
+export function forgetRememberedFocus(id) {
+    _rememberedFocus.delete(id);
+}
+
 // A floating panel has to be readable wherever its component was placed - in a Card, in a scrolling
 // grid, in a dialog. `position: fixed` is only half of that: it escapes an ancestor's `overflow`, and
 // it still loses to a later stacking context. The top layer is the other half - it paints above every

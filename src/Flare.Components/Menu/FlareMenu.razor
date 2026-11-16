@@ -153,6 +153,18 @@
         if (_open && !_wasOpen)
         {
             _wasOpen = true;
+            // A point-opened panel has no activator to return focus to: read the active element here,
+            // immediately before the panel takes focus - the tree row the user right-clicked, say.
+            if (_openedAtPoint)
+            {
+                try
+                {
+                    await Overlay.RememberFocusAsync(_panelId);
+                    _rememberedFocus = true;
+                }
+                catch (JSException) { }
+                catch (InvalidOperationException) { }
+            }
             // Focus the panel so its keydown handler receives arrow/Home/End/Tab keys. The active item is
             // only started off for a keyboard opening; after a click there is nothing to highlight yet, and
             // the first arrow key still lands on the first item because the index starts at -1.
@@ -169,20 +181,30 @@
             // document body and a keyboard user resumes from the top of the page instead of from the
             // button they pressed. The menu asks the wrapper for its first focusable element rather than
             // holding a reference of its own, because which element the activator is belongs to whoever
-            // filled the slot. A menu that closed because another took over skips this: the new menu
-            // owns the focus now. An item close restores only an unclaimed focus, so a dialog or a field
-            // the action opened keeps it.
+            // filled the slot. A point-opened menu instead returns focus to the element remembered before
+            // the panel took it, because its wrapper may be empty. A menu that closed because another took
+            // over skips this: the new menu owns the focus now. An item close restores only an unclaimed
+            // focus, so a dialog or a field the action opened keeps it.
             if (!_suppressActivatorFocus)
             {
                 try
                 {
-                    if (_restoreFocusIfUnclaimed)
+                    if (_rememberedFocus)
+                        await Overlay.RestoreRememberedFocusAsync(_panelId, _restoreFocusIfUnclaimed);
+                    else if (_restoreFocusIfUnclaimed)
                         await Overlay.FocusFirstIfUnclaimedAsync(_activatorEl);
                     else
                         await Overlay.FocusFirstAsync(_activatorEl);
                 }
                 catch (JSException) { }
             }
+            else if (_rememberedFocus)
+            {
+                // The replacement menu is taking the focus; only drop the entry this one remembered.
+                try { await Overlay.ForgetRememberedFocusAsync(_panelId); }
+                catch (JSException) { }
+            }
+            _rememberedFocus = false;
             _restoreFocusIfUnclaimed = false;
             _suppressActivatorFocus = false;
         }
@@ -220,6 +242,14 @@
         // A menu removed while it is the bar's open one must give that state up: the bar would otherwise
         // keep a backdrop pointing at a component that no longer exists.
         MenuBarContext?.NotifyClosed(this);
+        // A point-opened menu that goes away still holds the element it was going to restore; drop it
+        // without moving the focus, which belongs to whatever is replacing this menu.
+        if (_rememberedFocus)
+        {
+            try { await Overlay.ForgetRememberedFocusAsync(_panelId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
         if (_escapeLayerRegistered)
         {
             try { await Overlay.RemovePopupLayerAsync(_panelId); }
@@ -288,6 +318,7 @@
         if (_open || MenuBarContext is not { HasOpenMenu: true } bar) return;
         _openedByHover = true;
         _openedByKeyboard = false;
+        _openedAtPoint = false;
         _cursorX = null;
         _cursorY = null;
         _open = true;
@@ -320,6 +351,7 @@
         // Enter/Space on the activator raises a click with no click count; a real press reports at least one.
         _openedByKeyboard = e.Detail == 0;
         _openedByHover = false;
+        _openedAtPoint = false;
         _open = true;
         if (MenuBarContext is { } bar) await bar.NotifyOpenedAsync(this);
         await OnToggle.InvokeAsync(true);
@@ -334,6 +366,7 @@
         // as a click. A keyboard user's first arrow key still lands on the first item.
         _openedByKeyboard = false;
         _openedByHover = false;
+        _openedAtPoint = false;
         _open = true;
         if (MenuBarContext is { } bar) await bar.NotifyOpenedAsync(this);
         await OnToggle.InvokeAsync(true);
@@ -354,6 +387,7 @@
         _restoreFocusIfUnclaimed = itemActivated;
         _open = false;
         _openedByHover = false;
+        _openedAtPoint = false;
         MenuBarContext?.NotifyClosed(this);
         _items.Clear();
         _focusedItem = null;

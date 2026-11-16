@@ -2,6 +2,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import {
     trapFocus, releaseFocusTrap, registerDialogEscHandler, removeDialogEscHandler,
     pushPopupLayer, removePopupLayer, restoreFocusOutside, focusFirstIfUnclaimed,
+    rememberFocus, restoreRememberedFocus, forgetRememberedFocus,
 } from '../../src/Flare.Components/wwwroot/js/flare-overlay.js';
 
 const ids = [];
@@ -391,4 +392,78 @@ it('drops a layer disposed while its popup was still open', () => {
 
     expect(popup.invokeMethodAsync).not.toHaveBeenCalled();
     expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});
+
+// A menu opened by code at the pointer has no activator to hand the focus back to. It remembers the
+// element that held focus just before the panel took it, and restores that element on close.
+function focusable(text) {
+    const el = visible(document.createElement('button'));
+    el.textContent = text;
+    document.body.append(el);
+    el.focus();
+    return el;
+}
+
+it('returns focus to the element remembered before a point-opened surface', () => {
+    const row = focusable('row');
+    rememberFocus('menu-at-point');
+    const panel = visible(document.createElement('div'));
+    panel.tabIndex = -1;
+    document.body.append(panel);
+    panel.focus();
+
+    restoreRememberedFocus('menu-at-point');
+
+    expect(document.activeElement).toBe(row);
+});
+
+it('does not return focus to an element removed while the surface was open', () => {
+    const row = focusable('row');
+    rememberFocus('menu-removed');
+    const panel = visible(document.createElement('div'));
+    panel.tabIndex = -1;
+    document.body.append(panel);
+    panel.focus();
+    row.remove();
+
+    restoreRememberedFocus('menu-removed');
+
+    expect(document.activeElement).toBe(panel);
+});
+
+it('leaves focus claimed by an item action alone and restores an unclaimed one', () => {
+    const row = focusable('row');
+    rememberFocus('menu-claimed');
+    const field = focusable('field');
+
+    restoreRememberedFocus('menu-claimed', true);
+    expect(document.activeElement).toBe(field);
+
+    const row2 = focusable('row2');
+    rememberFocus('menu-unclaimed');
+    row2.blur();
+    expect(document.activeElement).toBe(document.body);
+
+    restoreRememberedFocus('menu-unclaimed', true);
+    expect(document.activeElement).toBe(row2);
+});
+
+it('forgets a remembered element without moving the focus', () => {
+    focusable('row');
+    rememberFocus('menu-forget');
+    const other = focusable('other');
+
+    forgetRememberedFocus('menu-forget');
+    restoreRememberedFocus('menu-forget');
+
+    expect(document.activeElement).toBe(other);
+});
+
+it('remembers nothing while the document body holds the focus', () => {
+    rememberFocus('menu-body');
+    const other = focusable('other');
+
+    restoreRememberedFocus('menu-body');
+
+    expect(document.activeElement).toBe(other);
 });

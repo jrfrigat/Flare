@@ -4640,7 +4640,7 @@ public static class ComponentApiRegistry
             @"FlareMenu",
             @"Flare.Components.FlareMenu",
             @"Flare.Components",
-            null,
+            @"A dropdown menu: an activator slot opens a panel of FlareMenuItem entries with arrow-key navigation and submenus, and a host can also open it at an explicit pointer position for a context menu it owns itself.",
             null,
             new ApiParameterInfo[]
             {
@@ -4666,6 +4666,12 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the menu programmatically (no-op if already open) and raises OnToggle.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OpenAtAsync", @"OpenAtAsync(double clientX, double clientY)", @"Task", null, @"Opens the menu with its panel pinned to a point in viewport coordinates - a pointer event's ClientX and ClientY - so a host that owns a shared context menu (the tree row's OnContextMenu, for example) can raise it without an activator of its own. No-op when the menu is already open. The point is honoured regardless of PositionAtCursor, which only governs the activator click. The panel otherwise opens like any other: the same placement engine flips and clamps it inside the viewport and raises it into the top layer, the backdrop and Escape close it, and it joins a FlareMenuBarContext bar when one is present. Raises OnToggle. The panel takes focus like any other open. When it closes - unless an item's action moved focus elsewhere - focus returns to the element that held it before the menu opened, as long as that element is still in the document.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"clientX", @"double", @"Horizontal pointer position in CSS pixels from the viewport's left edge; the same value as MouseEventArgs.ClientX."),
+                        new ApiMethodParameter(@"clientY", @"double", @"Vertical pointer position in CSS pixels from the viewport's top edge."),
+                    }),
             },
             new string[]
             {

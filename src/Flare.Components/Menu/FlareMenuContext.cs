@@ -7,7 +7,8 @@ namespace Flare.Components;
 /// cascade because it changes as focus moves, whereas these callbacks are constant for the menu's
 /// lifetime.
 /// </summary>
-/// <param name="Close">Closes the (sub)menu, restoring focus to its activator.</param>
+/// <param name="Close">Closes the (sub)menu, restoring focus to its activator - or, for a menu opened by
+/// code at a pointer position, to the element that held focus before the panel took it.</param>
 /// <param name="CloseFromItem">Closes the (sub)menu after one of its items ran its action; focus returns to
 /// the activator only if the action did not move it elsewhere.</param>
 /// <param name="Register">Registers a menu item so the parent can drive roving-tabindex focus.</param>

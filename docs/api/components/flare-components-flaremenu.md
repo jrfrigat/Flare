@@ -4,6 +4,8 @@
 
 `Flare.Components.FlareMenu`
 
+A dropdown menu: an activator slot opens a panel of FlareMenuItem entries with arrow-key navigation and submenus, and a host can also open it at an explicit pointer position for a context menu it owns itself.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
@@ -38,6 +40,16 @@ Returns: `Task`.
 
 Opens the menu programmatically (no-op if already open) and raises OnToggle.
 Returns: `Task`.
+
+### `OpenAtAsync(double clientX, double clientY)`
+
+Opens the menu with its panel pinned to a point in viewport coordinates - a pointer event's ClientX and ClientY - so a host that owns a shared context menu (the tree row's OnContextMenu, for example) can raise it without an activator of its own. No-op when the menu is already open. The point is honoured regardless of PositionAtCursor, which only governs the activator click. The panel otherwise opens like any other: the same placement engine flips and clamps it inside the viewport and raises it into the top layer, the backdrop and Escape close it, and it joins a FlareMenuBarContext bar when one is present. Raises OnToggle. The panel takes focus like any other open. When it closes - unless an item's action moved focus elsewhere - focus returns to the element that held it before the menu opened, as long as that element is still in the document.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `clientX` | `double` | Horizontal pointer position in CSS pixels from the viewport's left edge; the same value as MouseEventArgs.ClientX. |
+| `clientY` | `double` | Vertical pointer position in CSS pixels from the viewport's top edge. |
 
 
 ## Inheritance
