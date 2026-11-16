@@ -44,6 +44,11 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     /// Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour.</summary>
     [Parameter] public EventCallback<string?> OnActiveChanged { get; set; }
 
+    /// <summary>Host actions shown in the group header after the tab strip and before the collapse button -
+    /// for example pin, close or other region commands. Inside a <see cref="FlareIdeLayout"/> the group still
+    /// draws the region's collapse button, so the slot adds controls rather than replacing it.</summary>
+    [Parameter] public RenderFragment? ToolbarContent { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Ide.ToolPanelGroup.Root;
 
     private IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();

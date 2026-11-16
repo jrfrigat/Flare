@@ -15,6 +15,7 @@
   <data name="SheetTabs_Add" xml:space="preserve"><value>Добавить лист</value></data>
   <data name="ToolPanel_Expand" xml:space="preserve"><value>Развернуть</value></data>
   <data name="ToolPanel_Collapse" xml:space="preserve"><value>Свернуть</value></data>
+  <data name="ToolPanelGroup_Actions" xml:space="preserve"><value>Действия панели</value></data>
   <data name="ToolPanelGroup_Label" xml:space="preserve"><value>Панели инструментов</value></data>
   <data name="ToolPanelGroup_Untitled" xml:space="preserve"><value>Без названия</value></data>
   <data name="Dock_Center" xml:space="preserve"><value>Документы</value></data>

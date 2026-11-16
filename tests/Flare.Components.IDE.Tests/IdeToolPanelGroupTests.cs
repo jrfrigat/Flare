@@ -38,6 +38,23 @@ public class IdeToolPanelGroupTests : FlareTestContext
         builder.CloseComponent();
     };
 
+    private static RenderFragment Actions() => builder =>
+    {
+        builder.OpenElement(0, "button");
+        builder.AddAttribute(1, "type", "button");
+        builder.AddAttribute(2, "aria-label", "Pin panel");
+        builder.AddContent(3, "Pin");
+        builder.CloseElement();
+    };
+
+    private static RenderFragment GroupWithActions(RenderFragment panels) => builder =>
+    {
+        builder.OpenComponent<FlareToolPanelGroup>(0);
+        builder.AddAttribute(1, nameof(FlareToolPanelGroup.ChildContent), panels);
+        builder.AddAttribute(2, nameof(FlareToolPanelGroup.ToolbarContent), Actions());
+        builder.CloseComponent();
+    };
+
     private IRenderedComponent<FlareToolPanelGroup> RenderGroup(params Panel[] panels) =>
         Render<FlareToolPanelGroup>(p => p.Add(x => x.ChildContent, Panels(panels)));
 
@@ -45,6 +62,11 @@ public class IdeToolPanelGroupTests : FlareTestContext
         Render<FlareToolPanelGroup>(p => p
             .Add(x => x.ActiveKey, activeKey)
             .Add(x => x.ChildContent, Panels(panels)));
+
+    private IRenderedComponent<FlareToolPanelGroup> RenderWithActions(params Panel[] panels) =>
+        Render<FlareToolPanelGroup>(p => p
+            .Add(x => x.ChildContent, Panels(panels))
+            .Add(x => x.ToolbarContent, Actions()));
 
     private static string[] Selected(IRenderedComponent<FlareToolPanelGroup> cut) =>
         cut.FindAll("[role=tab]").Select(tab => tab.GetAttribute("aria-selected")!).ToArray();
@@ -181,6 +203,78 @@ public class IdeToolPanelGroupTests : FlareTestContext
         Assert.Equal("two", reportedKey);
         Assert.Equal("Two", reportedTitle);
         Assert.Equal(["false", "true"], Selected(cut));
+    }
+
+    [Fact]
+    public void Group_ToolbarActionsRenderAfterTheTabsAndBeforeTheCollapseButton()
+    {
+        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
+            GroupWithActions(Panels(new Panel("Explorer", "Files")))));
+
+        var header = cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Header}");
+        Assert.Equal(3, header.Children.Length);
+        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Tabs, header.Children[0].ClassName);
+        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Actions, header.Children[1].ClassName);
+        Assert.Equal("button", header.Children[2].LocalName);
+        Assert.Single(header.Children[1].QuerySelectorAll("button[aria-label='Pin panel']"));
+    }
+
+    [Fact]
+    public void Group_ToolbarHasALocalizedAccessibleName()
+    {
+        Assert.Equal("Panel actions", RenderWithActions(new Panel("Explorer", ""))
+            .Find($".{Css.Classes.Ide.ToolPanelGroup.Actions}").GetAttribute("aria-label"));
+
+        var previous = CultureInfo.CurrentUICulture;
+        try
+        {
+            CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
+
+            Assert.Equal("Действия панели", RenderWithActions(new Panel("Explorer", ""))
+                .Find($".{Css.Classes.Ide.ToolPanelGroup.Actions}").GetAttribute("aria-label"));
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previous;
+        }
+    }
+
+    [Fact]
+    public async Task Group_ToolbarKeepsTabSelectionAndKeyboardNavigation()
+    {
+        var cut = RenderWithActions(new("One", ""), new("Two", ""), new("Three", ""));
+
+        await cut.FindAll("[role=tab]")[1].ClickAsync(new());
+        Assert.Equal(["false", "true", "false"], Selected(cut));
+
+        await cut.InvokeAsync(() => cut.Instance.OnTabNavigation("End", rtl: false));
+        Assert.Equal(["false", "false", "true"], Selected(cut));
+    }
+
+    [Fact]
+    public async Task Layout_GroupToolbarKeepsTheCollapseButton()
+    {
+        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
+            GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")))));
+
+        await cut.InvokeAsync(() => cut.Find(
+            $".{Css.Classes.Ide.ToolPanelGroup.Header} > button").ClickAsync(new()));
+
+        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
+        Assert.Equal(["Explorer", "Properties"],
+            cut.FindAll($".{Css.Classes.Ide.Layout.RailTitle}").Select(title => title.TextContent));
+    }
+
+    [Fact]
+    public void Layout_TwoGroupsWithToolbarsKeepUniqueIds()
+    {
+        var cut = Render<FlareIdeLayout>(p => p
+            .Add(x => x.LeftToolPanel, GroupWithActions(Panels(new Panel("Explorer", ""))))
+            .Add(x => x.RightToolPanel, GroupWithActions(Panels(new Panel("Properties", "")))));
+
+        var ids = cut.FindAll("[id]").Select(element => element.Id).ToArray();
+        Assert.NotEmpty(ids);
+        Assert.Equal(ids.Length, ids.Distinct(StringComparer.Ordinal).Count());
     }
 
     [Fact]

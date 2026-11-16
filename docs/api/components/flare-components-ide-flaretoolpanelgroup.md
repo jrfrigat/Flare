@@ -15,6 +15,7 @@ Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Tool panels shown as tabs. Every child is a FlareToolPanel; its content stays mounted while another tab is active. |
 | `OnActiveChanged` | `EventCallback<string?>` | `` | Callback |  | Reports the title of the panel the user activated, for a status line or command state. Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour. |
 | `Position` | `ToolPanelPosition` | `ToolPanelPosition.Left` | Parameter |  | Region that hosts the group inside a FlareIdeLayout. The hosted panels use this position for rail labels, auto-hide and collapse instead of their own Position. |
+| `ToolbarContent` | `RenderFragment?` | `` | Parameter |  | Host actions shown in the group header after the tab strip and before the collapse button - for example pin, close or other region commands. Inside a FlareIdeLayout the group still draws the region's collapse button, so the slot adds controls rather than replacing it. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

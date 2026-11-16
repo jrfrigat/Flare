@@ -18,6 +18,13 @@
                 </button>
             }
         </div>
+        @if (ToolbarContent is not null)
+        {
+            <div class="@Css.Classes.Ide.ToolPanelGroup.Actions" role="toolbar"
+                 aria-label="@IdeText["ToolPanelGroup_Actions"].Value">
+                @ToolbarContent
+            </div>
+        }
         @if (Layout is not null)
         {
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"

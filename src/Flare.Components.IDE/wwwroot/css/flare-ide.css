@@ -684,6 +684,15 @@
     scrollbar-width: thin;
 }
 
+/* Host actions (pin, close, custom) sit at the end of the header and never shrink, so a narrow
+   region scrolls its tabs instead of pushing the actions out of view. */
+.flare-toolpanel-group__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+}
+
 .flare-toolpanel-group__tab {
     flex-shrink: 0;
     padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
