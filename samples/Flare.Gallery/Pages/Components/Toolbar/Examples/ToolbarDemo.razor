@@ -1,30 +1,40 @@
 @using Flare.Components.IDE
 
 @* FlareToolbar: a classic icon command bar (Visual Studio / Access). A single dense row of buttons
-   and small controls with in-row separators (FlareRibbonSeparator). Toggle Dense to tighten it. *@
+   and small controls with in-row separators (FlareRibbonSeparator), plus pinned trailing content
+   pushed to the end by a spacer. Toggle Dense to tighten it. *@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareSwitch @bind-Value="_dense" Label="Dense" />
 
     <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
         <FlareToolbar Dense="_dense">
-            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
-                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
-                <ChildContent>Start</ChildContent>
-            </FlareButton>
-            <FlareRibbonSeparator />
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
-                <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
-                <FlareIconView Value="@MaterialDesign3Icons.Regular.BugReport" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
-                <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
-            </FlareButton>
-            <FlareRibbonSeparator />
-            <FlareStack Width="180px">
-                <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" />
-            </FlareStack>
+            <ChildContent>
+                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
+                    <ChildContent>Start</ChildContent>
+                </FlareButton>
+                <FlareRibbonSeparator />
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" />
+                </FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.BugReport" />
+                </FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
+                </FlareButton>
+                <FlareRibbonSeparator />
+                <FlareStack Width="180px">
+                    <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" />
+                </FlareStack>
+            </ChildContent>
+            <TrailingContent>
+                <FlareSpacer />
+                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Language" Size="1.125rem" />
+                    <FlareText Typo="TypographyScale.LabelMedium">@GalleryStrings.Settings_Language</FlareText>
+                </FlareStack>
+            </TrailingContent>
         </FlareToolbar>
     </FlareCard>
 

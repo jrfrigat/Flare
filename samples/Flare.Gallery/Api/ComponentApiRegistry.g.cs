@@ -8527,6 +8527,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"GroupOrderChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Reports the updated sequence of all current group keys.", null, false, true, false, @"FlareToolbar"),
                 new ApiParameterInfo(@"Groups", @"IReadOnlyList<IdeToolbarGroup>?", null, @"Groups in their default order. Keys must be unique within the toolbar.", null, false, false, false, @"FlareToolbar"),
                 new ApiParameterInfo(@"Reorderable", @"bool", @"false", @"Enables group drag handles and accessible move actions.", null, false, false, false, @"FlareToolbar"),
+                new ApiParameterInfo(@"TrailingContent", @"RenderFragment?", null, @"Controls pinned after the groups, outside group reordering. The content shares the toolbar's flex row, so a spacer placed before it pushes it to the trailing edge.", null, false, false, false, @"FlareToolbar"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

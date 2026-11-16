@@ -48,6 +48,33 @@ public sealed class IdeWorkspaceInteractionTests : FlareTestContext
     }
 
     [Fact]
+    public void Toolbar_TrailingContentRendersAfterEveryGroupAndGetsNoHandle()
+    {
+        RenderFragment command = builder => builder.AddContent(0, "Command");
+        RenderFragment leading = builder => builder.AddMarkupContent(0, "<span class=\"leading-slot\">Fixed</span>");
+        RenderFragment trailing = builder => builder.AddMarkupContent(0, "<span class=\"trailing-slot\">Pinned</span>");
+        var cut = Render<FlareToolbar>(p => p
+            .Add(x => x.ChildContent, leading)
+            .Add(x => x.Groups, [new("a", "A", command), new("b", "B", command)])
+            .Add(x => x.TrailingContent, trailing)
+            .Add(x => x.Reorderable, true));
+
+        var children = cut.Find($".{Css.Classes.Ide.Toolbar.Root}").Children.ToArray();
+        var trailingSlot = children[^1];
+        var groups = children.Where(child => child.GetAttribute("role") == "group").ToArray();
+
+        Assert.Equal("leading-slot", children[0].ClassName);
+        Assert.Equal("trailing-slot", trailingSlot.ClassName);
+        Assert.Equal("Pinned", trailingSlot.TextContent);
+        Assert.Equal(2, groups.Length);
+        Assert.All(groups, group => Assert.True(Array.IndexOf(children, group) < Array.IndexOf(children, trailingSlot)));
+        Assert.Equal(groups.Length, cut.FindAll("[role=group]").Count);
+        Assert.Null(trailingSlot.GetAttribute("role"));
+        Assert.Empty(trailingSlot.QuerySelectorAll($".{Css.Classes.Ide.Toolbar.Handle}"));
+        Assert.Equal(groups.Length, cut.FindAll($".{Css.Classes.Ide.Toolbar.Handle}").Count);
+    }
+
+    [Fact]
     public void Docking_KeepsTheToolPanelAutoHideModeUntilADocumentOccupiesItsRegion()
     {
         var cut = Render<FlareIdeLayout>(p => p

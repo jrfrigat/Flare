@@ -31,11 +31,16 @@
             @group.Content
         </div>
     }
+    @TrailingContent
 </div>
 
 @code {
     /// <summary>Command buttons and controls with fixed positions.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Controls pinned after the groups, outside group reordering. The content shares the toolbar's
+    /// flex row, so a spacer placed before it pushes it to the trailing edge.</summary>
+    [Parameter] public RenderFragment? TrailingContent { get; set; }
 
     /// <summary>Tightens spacing and button size for a denser bar.</summary>
     [Parameter] public bool Dense { get; set; }

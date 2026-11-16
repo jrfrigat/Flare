@@ -15,17 +15,19 @@
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Debug</FlareButton>
         </FlareMenuBar>
         <FlareToolbar Dense="true">
-            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => _status = "Running...")">
-                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" Size="1rem" /></LeadingIcon>
-                <ChildContent>Start</ChildContent>
-            </FlareButton>
-            <FlareRibbonSeparator />
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save all">
-                <FlareIconView Value="@FlareIcons.Save" Size="1rem" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build">
-                <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" Size="1rem" />
-            </FlareButton>
+            <ChildContent>
+                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => _status = "Running...")">
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" Size="1rem" /></LeadingIcon>
+                    <ChildContent>Start</ChildContent>
+                </FlareButton>
+                <FlareRibbonSeparator />
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save all">
+                    <FlareIconView Value="@FlareIcons.Save" Size="1rem" />
+                </FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build">
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" Size="1rem" />
+                </FlareButton>
+            </ChildContent>
         </FlareToolbar>
     </MenuBar>
 
