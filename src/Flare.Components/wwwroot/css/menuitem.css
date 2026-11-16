@@ -94,10 +94,44 @@
     flex-shrink: 0;
 }
 
+/* A checkable item reserves a leading slot in BOTH states: the glyph is rendered only when checked,
+   while the slot itself always takes the icon's width, so the label does not move between checked
+   and unchecked. */
+.flare-menu-item__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 var(--flare-menu-item-check-size);
+    width: var(--flare-menu-item-check-size);
+}
+
+/* .flare-icon.<class> keeps 0,2,0 specificity so the menu size/color win over the base .flare-icon rule. */
+.flare-icon.flare-menu-item__check-icon {
+    font-size: var(--flare-menu-item-icon-size);
+    color: var(--flare-menu-item-check-color);
+    flex-shrink: 0;
+}
+
+/* Trailing keyboard-shortcut hint. The label is the flexible child, so the hint sits at the inline
+   end in both writing directions; margin-inline-start also holds it there when the label is empty. */
+.flare-menu-item__shortcut {
+    margin-inline-start: auto;
+    color: var(--flare-menu-item-shortcut-color);
+    font-family: var(--flare-menu-item-shortcut-font);
+    font-weight: var(--flare-menu-item-shortcut-weight);
+    font-size: var(--flare-menu-item-shortcut-size);
+    line-height: var(--flare-menu-item-shortcut-height);
+    letter-spacing: var(--flare-menu-item-shortcut-spacing);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 /* Above the state layer. The layer is an absolutely positioned ::before, so it paints over in-flow
    content; that went unnoticed while every layer was translucent, but a theme whose states are
    opaque fills would cover the item's own text. Same reasoning as the button's label. */
 .flare-menu-item__label,
+.flare-menu-item__check,
+.flare-menu-item__shortcut,
 .flare-icon.flare-menu-item__icon {
     position: relative;
 }

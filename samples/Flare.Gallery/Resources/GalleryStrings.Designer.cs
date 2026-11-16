@@ -6868,7 +6868,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Menu_Title", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shortcut hints &amp; checked items.
+        /// </summary>
+        public static string Menu_ShortcutsAndChecks {
+            get {
+                return ResourceManager.GetString("Menu_ShortcutsAndChecks", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basic.
         /// </summary>

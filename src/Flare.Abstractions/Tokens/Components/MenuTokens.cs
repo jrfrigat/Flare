@@ -91,4 +91,23 @@ public sealed record MenuTokens
     /// leaves this opaque and carries the change in its own stylesheet, since a foreground colour has no
     /// value meaning "leave this as painted".</summary>
     [CssVar(MenuPanel.ItemDisabledOpacity)] public string ItemDisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
+
+    /// <summary>Colour of the trailing keyboard-shortcut hint on an item.</summary>
+    [CssVar(MenuPanel.ItemShortcutColor)] public string ItemShortcutColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
+    /// <summary>Font family of the trailing keyboard-shortcut hint.</summary>
+    [CssVar(MenuPanel.ItemShortcutFont)] public string ItemShortcutFont { get; init; } = Var(Css.Tokens.Typography.BodySmall.Font);
+    /// <summary>Font weight of the trailing keyboard-shortcut hint.</summary>
+    [CssVar(MenuPanel.ItemShortcutWeight)] public string ItemShortcutWeight { get; init; } = Var(Css.Tokens.Typography.BodySmall.Weight);
+    /// <summary>Font size of the trailing keyboard-shortcut hint.</summary>
+    [CssVar(MenuPanel.ItemShortcutSize)] public string ItemShortcutSize { get; init; } = Var(Css.Tokens.Typography.BodySmall.Size);
+    /// <summary>Line height of the trailing keyboard-shortcut hint.</summary>
+    [CssVar(MenuPanel.ItemShortcutHeight)] public string ItemShortcutHeight { get; init; } = Var(Css.Tokens.Typography.BodySmall.Height);
+    /// <summary>Letter spacing of the trailing keyboard-shortcut hint.</summary>
+    [CssVar(MenuPanel.ItemShortcutSpacing)] public string ItemShortcutSpacing { get; init; } = Var(Css.Tokens.Typography.BodySmall.Spacing);
+
+    /// <summary>Width of the leading slot reserved on a checkable item. The slot is present whether the
+    /// item is checked or not, so its label starts at the same offset in both states.</summary>
+    [CssVar(MenuPanel.ItemCheckSize)] public string ItemCheckSize { get; init; } = Var(Css.Tokens.MenuPanel.ItemIconSize);
+    /// <summary>Colour of the leading check indicator on a checked item.</summary>
+    [CssVar(MenuPanel.ItemCheckColor)] public string ItemCheckColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 }

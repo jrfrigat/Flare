@@ -7,41 +7,71 @@
 {
     <a class="@BuildCssClass(_disabledClass)"
        id="@ItemId"
-       role="menuitem"
+       role="@_role"
        href="@_safeHref"
        target="@Target"
        rel="@_rel"
        tabindex="@_tabIndex"
        aria-disabled="@Disabled.ToString().ToLowerInvariant()"
+       aria-checked="@_ariaChecked"
+       aria-describedby="@_shortcutId"
        style="@Style"
        @ref="_itemEl"
        @onclick="HandleClick"
        @onclick:preventDefault="@Disabled"
        @attributes="AdditionalAttributes">
+        @if (Checked.HasValue)
+        {
+            <span class="@Css.Classes.Menu.ItemCheck" aria-hidden="true">
+                @if (Checked.Value)
+                {
+                    <FlareIconView Value="FlareIcons.Check" Class="@Css.Classes.Menu.ItemCheckIcon" />
+                }
+            </span>
+        }
         @if (Icon is not null)
         {
             <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
+        @if (!string.IsNullOrWhiteSpace(Shortcut))
+        {
+            <span class="@Css.Classes.Menu.ItemShortcut" id="@_shortcutId" aria-hidden="true">@Shortcut</span>
+        }
     </a>
 }
 else
 {
     <button class="@BuildCssClass(_disabledClass)"
             id="@ItemId"
-            role="menuitem"
+            role="@_role"
             type="button"
             disabled="@Disabled"
             tabindex="@_tabIndex"
+            aria-checked="@_ariaChecked"
+            aria-describedby="@_shortcutId"
             style="@Style"
             @ref="_itemEl"
             @onclick="HandleClick"
             @attributes="AdditionalAttributes">
+        @if (Checked.HasValue)
+        {
+            <span class="@Css.Classes.Menu.ItemCheck" aria-hidden="true">
+                @if (Checked.Value)
+                {
+                    <FlareIconView Value="FlareIcons.Check" Class="@Css.Classes.Menu.ItemCheckIcon" />
+                }
+            </span>
+        }
         @if (Icon is not null)
         {
             <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
+        @if (!string.IsNullOrWhiteSpace(Shortcut))
+        {
+            <span class="@Css.Classes.Menu.ItemShortcut" id="@_shortcutId" aria-hidden="true">@Shortcut</span>
+        }
     </button>
 }
 
@@ -68,6 +98,17 @@ else
     [Parameter] public bool AutoClose { get; set; } = true;
     /// <summary>Callback raised when the menu item is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
+    /// <summary>Keyboard shortcut shown at the trailing edge (e.g. <c>"Ctrl+S"</c>). The text is the
+    /// caller's display notation - the item neither executes nor parses it. Assistive technology receives
+    /// it as the item's description, so the shortcut is announced with the label.</summary>
+    [Parameter] public string? Shortcut { get; set; }
+    /// <summary>Makes the item checkable. <see langword="null"/> (the default) renders a plain
+    /// <c>menuitem</c>; <see langword="true"/> or <see langword="false"/> renders a
+    /// <c>menuitemcheckbox</c> whose <c>aria-checked</c> reports the value. The state is controlled:
+    /// clicking raises <see cref="OnClick"/> without flipping it, and the host updates the value. A
+    /// checkable item reserves a leading check slot in both states, so its label does not move when the
+    /// state changes.</summary>
+    [Parameter] public bool? Checked { get; set; }
 
     // Stable close/register callbacks travel as one context; the focused item stays separate (it changes).
     [Inject] private NavigationManager Navigation { get; set; } = default!;
@@ -80,6 +121,13 @@ else
 
     /// <summary>Stable element id, referenced by the menu's <c>aria-activedescendant</c> when focused.</summary>
     internal string ItemId { get; } = "flare-mi-" + Guid.NewGuid().ToString("N")[..8];
+
+    // A checkable item reports the checkbox role; a plain item keeps the menu item role it always had.
+    private string _role => Checked.HasValue ? "menuitemcheckbox" : "menuitem";
+    private string? _ariaChecked => Checked is { } value ? (value ? "true" : "false") : null;
+    // The visible shortcut text is hidden from the accessible name and referenced as the description,
+    // so the item reads as "Save, Ctrl+S" instead of repeating the shortcut inside its name.
+    private string? _shortcutId => string.IsNullOrWhiteSpace(Shortcut) ? null : ItemId + "-shortcut";
 
     private ElementReference _itemEl;
 

@@ -39,6 +39,12 @@ public static class Menu
     public const string ItemFocused = "flare-menu-item--focused";
     /// <summary>The <c>flare-menu-item__icon</c> CSS class.</summary>
     public const string ItemIcon = "flare-menu-item__icon";
+    /// <summary>The <c>flare-menu-item__shortcut</c> CSS class (trailing keyboard-shortcut hint).</summary>
+    public const string ItemShortcut = "flare-menu-item__shortcut";
+    /// <summary>The <c>flare-menu-item__check</c> CSS class (leading check slot on a checkable item).</summary>
+    public const string ItemCheck = "flare-menu-item__check";
+    /// <summary>The <c>flare-menu-item__check-icon</c> CSS class (the check glyph itself).</summary>
+    public const string ItemCheckIcon = "flare-menu-item__check-icon";
     /// <summary>The <c>flare-submenu</c> CSS class (submenu root; positioning anchor for the flyout panel).</summary>
     public const string Submenu = "flare-submenu";
     /// <summary>The <c>flare-submenu__activator</c> CSS class (the submenu trigger row).</summary>

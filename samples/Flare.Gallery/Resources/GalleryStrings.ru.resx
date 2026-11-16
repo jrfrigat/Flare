@@ -1960,6 +1960,9 @@
   <data name="Menu_Items" xml:space="preserve">
     <value>Элементы</value>
   </data>
+  <data name="Menu_ShortcutsAndChecks" xml:space="preserve">
+    <value>Горячие клавиши и отметки</value>
+  </data>
   <data name="MultiSelect_Title" xml:space="preserve">
     <value>Мультивыбор</value>
   </data>

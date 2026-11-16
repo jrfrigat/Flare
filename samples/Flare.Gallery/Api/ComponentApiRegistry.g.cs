@@ -4731,6 +4731,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AutoClose", @"bool", @"true", @"Whether clicking the item closes the menu. Set false to keep the menu open for a toggle-style or multi-action item. Default true.", null, false, false, false, @"FlareMenuItem"),
+                new ApiParameterInfo(@"Checked", @"bool?", null, @"Makes the item checkable. null (the default) renders a plain menuitem; true or false renders a menuitemcheckbox whose aria-checked reports the value. The state is controlled: clicking raises OnClick without flipping it, and the host updates the value. A checkable item reserves a leading check slot in both states, so its label does not move when the state changes.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Text or content rendered as the menu item label.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents the menu item from being clicked.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"URL the menu item navigates to. When set renders an anchor element instead of a button.", null, false, false, false, @"FlareMenuItem"),
@@ -4738,6 +4739,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"IconColor", @"FlareColor", null, @"Color of the leading Icon. Role -> shared color class; custom -> inline token. Default keeps the theme's neutral icon color.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"LeadingIconColor", @"FlareColor", null, @"Alias for IconColor; when set (non-default) it overrides IconColor.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the menu item is clicked.", null, false, true, false, @"FlareMenuItem"),
+                new ApiParameterInfo(@"Shortcut", @"string?", null, @"Keyboard shortcut shown at the trailing edge (e.g. ""Ctrl+S""). The text is the caller's display notation - the item neither executes nor parses it. Assistive technology receives it as the item's description, so the shortcut is announced with the label.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"HTML target for the anchor when Href is set (e.g. _blank to open an external link in a new tab). A _blank target automatically adds rel=""noopener noreferrer"". Ignored when the item renders as a button (no Href).", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

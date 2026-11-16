@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AutoClose` | `bool` | `true` | Parameter |  | Whether clicking the item closes the menu. Set false to keep the menu open for a toggle-style or multi-action item. Default true. |
+| `Checked` | `bool?` | `` | Parameter |  | Makes the item checkable. null (the default) renders a plain menuitem; true or false renders a menuitemcheckbox whose aria-checked reports the value. The state is controlled: clicking raises OnClick without flipping it, and the host updates the value. A checkable item reserves a leading check slot in both states, so its label does not move when the state changes. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Text or content rendered as the menu item label. |
 | `Disabled` | `bool` | `false` | Parameter |  | Prevents the menu item from being clicked. |
 | `Href` | `string?` | `` | Parameter |  | URL the menu item navigates to. When set renders an anchor element instead of a button. |
@@ -16,6 +17,7 @@
 | `IconColor` | `FlareColor` | `` | Parameter |  | Color of the leading Icon. Role -> shared color class; custom -> inline token. Default keeps the theme's neutral icon color. |
 | `LeadingIconColor` | `FlareColor` | `` | Parameter |  | Alias for IconColor; when set (non-default) it overrides IconColor. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the menu item is clicked. |
+| `Shortcut` | `string?` | `` | Parameter |  | Keyboard shortcut shown at the trailing edge (e.g. "Ctrl+S"). The text is the caller's display notation - the item neither executes nor parses it. Assistive technology receives it as the item's description, so the shortcut is announced with the label. |
 | `Target` | `string?` | `` | Parameter |  | HTML target for the anchor when Href is set (e.g. _blank to open an external link in a new tab). A _blank target automatically adds rel="noopener noreferrer". Ignored when the item renders as a button (no Href). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

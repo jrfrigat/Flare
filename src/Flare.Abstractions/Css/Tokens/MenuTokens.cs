@@ -77,4 +77,22 @@ public static class MenuPanel
     public const string ItemFocusRingOffset = "--flare-menu-item-focus-ring-offset";
     /// <summary>CSS custom-property name for the item disabled opacity token.</summary>
     public const string ItemDisabledOpacity = "--flare-menu-item-disabled-opacity";
+
+    /// <summary>CSS custom-property name for the shortcut hint color token.</summary>
+    public const string ItemShortcutColor = "--flare-menu-item-shortcut-color";
+    /// <summary>CSS custom-property name for the shortcut hint font token.</summary>
+    public const string ItemShortcutFont = "--flare-menu-item-shortcut-font";
+    /// <summary>CSS custom-property name for the shortcut hint weight token.</summary>
+    public const string ItemShortcutWeight = "--flare-menu-item-shortcut-weight";
+    /// <summary>CSS custom-property name for the shortcut hint size token.</summary>
+    public const string ItemShortcutSize = "--flare-menu-item-shortcut-size";
+    /// <summary>CSS custom-property name for the shortcut hint height token.</summary>
+    public const string ItemShortcutHeight = "--flare-menu-item-shortcut-height";
+    /// <summary>CSS custom-property name for the shortcut hint spacing token.</summary>
+    public const string ItemShortcutSpacing = "--flare-menu-item-shortcut-spacing";
+
+    /// <summary>CSS custom-property name for the width of a checkable item's leading check slot.</summary>
+    public const string ItemCheckSize = "--flare-menu-item-check-size";
+    /// <summary>CSS custom-property name for the check indicator color token.</summary>
+    public const string ItemCheckColor = "--flare-menu-item-check-color";
 }

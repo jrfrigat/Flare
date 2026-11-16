@@ -1,0 +1,41 @@
+@inject ISnackbarService Snackbar
+
+@* Command-menu states: a trailing shortcut hint on ordinary commands, and checkable items that keep
+   their labels aligned whether checked or not. Checkable items stay open so several can be toggled. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareMenu Anchor="MenuAnchor.BottomStart">
+        <Activator>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Edit ▾</FlareButton>
+        </Activator>
+        <ChildContent>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Undo" Shortcut="Ctrl+Z"
+                           OnClick="@(() => Snackbar.Show("Undo"))">Undo</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Redo" Shortcut="Ctrl+Shift+Z"
+                           OnClick="@(() => Snackbar.Show("Redo"))">Redo</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" Shortcut="Ctrl+X"
+                           OnClick="@(() => Snackbar.Show("Cut"))">Cut</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCopy" Shortcut="Ctrl+C"
+                           OnClick="@(() => Snackbar.Show("Copy"))">Copy</FlareMenuItem>
+        </ChildContent>
+    </FlareMenu>
+
+    <FlareMenu Anchor="MenuAnchor.BottomStart">
+        <Activator>
+            <FlareButton Variant="ButtonVariant.Filled" @attributes="context.Attributes">View ▾</FlareButton>
+        </Activator>
+        <ChildContent>
+            <FlareMenuItem Checked="_wordWrap" AutoClose="false" Shortcut="Alt+Z"
+                           OnClick="@(() => _wordWrap = !_wordWrap)">Word wrap</FlareMenuItem>
+            <FlareMenuItem Checked="_lineNumbers" AutoClose="false" Shortcut="Ctrl+L"
+                           OnClick="@(() => _lineNumbers = !_lineNumbers)">Line numbers</FlareMenuItem>
+            @* Always false: the check slot is still reserved, so this label lines up with the two above. *@
+            <FlareMenuItem Checked="false" AutoClose="false" Shortcut="F11"
+                           OnClick="@(() => Snackbar.Show("Full screen"))">Full screen</FlareMenuItem>
+        </ChildContent>
+    </FlareMenu>
+</FlareStack>
+
+@code {
+    private bool _wordWrap = true;
+    private bool _lineNumbers;
+}
