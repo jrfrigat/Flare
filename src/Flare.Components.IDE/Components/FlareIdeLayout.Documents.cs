@@ -247,6 +247,9 @@ public partial class FlareIdeLayout
         if (Docking && _ideModule is null && !_dragModuleRequested)
             await RegisterDragSourceAsync();
 
+        await SyncFlyoutDismissalAsync();
+        await FocusPendingRailAsync();
+
         if (_focusDocument is not { } key || !_documentHeaders.TryGetValue(key, out var header)) return;
         _focusDocument = null;
         try { await header.FocusAsync(preventScroll: false); }

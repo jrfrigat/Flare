@@ -56,6 +56,24 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 
 ## Methods
 
+### `OnFlyoutEscapeAsync(string position)`
+
+Called by the IDE's JS module when Escape is pressed while an auto-hide flyout is open. Collapses the region through LeftCollapsed or RightCollapsed and returns focus to the active tool's rail entry on the next render; a region the host already collapsed, and a docked region, are left alone.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `position` | `string` | The side whose flyout is open: Left or Right. |
+
+### `OnFlyoutOutsidePressAsync(string position)`
+
+Called by the IDE's JS module when a pointer press lands outside an open auto-hide flyout and outside its rail. Collapses the region through LeftCollapsed or RightCollapsed; a region the host already collapsed, and a docked region, are left alone.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `position` | `string` | The side whose flyout is open: Left or Right. |
+
 ### `ResizePanel(string position, int sizePx)`
 
 Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.

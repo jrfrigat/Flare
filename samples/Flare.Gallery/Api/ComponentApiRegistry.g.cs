@@ -4078,6 +4078,16 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"OnFlyoutEscapeAsync", @"OnFlyoutEscapeAsync(string position)", @"Task", null, @"Called by the IDE's JS module when Escape is pressed while an auto-hide flyout is open. Collapses the region through LeftCollapsed or RightCollapsed and returns focus to the active tool's rail entry on the next render; a region the host already collapsed, and a docked region, are left alone.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"position", @"string", @"The side whose flyout is open: Left or Right."),
+                    }),
+                new ApiMethodInfo(@"OnFlyoutOutsidePressAsync", @"OnFlyoutOutsidePressAsync(string position)", @"Task", null, @"Called by the IDE's JS module when a pointer press lands outside an open auto-hide flyout and outside its rail. Collapses the region through LeftCollapsed or RightCollapsed; a region the host already collapsed, and a docked region, are left alone.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"position", @"string", @"The side whose flyout is open: Left or Right."),
+                    }),
                 new ApiMethodInfo(@"ResizePanel", @"ResizePanel(string position, int sizePx)", @"void", null, @"Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.",
                     new ApiMethodParameter[]
                     {

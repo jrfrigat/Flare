@@ -195,6 +195,7 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     public override async ValueTask DisposeAsync()
     {
         _disposed = true;
+        await DisposeFlyoutAsync();
         if (_ideModule is not null)
         {
             try { await _ideModule.DisposeAsync(); }
@@ -265,6 +266,7 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
             return;
         var position = _panels[index].Position;
         _panels.RemoveAt(index);
+        _railEntries.Remove(panel);
         // A collapsing region unmounts its panels one by one; its rail keeps what they reported while
         // expanded. In per-tool mode the body stays mounted while collapsed, so the rail must follow
         // even then.

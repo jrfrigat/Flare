@@ -47,6 +47,7 @@
                     {
                         @RenderToolSlot(ToolPanelPosition.Left)
                         <div class="@Css.Classes.Ide.Layout.PanelBody" hidden="@LeftCollapsed"
+                             @ref="_panelBodies[ToolPanelPosition.Left]"
                              inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
                     }
                     else if (LeftCollapsed)
@@ -55,7 +56,9 @@
                     }
                     else
                     {
-                        <div class="@Css.Classes.Ide.Layout.PanelBody" inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
+                        <div class="@Css.Classes.Ide.Layout.PanelBody"
+                             @ref="_panelBodies[ToolPanelPosition.Left]"
+                             inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
                     }
                 </div>
             }
@@ -79,6 +82,7 @@
                     {
                         @RenderToolSlot(ToolPanelPosition.Right)
                         <div class="@Css.Classes.Ide.Layout.PanelBody" hidden="@RightCollapsed"
+                             @ref="_panelBodies[ToolPanelPosition.Right]"
                              inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
                     }
                     else if (RightCollapsed)
@@ -87,7 +91,9 @@
                     }
                     else
                     {
-                        <div class="@Css.Classes.Ide.Layout.PanelBody" inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
+                        <div class="@Css.Classes.Ide.Layout.PanelBody"
+                             @ref="_panelBodies[ToolPanelPosition.Right]"
+                             inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
                     }
                 </div>
             }
@@ -147,6 +153,7 @@
         OnSizeChanged="@(size => ResizePanel(position.ToString(), ParsePx(size, MinPanelSize)))" />;
 
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@RailClass(position)"
+            @ref="_regionRails[position]"
             @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value"
             @ondragover:preventDefault="@(DocumentRegionOf(position) is not null)"
             @ondragenter="@(() => RailDragEnter(position))"
@@ -182,6 +189,7 @@
 
     private RenderFragment RenderToolRail(ToolPanelPosition position) => @<div
         class="@ToolRailClass(position)" role="group"
+        @ref="_toolRails[position]"
         aria-label="@IdeText[$"Dock_{DocumentRegionOf(position)}"].Value"
         @ondragover:preventDefault="true"
         @ondragenter="@(() => RailDragEnter(position))"
@@ -190,6 +198,7 @@
         @foreach (var tool in RailToolsOf(position))
         {
             <button @key="tool.Panel" type="button" class="@ToolRailEntryClass(position, tool)"
+                    @ref="_railEntries[tool.Panel]"
                     aria-pressed="@(IsActiveRailTool(position, tool) ? "true" : "false")"
                     data-flare-tool-key="@tool.Key"
                     @onclick="@(() => SelectRailToolAsync(position, tool))">
