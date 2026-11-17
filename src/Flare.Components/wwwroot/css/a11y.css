@@ -26,8 +26,11 @@
 /* Universal safety net: a pointer (mouse/touch) focus must never draw a focus ring. Any element
    that still styles a ring on the broad :focus state (its own rule or a third-party one) has the
    outline cleared when the focus did not come from the keyboard. Keyboard focus uses :focus-visible,
-   which this selector never matches, so the ring above is preserved. Applies to every element. */
-:focus:not(:focus-visible) {
+   which this selector never matches, so the ring above is preserved. Applies to every element
+   except the field well: an input's deliberate :focus-within indicator (input.css) is its focus
+   treatment for the mouse too, and for FlareSelect/FlareMultiSelect that well IS the focused
+   trigger, so clearing it here would erase the field's own indicator. */
+:focus:not(:focus-visible):not(.flare-input__field) {
     outline: none;
 }
 
@@ -63,18 +66,20 @@ h6[tabindex="-1"]:focus {
     outline-offset: 2px;
 }
 
-/* Text-field controls indicate focus via their own active indicator (the field's bottom
-   border on :focus-within). Suppress the generic focus-ring outline so a
-   click/focus doesn't draw a full ring around the field. Must come after the rules above so
-   it wins at equal specificity (and beats the global :focus-visible). */
+/* Text-field controls indicate focus with the field's own indicator: the box-shadow
+   --flare-input-focus-ring and/or the outline --flare-input-focus-outline on
+   .flare-input__field:focus-within (input.css). The inner controls must not draw the generic ring
+   a second time inside the field. Must come after the rules above so it wins at equal specificity
+   (and beats the global :focus-visible). */
 /* The inner-input fields all render .flare-input__control (covers FlareField/Numeric/Masked/
-   TextArea/Combobox/TagField/Date/DateTime/Time pickers); the combobox triggers (Select/MultiSelect)
-   carry their own focusable control element, and their in-field search input (.flare-select__search)
-   is a nested text input whose ring is already shown by the surrounding field's :has(:focus-visible)
-   border -- so it must be suppressed too, otherwise it draws a second ring inside the field. */
+   TextArea/Combobox/TagField/Date/DateTime/Time pickers); the combobox's in-field search input
+   (.flare-select__search) is a nested text input whose indicator is already shown by the
+   surrounding field. Both stay suppressed, otherwise they draw a second ring inside the field. */
+/* The Select/MultiSelect trigger is NOT in this list: it carries .flare-input__field and
+   .flare-select__control/.flare-multiselect__control on the same element, so the field's
+   :focus-within indicator IS its focus ring - suppressing it here would hide the theme's outline
+   for keyboard focus. */
 .flare-input__control:focus-visible,
-.flare-select__control:focus-visible,
-.flare-multiselect__control:focus-visible,
 .flare-select__search:focus-visible {
     outline: none;
 }

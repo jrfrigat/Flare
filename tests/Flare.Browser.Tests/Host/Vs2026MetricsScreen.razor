@@ -6,6 +6,8 @@
     <main id="metrics">
         <FlareField id="metric-field" TValue="string" AriaLabel="Search field" />
         <FlareSelect id="metric-combo" TValue="string" Label="Combo" Items="@(new[] { "One", "Two" })" />
+        <FlareMultiSelect id="metric-multiselect" TValue="string" Label="Multi combo" Items="@(new[] { "One", "Two" })" />
+        <FlareSelect id="metric-search-combo" TValue="string" Label="Searchable combo" Searchable="true" Items="@(new[] { "One", "Two" })" />
         <FlareButton id="metric-command" Size="ButtonSize.Xs" AriaLabel="Save">
             <LeadingIcon><FlareIconView Value="@FlareIcons.Save" /></LeadingIcon>
         </FlareButton>
