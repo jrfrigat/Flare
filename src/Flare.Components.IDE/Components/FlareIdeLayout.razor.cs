@@ -74,8 +74,8 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     /// </summary>
     [Parameter] public bool BottomPinned { get; set; } = true;
 
-    /// <summary>Reports the new bottom pin state when the built-in pin control, or a host command
-    /// through the layout, changes it. Bind it to <see cref="BottomPinned"/>.</summary>
+    /// <summary>Reports the new bottom pin state when the built-in pin control changes it. Bind it to
+    /// <see cref="BottomPinned"/> to persist the state.</summary>
     [Parameter] public EventCallback<bool> BottomPinnedChanged { get; set; }
 
     /// <summary>Whether the expanded bottom region draws the built-in tool-window header above its

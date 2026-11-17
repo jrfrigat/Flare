@@ -122,7 +122,7 @@
         @if (BottomPanel is not null)
         {
             <div class="@PanelClass(ToolPanelPosition.Bottom, Css.Classes.Ide.Layout.Bottom)">
-                @if (BottomCollapsed || IsFloating(ToolPanelPosition.Bottom))
+                @if (ShowsRail(ToolPanelPosition.Bottom))
                 {
                     @RenderRail(ToolPanelPosition.Bottom)
                 }

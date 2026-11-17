@@ -38,7 +38,12 @@ public partial class FlareIdeLayout
                 {
                     if (!_panelBodies.TryGetValue(position, out var body) || body.Id is null)
                         continue;
-                    if (!_toolRails.TryGetValue(position, out var rail) || rail.Id is null)
+                    if (!_toolRails.TryGetValue(position, out var rail))
+                        rail = default;
+                    // Only the bottom renders its region rail while floating; a side keeps the
+                    // historical per-tool lookup so a stale rail reference never breaks the
+                    // registration after a collapse/expand cycle.
+                    if (rail.Id is null && position == ToolPanelPosition.Bottom)
                         _regionRails.TryGetValue(position, out rail);
                     var railId = rail.Id;
                     if (_flyoutSynced.TryGetValue(position, out var sent) &&
