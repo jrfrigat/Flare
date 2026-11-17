@@ -1089,6 +1089,127 @@
     background: var(--flare-ide-toolbar-group-surface, transparent);
 }
 
+/* Editor breadcrumb/toolbar row: the 22px chrome strip under the document tabs. The host fills the
+   leading slot with FlareEditorBreadcrumbSegment items and the trailing slot with its commands;
+   every colour and metric is a public hook so a theme can restyle the row. */
+.flare-editor-breadcrumb-bar {
+    display: flex;
+    align-items: stretch;
+    box-sizing: border-box;
+    min-block-size: var(--flare-ide-breadcrumb-bar-height, 1.375rem);
+    min-inline-size: 0;
+    border-block: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-breadcrumb-edge-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
+    background: var(--flare-ide-breadcrumb-surface, var(--flare-ide-surface, var(--flare-color-surface)));
+    color: var(--flare-ide-breadcrumb-color, var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant)));
+    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-ide-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-ide-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
+}
+
+.flare-editor-breadcrumb-bar__breadcrumb {
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+    min-inline-size: 0;
+    padding-inline: var(--flare-ide-breadcrumb-bar-padding, var(--flare-ide-spacing-2, var(--flare-spacing-2)));
+    overflow: hidden;
+}
+
+/* The action area is its own surface, so the host's commands read as a distinct block at the end of
+   the row. The row grows if a command is taller than the measured strip rather than clipping it. */
+.flare-editor-breadcrumb-bar__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--flare-ide-breadcrumb-actions-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
+    padding-inline: var(--flare-ide-breadcrumb-actions-padding, var(--flare-ide-spacing-2, var(--flare-spacing-2)));
+    background: var(--flare-ide-breadcrumb-actions-surface, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
+}
+
+/* A text command in the action area is chrome, not an accent action. A bare action icon takes the
+   row's icon size instead of the generic title-large default; icons inside a host button keep the
+   button's own sizing. */
+.flare-editor-breadcrumb-bar__actions .flare-btn--text {
+    color: var(--flare-ide-breadcrumb-color, var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant)));
+}
+
+.flare-editor-breadcrumb-bar__actions > .flare-icon {
+    font-size: var(--flare-ide-breadcrumb-icon-size, 1rem);
+}
+
+.flare-editor-breadcrumb-bar__segment {
+    display: flex;
+    flex-shrink: 0;
+    align-items: stretch;
+    min-inline-size: 0;
+    background: transparent;
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+}
+
+/* The measured 1px separator sits between neighbouring segments, not before the first one. */
+.flare-editor-breadcrumb-bar__segment + .flare-editor-breadcrumb-bar__segment {
+    border-inline-start: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-breadcrumb-separator-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
+}
+
+.flare-editor-breadcrumb-bar__segment:hover {
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
+}
+
+.flare-editor-breadcrumb-bar__segment--active,
+.flare-editor-breadcrumb-bar__segment--active:hover {
+    background: var(--flare-ide-breadcrumb-active-surface, var(--flare-ide-editor-bg, var(--flare-ide-surface, var(--flare-color-surface))));
+    color: var(--flare-ide-breadcrumb-active-color, var(--flare-color-on-surface));
+}
+
+/* FlareMenu wraps its activator; the wrappers have to stretch so the segment button and the active
+   fill take the full row height. */
+.flare-editor-breadcrumb-bar__segment > .flare-menu,
+.flare-editor-breadcrumb-bar__segment > .flare-menu > .flare-menu__activator {
+    display: flex;
+    align-items: stretch;
+    min-inline-size: 0;
+}
+
+.flare-editor-breadcrumb-bar__segment-button {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-ide-breadcrumb-segment-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
+    min-inline-size: 0;
+    padding: 0 var(--flare-ide-breadcrumb-segment-padding, var(--flare-ide-spacing-3, var(--flare-spacing-3)));
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    white-space: nowrap;
+    cursor: default;
+}
+
+button.flare-editor-breadcrumb-bar__segment-button {
+    cursor: pointer;
+}
+
+.flare-editor-breadcrumb-bar__segment-icon {
+    flex-shrink: 0;
+    inline-size: var(--flare-ide-breadcrumb-icon-size, 1rem);
+    block-size: var(--flare-ide-breadcrumb-icon-size, 1rem);
+}
+
+.flare-editor-breadcrumb-bar__segment-label {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flare-editor-breadcrumb-bar__segment-chevron {
+    flex-shrink: 0;
+    inline-size: var(--flare-ide-breadcrumb-chevron-size, 0.75rem);
+    block-size: var(--flare-ide-breadcrumb-chevron-size, 0.75rem);
+    opacity: 0.8;
+}
+
 .flare-backstage {
     position: absolute;
     inset: 0;

@@ -1843,6 +1843,8 @@ public static class ComponentApiRegistry
                 @"FlareDraggable",
                 @"FlareDrawer",
                 @"FlareDropZone",
+                @"FlareEditorBreadcrumbBar",
+                @"FlareEditorBreadcrumbSegment",
                 @"FlareEmptyState",
                 @"FlareField",
                 @"FlareFieldChrome",
@@ -3044,6 +3046,59 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Group", @"string?", null, @"Which drags this zone takes part in. Defaults to the enclosing context's group.", null, false, false, false, @"FlareDropZone"),
                 new ApiParameterInfo(@"Placement", @"DropPlacement", @"DropPlacement.Into", @"What the zone accepts, and therefore what a drop into it resolves to.", null, false, false, false, @"FlareDropZone"),
                 new ApiParameterInfo(@"Target", @"string", @"""""", @"Identifies this zone in OnDrop. A column id, a folder key, a list name - whatever the caller needs back to perform the move.", null, false, false, false, @"FlareDropZone"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareEditorBreadcrumbBar"] = new ApiComponentInfo(
+            @"FlareEditorBreadcrumbBar",
+            @"Flare.Components.IDE.FlareEditorBreadcrumbBar",
+            @"Flare.Components.IDE",
+            @"The editor breadcrumb/toolbar row shown under the document tabs: a themed 22px strip with a leading breadcrumb slot and a trailing action area. The host supplies the segments and commands; the row owns only the chrome. Use FlareEditorBreadcrumbSegment items for the breadcrumb path, and any Flare controls for the actions.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ActionsLabel", @"string?", null, @"Accessible name of the trailing action area. Null uses the package's localized ""Editor actions"" text.", null, false, false, false, @"FlareEditorBreadcrumbBar"),
+                new ApiParameterInfo(@"BreadcrumbContent", @"RenderFragment?", null, @"Leading content of the row - typically one or more FlareEditorBreadcrumbSegment items. The host supplies the path; the row adds no items of its own.", null, false, false, false, @"FlareEditorBreadcrumbBar"),
+                new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Trailing action area of the row - the host's editor commands, an error count or a split/layout control. Rendered in a labelled toolbar; the row adds no commands.", null, false, false, false, @"FlareEditorBreadcrumbBar"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareEditorBreadcrumbSegment"] = new ApiComponentInfo(
+            @"FlareEditorBreadcrumbSegment",
+            @"Flare.Components.IDE.FlareEditorBreadcrumbSegment",
+            @"Flare.Components.IDE",
+            @"One segment of a FlareEditorBreadcrumbBar: an optional 16px icon, a label and, when MenuContent is set, a chevron and a dropdown fed by the host. The segment never decides what the menu contains; a namespace, a type and its members are host data.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Active", @"bool", @"false", @"Whether this is the active (current) segment. The active segment takes the editor surface and the full foreground colour instead of the muted row colour.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the segment's button and dropdown. Null uses Text; set it when the visible label is absent (an icon-only segment) or too terse.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
+                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Leading icon of the segment, rendered at the row's icon size (16px by default).", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
+                new ApiParameterInfo(@"MenuContent", @"RenderFragment?", null, @"Dropdown content of the segment, typically FlareMenuItem items the host builds for its namespace/type path. Null renders a static icon-and-text segment with no menu and no chevron.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
+                new ApiParameterInfo(@"Text", @"string?", null, @"The visible segment label, also the dropdown's accessible name when AriaLabel is unset.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

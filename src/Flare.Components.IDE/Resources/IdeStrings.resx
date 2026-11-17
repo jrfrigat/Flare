@@ -20,6 +20,7 @@
   <data name="ToolPanelGroup_Untitled" xml:space="preserve"><value>Untitled</value></data>
   <data name="BottomPanel_Actions" xml:space="preserve"><value>Bottom panel actions</value></data>
   <data name="BottomPanel_Pin" xml:space="preserve"><value>Pin panel</value></data>
+  <data name="EditorBar_Actions" xml:space="preserve"><value>Editor actions</value></data>
   <data name="Dock_Center" xml:space="preserve"><value>Documents</value></data>
   <data name="Dock_Left" xml:space="preserve"><value>Left tools</value></data>
   <data name="Dock_Right" xml:space="preserve"><value>Right tools</value></data>

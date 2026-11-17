@@ -639,6 +639,7 @@ internal class VisualStudioTokens
         [VisualStudioCssVars.ChromeTabActive] = "var(--flare-color-surface)",
         [VisualStudioCssVars.ChromeEditor] = "var(--flare-color-surface)",
         [VisualStudioCssVars.ChromeBreadcrumb] = "var(--flare-color-surface-container-low)",
+        [VisualStudioCssVars.ChromeBreadcrumbEdge] = "var(--flare-color-outline-variant)",
         [VisualStudioCssVars.ChromeToolWindow] = "var(--flare-color-surface)",
         [VisualStudioCssVars.ChromeToolTab] = "var(--flare-color-surface-container)",
         [VisualStudioCssVars.ChromeField] = "var(--flare-color-surface)",
@@ -722,6 +723,25 @@ internal class VisualStudioTokens
         [IdeSheetTabsPadding] = "0 0.4375rem 0.25rem",
         [IdeSheetTabsUnderlineHeight] = "3px",
 
+        // Editor breadcrumb/toolbar row - the measured 22px #2B2B2B strip under the document tabs,
+        // edged in #2E2E2E. The trailing action area is its own #2E2E2E block, the current segment
+        // takes the editor surface, and neighbouring segments are separated by the chrome divider.
+        [IdeBreadcrumbSurface] = "var(--flare-vs-chrome-breadcrumb)",
+        [IdeBreadcrumbColor] = "var(--flare-vs-chrome-text-secondary)",
+        [IdeBreadcrumbEdgeColor] = "var(--flare-vs-chrome-breadcrumb-edge)",
+        [IdeBreadcrumbSeparatorColor] = "var(--flare-vs-chrome-divider)",
+        [IdeBreadcrumbActiveSurface] = "var(--flare-vs-chrome-editor)",
+        [IdeBreadcrumbActiveColor] = "var(--flare-vs-chrome-text)",
+        [IdeBreadcrumbActionsSurface] = "var(--flare-vs-chrome-breadcrumb-edge)",
+        [IdeBreadcrumbBarHeight] = "1.375rem",
+        [IdeBreadcrumbBarPadding] = "0.5rem",
+        [IdeBreadcrumbSegmentPadding] = "0.5rem",
+        [IdeBreadcrumbSegmentGap] = "0.25rem",
+        [IdeBreadcrumbIconSize] = "1rem",
+        [IdeBreadcrumbChevronSize] = "0.75rem",
+        [IdeBreadcrumbActionsPadding] = "0.5rem",
+        [IdeBreadcrumbActionsGap] = "0.25rem",
+
         // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
         // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
         [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
@@ -777,6 +797,21 @@ internal class VisualStudioTokens
     internal const string IdeSheetTabsGap = "--flare-ide-sheet-tabs-gap";
     internal const string IdeSheetTabsPadding = "--flare-ide-sheet-tabs-padding";
     internal const string IdeSheetTabsUnderlineHeight = "--flare-ide-sheet-tabs-underline-height";
+    internal const string IdeBreadcrumbSurface = "--flare-ide-breadcrumb-surface";
+    internal const string IdeBreadcrumbColor = "--flare-ide-breadcrumb-color";
+    internal const string IdeBreadcrumbEdgeColor = "--flare-ide-breadcrumb-edge-color";
+    internal const string IdeBreadcrumbSeparatorColor = "--flare-ide-breadcrumb-separator-color";
+    internal const string IdeBreadcrumbActiveSurface = "--flare-ide-breadcrumb-active-surface";
+    internal const string IdeBreadcrumbActiveColor = "--flare-ide-breadcrumb-active-color";
+    internal const string IdeBreadcrumbActionsSurface = "--flare-ide-breadcrumb-actions-surface";
+    internal const string IdeBreadcrumbBarHeight = "--flare-ide-breadcrumb-bar-height";
+    internal const string IdeBreadcrumbBarPadding = "--flare-ide-breadcrumb-bar-padding";
+    internal const string IdeBreadcrumbSegmentPadding = "--flare-ide-breadcrumb-segment-padding";
+    internal const string IdeBreadcrumbSegmentGap = "--flare-ide-breadcrumb-segment-gap";
+    internal const string IdeBreadcrumbIconSize = "--flare-ide-breadcrumb-icon-size";
+    internal const string IdeBreadcrumbChevronSize = "--flare-ide-breadcrumb-chevron-size";
+    internal const string IdeBreadcrumbActionsPadding = "--flare-ide-breadcrumb-actions-padding";
+    internal const string IdeBreadcrumbActionsGap = "--flare-ide-breadcrumb-actions-gap";
     internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
     internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
     internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";
@@ -984,6 +1019,7 @@ internal class VisualStudioTokens
             [VisualStudioCssVars.ChromeTabActive] = "#282828",
             [VisualStudioCssVars.ChromeEditor] = "#1E1E1E",
             [VisualStudioCssVars.ChromeBreadcrumb] = "#2B2B2B",
+            [VisualStudioCssVars.ChromeBreadcrumbEdge] = "#2E2E2E",
             [VisualStudioCssVars.ChromeToolWindow] = "#282828",
             [VisualStudioCssVars.ChromeToolTab] = "#282828",
             [VisualStudioCssVars.ChromeField] = "#353535",

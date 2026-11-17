@@ -67,6 +67,7 @@ IDE-семейство Flare существует именно для прило
 | `--flare-vs-chrome-tab-active` | Активная вкладка документа |
 | `--flare-vs-chrome-editor` | Редактор |
 | `--flare-vs-chrome-breadcrumb` | Полоса хлебных крошек |
+| `--flare-vs-chrome-breadcrumb-edge` | Кромки хлебных крошек и область действий |
 | `--flare-vs-chrome-tool-window` | Окно инструментов |
 | `--flare-vs-chrome-tool-tab` | Полоса вкладок и заголовок инструмента |
 | `--flare-vs-chrome-field` | Поле поиска инструмента и поле ввода |

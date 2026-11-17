@@ -1,0 +1,35 @@
+@using Flare.Components.IDE
+
+@* The editor breadcrumb/toolbar row: Flare supplies the 22px chrome strip, the host supplies the
+   segments and the trailing commands. Each segment with menu content is a real dropdown. *@
+<FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None" Overflow="hidden">
+    <FlareEditorBreadcrumbBar>
+        <BreadcrumbContent>
+            <FlareEditorBreadcrumbSegment Text="src" Icon="@FlareIcons.Folder">
+                <MenuContent>
+                    <FlareMenuItem>src</FlareMenuItem>
+                    <FlareMenuItem>wwwroot</FlareMenuItem>
+                </MenuContent>
+            </FlareEditorBreadcrumbSegment>
+            <FlareEditorBreadcrumbSegment Text="Flare.Components.IDE" Icon="@FlareIcons.Folder">
+                <MenuContent>
+                    <FlareMenuItem>Flare.Components.IDE</FlareMenuItem>
+                </MenuContent>
+            </FlareEditorBreadcrumbSegment>
+            <FlareEditorBreadcrumbSegment Text="FlareEditorBreadcrumbBar.razor"
+                                          Icon="@FlareIcons.Description" Active="true">
+                <MenuContent>
+                    <FlareMenuItem>FlareEditorBreadcrumbBar.razor</FlareMenuItem>
+                </MenuContent>
+            </FlareEditorBreadcrumbSegment>
+        </BreadcrumbContent>
+        <ToolbarContent>
+            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                <FlareIconView Value="@FlareIcons.Error" Color="FlareColor.Error" Size="1rem" />
+                <FlareText Typo="TypographyScale.BodySmall">2</FlareText>
+            </FlareStack>
+            <FlareIconView Value="@FlareIcons.ViewColumn" Size="1rem" />
+            <FlareIconView Value="@FlareIcons.GridOn" Size="1rem" />
+        </ToolbarContent>
+    </FlareEditorBreadcrumbBar>
+</FlareCard>

@@ -1,0 +1,17 @@
+@namespace Flare.Components.IDE
+@inherits FlareLocalizedComponentBase
+
+@* The editor breadcrumb/toolbar row under the document tabs. The host fills the leading slot with
+   FlareEditorBreadcrumbSegment items and the trailing slot with its own editor commands. *@
+<div class="@Css.Classes.Ide.EditorBreadcrumbBar.Root" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.EditorBreadcrumbBar.Breadcrumb">
+        @BreadcrumbContent
+    </div>
+    @if (ToolbarContent is not null)
+    {
+        <div class="@Css.Classes.Ide.EditorBreadcrumbBar.Actions" role="toolbar"
+             aria-label="@(ActionsLabel ?? IdeText["EditorBar_Actions"].Value)">
+            @ToolbarContent
+        </div>
+    }
+</div>

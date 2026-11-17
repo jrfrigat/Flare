@@ -192,6 +192,61 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task EditorBreadcrumb_IsTheMeasuredRowWithDropdownSegments()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var root = page.Locator($"#metric-breadcrumb .{Css.Classes.Ide.EditorBreadcrumbBar.Root}");
+        await root.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-breadcrumb .flare-editor-breadcrumb-bar'))
+                    .backgroundColor === 'rgb(43, 43, 43)'
+            """);
+
+        // The measured 22px #2B2B2B row, edged with 1px #2E2E2E lines.
+        Assert.Equal(22, await root.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        await Expect(root).ToHaveCSSAsync("background-color", "rgb(43, 43, 43)");
+        await Expect(root).ToHaveCSSAsync("border-top-width", "1px");
+        await Expect(root).ToHaveCSSAsync("border-bottom-width", "1px");
+        await Expect(root).ToHaveCSSAsync("border-top-color", "rgb(46, 46, 46)");
+        await Expect(root).ToHaveCSSAsync("border-bottom-color", "rgb(46, 46, 46)");
+
+        var segments = root.Locator($".{Css.Classes.Ide.EditorBreadcrumbBar.Segment}");
+        await Expect(segments).ToHaveCountAsync(2);
+        var first = segments.Nth(0);
+        var second = segments.Nth(1);
+        var firstButton = first.Locator($".{Css.Classes.Ide.EditorBreadcrumbBar.SegmentButton}");
+        await Expect(firstButton).ToHaveCSSAsync("font-size", "12px");
+        await Expect(firstButton).ToHaveCSSAsync("color", "rgb(204, 204, 204)");
+        await Expect(first.Locator($".{Css.Classes.Ide.EditorBreadcrumbBar.SegmentIcon}"))
+            .ToHaveCSSAsync("width", "16px");
+        await Expect(first.Locator($".{Css.Classes.Ide.EditorBreadcrumbBar.SegmentChevron}"))
+            .ToHaveCSSAsync("width", "12px");
+
+        // A 1px divider separates neighbouring segments.
+        await Expect(second).ToHaveCSSAsync("border-left-width", "1px");
+        await Expect(second).ToHaveCSSAsync("border-left-color", "rgb(61, 61, 61)");
+
+        // The active segment takes the editor background and the full foreground.
+        await Expect(second).ToHaveCSSAsync("background-color", "rgb(30, 30, 30)");
+        await Expect(second.Locator($".{Css.Classes.Ide.EditorBreadcrumbBar.SegmentButton}"))
+            .ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+
+        // The trailing action area is its own #2E2E2E block with a 16px command glyph.
+        var actions = root.Locator($".{Css.Classes.Ide.EditorBreadcrumbBar.Actions}");
+        await Expect(actions).ToHaveCSSAsync("background-color", "rgb(46, 46, 46)");
+        await Expect(actions.Locator($".{Css.Classes.Icon.Svg}")).ToHaveCSSAsync("width", "16px");
+        await Expect(actions.Locator("#metric-breadcrumb-count")).ToHaveCSSAsync("color", "rgb(204, 204, 204)");
+
+        // A segment with menu content is a real dropdown; its items come from the host.
+        await firstButton.ClickAsync();
+        await Expect(page.GetByRole(AriaRole.Menuitem, new() { Name = "Quas.Core", Exact = true }))
+            .ToBeVisibleAsync();
+    }
+
+    [Fact]
     public async Task ChromeText_IsTwelvePixelsAndToolTitlesAreSentenceCase()
     {
         await using var context = await OpenDarkContextAsync();

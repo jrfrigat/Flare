@@ -94,6 +94,8 @@ This component exposes no documented public methods.
 - `FlareDraggable`
 - `FlareDrawer`
 - `FlareDropZone`
+- `FlareEditorBreadcrumbBar`
+- `FlareEditorBreadcrumbSegment`
 - `FlareEmptyState`
 - `FlareField`
 - `FlareFieldChrome`

@@ -56,6 +56,7 @@ public sealed class VisualStudio2026ParityTests
         Assert.Equal("#282828", dark[VisualStudioCssVars.ChromeTabActive]);
         Assert.Equal("#1E1E1E", dark[VisualStudioCssVars.ChromeEditor]);
         Assert.Equal("#2B2B2B", dark[VisualStudioCssVars.ChromeBreadcrumb]);
+        Assert.Equal("#2E2E2E", dark[VisualStudioCssVars.ChromeBreadcrumbEdge]);
         Assert.Equal("#282828", dark[VisualStudioCssVars.ChromeToolWindow]);
         Assert.Equal("#282828", dark[VisualStudioCssVars.ChromeToolTab]);
         Assert.Equal("#353535", dark[VisualStudioCssVars.ChromeField]);
@@ -278,6 +279,49 @@ public sealed class VisualStudio2026ParityTests
         Assert.Contains("--flare-ide-sheet-tabs-padding:0 0.4375rem 0.25rem;", css);
         Assert.Contains("--flare-ide-sheet-tabs-underline-height:3px;", css);
         Assert.Contains("--flare-vs-chrome-bottom-tab-underline:#404040;", css);
+    }
+
+    [Fact]
+    public void EditorBreadcrumb_TakesTheMeasuredRowAndActionArea()
+    {
+        var light = VisualStudio.DesignReference.Extended;
+        var dark = Theme.ExtendedDarkOverride;
+        Assert.NotNull(dark);
+
+        foreach (var map in new[] { light, dark })
+        {
+            Assert.Equal("var(--flare-vs-chrome-breadcrumb)", map["--flare-ide-breadcrumb-surface"]);
+            Assert.Equal("var(--flare-vs-chrome-text-secondary)", map["--flare-ide-breadcrumb-color"]);
+            Assert.Equal("var(--flare-vs-chrome-breadcrumb-edge)", map["--flare-ide-breadcrumb-edge-color"]);
+            Assert.Equal("var(--flare-vs-chrome-divider)", map["--flare-ide-breadcrumb-separator-color"]);
+            Assert.Equal("var(--flare-vs-chrome-editor)", map["--flare-ide-breadcrumb-active-surface"]);
+            Assert.Equal("var(--flare-vs-chrome-text)", map["--flare-ide-breadcrumb-active-color"]);
+            Assert.Equal("var(--flare-vs-chrome-breadcrumb-edge)", map["--flare-ide-breadcrumb-actions-surface"]);
+            Assert.Equal("1.375rem", map["--flare-ide-breadcrumb-bar-height"]);
+            Assert.Equal("0.5rem", map["--flare-ide-breadcrumb-bar-padding"]);
+            Assert.Equal("0.5rem", map["--flare-ide-breadcrumb-segment-padding"]);
+            Assert.Equal("0.25rem", map["--flare-ide-breadcrumb-segment-gap"]);
+            Assert.Equal("1rem", map["--flare-ide-breadcrumb-icon-size"]);
+            Assert.Equal("0.75rem", map["--flare-ide-breadcrumb-chevron-size"]);
+            Assert.Equal("0.5rem", map["--flare-ide-breadcrumb-actions-padding"]);
+            Assert.Equal("0.25rem", map["--flare-ide-breadcrumb-actions-gap"]);
+        }
+
+        Assert.Equal($"var({Css.Tokens.Color.OutlineVariant})", light[VisualStudioCssVars.ChromeBreadcrumbEdge]);
+        Assert.Equal("#2E2E2E", dark[VisualStudioCssVars.ChromeBreadcrumbEdge]);
+    }
+
+    [Fact]
+    public void ThemeCss_EmitsTheMeasuredEditorBreadcrumb()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        Assert.Contains("--flare-ide-breadcrumb-surface:var(--flare-vs-chrome-breadcrumb);", css);
+        Assert.Contains("--flare-ide-breadcrumb-edge-color:var(--flare-vs-chrome-breadcrumb-edge);", css);
+        Assert.Contains("--flare-ide-breadcrumb-actions-surface:var(--flare-vs-chrome-breadcrumb-edge);", css);
+        Assert.Contains("--flare-ide-breadcrumb-bar-height:1.375rem;", css);
+        Assert.Contains("--flare-ide-breadcrumb-icon-size:1rem;", css);
+        Assert.Contains("--flare-vs-chrome-breadcrumb-edge:#2E2E2E;", css);
     }
 
     [Fact]

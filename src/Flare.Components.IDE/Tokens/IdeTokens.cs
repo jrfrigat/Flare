@@ -125,4 +125,18 @@ public sealed record IdeTokens
     [CssVar(Names.SheetTabsUnderlineColor)] public string SheetTabsUnderlineColor { get; init; } = "transparent";
     /// <summary>Design override for <c>--flare-ide-sheet-tabs-divider</c>.</summary>
     [CssVar(Names.SheetTabsDivider)] public string SheetTabsDivider { get; init; } = "transparent";
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-surface</c>.</summary>
+    [CssVar(Names.BreadcrumbSurface)] public string BreadcrumbSurface { get; init; } = Var(Css.Tokens.Color.Surface);
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-color</c>.</summary>
+    [CssVar(Names.BreadcrumbColor)] public string BreadcrumbColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-edge-color</c>.</summary>
+    [CssVar(Names.BreadcrumbEdgeColor)] public string BreadcrumbEdgeColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-separator-color</c>.</summary>
+    [CssVar(Names.BreadcrumbSeparatorColor)] public string BreadcrumbSeparatorColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-active-surface</c>.</summary>
+    [CssVar(Names.BreadcrumbActiveSurface)] public string BreadcrumbActiveSurface { get; init; } = Var(Css.Tokens.Color.Surface);
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-active-color</c>.</summary>
+    [CssVar(Names.BreadcrumbActiveColor)] public string BreadcrumbActiveColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
+    /// <summary>Design override for <c>--flare-ide-breadcrumb-actions-surface</c>.</summary>
+    [CssVar(Names.BreadcrumbActionsSurface)] public string BreadcrumbActionsSurface { get; init; } = Var(Css.Tokens.Color.SurfaceVariant);
 }

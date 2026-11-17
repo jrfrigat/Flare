@@ -49,4 +49,7 @@ public sealed class IdeStrings
 
     /// <summary>Accessible label of the control that collapses an expanded tool panel.</summary>
     public static string ToolPanelCollapse => Get("ToolPanel_Collapse");
+
+    /// <summary>Accessible name of the editor breadcrumb row's action area.</summary>
+    public static string EditorBarActions => Get("EditorBar_Actions");
 }

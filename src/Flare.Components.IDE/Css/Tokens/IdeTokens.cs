@@ -121,4 +121,18 @@ public static class Vars
     public const string SheetTabsUnderlineColor = "--flare-ide-sheet-tabs-underline-color";
     /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-divider</c>.</summary>
     public const string SheetTabsDivider = "--flare-ide-sheet-tabs-divider";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-surface</c>.</summary>
+    public const string BreadcrumbSurface = "--flare-ide-breadcrumb-surface";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-color</c>.</summary>
+    public const string BreadcrumbColor = "--flare-ide-breadcrumb-color";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-edge-color</c>.</summary>
+    public const string BreadcrumbEdgeColor = "--flare-ide-breadcrumb-edge-color";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-separator-color</c>.</summary>
+    public const string BreadcrumbSeparatorColor = "--flare-ide-breadcrumb-separator-color";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-active-surface</c>.</summary>
+    public const string BreadcrumbActiveSurface = "--flare-ide-breadcrumb-active-surface";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-active-color</c>.</summary>
+    public const string BreadcrumbActiveColor = "--flare-ide-breadcrumb-active-color";
+    /// <summary>CSS custom property <c>--flare-ide-breadcrumb-actions-surface</c>.</summary>
+    public const string BreadcrumbActionsSurface = "--flare-ide-breadcrumb-actions-surface";
 }

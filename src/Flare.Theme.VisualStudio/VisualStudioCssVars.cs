@@ -30,6 +30,8 @@ public static class VisualStudioCssVars
     public const string ChromeEditor = "--flare-vs-chrome-editor";
     /// <summary>Editor breadcrumb bar surface.</summary>
     public const string ChromeBreadcrumb = "--flare-vs-chrome-breadcrumb";
+    /// <summary>Editor breadcrumb top/bottom edge and its action-area surface.</summary>
+    public const string ChromeBreadcrumbEdge = "--flare-vs-chrome-breadcrumb-edge";
     /// <summary>Tool window surface.</summary>
     public const string ChromeToolWindow = "--flare-vs-chrome-tool-window";
     /// <summary>Tool window tab strip and title surface.</summary>

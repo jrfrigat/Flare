@@ -1,0 +1,42 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* One breadcrumb segment. With MenuContent it is a FlareMenu activator (chevron, menu ARIA on the
+   button); without it, a static icon + text leaf. The wrapper carries the active surface and the
+   separator to its predecessor. *@
+<div class="@BuildCssClass(Active ? Css.Classes.Ide.EditorBreadcrumbBar.SegmentActive : null)"
+     style="@Style" @attributes="AdditionalAttributes">
+    @if (MenuContent is not null)
+    {
+        <FlareMenu AriaLabel="@(AriaLabel ?? Text)">
+            <Activator Context="menu">
+                <button type="button" class="@Css.Classes.Ide.EditorBreadcrumbBar.SegmentButton"
+                        aria-label="@AriaLabel" @attributes="menu.Attributes">
+                    @SegmentBody
+                </button>
+            </Activator>
+            <ChildContent>@MenuContent</ChildContent>
+        </FlareMenu>
+    }
+    else
+    {
+        <span class="@Css.Classes.Ide.EditorBreadcrumbBar.SegmentButton">
+            @SegmentBody
+        </span>
+    }
+</div>
+
+@code {
+    private RenderFragment SegmentBody => @<text>@if (Icon is not null)
+    {
+        <FlareIconView Value="Icon" Class="@Css.Classes.Ide.EditorBreadcrumbBar.SegmentIcon" />
+    }
+    @if (!string.IsNullOrEmpty(Text))
+    {
+        <span class="@Css.Classes.Ide.EditorBreadcrumbBar.SegmentLabel">@Text</span>
+    }
+    @if (MenuContent is not null)
+    {
+        <FlareIconView Value="FlareIcons.ExpandMore" Class="@Css.Classes.Ide.EditorBreadcrumbBar.SegmentChevron" />
+    }</text>;
+}

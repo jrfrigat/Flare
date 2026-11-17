@@ -73,6 +73,27 @@
         <div id="metric-sheettabs">
             <FlareSheetTabs Sheets="@BottomSheets" ActiveIndex="0" ShowAddButton="false" />
         </div>
+        <div id="metric-breadcrumb">
+            <FlareEditorBreadcrumbBar>
+                <BreadcrumbContent>
+                    <FlareEditorBreadcrumbSegment Text="Quas.Core" Icon="@FlareIcons.Folder">
+                        <MenuContent>
+                            <FlareMenuItem>Quas.Core</FlareMenuItem>
+                        </MenuContent>
+                    </FlareEditorBreadcrumbSegment>
+                    <FlareEditorBreadcrumbSegment Text="Quas.Core.Commands.CommandResult"
+                                                  Icon="@FlareIcons.Description" Active="true">
+                        <MenuContent>
+                            <FlareMenuItem>CommandResult</FlareMenuItem>
+                        </MenuContent>
+                    </FlareEditorBreadcrumbSegment>
+                </BreadcrumbContent>
+                <ToolbarContent>
+                    <FlareIconView Value="@FlareIcons.Error" />
+                    <span id="metric-breadcrumb-count">2</span>
+                </ToolbarContent>
+            </FlareEditorBreadcrumbBar>
+        </div>
         <div id="metric-menubar">
             <FlareMenuBar>
                 <FlareMenu AriaLabel="File">

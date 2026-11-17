@@ -67,6 +67,7 @@ a generic color role:
 | `--flare-vs-chrome-tab-active` | Active document tab |
 | `--flare-vs-chrome-editor` | Editor |
 | `--flare-vs-chrome-breadcrumb` | Breadcrumb bar |
+| `--flare-vs-chrome-breadcrumb-edge` | Breadcrumb edges and action area |
 | `--flare-vs-chrome-tool-window` | Tool window |
 | `--flare-vs-chrome-tool-tab` | Tool tab strip and title |
 | `--flare-vs-chrome-field` | Tool search field and input well |

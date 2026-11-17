@@ -52,4 +52,20 @@ public static class Layout
     public const string SheetTabsGap = "--flare-ide-sheet-tabs-gap";
     /// <summary>Underline bar height under a sheet tab.</summary>
     public const string SheetTabsUnderlineHeight = "--flare-ide-sheet-tabs-underline-height";
+    /// <summary>Editor breadcrumb row height.</summary>
+    public const string BreadcrumbBarHeight = "--flare-ide-breadcrumb-bar-height";
+    /// <summary>Inline padding of the editor breadcrumb area.</summary>
+    public const string BreadcrumbBarPadding = "--flare-ide-breadcrumb-bar-padding";
+    /// <summary>Inline padding of one editor breadcrumb segment.</summary>
+    public const string BreadcrumbSegmentPadding = "--flare-ide-breadcrumb-segment-padding";
+    /// <summary>Gap between a breadcrumb segment's icon, label and chevron.</summary>
+    public const string BreadcrumbSegmentGap = "--flare-ide-breadcrumb-segment-gap";
+    /// <summary>Icon size in an editor breadcrumb segment.</summary>
+    public const string BreadcrumbIconSize = "--flare-ide-breadcrumb-icon-size";
+    /// <summary>Chevron size in a dropdown editor breadcrumb segment.</summary>
+    public const string BreadcrumbChevronSize = "--flare-ide-breadcrumb-chevron-size";
+    /// <summary>Inline padding of the editor breadcrumb action area.</summary>
+    public const string BreadcrumbActionsPadding = "--flare-ide-breadcrumb-actions-padding";
+    /// <summary>Gap between commands in the editor breadcrumb action area.</summary>
+    public const string BreadcrumbActionsGap = "--flare-ide-breadcrumb-actions-gap";
 }
