@@ -6,7 +6,7 @@
     @* The wrapper owns activation and positioning. The slot applies ARIA to its focusable element. *@
     <div class="@Css.Classes.Menu.Activator" @ref="_activatorEl"
          @onclick="HandleActivatorClick"
-         @onmouseenter="HandleActivatorMouseEnter"
+         @attributes="ActivatorHoverAttributes"
          @oncontextmenu="HandleActivatorContextMenu"
          @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)">
         @Activator?.Invoke(ActivatorContext)
@@ -309,6 +309,16 @@
         }
         await Toggle(e);
     }
+
+    // Only a left-click menu inside a coordinating bar can switch on hover. Every other menu leaves the
+    // handler out of the render tree entirely, so an ordinary hover never travels to the server.
+    private IReadOnlyDictionary<string, object>? ActivatorHoverAttributes =>
+        MenuBarContext is not null && Activation == MenuActivation.LeftClick
+            ? new Dictionary<string, object>
+            {
+                ["onmouseenter"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleActivatorMouseEnter),
+            }
+            : null;
 
     // A real menu bar opens another top-level menu as soon as the pointer reaches its title while one
     // is already open; with nothing open, hovering a title does nothing and the user clicks it.

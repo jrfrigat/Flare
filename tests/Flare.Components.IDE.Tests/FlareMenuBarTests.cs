@@ -95,7 +95,9 @@ public class FlareMenuBarTests : FlareTestContext
         await cut.InvokeAsync(() => ActivatorWrappers(cut)[0].Click());
 
         var activator = $".{Css.Classes.Menu.Panel} .{Css.Classes.Menu.Activator}";
-        await cut.InvokeAsync(() => cut.Find(activator).TriggerEvent("onmouseenter", new MouseEventArgs()));
+        // A menu inside the panel is outside the bar's coordination, so it does not subscribe to
+        // hover at all and cannot switch the bar by a pointer passing over it.
+        Assert.False(cut.Find(activator).HasAttribute("blazor:onmouseenter"));
         Assert.Equal("File panel", OpenPanelLabel(cut));
 
         await cut.InvokeAsync(() => cut.Find(activator).Click());
