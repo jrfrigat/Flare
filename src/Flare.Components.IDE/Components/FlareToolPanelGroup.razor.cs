@@ -29,6 +29,13 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     /// <see cref="FlareToolPanel.Position"/>.</summary>
     [Parameter] public ToolPanelPosition Position { get; set; } = ToolPanelPosition.Left;
 
+    /// <summary>Which edge carries the tool tab strip. <see cref="Flare.Components.IDE.TabStripPlacement.Top"/>
+    /// keeps the strip in the header above the body, the default and the only placement used before this
+    /// parameter existed. <see cref="Flare.Components.IDE.TabStripPlacement.Bottom"/> renders the strip below
+    /// the body and shows the active tool's title (and its icon, when set) in the header, so a pinned tool
+    /// window keeps its name visible while the tabs sit at the bottom edge.</summary>
+    [Parameter] public TabStripPlacement TabStripPlacement { get; set; } = TabStripPlacement.Top;
+
     /// <summary>Effective key (<see cref="FlareToolPanel.Key"/>, or the title when that is unset) of the
     /// panel to show. Null or empty keeps the group's own selection. A key that matches no panel keeps
     /// the current one, so a stale or not-yet-registered key never leaves the body empty. Bind it with
@@ -57,10 +64,25 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 
     internal bool IsActive(FlareToolPanel panel) => ReferenceEquals(_active, panel);
 
+    private bool TabsAtBottom => TabStripPlacement == TabStripPlacement.Bottom;
+
+    private string? _placementClass =>
+        TabsAtBottom ? Css.Classes.Ide.ToolPanelGroup.TabsBottomRoot : null;
+
+    private string TabsClass() => TabsAtBottom
+        ? $"{Css.Classes.Ide.ToolPanelGroup.Tabs} {Css.Classes.Ide.ToolPanelGroup.TabStripBottom}"
+        : Css.Classes.Ide.ToolPanelGroup.Tabs;
+
+    private string? ActiveLabel => _active is null ? null : TabLabel(_active);
+
+    private FlareIcon? ActiveIcon => _active?.Icon;
+
     private readonly List<FlareToolPanel> _panels = [];
-    private readonly Dictionary<FlareToolPanel, string?> _titles = [];
+    private readonly Dictionary<FlareToolPanel, (string? Title, string? Key, FlareIcon? Icon)> _details = [];
     private FlareToolPanel? _active;
     private ElementReference _bar;
+    private ElementReference _registeredBar;
+    private TabStripPlacement _placementAtLastRender = TabStripPlacement.Top;
     private DotNetObjectReference<FlareToolPanelGroup>? _reference;
     private bool _keyboardRegistered;
     private bool _disposed;
@@ -69,6 +91,14 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        if (_placementAtLastRender != TabStripPlacement)
+        {
+            // The strip moves to another element when the placement changes, so the module must be
+            // bound to the new tablist after the next render.
+            _placementAtLastRender = TabStripPlacement;
+            _keyboardRegistered = false;
+            _registeredBar = default;
+        }
         if (string.IsNullOrEmpty(ActiveKey)) return;
         if (FindByKey(ActiveKey) is { } requested)
             _active = requested;
@@ -81,9 +111,10 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     {
         var isNew = !_panels.Contains(panel);
         if (isNew) _panels.Add(panel);
-        _titles.TryGetValue(panel, out var previousTitle);
-        var changed = isNew || previousTitle != panel.Title;
-        _titles[panel] = panel.Title;
+        _details.TryGetValue(panel, out var previous);
+        var changed = isNew || previous.Title != panel.Title || previous.Key != panel.Key ||
+            !Equals(previous.Icon, panel.Icon);
+        _details[panel] = (panel.Title, panel.Key, panel.Icon);
 
         // Children register after the parent's OnParametersSet, so a controlled key that names a panel
         // which is still mounting first resolves here.
@@ -116,7 +147,7 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         if (index < 0) return;
         var wasActive = ReferenceEquals(_active, panel);
         _panels.RemoveAt(index);
-        _titles.Remove(panel);
+        _details.Remove(panel);
         if (wasActive)
             _active = _panels.Count == 0 ? null : _panels[Math.Min(index, _panels.Count - 1)];
         if (!_disposed) StateHasChanged();
@@ -192,12 +223,24 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
-        _reference = DotNetObjectReference.Create(this);
+        // The tab strip is one fragment rendered in one of two positions. When a placement change (or
+        // any other re-render) replaces the element, the module still holds the old one, so bind it
+        // again to the current tablist.
+        if (_keyboardRegistered && _bar.Id == _registeredBar.Id) return;
+        _reference ??= DotNetObjectReference.Create(this);
+        if (_keyboardRegistered)
+        {
+            try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
+            catch (InvalidOperationException) { }
+            catch (JSException) { }
+            _keyboardRegistered = false;
+        }
         try
         {
             await Ui.RegisterTabKeyboardAsync(_bar, _reference);
+            _registeredBar = _bar;
             _keyboardRegistered = true;
+            StateHasChanged();
         }
         catch (InvalidOperationException) { }
         catch (JSException) { }
@@ -209,9 +252,12 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         _disposed = true;
         if (_reference is not null)
         {
-            try { await Ui.RemoveTabKeyboardAsync(_bar); }
-            catch (InvalidOperationException) { }
-            catch (JSException) { }
+            if (_keyboardRegistered)
+            {
+                try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
+                catch (InvalidOperationException) { }
+                catch (JSException) { }
+            }
             _reference.Dispose();
         }
         await base.DisposeAsync();

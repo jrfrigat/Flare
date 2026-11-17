@@ -378,6 +378,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.TabInteractionType`](enums/flare-components-tabinteractiontype.md) — The kind of tab interaction reported to FlareTabs.OnPreviewInteraction.
 - [`Flare.Components.TabLabelRotation`](enums/flare-components-tablabelrotation.md) — Rotation applied to each tab's label in FlareTabs.
 - [`Flare.Components.IDE.TabOverflowBehavior`](enums/flare-components-ide-taboverflowbehavior.md) — Behaviour when document tabs overflow the available width.
+- [`Flare.Components.IDE.TabStripPlacement`](enums/flare-components-ide-tabstripplacement.md) — Which edge of a FlareToolPanelGroup carries its tool tab strip.
 - [`Flare.Components.TabsPlacement`](enums/flare-components-tabsplacement.md) — Side of the content the FlareTabs bar is placed on.
 - [`Flare.Components.TabsVariant`](enums/flare-components-tabsvariant.md) — Visual style of a FlareTabs bar, independent of the active theme. Each theme reskins the variants through its tokens, so a variant looks native everywhere (e.g. Filled is a solid accent pill). Four names mirror ButtonVariant (Text/Tonal/Filled/Outlined).
 - [`Flare.Components.TextAlign`](enums/flare-components-textalign.md) — Horizontal text alignment for FlareText. Default inherits the surrounding alignment; the other values map to text-align via shared flare-text--align-* classes (no inline style needed).

@@ -8460,6 +8460,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered inside the panel body.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"Collapsed", @"bool", @"false", @"Whether the panel is currently collapsed. Used for standalone (no-layout) collapsing; inside a layout the layout owns the collapsed state.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"CollapsedChanged", @"EventCallback<bool>", null, @"Callback when the collapsed state changes (standalone use).", null, false, true, false, @"FlareToolPanel"),
+                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon that represents the tool. Inside a FlareToolPanelGroup with TabStripPlacement set to Bottom it is shown beside the active tool's title in the header; inside a FlareIdeLayout it identifies the tool on the per-tool auto-hide rail. Null renders no icon.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"Key", @"string?", null, @"Stable key that ActiveKey uses to select this panel. When unset the panel is addressed by Title, which is enough for a fixed, untranslated title; set an explicit key when titles are localized, repeat or change at run time.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"Mode", @"IdePanelMode", @"IdePanelMode.Docked", @"How the panel occupies space inside a FlareIdeLayout: Docked (takes space when expanded) or AutoHide (flies out as an overlay). Ignored when the panel is used standalone (outside a layout).", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Position of the panel in the IDE layout.", null, false, false, false, @"FlareToolPanel"),
@@ -8494,6 +8495,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Tool panels shown as tabs. Every child is a FlareToolPanel; its content stays mounted while another tab is active.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"OnActiveChanged", @"EventCallback<string?>", null, @"Reports the title of the panel the user activated, for a status line or command state. Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour.", null, false, true, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Region that hosts the group inside a FlareIdeLayout. The hosted panels use this position for rail labels, auto-hide and collapse instead of their own Position.", null, false, false, false, @"FlareToolPanelGroup"),
+                new ApiParameterInfo(@"TabStripPlacement", @"TabStripPlacement", @"TabStripPlacement.Top", @"Which edge carries the tool tab strip. Top keeps the strip in the header above the body, the default and the only placement used before this parameter existed. Bottom renders the strip below the body and shows the active tool's title (and its icon, when set) in the header, so a pinned tool window keeps its name visible while the tabs sit at the bottom edge.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Host actions shown in the group header after the tab strip and before the collapse button - for example pin, close or other region commands. Inside a FlareIdeLayout the group still draws the region's collapse button, so the slot adds controls rather than replacing it.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -11395,6 +11397,22 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareDocumentTabs",
+            });
+
+        e[@"TabStripPlacement"] = new ApiEnumInfo(
+            @"TabStripPlacement",
+            @"Flare.Components.IDE.TabStripPlacement",
+            @"Flare.Components.IDE",
+            @"Which edge of a FlareToolPanelGroup carries its tool tab strip.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Top", @"0", @"The tab strip sits in the group header, above the panel body. Default."),
+                new ApiEnumMember(@"Bottom", @"1", @"The tab strip sits below the panel body; the header keeps the active tool's title and icon, the host actions and the region collapse button."),
+            },
+            new string[]
+            {
+                @"FlareToolPanelGroup",
             });
 
         e[@"TabsPlacement"] = new ApiEnumInfo(

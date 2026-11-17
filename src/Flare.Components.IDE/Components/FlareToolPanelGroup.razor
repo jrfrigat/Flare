@@ -1,23 +1,25 @@
 @namespace Flare.Components.IDE
 @inherits FlareLocalizedComponentBase
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_placementClass)" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Ide.ToolPanelGroup.Header">
-        <div class="@Css.Classes.Ide.ToolPanelGroup.Tabs" role="tablist" aria-orientation="horizontal"
-             aria-label="@IdeText["ToolPanelGroup_Label"].Value" @ref="_bar"
-             data-flare-keyboard-fallback="@(_keyboardRegistered ? null : "true")"
-             @onkeydown="HandleFallbackKeyDownAsync">
-            @foreach (var panel in Panels)
-            {
-                var active = IsActive(panel);
-                <button @key="panel" type="button" class="@TabClass(panel)" id="@panel.TabId"
-                        role="tab" aria-selected="@(active ? "true" : "false")"
-                        aria-controls="@panel.PanelId" tabindex="@(active ? 0 : -1)"
-                        @ref="panel.TabElement" @onclick="@(() => SelectAsync(panel, focus: false))">
-                    @TabLabel(panel)
-                </button>
-            }
-        </div>
+        @if (!TabsAtBottom)
+        {
+            @TabStrip
+        }
+        else
+        {
+            <span class="@Css.Classes.Ide.ToolPanelGroup.Title">
+                @if (ActiveIcon is not null)
+                {
+                    <FlareIconView Value="ActiveIcon" Size="1rem" />
+                }
+                @if (ActiveLabel is not null)
+                {
+                    <span class="@Css.Classes.Ide.ToolPanelGroup.TitleText">@ActiveLabel</span>
+                }
+            </span>
+        }
         @if (ToolbarContent is not null)
         {
             <div class="@Css.Classes.Ide.ToolPanelGroup.Actions" role="toolbar"
@@ -39,4 +41,28 @@
             @ChildContent
         </CascadingValue>
     </div>
+    @if (TabsAtBottom)
+    {
+        @TabStrip
+    }
 </div>
+
+@code {
+    // One strip rendered in exactly one of the two placements: ids, ARIA, selection and keyboard
+    // behavior are shared, and only its position in the group changes.
+    private RenderFragment TabStrip => @<div class="@TabsClass()" role="tablist" aria-orientation="horizontal"
+             aria-label="@IdeText["ToolPanelGroup_Label"].Value" @ref="_bar"
+             data-flare-keyboard-fallback="@(_keyboardRegistered ? null : "true")"
+             @onkeydown="HandleFallbackKeyDownAsync">
+        @foreach (var panel in Panels)
+        {
+            var active = IsActive(panel);
+            <button @key="panel" type="button" class="@TabClass(panel)" id="@panel.TabId"
+                    role="tab" aria-selected="@(active ? "true" : "false")"
+                    aria-controls="@panel.PanelId" tabindex="@(active ? 0 : -1)"
+                    @ref="panel.TabElement" @onclick="@(() => SelectAsync(panel, focus: false))">
+                @TabLabel(panel)
+            </button>
+        }
+    </div>;
+}

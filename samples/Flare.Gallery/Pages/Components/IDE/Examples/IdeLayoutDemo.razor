@@ -40,7 +40,8 @@
 
     <LeftToolPanel>
         <FlareToolPanelGroup ActiveKey="@_activeTool" ActiveKeyChanged="OnActiveToolChanged"
-                             OnActiveChanged="OnActiveToolTitle">
+                             OnActiveChanged="OnActiveToolTitle"
+                             TabStripPlacement="TabStripPlacement.Bottom">
             <ToolbarContent>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                              AriaLabel="@(_pinned ? "Unpin panel" : "Pin panel")"
