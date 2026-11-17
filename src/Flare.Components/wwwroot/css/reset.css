@@ -17,11 +17,14 @@
 :where(html) {
     /* Stops iOS/Android inflating text in landscape, which otherwise breaks every type scale. */
     -webkit-text-size-adjust: 100%;
+}
 
+:where(*) {
     /* Scrollbars were the last surface the browser painted on its own, which on a dark theme meant a
-       light scrollbar and the loudest thing on the page. Set here rather than per container because
-       `scrollbar-color` and `scrollbar-width` INHERIT: one declaration reaches the shell panel, the data
-       grid body, every listbox, code block and dialog, and the document itself. */
+       light scrollbar and the loudest thing on the page. The rule is universal and has zero
+       specificity: each element resolves the tokens of its own theme scope, a component that hides
+       its scrollbar (`scrollbar-width: none`) wins as a normal class rule, and a nested theme keeps
+       its own values instead of inheriting the outer theme's. */
     scrollbar-width: var(--flare-scrollbar-width);
     scrollbar-color: var(--flare-scrollbar-thumb) var(--flare-scrollbar-track);
 }

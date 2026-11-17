@@ -1,4 +1,6 @@
 @page "/vs2026-metrics"
+@using Flare.Abstractions
+@using Flare.Abstractions.Tokens
 @using Flare.Icons
 @using Flare.Components.IDE
 
@@ -14,6 +16,22 @@
         <div id="metric-scroller" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
             <div style="block-size: 300px;"></div>
         </div>
+        <div id="metric-tabs">
+            <FlareTabs>
+                <FlareTab Label="One" />
+                <FlareTab Label="Two" />
+            </FlareTabs>
+        </div>
+        <FlareThemeScope Theme="md3" Mode="ThemeMode.Dark">
+            <div id="metric-nested-md3" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
+                <div style="block-size: 300px;"></div>
+            </div>
+        </FlareThemeScope>
+        <FlareThemeScope Theme="visualstudio" Mode="ThemeMode.Dark">
+            <div id="metric-nested-vs" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
+                <div style="block-size: 300px;"></div>
+            </div>
+        </FlareThemeScope>
         <div id="metric-tree">
             <FlareTreeView AriaLabel="Solution Explorer">
                 <FlareTreeItem Label="Project" Icon="@FlareIcons.Folder" Expanded="true">

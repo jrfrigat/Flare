@@ -196,6 +196,42 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task Tabs_KeepTheirExplicitHiddenScrollbarUnderVisualStudio()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        await WaitForThemeAsync(page);
+
+        var bar = page.Locator($"#metric-tabs .{Css.Classes.Tabs.Bar}");
+        await Expect(bar).ToHaveCSSAsync("scrollbar-width", "none");
+    }
+
+    [Fact]
+    public async Task NestedTheme_KeepsItsOwnScrollbarWidthInsideVisualStudio()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        await WaitForThemeAsync(page);
+
+        var scroller = page.Locator("#metric-nested-md3");
+        await Expect(scroller).ToHaveCSSAsync("scrollbar-width", "thin");
+    }
+
+    [Fact]
+    public async Task NestedVisualStudioScope_GetsTheThemesScrollbarWidth()
+    {
+        await using var context = await OpenDarkContextAsync("md3", "md3-violet");
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        await WaitForThemeAsync(page);
+
+        var scroller = page.Locator("#metric-nested-vs");
+        await Expect(scroller).ToHaveCSSAsync("scrollbar-width", "auto");
+    }
+
+    [Fact]
     public async Task IdeComponents_UseTheirOwnDefaultsUnderVisualStudio()
     {
         await using var context = await OpenDarkContextAsync();
@@ -227,7 +263,7 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     [Fact]
     public async Task IdeComponents_UseTheirOwnDefaultsUnderAnotherTheme()
     {
-        await using var context = await OpenDarkContextAsync("material-design-3", "md3-violet");
+        await using var context = await OpenDarkContextAsync("md3", "md3-violet");
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
         await WaitForThemeAsync(page);

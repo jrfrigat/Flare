@@ -3,13 +3,14 @@
 
 /* The measured VS 2026 scrollbar is a 2px square thumb. Chromium (and WebView2, which a VS-style
    host runs on) paints the ::-webkit-scrollbar path only while the standard scrollbar properties
-   stay at their initial value, so the theme hands its subtree back to that path; the Scrollbar
-   tokens supply the size, colors, track and square corners. Firefox has no 2px scrollbar mechanism
-   and keeps its native one. */
-:root.flare-theme-visualstudio,
-:root.flare-theme-visualstudio * {
-    scrollbar-width: auto;
-    scrollbar-color: auto;
+   stay at their initial value, so the VS surface hands every element back to that path. The rule is
+   inside a scope boundary at a nested theme root, and its zero specificity keeps a component's
+   `scrollbar-width: none` in charge. Firefox has no 2px scrollbar mechanism and keeps its native one. */
+@scope (.flare-theme-visualstudio) to (.flare-root:not(.flare-theme-visualstudio)) {
+    :where(*) {
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+    }
 }
 
 /* Scoped chrome touches that apply to the whole VS surface. */
