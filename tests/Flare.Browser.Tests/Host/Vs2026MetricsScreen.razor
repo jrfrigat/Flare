@@ -1,5 +1,6 @@
 @page "/vs2026-metrics"
 @using Flare.Icons
+@using Flare.Components.IDE
 
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
     <main id="metrics">
@@ -10,6 +11,22 @@
         </FlareButton>
         <div id="metric-scroller" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
             <div style="block-size: 300px;"></div>
+        </div>
+        <div id="metric-toolpanel">
+            <FlareToolPanel Title="Solution Explorer">
+                <FlareTreeView AriaLabel="Solution Explorer">
+                    <FlareTreeItem Label="Project" Icon="@FlareIcons.Folder" Expanded="true">
+                        <ChildContent>
+                            <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
+                        </ChildContent>
+                    </FlareTreeItem>
+                </FlareTreeView>
+            </FlareToolPanel>
+        </div>
+        <div id="metric-statusbar">
+            <FlareStatusBar>
+                <LeftContent>Ready</LeftContent>
+            </FlareStatusBar>
         </div>
     </main>
 </FlareThemeProvider>

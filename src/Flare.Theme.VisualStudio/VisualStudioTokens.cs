@@ -586,6 +586,14 @@ internal class VisualStudioTokens
         ItemHeight = "2.5rem",
     };
 
+    // Tree - VS Solution Explorer: the measured 16px glyph inside a 24px expander target. Only the
+    // glyph shrinks; the toggle keeps its size so the pointer target does not fall below 24px.
+    internal static readonly TreeTokens Tree = new()
+    {
+        ToggleSize = "1.5rem",
+        IconSize = "1rem",
+    };
+
     /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS and by hosts).</summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
@@ -649,6 +657,16 @@ internal class VisualStudioTokens
         [IdeBottomTabStripBg] = "var(--flare-vs-chrome-bottom-panel)",
         [IdeStatusBarBg] = "var(--flare-vs-chrome-status-bar)",
         [IdePanelBg] = "var(--flare-vs-chrome-tool-window)",
+
+        // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
+        // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
+        [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
+        [IdeTypescaleBodySmallSize] = "var(--flare-typescale-body-medium-size)",
+        [IdeTypescaleBodySmallWeight] = "var(--flare-typescale-body-medium-weight)",
+        [IdeTypescaleBodySmallHeight] = "var(--flare-typescale-body-medium-height)",
+        [IdeTypescaleBodySmallSpacing] = "var(--flare-typescale-body-medium-spacing)",
+        // The tool-window title reads its weight from the label-small hook; VS titles are not bold.
+        [IdeTypescaleLabelSmallWeight] = "var(--flare-typescale-body-medium-weight)",
     };
 
     // The IDE package's public override hooks, named here so the theme can point them at its chrome
@@ -669,6 +687,12 @@ internal class VisualStudioTokens
     internal const string IdeBottomTabStripBg = "--flare-ide-bottom-tab-strip-bg";
     internal const string IdeStatusBarBg = "--flare-ide-statusbar-bg";
     internal const string IdePanelBg = "--flare-ide-panel-bg";
+    internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
+    internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
+    internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";
+    internal const string IdeTypescaleBodySmallHeight = "--flare-ide-typescale-body-small-height";
+    internal const string IdeTypescaleBodySmallSpacing = "--flare-ide-typescale-body-small-spacing";
+    internal const string IdeTypescaleLabelSmallWeight = "--flare-ide-typescale-label-small-weight";
 
 
     /// <summary>The complete Visual Studio 2026 design tokens. Use this as the base for custom themes.</summary>
@@ -701,6 +725,7 @@ internal class VisualStudioTokens
         Input = Input,
         Progress = Progress,
         Nav = Nav,
+        Tree = Tree,
         Dialog = FluentUI2Tokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
         Popover = FluentUI2Tokens.Design.Popover with { Radius = "var(--flare-shape-large)", Shadow = "var(--flare-elevation-3)" },
         Snackbar = FluentUI2Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },

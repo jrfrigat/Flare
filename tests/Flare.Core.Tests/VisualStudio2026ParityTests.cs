@@ -226,6 +226,28 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
+    public void TreeMetrics_AreSixteenPixelGlyphsInTwentyFourPixelTargets()
+    {
+        var tree = VisualStudio.DesignReference.Tree;
+
+        Assert.Equal("1rem", tree.IconSize);
+        Assert.Equal("1.5rem", tree.ToggleSize);
+    }
+
+    [Fact]
+    public void ChromeTypeHooks_ResolveToTheTwelvePixelBodyMedium()
+    {
+        var extended = VisualStudio.DesignReference.Extended;
+
+        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Font})", extended["--flare-ide-typescale-body-small-font"]);
+        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Size})", extended["--flare-ide-typescale-body-small-size"]);
+        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Weight})", extended["--flare-ide-typescale-body-small-weight"]);
+        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Height})", extended["--flare-ide-typescale-body-small-height"]);
+        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Spacing})", extended["--flare-ide-typescale-body-small-spacing"]);
+        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Weight})", extended["--flare-ide-typescale-label-small-weight"]);
+    }
+
+    [Fact]
     public void ThemeCss_EmitsTheMeasuredComponentMetrics()
     {
         var css = TokensToCss.ThemeCss(Theme);
@@ -236,6 +258,7 @@ public sealed class VisualStudio2026ParityTests
         Assert.Contains($"{Css.Tokens.Scrollbar.Size}:2px;", css);
         Assert.Contains($"{Css.Tokens.Scrollbar.Radius}:0px;", css);
         Assert.Contains($"{Css.Tokens.MenuPanel.Radius}:var({Css.Tokens.Shape.Large});", css);
+        Assert.Contains($"{Css.Tokens.Tree.IconSize}:1rem;", css);
     }
 
     [Fact]

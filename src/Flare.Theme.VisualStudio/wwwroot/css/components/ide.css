@@ -1,0 +1,22 @@
+/* Visual Studio 2026 chrome type and tree metrics.
+
+   The 12px chrome text itself comes from the theme's Extended map, which points the optional IDE
+   shell's body-small hooks at BodyMedium. What remains here is the look the tokens cannot express:
+   sentence-case tool-window titles and the measured 24px tree row. */
+
+@scope (.flare-theme-visualstudio) to (.flare-root:not(.flare-theme-visualstudio)) {
+
+    /* VS tool-window titles are sentence case, not uppercase captions. */
+    .flare-toolpanel__title {
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
+    /* The measured Solution Explorer row is 24px high. The row itself is the click target; the
+       expander keeps its own 24px box and only the glyph shrinks to 16px (Tree tokens), so the row
+       needs no block padding of its own. */
+    .flare-tree-item__row {
+        min-block-size: 1.5rem;
+        padding-block: 0;
+    }
+}

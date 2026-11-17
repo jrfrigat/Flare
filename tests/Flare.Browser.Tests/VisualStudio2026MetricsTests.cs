@@ -65,6 +65,40 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task TreeRows_AreTwentyFourPixelsWithSixteenPixelGlyphs()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var panel = page.Locator("#metric-toolpanel");
+
+        var row = panel.Locator($".{Css.Classes.Tree.ItemRow}").First;
+        await Expect(row).ToHaveCSSAsync("height", "24px");
+
+        var toggle = panel.Locator($".{Css.Classes.TreeView.Toggle}").First;
+        await Expect(toggle).ToHaveCSSAsync("width", "24px");
+        await Expect(toggle).ToHaveCSSAsync("height", "24px");
+
+        var icon = panel.Locator($".{Css.Classes.Tree.ItemIcon}").First;
+        await Expect(icon).ToHaveCSSAsync("font-size", "16px");
+    }
+
+    [Fact]
+    public async Task ChromeText_IsTwelvePixelsAndToolTitlesAreSentenceCase()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+
+        var title = page.Locator($"#metric-toolpanel .{Css.Classes.Ide.ToolPanel.Title}");
+        await Expect(title).ToHaveCSSAsync("font-size", "12px");
+        await Expect(title).ToHaveCSSAsync("text-transform", "none");
+
+        var status = page.Locator($"#metric-statusbar .{Css.Classes.Ide.StatusBar.Root}");
+        await Expect(status).ToHaveCSSAsync("font-size", "12px");
+    }
+
+    [Fact]
     public async Task CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
     {
         await using var context = await OpenDarkContextAsync();

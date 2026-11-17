@@ -94,4 +94,12 @@ without host overrides.
 - **Panels.** 6px corners on dropdowns and popovers; a tool search field takes the same 6px through
   `--flare-vs-chrome-search-radius`.
 
+## VS 2026 type and icon scale
+
+- **Chrome text.** Status bar, tool tabs and tool titles are 12px (BodyMedium); menu and tree labels
+  stay 13px (BodyLarge).
+- **Tool titles.** Sentence case, without the uppercase caption transform.
+- **Icons and rows.** Tree rows are 24px high; tree and command icons are 16px, while the expander
+  keeps a 24px target around its glyph.
+
 Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.
