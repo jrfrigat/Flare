@@ -19,4 +19,8 @@ public static class Layout
     public const string BottomHeight = "--flare-ide-bottom-height";
     /// <summary>Collapsed-panel rail thickness.</summary>
     public const string Rail = "--flare-ide-rail";
+    /// <summary>Grid track the left docking column currently occupies.</summary>
+    public const string LeftTrack = "--flare-ide-left-track";
+    /// <summary>Grid track the right docking column currently occupies.</summary>
+    public const string RightTrack = "--flare-ide-right-track";
 }
