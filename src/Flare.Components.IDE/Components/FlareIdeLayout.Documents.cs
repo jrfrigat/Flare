@@ -178,6 +178,7 @@ public partial class FlareIdeLayout
         if (_ideModule is not null)
         {
             try { key ??= await _ideModule.InvokeAsync<string?>("takeDroppedDocument", _dockScopeId); }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             catch (ObjectDisposedException) { }
         }
@@ -269,6 +270,7 @@ public partial class FlareIdeLayout
         _focusDocument = null;
         try { await header.FocusAsync(preventScroll: false); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
@@ -281,6 +283,7 @@ public partial class FlareIdeLayout
             await _ideModule.InvokeVoidAsync("registerDocumentDragSource");
         }
         catch (InvalidOperationException) { _ideModule = null; }
+        catch (JSDisconnectedException) { _ideModule = null; }
         catch (JSException) { _ideModule = null; }
     }
 }

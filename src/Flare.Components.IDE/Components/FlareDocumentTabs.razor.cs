@@ -270,6 +270,7 @@ public partial class FlareDocumentTabs
                 _registeredKeyboard = true;
             }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
 
@@ -284,6 +285,7 @@ public partial class FlareDocumentTabs
             await Ui.RevealFocusedTabAsync(_bar);
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
@@ -298,6 +300,7 @@ public partial class FlareDocumentTabs
             await _ideModule.InvokeVoidAsync("registerDocumentDragSource");
         }
         catch (InvalidOperationException) { _ideModule = null; }
+        catch (JSDisconnectedException) { _ideModule = null; }
         catch (JSException) { _ideModule = null; }
     }
 
@@ -313,6 +316,7 @@ public partial class FlareDocumentTabs
                 await Ui.RemoveTabScrollerAsync(_bar);
             }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             _reference.Dispose();
         }

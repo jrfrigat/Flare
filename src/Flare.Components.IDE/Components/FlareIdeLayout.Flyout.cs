@@ -123,6 +123,7 @@ public partial class FlareIdeLayout
 
         try { await element.FocusAsync(); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 

@@ -122,6 +122,7 @@
         _focusGroup = null;
         try { await handle.FocusAsync(preventScroll: true); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 }

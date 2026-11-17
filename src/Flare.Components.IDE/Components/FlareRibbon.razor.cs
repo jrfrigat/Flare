@@ -80,6 +80,7 @@ public partial class FlareRibbon : FlareComponentBase
             registered = true;
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
 
         if (!registered && _keyboardRegistrationAttempts == 0)
@@ -123,6 +124,7 @@ public partial class FlareRibbon : FlareComponentBase
                 await Ui.RevealFocusedTabAsync(_tablistRef);
             }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             return;
         }
@@ -133,6 +135,7 @@ public partial class FlareRibbon : FlareComponentBase
     {
         try { await Ui.RemoveTabKeyboardAsync(_tablistRef); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();

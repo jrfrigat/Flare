@@ -215,9 +215,11 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 
         try { await panel.TabElement.FocusAsync(preventScroll: true); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         try { await Ui.RevealFocusedTabAsync(_bar); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
@@ -284,6 +286,7 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         {
             try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             _keyboardRegistered = false;
         }
@@ -295,6 +298,7 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
             StateHasChanged();
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
@@ -303,6 +307,7 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         if (!_keyboardRegistered) return;
         try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         _keyboardRegistered = false;
         _registeredBar = default;

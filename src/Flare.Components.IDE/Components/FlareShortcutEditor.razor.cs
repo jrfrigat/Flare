@@ -142,6 +142,7 @@ public partial class FlareShortcutEditor
             _binding = await _module.InvokeAsync<IJSObjectReference>("registerShortcutCapture", _capture);
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
@@ -158,6 +159,7 @@ public partial class FlareShortcutEditor
             if (_module is not null) await _module.DisposeAsync();
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         await base.DisposeAsync();
     }
