@@ -1,5 +1,6 @@
 using Flare.Abstractions;
 using Flare.Theme.VisualStudio;
+using Flare.Theming;
 
 namespace Flare.Core.Tests;
 
@@ -116,6 +117,28 @@ public sealed class VisualStudio2026ParityTests
         Assert.Equal("var(--flare-vs-chrome-bottom-panel)", light["--flare-ide-bottom-tab-strip-bg"]);
         Assert.Equal("var(--flare-vs-chrome-status-bar)", light["--flare-ide-statusbar-bg"]);
         Assert.Equal("var(--flare-vs-chrome-tool-window)", light["--flare-ide-panel-bg"]);
+    }
+
+    [Fact]
+    public void ThemeCss_EmitsTheMeasuredDarkChrome()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+        var darkRule = css[css.IndexOf(".flare-theme-visualstudio.flare-mode-dark", StringComparison.Ordinal)..];
+
+        Assert.Contains($"{VisualStudioCssVars.ChromeTitleBar}:#1C1C1C;", darkRule);
+        Assert.Contains($"{VisualStudioCssVars.ChromeTabStrip}:#262626;", darkRule);
+        Assert.Contains($"{VisualStudioCssVars.ChromeToolWindow}:#282828;", darkRule);
+        Assert.Contains($"{VisualStudioCssVars.ChromeStatusBar}:#141414;", darkRule);
+        Assert.Contains($"{VisualStudioCssVars.ChromeAccent}:#9184EE;", darkRule);
+    }
+
+    [Fact]
+    public void PaletteCss_EmitsThePurpleAccentInDark()
+    {
+        var css = TokensToCss.PaletteCss(VisualStudioPalettes.Blue);
+        var darkRule = css[css.IndexOf($".flare-palette-{VisualStudioPalettes.BlueId}.flare-mode-dark", StringComparison.Ordinal)..];
+
+        Assert.Contains("#9184EE", darkRule);
     }
 
     [Fact]
