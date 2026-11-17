@@ -3,10 +3,15 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.58.0] - 2026-11-16
 
 ### Added
 
+- `FlareDocumentTabs` accepts stable document keys, controlled selection and ordering, and a context menu template. The strip measures overflow and can retain inactive editors.
+- `FlareIdeLayout` can move documents between the central, left and right regions while keeping their editors mounted.
+- `FlareToolbar` can reorder named command groups by pointer and keyboard, and accepts an order restored by the host.
+- `FlareDiagnosticList` filters and virtualizes diagnostics and reports the selected document position.
+- `FlareShortcutEditor` records, clears and resets assignments, and checks for conflicts and reserved combinations.
 - `FlareIdeLayout` dock tabs can close a document, show an unsaved-changes marker and open a host context menu; `IdeDocument` gains `Closeable` and `Modified`.
 - `FlareIdeLayout` can suppress or replace its Center dock strip with a host-owned tab header; Center selection is then controlled through `ActiveDocuments`.
 - `FlareIdeLayout` can mount only the active document's content (`IdeDocumentMounting.ActiveOnly`), with an optional retention predicate for documents that must stay mounted.
@@ -17,16 +22,6 @@ All notable changes to Flare are documented here. This project adheres to
 ### Changed
 
 - A collapsed or floating IDE region no longer draws its dock strip inside the rail-width column; expand the region to see its document tabs.
-
-## [0.58.0] - 2026-11-16
-
-### Added
-
-- `FlareDocumentTabs` accepts stable document keys, controlled selection and ordering, and a context menu template. The strip measures overflow and can retain inactive editors.
-- `FlareIdeLayout` can move documents between the central, left and right regions while keeping their editors mounted.
-- `FlareToolbar` can reorder named command groups by pointer and keyboard, and accepts an order restored by the host.
-- `FlareDiagnosticList` filters and virtualizes diagnostics and reports the selected document position.
-- `FlareShortcutEditor` records, clears and resets assignments, and checks for conflicts and reserved combinations.
 
 ### Fixed
 
