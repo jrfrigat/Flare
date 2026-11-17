@@ -31,7 +31,7 @@
         }
         @if (Icon is not null)
         {
-            <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
+            <FlareIconView Value="@Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
         @if (!string.IsNullOrWhiteSpace(Shortcut))
@@ -65,7 +65,7 @@ else
         }
         @if (Icon is not null)
         {
-            <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
+            <FlareIconView Value="@Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
         @if (!string.IsNullOrWhiteSpace(Shortcut))

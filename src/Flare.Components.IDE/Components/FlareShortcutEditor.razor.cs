@@ -31,10 +31,26 @@ public partial class FlareShortcutEditor
     /// <summary>Disables capture, clearing and resetting.</summary>
     [Parameter] public bool Disabled { get; set; }
 
+    /// <summary>
+    /// Renders a single compact row: the clear action becomes an icon button, the reset button is
+    /// omitted and the shortcut hint is shown only while an input error is present.
+    /// </summary>
+    [Parameter] public bool Compact { get; set; }
+
+    /// <summary>Shows the reset-to-default button in the non-compact layout.</summary>
+    [Parameter] public bool ShowReset { get; set; } = true;
+
+    /// <summary>Shows the shortcut hint and error line in the non-compact layout.</summary>
+    [Parameter] public bool ShowStatus { get; set; } = true;
+
     protected override string ComponentCssClass => Css.Classes.Ide.Shortcuts.Editor;
 
     private IStringLocalizer<IdeStrings> Text => Localizer<IdeStrings>();
     private readonly string _statusId = $"flare-shortcut-status-{Guid.NewGuid():N}";
+
+    private string? FieldLabel => Compact ? Label : Label ?? Text["Shortcut_Label"];
+
+    private bool StatusVisible => Compact ? _message is not null : ShowStatus;
     private static readonly HashSet<string> BrowserShortcuts = new(StringComparer.Ordinal)
     {
         "alt+arrowleft", "alt+arrowright", "alt+f4", "ctrl+l", "ctrl+r", "ctrl+t", "ctrl+n",

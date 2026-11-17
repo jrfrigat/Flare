@@ -5,16 +5,34 @@
     <FlareStack Row="true" Gap="FlareSpacing.XSmall">
         <div @ref="_capture" data-flare-shortcut-capture="" @onkeydown="CaptureAsync"
              @onfocusin="@BeginCapture" @onfocusout="@CancelCapture" @onpointerdown="@BeginCapture">
-            <FlareTextField Label="@(Label ?? Text["Shortcut_Label"])" Value="@Value" ReadOnly="true"
+            <FlareTextField Label="@FieldLabel" Value="@Value" ReadOnly="true"
                             Placeholder="@Text["Shortcut_Empty"]" Disabled="@Disabled"
-                            aria-describedby="@_statusId" />
+                            aria-describedby="@(StatusVisible ? _statusId : null)" />
         </div>
-        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value is null)"
-                     OnClick="@(() => SetValueAsync(null))">@Text["Shortcut_Clear"]</FlareButton>
-        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value == DefaultValue)"
-                     OnClick="@ResetAsync">@Text["Shortcut_Reset"]</FlareButton>
+        @if (Compact)
+        {
+            <FlareIconButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                             Icon="FlareIcons.Close"
+                             Tooltip="@Text["Shortcut_Clear"]"
+                             AriaLabel="@Text["Shortcut_Clear"]"
+                             Disabled="@(Disabled || Value is null)"
+                             OnClick="@(() => SetValueAsync(null))" />
+        }
+        else
+        {
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value is null)"
+                         OnClick="@(() => SetValueAsync(null))">@Text["Shortcut_Clear"]</FlareButton>
+            @if (ShowReset)
+            {
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value == DefaultValue)"
+                             OnClick="@ResetAsync">@Text["Shortcut_Reset"]</FlareButton>
+            }
+        }
     </FlareStack>
-    <FlareText Element="p" Typo="TypographyScale.BodySmall" id="@_statusId" role="status">
-        @Text[_message ?? (_recording ? "Shortcut_Record" : "Shortcut_Hint")]
-    </FlareText>
+    @if (StatusVisible)
+    {
+        <FlareText Element="p" Typo="TypographyScale.BodySmall" id="@_statusId" role="status">
+            @Text[_message ?? (_recording ? "Shortcut_Record" : "Shortcut_Hint")]
+        </FlareText>
+    }
 </div>
