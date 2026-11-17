@@ -18,15 +18,30 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareToolPanelGroup` presents several tool panels as keyboard-accessible tabs with one visible panel, while keeping the region's collapse, rail and auto-hide behavior.
 - `FlareDocumentTabs` tabs can be dragged into `FlareIdeLayout` regions (`Dockable`), and the tab move menu (`DockTargets`, `OnDockRequested`) provides the keyboard path.
 - Collapsed left and right `FlareIdeLayout` rails accept document drops and expand the destination.
+- `FlareDocumentTabs.StripOnly` renders only the tab strip, so a host can use it as an IDE Center header, and `ControlledSelection` makes `ActiveKey` authoritative so null can mean no active tab.
+- `FlareToolPanelGroup` supports a controlled active tool (`ActiveKey`, `OnActiveChanged`), host header actions (`ToolbarContent`), a bottom tab strip (`TabStripPlacement.Bottom`), a hidden tab strip while its region floats, and an optional built-in collapse button.
+- `FlareIdeLayout` can hide the left or right region (`LeftRegionVisible`/`RightRegionVisible`), gives an auto-hide side region one rail entry per tool (`ToolRailMode.PerTool` with controlled selection), and adds a bottom tool-window header with pin and collapse controls (`BottomPinned`, `ShowBottomHeader`, `BottomHeaderContent`).
+- `FlareMenuItem` shows a keyboard shortcut hint (`Shortcut`) and supports controlled checkable items (`Checked`); `FlareMenuSeparator` groups entries; `FlareMenu.OpenAtAsync(x, y)` opens a host-owned context menu at a pointer position and returns focus to the element that held it.
+- `FlareMenuBar` coordinates its top-level menus, so only one is open and moving between titles swaps the open menu.
+- `FlareToolbar.TrailingContent` keeps trailing actions fixed while groups reorder, and `ShowReorderHandles` hides the drag handles.
+- `FlareTreeItem.TrailingContent` adds per-row actions or status; `Expanded`/`ExpandedChanged` make expansion controlled; `OnContextMenu` and `OnDoubleClick` report row gestures without selecting the row or double-toggling expansion.
+- Tool panel tabs shrink and ellipsize; a tab too narrow for its label shows its icon alone while keeping the accessible name, and inactive group tabs stay mounted but hidden.
+- `FlareEditorBreadcrumbBar`/`FlareEditorBreadcrumbSegment` add the VS2026 editor breadcrumb row, and `FlareCaptionButton` with `CaptionButtonKind` adds the title-bar caption controls.
+- The `VisualStudio` theme matches the VS2026 dark chrome: palette and purple accent, 23-24px fields and combos, the 1px focus ring and 2px scrollbars, a 28px command bar, flowing 24px document tabs, compact menus, the status bar, tool windows and bottom sheet tabs, with 16px chrome icons and 12px chrome text.
 
 ### Changed
 
-- A collapsed or floating IDE region no longer draws its dock strip inside the rail-width column; expand the region to see its document tabs.
+- A side dock strip exists only while its region has documents: without side documents the row is not drawn and the tool panel fills the region. A collapsed or floating region shows no strip, and a docked document keeps the icon-only control that returns to the tools. The controls that return to the tools or main content are icon-only and keep their localized accessible names.
 
 ### Fixed
 
 - IDE dividers follow the active theme and offer drag and keyboard resizing without step buttons. Standalone splitters can opt out of step buttons with `ShowStepButtons`.
 - Gallery table-of-contents links scroll to their demo sections again.
+- `FlareSelect` and `FlareMultiSelect` show their focus ring again.
+- A dialog opened from a menu item keeps the focus instead of returning it to the menu activator.
+- The bottom auto-hide flyout is painted above its rail.
+- Tool panel tabs keep their icon-only state while the strip stays narrow.
+- A top-level menu title that wraps onto a second line remains clickable.
 
 ## [0.57.0] - 2026-11-12
 
