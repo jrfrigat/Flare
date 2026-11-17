@@ -6,24 +6,25 @@ using Microsoft.AspNetCore.Components.Web;
 namespace Flare.Components.Tests;
 
 /// <summary>
-/// The side dock strips can draw their region caption as text, as an icon, or not at all, without
-/// losing the localized accessible name or the control that returns from a covering document.
+/// The built-in IDE dock strips never paint a region caption. The control that returns from a covering
+/// document to the tools or main content is an icon-only button whose localized region name stays its
+/// accessible name.
 /// </summary>
 public class IdeLayoutDockCaptionTests : FlareTestContext
 {
     public IdeLayoutDockCaptionTests() => Services.AddFlareIde();
 
     private IRenderedComponent<FlareIdeLayout> RenderLayout(
-        IdeDockCaptionMode mode,
         IReadOnlyList<IdeDocument> documents,
-        Action<IdeDocumentSelection>? selection = null) =>
+        Action<IdeDocumentSelection>? selection = null,
+        RenderFragment? centerHeader = null) =>
         Render<FlareIdeLayout>(p =>
         {
-            p.Add(x => x.DockCaptionMode, mode);
             p.Add(x => x.Documents, documents);
             if (selection is not null)
                 p.Add(x => x.OnActiveDocumentChanged,
                     EventCallback.Factory.Create<IdeDocumentSelection>(this, selection));
+            if (centerHeader is not null) p.Add(x => x.CenterDockHeader, centerHeader);
         });
 
     private static string StripSelector(IdeDocumentRegion region) =>
@@ -32,98 +33,77 @@ public class IdeLayoutDockCaptionTests : FlareTestContext
     private static IElement CaptionOf(IRenderedComponent<FlareIdeLayout> cut, IdeDocumentRegion region) =>
         cut.Find($"{StripSelector(region)} > button");
 
+    private static readonly (IdeDocumentRegion Region, string Label)[] Regions =
+    [
+        (IdeDocumentRegion.Left, "Left tools"),
+        (IdeDocumentRegion.Center, "Documents"),
+        (IdeDocumentRegion.Right, "Right tools")
+    ];
+
     [Fact]
-    public void DefaultMode_KeepsTheVisibleCaptionText()
+    public void DefaultStrips_NeverPaintRegionCaptionText()
     {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.Documents, []));
+        var cut = RenderLayout([]);
 
-        var caption = CaptionOf(cut, IdeDocumentRegion.Left);
+        foreach (var (region, label) in Regions)
+        {
+            var strip = cut.Find(StripSelector(region));
+            var caption = CaptionOf(cut, region);
 
-        Assert.Equal(IdeDockCaptionMode.Text, cut.Instance.DockCaptionMode);
-        Assert.Equal("Left tools", caption.TextContent.Trim());
-        Assert.Null(caption.GetAttribute("aria-label"));
-        Assert.Equal("true", caption.GetAttribute("aria-pressed"));
-        Assert.DoesNotContain(Css.Classes.Visually.Hidden, caption.ClassName);
+            Assert.Equal(label, strip.GetAttribute("aria-label"));
+            Assert.DoesNotContain(label, strip.TextContent);
+            Assert.Equal(string.Empty, caption.TextContent.Trim());
+            Assert.Equal(label, caption.GetAttribute("aria-label"));
+            Assert.Single(caption.QuerySelectorAll($".{Css.Classes.Button.Icon}"));
+            Assert.Empty(caption.QuerySelectorAll($".{Css.Classes.Button.Label}"));
+        }
     }
 
     [Fact]
-    public void IconOnlyMode_KeepsTheAccessibleNameWithoutVisibleText()
-    {
-        var cut = RenderLayout(IdeDockCaptionMode.IconOnly, []);
-
-        var left = CaptionOf(cut, IdeDocumentRegion.Left);
-        var right = CaptionOf(cut, IdeDocumentRegion.Right);
-
-        Assert.Equal("Left tools", left.GetAttribute("aria-label"));
-        Assert.Equal("Right tools", right.GetAttribute("aria-label"));
-        Assert.Equal(string.Empty, left.TextContent.Trim());
-        Assert.Single(left.QuerySelectorAll($".{Css.Classes.Button.Icon}"));
-        Assert.Empty(left.QuerySelectorAll($".{Css.Classes.Button.Label}"));
-        Assert.Equal("Left tools", cut.Find(StripSelector(IdeDocumentRegion.Left)).GetAttribute("aria-label"));
-        Assert.Equal("Documents", CaptionOf(cut, IdeDocumentRegion.Center).TextContent.Trim());
-    }
-
-    [Fact]
-    public async Task HiddenMode_KeepsALabelledReturnControlWhileADocumentCoversTheTools()
+    public async Task SideCaption_ReturnsToTheToolContentAndReportsItsPressedState()
     {
         IdeDocumentSelection? reported = null;
         var cut = RenderLayout(
-            IdeDockCaptionMode.Hidden,
             [new("a", "Main.cs", IdeDocumentRegion.Left)],
             selection => reported = selection);
 
-        var panel = cut.Find($".{Css.Classes.Ide.Layout.PanelLeft} .{Css.Classes.Ide.Layout.PanelBody}");
-        Assert.True(panel.HasAttribute("inert"));
+        var panelSelector = $".{Css.Classes.Ide.Layout.PanelLeft} .{Css.Classes.Ide.Layout.PanelBody}";
+        Assert.True(cut.Find(panelSelector).HasAttribute("inert"));
+        Assert.Equal("false", CaptionOf(cut, IdeDocumentRegion.Left).GetAttribute("aria-pressed"));
 
-        var caption = CaptionOf(cut, IdeDocumentRegion.Left);
-        Assert.Contains(Css.Classes.Visually.Hidden, caption.ClassName);
-        Assert.Equal("Left tools", caption.GetAttribute("aria-label"));
-        Assert.Equal("Left tools", caption.TextContent.Trim());
-        Assert.Equal("Left tools", cut.Find(StripSelector(IdeDocumentRegion.Left)).GetAttribute("aria-label"));
-
-        await cut.InvokeAsync(() => caption.ClickAsync(new MouseEventArgs()));
+        await cut.InvokeAsync(() => CaptionOf(cut, IdeDocumentRegion.Left).ClickAsync(new MouseEventArgs()));
 
         Assert.Equal(new IdeDocumentSelection(IdeDocumentRegion.Left, null), reported);
-        Assert.False(cut.Find($".{Css.Classes.Ide.Layout.PanelLeft} .{Css.Classes.Ide.Layout.PanelBody}").HasAttribute("inert"));
-        Assert.Empty(cut.FindAll($"{StripSelector(IdeDocumentRegion.Left)} > button"));
+        Assert.False(cut.Find(panelSelector).HasAttribute("inert"));
+        Assert.Equal("true", CaptionOf(cut, IdeDocumentRegion.Left).GetAttribute("aria-pressed"));
     }
 
     [Fact]
-    public void HiddenMode_WithoutSideDocuments_DrawsNoSideStrip()
+    public async Task CenterCaption_ReturnsToTheMainContent()
     {
-        var cut = RenderLayout(IdeDockCaptionMode.Hidden, [new("a", "Main.cs")]);
+        var cut = RenderLayout([new("a", "Main.cs")]);
+        var mainSelector = $".{Css.Classes.Ide.Layout.Main}";
 
-        Assert.Empty(cut.FindAll(StripSelector(IdeDocumentRegion.Left)));
-        Assert.Empty(cut.FindAll(StripSelector(IdeDocumentRegion.Right)));
-        Assert.Single(cut.FindAll(StripSelector(IdeDocumentRegion.Center)));
-        Assert.Equal("Documents", CaptionOf(cut, IdeDocumentRegion.Center).TextContent.Trim());
+        Assert.True(cut.Find(mainSelector).HasAttribute("inert"));
+        Assert.Equal("false", CaptionOf(cut, IdeDocumentRegion.Center).GetAttribute("aria-pressed"));
+
+        await cut.InvokeAsync(() => CaptionOf(cut, IdeDocumentRegion.Center).ClickAsync(new MouseEventArgs()));
+
+        Assert.False(cut.Find(mainSelector).HasAttribute("inert"));
+        Assert.True(cut.Find($".{Css.Classes.Ide.Layout.Document}").HasAttribute("hidden"));
+        Assert.Equal("true", CaptionOf(cut, IdeDocumentRegion.Center).GetAttribute("aria-pressed"));
     }
 
     [Fact]
-    public void HiddenMode_WithASideDocument_KeepsTheStripForItsDocumentTabs()
+    public void CustomCenterHeader_ReplacesTheCenterCaptionControl()
     {
         var cut = RenderLayout(
-            IdeDockCaptionMode.Hidden,
-            [new("a", "Main.cs"), new("b", "Guide.md", IdeDocumentRegion.Right)]);
+            [new("a", "Main.cs")],
+            centerHeader: builder => builder.AddContent(0, "Host tabs"));
 
-        var strip = cut.Find(StripSelector(IdeDocumentRegion.Right));
-
-        Assert.Single(strip.QuerySelectorAll($".{Css.Classes.Ide.Layout.DockTab}"));
-        Assert.Contains("Guide.md", strip.TextContent);
-        Assert.Contains(Css.Classes.Visually.Hidden, CaptionOf(cut, IdeDocumentRegion.Right).ClassName);
-    }
-
-    [Fact]
-    public void HiddenMode_WithoutACoveringDocument_RendersNoReturnControl()
-    {
-        var cut = Render<FlareIdeLayout>(p => p
-            .Add(x => x.DockCaptionMode, IdeDockCaptionMode.Hidden)
-            .Add(x => x.Documents, [new("a", "Main.cs", IdeDocumentRegion.Left)])
-            .Add(x => x.ActiveDocuments,
-                new Dictionary<IdeDocumentRegion, string?> { [IdeDocumentRegion.Left] = null }));
-
-        Assert.Single(cut.FindAll(StripSelector(IdeDocumentRegion.Left)));
-        Assert.Empty(cut.FindAll($"{StripSelector(IdeDocumentRegion.Left)} > button"));
-        Assert.False(cut.Find($".{Css.Classes.Ide.Layout.PanelLeft} .{Css.Classes.Ide.Layout.PanelBody}").HasAttribute("inert"));
+        Assert.Empty(cut.FindAll(StripSelector(IdeDocumentRegion.Center)));
+        Assert.Equal("Host tabs", cut.Find($".{Css.Classes.Ide.Layout.CenterHeader}").TextContent);
+        Assert.Equal("Left tools", CaptionOf(cut, IdeDocumentRegion.Left).GetAttribute("aria-label"));
+        Assert.Equal("Right tools", CaptionOf(cut, IdeDocumentRegion.Right).GetAttribute("aria-label"));
     }
 }
