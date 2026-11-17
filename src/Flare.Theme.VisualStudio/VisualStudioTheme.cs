@@ -25,7 +25,7 @@ public sealed class VisualStudioTheme : ITheme
         "_content/Flare.Theme.VisualStudio/css/components.css",
     ];
 
-    // The VS focus ring color flips to the brighter blue in dark mode.
+    // The measured VS 2026 chrome and focus colors differ between the light and dark shells.
     public IReadOnlyDictionary<string, string>? ExtendedDarkOverride => VisualStudioTokens.DarkExtended;
 }
 

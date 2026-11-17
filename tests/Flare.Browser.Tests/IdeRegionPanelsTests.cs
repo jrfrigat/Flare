@@ -10,7 +10,7 @@ public sealed class IdeRegionPanelsTests(BrowserFixture fixture) : IClassFixture
 {
     [Theory]
     [InlineData("light", "rgb(255, 255, 255)", "rgb(228, 228, 232)")]
-    [InlineData("dark", "rgb(30, 30, 30)", "rgb(63, 63, 70)")]
+    [InlineData("dark", "rgb(40, 40, 40)", "rgb(61, 61, 61)")]
     public async Task SplittersFollowTheVisualStudioSurfaceAndOutline(string mode, string surface, string outline)
     {
         await using var context = await fixture.Browser.NewContextAsync();

@@ -59,3 +59,17 @@
         display: none;
     }
 }
+
+/* VS 2026 dark selection: the measured #9184EE accent is drawn as 1px lines - an outline around the
+   active document tab and the matching line under the strip. The light shell keeps its existing tab
+   look, so only the measured dark shell changes. */
+@scope (.flare-theme-visualstudio.flare-mode-dark) to (.flare-root:not(.flare-theme-visualstudio)) {
+
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__bar-wrap {
+        border-bottom-color: var(--flare-vs-chrome-accent);
+    }
+
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab--active {
+        box-shadow: inset 0 0 0 1px var(--flare-vs-chrome-accent);
+    }
+}

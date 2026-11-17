@@ -6,10 +6,10 @@ namespace Flare.Theme.VisualStudio;
 
 /// <summary>
 /// Design tokens for the "Visual Studio 2026" theme - the modern VS shell look: neutral gray
-/// surfaces layered editor/tool-window/tab-strip, Segoe UI type, tight 4px geometry, the VS blue
-/// accent and flat shadows. The signature document-tab gap and active-tab selection (top accent
-/// line over the editor surface) live in the theme-scoped CSS (wwwroot/css/components/tabs.css),
-/// driven by these tokens.
+/// surfaces layered editor/tool-window/tab-strip, Segoe UI type, tight 4px geometry, the measured
+/// #9184EE accent in dark and flat shadows. The signature document-tab gap and active-tab selection
+/// live in the theme-scoped CSS (wwwroot/css/components/tabs.css), driven by these tokens and the
+/// `--flare-vs-chrome-*` roles.
 /// </summary>
 internal class VisualStudioTokens
 {
@@ -544,11 +544,11 @@ internal class VisualStudioTokens
         ItemHeight = "2.5rem",
     };
 
-    /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS).</summary>
+    /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS and by hosts).</summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
         // VS focus ring color used by the scoped button/input CSS.
-        [VisualStudioCssVars.Focus] = "rgba(0,120,212,0.45)",
+        [VisualStudioCssVars.Focus] = "var(--flare-color-primary)",
 
         // The checkbox, radio and menu focus rings inherited from Fluent 2 name these, and this map
         // replaces Fluent's rather than extending it.
@@ -557,13 +557,75 @@ internal class VisualStudioTokens
 
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
         [VisualStudioCssVars.TabGap] = "2px",
-        [VisualStudioCssVars.TabStripBg] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.TabStripBg] = "var(--flare-vs-chrome-tab-strip)",
         // Rounded top corners so the strip flows around the active/hovered tab (wrap-around).
         [VisualStudioCssVars.TabRadius] = "var(--flare-shape-large)",
-        // Active tab fill: in light it is the white editor surface; the dark override lifts it to a
-        // lighter selection gray so the rounded tab still reads as "floating" above the strip.
-        [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.TabActiveBg] = "var(--flare-vs-chrome-tab-active)",
+
+        // VS 2026 chrome surfaces. Light mode names the existing light scheme roles, so the palette
+        // above stays valid; DarkExtended below replaces them with the measured VS 2026 values.
+        [VisualStudioCssVars.ChromeTitleBar] = "var(--flare-color-surface-container-low)",
+        [VisualStudioCssVars.ChromeCommandBar] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeTabStrip] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeTabActive] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.ChromeEditor] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.ChromeBreadcrumb] = "var(--flare-color-surface-container-low)",
+        [VisualStudioCssVars.ChromeToolWindow] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.ChromeToolTab] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeField] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.ChromeBottomPanel] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeStatusBar] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeBarEdge] = "var(--flare-color-surface-container-high)",
+        [VisualStudioCssVars.ChromeDivider] = "var(--flare-color-outline-variant)",
+        [VisualStudioCssVars.ChromeOutline] = "var(--flare-color-outline)",
+        [VisualStudioCssVars.ChromeMenu] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeHover] = "var(--flare-color-surface-container-high)",
+        [VisualStudioCssVars.ChromeMenuBarHover] = "var(--flare-color-surface-container-high)",
+        [VisualStudioCssVars.ChromeAccent] = "var(--flare-color-primary)",
+        [VisualStudioCssVars.ChromeText] = "var(--flare-color-on-surface)",
+        [VisualStudioCssVars.ChromeTextSecondary] = "var(--flare-color-on-surface-variant)",
+        [VisualStudioCssVars.ChromeTextDisabled] = "var(--flare-color-on-surface-variant2)",
+        [VisualStudioCssVars.ChromeScrollbarThumb] = "var(--flare-color-on-surface-variant2)",
+        [VisualStudioCssVars.ChromeScrollbarTrack] = "var(--flare-color-surface)",
+
+        // The optional IDE shell reads its public hooks; this theme points them at the chrome roles so
+        // a host gets the VS surfaces without overriding a single generic color role.
+        [IdeSurface] = "var(--flare-vs-chrome-tool-window)",
+        [IdeSurfaceVariant] = "var(--flare-vs-chrome-command-bar)",
+        [IdeOutlineVariant] = "var(--flare-vs-chrome-divider)",
+        [IdeOnSurface] = "var(--flare-vs-chrome-text)",
+        [IdeOnSurfaceVariant] = "var(--flare-vs-chrome-text-secondary)",
+        [IdePrimary] = "var(--flare-vs-chrome-accent)",
+        [IdeMenuBarBg] = "var(--flare-vs-chrome-title-bar)",
+        [IdeCommandBarBg] = "var(--flare-vs-chrome-command-bar)",
+        [IdeTabStripBg] = "var(--flare-vs-chrome-tab-strip)",
+        [IdeTabActiveBg] = "var(--flare-vs-chrome-tab-active)",
+        [IdeEditorBg] = "var(--flare-vs-chrome-editor)",
+        [IdeToolHeaderBg] = "var(--flare-vs-chrome-tool-tab)",
+        [IdeToolTabActiveBg] = "var(--flare-vs-chrome-tool-tab)",
+        [IdeBottomTabStripBg] = "var(--flare-vs-chrome-bottom-panel)",
+        [IdeStatusBarBg] = "var(--flare-vs-chrome-status-bar)",
+        [IdePanelBg] = "var(--flare-vs-chrome-tool-window)",
     };
+
+    // The IDE package's public override hooks, named here so the theme can point them at its chrome
+    // roles without taking a dependency on the optional components package.
+    internal const string IdeSurface = "--flare-ide-surface";
+    internal const string IdeSurfaceVariant = "--flare-ide-surface-variant";
+    internal const string IdeOutlineVariant = "--flare-ide-outline-variant";
+    internal const string IdeOnSurface = "--flare-ide-on-surface";
+    internal const string IdeOnSurfaceVariant = "--flare-ide-on-surface-variant";
+    internal const string IdePrimary = "--flare-ide-primary";
+    internal const string IdeMenuBarBg = "--flare-ide-menubar-bg";
+    internal const string IdeCommandBarBg = "--flare-ide-commandbar-bg";
+    internal const string IdeTabStripBg = "--flare-ide-tab-strip-bg";
+    internal const string IdeTabActiveBg = "--flare-ide-tab-active-bg";
+    internal const string IdeEditorBg = "--flare-ide-editor-bg";
+    internal const string IdeToolHeaderBg = "--flare-ide-tool-header-bg";
+    internal const string IdeToolTabActiveBg = "--flare-ide-tool-tab-active-bg";
+    internal const string IdeBottomTabStripBg = "--flare-ide-bottom-tab-strip-bg";
+    internal const string IdeStatusBarBg = "--flare-ide-statusbar-bg";
+    internal const string IdePanelBg = "--flare-ide-panel-bg";
 
 
     /// <summary>The complete Visual Studio 2026 design tokens. Use this as the base for custom themes.</summary>
@@ -674,17 +736,18 @@ internal class VisualStudioTokens
         ShadowPenumbra = "rgba(0,0,0,0.10)",
     };
 
-    // Visual Studio 2026 dark scheme: the layered #1E1E1E/#252526/#2D2D30 shell + bright blue accent.
+    // Visual Studio 2026 dark scheme: measured chrome surfaces (#1C1C1C/#262626/#282828/#1E1E1E),
+    // #3D3D3D separators, #454545 outlines and the #9184EE purple accent.
     internal static readonly ColorScheme DarkColors = new()
     {
-        Primary = "#3794FF",
-        OnPrimary = "#002747",
-        PrimaryContainer = "#004781",
-        OnPrimaryContainer = "#CFE4FB",
-        Secondary = "#A8A8AC",
-        OnSecondary = "#1E1E1E",
-        SecondaryContainer = "#3F3F46",
-        OnSecondaryContainer = "#F1F1F1",
+        Primary = "#9184EE",
+        OnPrimary = "#1C1C1C",
+        PrimaryContainer = "#3B3168",
+        OnPrimaryContainer = "#E8E2FF",
+        Secondary = "#CCCCCC",
+        OnSecondary = "#1C1C1C",
+        SecondaryContainer = "#3D3D3D",
+        OnSecondaryContainer = "#FFFFFF",
         Tertiary = "#C58FD6",
         OnTertiary = "#3B0B47",
         TertiaryContainer = "#522463",
@@ -701,22 +764,23 @@ internal class VisualStudioTokens
         OnWarning = "#3D2C00",
         WarningContainer = "#6B5300",
         OnWarningContainer = "#FFF1B3",
-        Info = "#3794FF",
-        OnInfo = "#002747",
-        InfoContainer = "#004781",
-        OnInfoContainer = "#CFE4FB",
-        // Editor surface = #1E1E1E; tool window #252526; tab strip / titlebar #2D2D30.
+        Info = "#9184EE",
+        OnInfo = "#1C1C1C",
+        InfoContainer = "#3B3168",
+        OnInfoContainer = "#E8E2FF",
+        // Editor #1E1E1E; tool window #282828; command bar/tab strip #262626; menu #2C2C2C;
+        // status bar #141414; title bar/menu bar #1C1C1C.
         Surface = "#1E1E1E",
-        OnSurface = "#F1F1F1",
-        SurfaceVariant = "#2D2D30",
+        OnSurface = "#FFFFFF",
+        SurfaceVariant = "#282828",
         OnSurfaceVariant = "#CCCCCC",
-        OnSurfaceVariant2 = "#808083",
-        SurfaceContainerLowest = "#181818",
-        SurfaceContainerLow = "#252526",
-        SurfaceContainer = "#2D2D30",
-        SurfaceContainerHigh = "#333337",
-        SurfaceContainerHighest = "#3F3F46",
-        SurfaceBright = "#3F3F46",
+        OnSurfaceVariant2 = "#858585",
+        SurfaceContainerLowest = "#141414",
+        SurfaceContainerLow = "#262626",
+        SurfaceContainer = "#2C2C2C",
+        SurfaceContainerHigh = "#383838",
+        SurfaceContainerHighest = "#3D3D3D",
+        SurfaceBright = "#383838",
         SurfaceDim = "#1E1E1E",
         PrimaryFixed = "#CFE4FB",
         PrimaryFixedDim = "#3794FF",
@@ -730,12 +794,12 @@ internal class VisualStudioTokens
         TertiaryFixedDim = "#C58FD6",
         OnTertiaryFixed = "#3B0B47",
         OnTertiaryFixedVariant = "#3B0B47",
-        Background = "#1F1F1F",
-        OnBackground = "#F1F1F1",
-        Outline = "#434346",
-        OutlineVariant = "#3F3F46",
+        Background = "#1C1C1C",
+        OnBackground = "#FFFFFF",
+        Outline = "#454545",
+        OutlineVariant = "#3D3D3D",
         InverseSurface = "#F1F1F1",
-        InverseOnSurface = "#1E1E1E",
+        InverseOnSurface = "#1C1C1C",
         InversePrimary = "#005FB8",
         Scrim = "#000000",
         Shadow = "#000000",
@@ -743,20 +807,41 @@ internal class VisualStudioTokens
         ShadowPenumbra = "rgba(0,0,0,0.30)",
     };
 
-    /// <summary>Dark-mode override of the focus ring color.</summary>
+    /// <summary>Dark-mode override of the focus ring color and chrome surfaces.</summary>
     internal static readonly IReadOnlyDictionary<string, string> DarkExtended = BuildDarkExtended();
 
     private static IReadOnlyDictionary<string, string> BuildDarkExtended()
     {
         return new Dictionary<string, string>(Extended)
         {
-            [VisualStudioCssVars.Focus] = "rgba(55,148,255,0.5)",
             [FluentCssVars.FocusStrokeColor] = "#FFFFFF",
             [FluentCssVars.FocusStrokeOuter] = "#000000",
-            // VS 2026: the active document tab takes the editor surface (#1E1E1E) -- darker than the
-            // strip (#2D2D30) -- so the rounded tab reads as connected to the editor below it, rather
-            // than as a lighter floating pill. (Light mode already uses the white editor surface.)
-            [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
+            // Measured VS 2026 dark chrome. The light map above names palette roles; these concrete
+            // values are what the screenshot gives, so a host can delete its old #007ACC/#2D2D30
+            // overrides and the chrome still renders the measured shell.
+            [VisualStudioCssVars.ChromeTitleBar] = "#1C1C1C",
+            [VisualStudioCssVars.ChromeCommandBar] = "#262626",
+            [VisualStudioCssVars.ChromeTabStrip] = "#262626",
+            [VisualStudioCssVars.ChromeTabActive] = "#282828",
+            [VisualStudioCssVars.ChromeEditor] = "#1E1E1E",
+            [VisualStudioCssVars.ChromeBreadcrumb] = "#2B2B2B",
+            [VisualStudioCssVars.ChromeToolWindow] = "#282828",
+            [VisualStudioCssVars.ChromeToolTab] = "#282828",
+            [VisualStudioCssVars.ChromeField] = "#353535",
+            [VisualStudioCssVars.ChromeBottomPanel] = "#1C1C1C",
+            [VisualStudioCssVars.ChromeStatusBar] = "#141414",
+            [VisualStudioCssVars.ChromeBarEdge] = "#0E0E0E",
+            [VisualStudioCssVars.ChromeDivider] = "#3D3D3D",
+            [VisualStudioCssVars.ChromeOutline] = "#454545",
+            [VisualStudioCssVars.ChromeMenu] = "#2C2C2C",
+            [VisualStudioCssVars.ChromeHover] = "#383838",
+            [VisualStudioCssVars.ChromeMenuBarHover] = "#292929",
+            [VisualStudioCssVars.ChromeAccent] = "#9184EE",
+            [VisualStudioCssVars.ChromeText] = "#FFFFFF",
+            [VisualStudioCssVars.ChromeTextSecondary] = "#CCCCCC",
+            [VisualStudioCssVars.ChromeTextDisabled] = "#858585",
+            [VisualStudioCssVars.ChromeScrollbarThumb] = "#9D9D9D",
+            [VisualStudioCssVars.ChromeScrollbarTrack] = "#282828",
         };
     }
 

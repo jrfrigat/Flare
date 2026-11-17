@@ -18,6 +18,7 @@
 
 .flare-ide-layout__menubar {
     flex-shrink: 0;
+    background: var(--flare-ide-menubar-bg, transparent);
 }
 
 .flare-ide-layout__body {
@@ -92,7 +93,7 @@
     grid-row: 1;
     overflow-x: auto;
     min-inline-size: 0;
-    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    background: var(--flare-ide-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
 }
 
 /* A host tab strip replaces the built-in Center strip in the same docking row and column. */
@@ -101,7 +102,7 @@
     display: flex;
     min-inline-size: 0;
     overflow: hidden;
-    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    background: var(--flare-ide-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
 }
 
 .flare-ide-layout__center-header > * {
@@ -114,7 +115,7 @@
     z-index: 1;
     min-inline-size: 0;
     overflow: auto;
-    background: var(--flare-ide-surface, var(--flare-color-surface));
+    background: var(--flare-ide-editor-bg, var(--flare-ide-surface, var(--flare-color-surface)));
 }
 
 .flare-ide-layout__dock-select,
@@ -168,6 +169,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
+    background: var(--flare-ide-panel-bg, transparent);
 }
 
 /* A per-tool region keeps its body mounted while the region is collapsed, so its tools stay
@@ -217,7 +219,7 @@
     gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
     min-height: 28px;
     padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
-    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    background: var(--flare-ide-bottom-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
     border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
@@ -636,7 +638,7 @@
     min-inline-size: 0;
     overflow-x: auto;
     gap: 1px;
-    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    background: var(--flare-ide-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
     scrollbar-width: thin;
 }
 
@@ -670,7 +672,7 @@
 }
 
 .flare-doc-tabs__tab--active {
-    background: var(--flare-ide-surface, var(--flare-color-surface));
+    background: var(--flare-ide-tab-active-bg, var(--flare-ide-surface, var(--flare-color-surface)));
     border-bottom-color: var(--flare-ide-primary, var(--flare-color-primary));
 }
 
@@ -814,7 +816,7 @@
     align-items: center;
     flex-shrink: 0;
     gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
-    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    background: var(--flare-ide-tool-header-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
     border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
@@ -896,7 +898,7 @@
 }
 
 .flare-toolpanel-group__tab--active {
-    background: var(--flare-ide-surface, var(--flare-color-surface));
+    background: var(--flare-ide-tool-tab-active-bg, var(--flare-ide-surface, var(--flare-color-surface)));
     border-bottom-color: var(--flare-ide-primary, var(--flare-color-primary));
 }
 
@@ -927,7 +929,7 @@
 .flare-toolpanel-group__tabs--bottom {
     flex: none;
     border-top: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
-    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    background: var(--flare-ide-bottom-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
 }
 
 .flare-toolpanel-group__tabs--bottom .flare-toolpanel-group__tab {
@@ -956,6 +958,7 @@
     gap: var(--flare-ide-spacing-2, var(--flare-spacing-2));
     padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
     min-height: 28px;
+    background: var(--flare-ide-tool-header-bg, transparent);
 }
 
 .flare-toolpanel__title {
@@ -995,6 +998,7 @@
     display: flex;
     align-items: center;
     padding: 0 var(--flare-ide-spacing-6, var(--flare-spacing-6));
+    background: var(--flare-ide-statusbar-bg, transparent);
     font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
     min-height: 24px;
     font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
@@ -1054,6 +1058,7 @@
     padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
     min-height: 36px;
     flex-wrap: wrap;
+    background: var(--flare-ide-commandbar-bg, transparent);
     border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
