@@ -5,6 +5,7 @@
 @using System.ComponentModel
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Web
+@using Flare.Components.Combobox
 
 @* The canonical single-line text field. Composes the shared FlareFieldChrome frame (root + label +
    helper/error + counter) and the shared FlareTextInput (the editable element), so the chrome markup
@@ -24,7 +25,7 @@
                   Invalid="_hasError" Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@_extraClass"
                   FloatingLabel="FloatingLabel"
-                  Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
+                  Label="@Label" LabelContent="@LabelContent" LabelFor="@_controlId"
                   HelperText="@_effectiveHelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Class="@Class" Style="@_inlineStyle" Attributes="AdditionalAttributes"
@@ -47,7 +48,7 @@
             <FlareTextInput @ref="_input"
                                Value="@_displayText"
                                ValueChanged="EmitValue"
-                               Id="@ControlId"
+                               Id="@_controlId"
                                Placeholder="@Placeholder"
                                Disabled="Disabled"
                                ReadOnly="ReadOnly"
@@ -91,7 +92,7 @@
             }
             @if (FloatingLabel && !string.IsNullOrEmpty(Label))
             {
-                <label class="@Css.Classes.Input.Label @Css.Classes.Input.LabelFloating" for="@ControlId">@Label</label>
+                <label class="@Css.Classes.Input.Label @Css.Classes.Input.LabelFloating" for="@_controlId">@Label</label>
             }
         </div>
     </Field>
@@ -182,6 +183,10 @@
     [Parameter] public string? DataList { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    // The control's DOM id as the label must reference it. InputAttributes is splatted onto the control
+    // last, so a consumer-supplied id wins there; the label's for has to resolve to the same value.
+    private string _controlId => ComboboxInputAttributes.Id(InputAttributes, ControlId);
 
     private FlareTextInput? _input;
     private bool _focused;

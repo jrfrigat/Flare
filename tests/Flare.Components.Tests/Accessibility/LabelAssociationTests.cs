@@ -1,7 +1,23 @@
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+
 namespace Flare.Components.Tests;
 
 public sealed class LabelAssociationTests : FlareTestContext
 {
+    private static IReadOnlyDictionary<string, object> ConsumerId(string id) =>
+        new Dictionary<string, object> { ["id"] = id };
+
+    private static void AssertLabelReferences<TComponent>(
+        IRenderedComponent<TComponent> cut, AngleSharp.Dom.IElement control) where TComponent : IComponent
+    {
+        var label = cut.Find("label");
+        Assert.Equal(control.Id, label.GetAttribute("for"));
+        var referenced = cut.Find("#" + control.Id);
+        Assert.Equal(control.Id, referenced.Id);
+        Assert.Equal(control.TagName, referenced.TagName);
+    }
+
     [Fact]
     public void SelectOnlyUsesANonLabelCaptionForItsDivTrigger()
     {
@@ -98,5 +114,75 @@ public sealed class LabelAssociationTests : FlareTestContext
         var input = cut.Find("input[type=color]");
         Assert.Equal(input.Id, cut.Find("label").GetAttribute("for"));
         Assert.NotNull(cut.Find("#" + cut.Find("[role=group]").GetAttribute("aria-labelledby")));
+    }
+
+    [Fact]
+    public async Task TextField_LabelFollowsConsumerIdAndFocusesTheControl()
+    {
+        var focused = false;
+        var cut = Render<FlareTextField>(p => p
+            .Add(x => x.Label, "Name")
+            .Add(x => x.InputAttributes, ConsumerId("consumer-name"))
+            .Add(x => x.OnFocus, EventCallback.Factory.Create<FocusEventArgs>(this, _ => focused = true)));
+
+        var input = cut.Find("input");
+        Assert.Equal("consumer-name", input.Id);
+        AssertLabelReferences(cut, input);
+
+        await input.TriggerEventAsync("onfocus", new FocusEventArgs());
+        Assert.True(focused);
+    }
+
+    [Fact]
+    public async Task TextArea_LabelFollowsConsumerIdAndFocusesTheControl()
+    {
+        var focused = false;
+        var cut = Render<FlareTextArea>(p => p
+            .Add(x => x.Label, "Notes")
+            .Add(x => x.InputAttributes, ConsumerId("consumer-notes"))
+            .Add(x => x.OnFocus, EventCallback.Factory.Create<FocusEventArgs>(this, _ => focused = true)));
+
+        var textarea = cut.Find("textarea");
+        Assert.Equal("consumer-notes", textarea.Id);
+        AssertLabelReferences(cut, textarea);
+
+        await textarea.TriggerEventAsync("onfocus", new FocusEventArgs());
+        Assert.True(focused);
+    }
+
+    [Fact]
+    public async Task NumericField_LabelFollowsConsumerIdAndFocusesTheControl()
+    {
+        var focused = false;
+        var cut = Render<FlareNumericField<int>>(p => p
+            .Add(x => x.Label, "Amount")
+            .Add(x => x.InputAttributes, ConsumerId("consumer-amount"))
+            .Add(x => x.OnFocus, EventCallback.Factory.Create<FocusEventArgs>(this, _ => focused = true)));
+
+        var input = cut.Find("input");
+        Assert.Equal("consumer-amount", input.Id);
+        AssertLabelReferences(cut, input);
+
+        await input.TriggerEventAsync("onfocus", new FocusEventArgs());
+        Assert.True(focused);
+    }
+
+    [Fact]
+    public void FieldFamily_WithoutConsumerIdKeepsTheGeneratedId()
+    {
+        var text = Render<FlareTextField>(p => p.Add(x => x.Label, "Name"));
+        var textInput = text.Find("input");
+        Assert.StartsWith("flare-field-", textInput.Id);
+        AssertLabelReferences(text, textInput);
+
+        var area = Render<FlareTextArea>(p => p.Add(x => x.Label, "Notes"));
+        var textarea = area.Find("textarea");
+        Assert.StartsWith("flare-field-", textarea.Id);
+        AssertLabelReferences(area, textarea);
+
+        var numeric = Render<FlareNumericField<int>>(p => p.Add(x => x.Label, "Amount"));
+        var numberInput = numeric.Find("input");
+        Assert.StartsWith("flare-field-", numberInput.Id);
+        AssertLabelReferences(numeric, numberInput);
     }
 }
