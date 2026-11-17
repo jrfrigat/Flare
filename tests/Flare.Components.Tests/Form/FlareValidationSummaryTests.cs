@@ -12,6 +12,27 @@ public class FlareValidationSummaryTests : FlareTestContext
         public string? Name { get; set; }
     }
 
+    private sealed class Profile
+    {
+        public string? Name { get; set; }
+        public string? Notes { get; set; }
+        public int Amount { get; set; }
+    }
+
+    // Obtains the EditContext that FlareForm's EditForm cascades, without exposing it publicly.
+    private sealed class ContextCapture : ComponentBase
+    {
+        [CascadingParameter] private EditContext? Context { get; set; }
+        [Parameter] public Action<EditContext>? Captured { get; set; }
+
+        protected override void OnInitialized()
+        {
+            if (Context is not null) Captured?.Invoke(Context);
+        }
+
+        protected override void BuildRenderTree(RenderTreeBuilder b) { }
+    }
+
     // A context handed in from outside, so the same summary instance sees a DIFFERENT cascading
     // context after a render - what an EditForm does when its Model parameter changes.
     private sealed class ContextHost : ComponentBase
@@ -234,5 +255,137 @@ public class FlareValidationSummaryTests : FlareTestContext
         Assert.Equal("Name is required", link.TextContent);
         var controlId = cut.Find("input").GetAttribute("id");
         Assert.Equal($"#{controlId}", link.GetAttribute("href"));
+    }
+
+    [Fact]
+    public async Task SummaryLinksFollowConsumerIdsForTheFieldFamily()
+    {
+        var model = new Profile { Name = null, Notes = null, Amount = 0 };
+        EditContext? captured = null;
+        var nameAttrs = new Dictionary<string, object> { ["id"] = "consumer-name" };
+        var notesAttrs = new Dictionary<string, object> { ["id"] = "consumer-notes" };
+        var amountAttrs = new Dictionary<string, object> { ["id"] = "consumer-amount" };
+
+        var cut = Render<FlareForm>(p => p
+            .Add(x => x.Model, model)
+            .AddChildContent(b =>
+            {
+                b.OpenComponent<ContextCapture>(0);
+                b.AddAttribute(1, nameof(ContextCapture.Captured), (Action<EditContext>)(ctx => captured = ctx));
+                b.CloseComponent();
+                b.OpenComponent<FlareValidationSummary>(2);
+                b.CloseComponent();
+                b.OpenComponent<FlareTextField>(3);
+                b.AddAttribute(4, "For", (Expression<Func<string?>>)(() => model.Name));
+                b.AddAttribute(5, "InputAttributes", nameAttrs);
+                b.CloseComponent();
+                b.OpenComponent<FlareTextArea>(6);
+                b.AddAttribute(7, "For", (Expression<Func<string?>>)(() => model.Notes));
+                b.AddAttribute(8, "InputAttributes", notesAttrs);
+                b.CloseComponent();
+                b.OpenComponent<FlareNumericField<int>>(9);
+                b.AddAttribute(10, "For", (Expression<Func<int>>)(() => model.Amount));
+                b.AddAttribute(11, "InputAttributes", amountAttrs);
+                b.CloseComponent();
+            }));
+
+        Assert.NotNull(captured);
+        var store = new ValidationMessageStore(captured!);
+        store.Add(new FieldIdentifier(model, nameof(Profile.Name)), "Name is required");
+        store.Add(new FieldIdentifier(model, nameof(Profile.Notes)), "Notes are required");
+        store.Add(new FieldIdentifier(model, nameof(Profile.Amount)), "Amount is required");
+        await cut.InvokeAsync(captured!.NotifyValidationStateChanged);
+
+        cut.WaitForAssertion(() => Assert.Equal(3,
+            cut.FindAll($"a.{Css.Classes.Validation.SummaryLink}").Count));
+        var links = cut.FindAll($"a.{Css.Classes.Validation.SummaryLink}")
+            .Select(link => link.GetAttribute("href")).ToHashSet();
+        Assert.Contains("#consumer-name", links);
+        Assert.Contains("#consumer-notes", links);
+        Assert.Contains("#consumer-amount", links);
+        Assert.NotNull(cut.Find("#consumer-name"));
+        Assert.NotNull(cut.Find("#consumer-notes"));
+        Assert.NotNull(cut.Find("#consumer-amount"));
+    }
+
+    [Fact]
+    public async Task SummaryLinksUseGeneratedIdsWithoutConsumerIds()
+    {
+        var model = new Profile { Name = null, Notes = null, Amount = 0 };
+        EditContext? captured = null;
+
+        var cut = Render<FlareForm>(p => p
+            .Add(x => x.Model, model)
+            .AddChildContent(b =>
+            {
+                b.OpenComponent<ContextCapture>(0);
+                b.AddAttribute(1, nameof(ContextCapture.Captured), (Action<EditContext>)(ctx => captured = ctx));
+                b.CloseComponent();
+                b.OpenComponent<FlareValidationSummary>(2);
+                b.CloseComponent();
+                b.OpenComponent<FlareTextField>(3);
+                b.AddAttribute(4, "For", (Expression<Func<string?>>)(() => model.Name));
+                b.CloseComponent();
+                b.OpenComponent<FlareTextArea>(5);
+                b.AddAttribute(6, "For", (Expression<Func<string?>>)(() => model.Notes));
+                b.CloseComponent();
+                b.OpenComponent<FlareNumericField<int>>(7);
+                b.AddAttribute(8, "For", (Expression<Func<int>>)(() => model.Amount));
+                b.CloseComponent();
+            }));
+
+        Assert.NotNull(captured);
+        var store = new ValidationMessageStore(captured!);
+        store.Add(new FieldIdentifier(model, nameof(Profile.Name)), "Name is required");
+        store.Add(new FieldIdentifier(model, nameof(Profile.Notes)), "Notes are required");
+        store.Add(new FieldIdentifier(model, nameof(Profile.Amount)), "Amount is required");
+        await cut.InvokeAsync(captured!.NotifyValidationStateChanged);
+
+        cut.WaitForAssertion(() => Assert.Equal(3,
+            cut.FindAll($"a.{Css.Classes.Validation.SummaryLink}").Count));
+        var links = cut.FindAll($"a.{Css.Classes.Validation.SummaryLink}")
+            .Select(link => link.GetAttribute("href")![1..]).ToHashSet();
+        var renderedIds = cut.FindAll("input, textarea").Select(control => control.Id).ToHashSet();
+        Assert.All(renderedIds, id => Assert.StartsWith("flare-field-", id));
+        Assert.True(renderedIds.SetEquals(links));
+    }
+
+    [Fact]
+    public async Task SummaryFollowsAChangedConsumerId()
+    {
+        var model = new Profile { Name = null };
+        EditContext? captured = null;
+        var attrs = new Dictionary<string, object> { ["id"] = "consumer-old" };
+        RenderFragment Content() => b =>
+        {
+            b.OpenComponent<ContextCapture>(0);
+            b.AddAttribute(1, nameof(ContextCapture.Captured), (Action<EditContext>)(ctx => captured = ctx));
+            b.CloseComponent();
+            b.OpenComponent<FlareValidationSummary>(2);
+            b.CloseComponent();
+            b.OpenComponent<FlareTextField>(3);
+            b.AddAttribute(4, "For", (Expression<Func<string?>>)(() => model.Name));
+            b.AddAttribute(5, "InputAttributes", attrs);
+            b.CloseComponent();
+        };
+
+        var cut = Render<FlareForm>(p => p
+            .Add(x => x.Model, model)
+            .AddChildContent(Content()));
+
+        Assert.NotNull(captured);
+        var store = new ValidationMessageStore(captured!);
+        store.Add(new FieldIdentifier(model, nameof(Profile.Name)), "Name is required");
+        await cut.InvokeAsync(captured!.NotifyValidationStateChanged);
+        cut.WaitForAssertion(() => Assert.Contains("#consumer-old",
+            cut.Find($"a.{Css.Classes.Validation.SummaryLink}").GetAttribute("href")));
+
+        attrs = new Dictionary<string, object> { ["id"] = "consumer-new" };
+        cut.Render(p => p.AddChildContent(Content()));
+        await cut.InvokeAsync(captured!.NotifyValidationStateChanged);
+
+        cut.WaitForAssertion(() => Assert.Contains("#consumer-new",
+            cut.Find($"a.{Css.Classes.Validation.SummaryLink}").GetAttribute("href")));
+        Assert.NotNull(cut.Find("#consumer-new"));
     }
 }

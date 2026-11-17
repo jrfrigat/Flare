@@ -18,7 +18,7 @@
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(_state.IsOpen ? Css.Classes.Select.Open : null)"
                   Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
-                  LabelFor="@(Searchable ? ComboboxInputAttributes.Id(InputAttributes, _controlId) : null)"
+                  LabelFor="@(Searchable ? FieldInputAttributes.Id(InputAttributes, _controlId) : null)"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
@@ -41,7 +41,7 @@
              tabindex="@(Disabled || Searchable ? -1 : 0)"
              @onclick="OnControlClick"
              @onkeydown="HandleKeyDownAsync"
-             @attributes="(Searchable ? null : ComboboxInputAttributes.Forwardable(InputAttributes))">
+             @attributes="(Searchable ? null : FieldInputAttributes.Forwardable(InputAttributes))">
             <span class="@Css.Classes.Select.Value">
                 @if (!Searchable || !_editing)
                 {
@@ -88,7 +88,7 @@
                        @onfocus="OnInputFocus"
                        @onkeydown="HandleKeyDownAsync"
                        @onkeydown:stopPropagation="true"
-                       @attributes="(Searchable ? ComboboxInputAttributes.Forwardable(InputAttributes) : null)" />
+                       @attributes="(Searchable ? FieldInputAttributes.Forwardable(InputAttributes) : null)" />
             }
             @if (Clearable && !Disabled && !ReadOnly && Current is not null)
             {

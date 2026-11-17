@@ -179,7 +179,7 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
         if (FieldRegistry is null || !_hasBoundField) return;
         _registeredFieldRegistry = FieldRegistry;
         _registeredField = FieldId;
-        _registeredControlId = ControlId;
+        _registeredControlId = EffectiveControlId;
         FieldRegistry[_registeredField] = _registeredControlId;
     }
 
@@ -209,6 +209,11 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     /// <summary>A stable, unique DOM id for this field's control element. Wires the label's <c>for</c>
     /// and the <c>aria-describedby</c> targets; generated once per component instance.</summary>
     protected string ControlId { get; } = $"flare-field-{Guid.NewGuid():N}";
+
+    /// <summary>The id of the field's control as the label and the validation summary must reference it.
+    /// Defaults to <see cref="ControlId"/>; a field that renders a consumer-supplied
+    /// <c>InputAttributes["id"]</c> overrides it with that value.</summary>
+    protected virtual string EffectiveControlId => ControlId;
 
     /// <summary>The DOM id of the helper-text element (derived from <see cref="ControlId"/>).</summary>
     protected string HelperId => $"{ControlId}-help";

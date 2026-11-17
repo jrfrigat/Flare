@@ -7,7 +7,6 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
-@using Flare.Components.Combobox
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The numeric input is complex
    (type=number, min/max/step, focus-swap text mode, clamp-on-change-vs-not-on-input), so it keeps its own
@@ -15,7 +14,7 @@
 <FlareFieldChrome Variant="Variant" Size="Size"
                   Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
-                  Label="@Label" LabelContent="@LabelContent" LabelFor="@_controlId"
+                  Label="@Label" LabelContent="@LabelContent" LabelFor="@EffectiveControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
@@ -26,7 +25,7 @@
                 <span class="@Css.Classes.Numericfield.Prefix">@Prefix</span>
             }
             <input class="@Css.Classes.Input.Control"
-                   id="@_controlId"
+                   id="@EffectiveControlId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="@(_useTextMode ? "text" : "number")"
                    inputmode="@_inputMode"
@@ -130,7 +129,7 @@
 
     // The input's DOM id as the label must reference it. InputAttributes is splatted onto the control
     // last, so a consumer-supplied id wins there; the label's for has to resolve to the same value.
-    private string _controlId => ComboboxInputAttributes.Id(InputAttributes, ControlId);
+    protected override string EffectiveControlId => FieldInputAttributes.Id(InputAttributes, ControlId);
 
     private ElementReference _inputEl;
     private bool _hasValue => Value is not null;
