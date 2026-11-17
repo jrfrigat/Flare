@@ -208,6 +208,7 @@
             {
                 try { await Ui.RegisterTabScrollerAsync(_barRef, _dotNetRef); }
                 catch (InvalidOperationException) { }
+                catch (JSDisconnectedException) { }
                 catch (JSException) { }
             }
         }
@@ -229,6 +230,7 @@
                 {
                     try { await Ui.RevealFocusedTabAsync(_barRef); }
                     catch (InvalidOperationException) { }
+                    catch (JSDisconnectedException) { }
                     catch (JSException) { }
                 }
             }
@@ -261,6 +263,7 @@
     public override async ValueTask DisposeAsync()
     {
         try { await Ui.RemoveTabKeyboardAsync(_barRef); }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         catch (InvalidOperationException) { }
         try { await Ui.RemoveTabScrollerAsync(_barRef); }
@@ -438,6 +441,7 @@
             _jsKeyboardRegistered = true;
         }
         catch (InvalidOperationException) { _jsKeyboardRegistered = false; }
+        catch (JSDisconnectedException) { _jsKeyboardRegistered = false; }
         catch (JSException) { _jsKeyboardRegistered = false; }
 
         if (!_jsKeyboardRegistered && _keyboardRegistrationAttempts == 0)

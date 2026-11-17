@@ -103,6 +103,7 @@
             await Toc.InitAsync(_handle, _objRef!, Root, HeadingSelector, ScrollRoot);
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { return; }
         catch (JSException) { return; }
         _registered = true;
         _registeredRoot = Root;
@@ -150,6 +151,7 @@
     {
         try { await Toc.RemoveAsync(_handle); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         _objRef?.Dispose();
         await base.DisposeAsync();

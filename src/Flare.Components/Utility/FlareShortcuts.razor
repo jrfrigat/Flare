@@ -65,6 +65,7 @@
                 await Ui.RegisterShortcutsAsync(_id, _dotNetRef);
             }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
     }

@@ -46,6 +46,7 @@
         _revealPending = false;
         try { await Ui.RevealActiveLinkTabAsync(_barRef); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 

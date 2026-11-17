@@ -198,6 +198,7 @@
                 await SplitterJs.RegisterAsync(_gutter, _axis, MinSize, MaxSize, _dotNetRef);
             }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
     }

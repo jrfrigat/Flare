@@ -232,6 +232,7 @@
         var index = Array.IndexOf(_weeks.SelectMany(w => w).ToArray(), target);
         if (index < 0) return;
         try { await _cells[index].FocusAsync(); }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         catch (InvalidOperationException) { /* not attached yet */ }
     }
@@ -253,6 +254,7 @@
         if (index >= 0)
         {
             try { await _cells[index].FocusAsync(); }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             catch (InvalidOperationException) { /* not attached yet */ }
         }

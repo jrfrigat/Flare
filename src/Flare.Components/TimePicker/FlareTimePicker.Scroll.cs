@@ -41,6 +41,7 @@ public partial class FlareTimePicker
         _boundColumns = _dropRef;
         _columnsBound = true;
         try { await ElementJs.SyncTimeColumnsAsync(_dropRef, _columnReceiver, _columnGeneration); }
+        catch (JSDisconnectedException) { }
         catch (JSException) { } // Older PWA modules keep the clickable columns usable.
         catch (InvalidOperationException) { } // Prerender has no browser.
     }
@@ -51,6 +52,7 @@ public partial class FlareTimePicker
         _columnGeneration++;
         _columnsBound = false;
         try { await ElementJs.ReleaseTimeColumnsAsync(_boundColumns); }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         catch (InvalidOperationException) { }
     }

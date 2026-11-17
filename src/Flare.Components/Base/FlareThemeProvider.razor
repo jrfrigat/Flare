@@ -146,6 +146,7 @@
                 await ThemeJsService.RevealAppAsync();
                 return;
             }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
 
             await JS.InvokeVoidAsync("hideFlareSplash");

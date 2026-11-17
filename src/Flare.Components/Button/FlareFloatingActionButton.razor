@@ -107,6 +107,7 @@ else
         {
             _focusOnClose = false;
             try { await _element.FocusAsync(preventScroll: true); }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             catch (InvalidOperationException) { }
         }

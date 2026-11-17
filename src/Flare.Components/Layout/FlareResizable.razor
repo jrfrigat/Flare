@@ -89,6 +89,7 @@
             await Resize.RegisterAsync(_container, _handle, edge, MinSize, MaxSize, _dotNetRef);
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 

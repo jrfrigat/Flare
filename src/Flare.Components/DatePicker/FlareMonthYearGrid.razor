@@ -170,6 +170,7 @@
         var index = Array.IndexOf(Values().ToArray(), target);
         if (index < 0) return;
         try { await _cells[index].FocusAsync(); }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         catch (InvalidOperationException) { /* not attached yet */ }
     }

@@ -288,6 +288,7 @@
             registered = true;
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
 
         if (!registered && _keyboardRegistrationAttempts == 0)
@@ -327,6 +328,7 @@
             // the exception would escape this JS-invoked callback and terminate the circuit.
             try { await Ui.RevealFocusedTabAsync(_headerRef); }
             catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
             catch (JSException) { }
             return;
         }
@@ -337,6 +339,7 @@
     {
         try { await Ui.RemoveTabKeyboardAsync(_headerRef); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();

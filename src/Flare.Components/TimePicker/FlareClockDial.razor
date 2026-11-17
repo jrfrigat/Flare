@@ -180,6 +180,7 @@
         // the dial on to minutes, which would otherwise receive the hour that was tapped.
         var mode = _mode;
         try { _radius = (await ElementJs.GetBoundsAsync(_dial)).Width / 2; }
+        catch (JSDisconnectedException) { /* keep the last measurement */ }
         catch (JSException) { /* keep the last measurement */ }
         await Apply(mode, e.OffsetX, e.OffsetY);
     }

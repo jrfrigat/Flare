@@ -163,6 +163,7 @@
                     await Overlay.RememberFocusAsync(_panelId);
                     _rememberedFocus = true;
                 }
+                catch (JSDisconnectedException) { }
                 catch (JSException) { }
                 catch (InvalidOperationException) { }
             }
@@ -197,12 +198,14 @@
                     else
                         await Overlay.FocusFirstAsync(_activatorEl);
                 }
+                catch (JSDisconnectedException) { }
                 catch (JSException) { }
             }
             else if (_rememberedFocus)
             {
                 // The replacement menu is taking the focus; only drop the entry this one remembered.
                 try { await Overlay.ForgetRememberedFocusAsync(_panelId); }
+                catch (JSDisconnectedException) { }
                 catch (JSException) { }
             }
             _rememberedFocus = false;

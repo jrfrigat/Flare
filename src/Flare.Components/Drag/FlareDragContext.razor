@@ -119,6 +119,7 @@
             _registered = true;
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
