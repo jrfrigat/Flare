@@ -296,6 +296,7 @@
 /* The bottom flyout starts above the rail, so the rail stays visible and clickable below the
    overlay just like a side flyout keeps its rail at the edge. */
 .flare-ide-layout__bottom.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
+    top: auto;
     left: 0;
     right: 0;
     bottom: var(--flare-ide-rail);
