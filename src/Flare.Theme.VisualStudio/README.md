@@ -71,6 +71,7 @@ a generic color role:
 | `--flare-vs-chrome-tool-tab` | Tool tab strip and title |
 | `--flare-vs-chrome-field` | Tool search field and input well |
 | `--flare-vs-chrome-bottom-panel` | Bottom panel tab strip |
+| `--flare-vs-chrome-bottom-tab-underline` | Bottom panel tab underline |
 | `--flare-vs-chrome-status-bar` | Status bar |
 | `--flare-vs-chrome-bar-edge` / `--flare-vs-chrome-divider` | Bar edge and separators |
 | `--flare-vs-chrome-outline` | Control outlines |

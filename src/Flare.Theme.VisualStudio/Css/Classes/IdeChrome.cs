@@ -25,4 +25,8 @@ public static class IdeChrome
     public const string MenuBar = "flare-menubar";
     /// <summary>The <c>flare-statusbar</c> CSS class - the 24px VS status bar.</summary>
     public const string StatusBar = "flare-statusbar";
+    /// <summary>The <c>flare-sheet-tabs</c> CSS class - the bottom-panel sheet-tab strip.</summary>
+    public const string SheetTabs = "flare-sheet-tabs";
+    /// <summary>The <c>flare-sheet-tabs__add</c> CSS class - the opt-in add button in the strip.</summary>
+    public const string SheetTabsAdd = "flare-sheet-tabs__add";
 }

@@ -44,4 +44,12 @@ public static class Layout
     public const string StatusBarPadding = "--flare-ide-statusbar-padding";
     /// <summary>Gap between status-bar segments.</summary>
     public const string StatusBarGap = "--flare-ide-statusbar-gap";
+    /// <summary>Sheet-tab strip height.</summary>
+    public const string SheetTabsHeight = "--flare-ide-sheet-tabs-height";
+    /// <summary>Sheet-tab strip padding shorthand (block inline).</summary>
+    public const string SheetTabsPadding = "--flare-ide-sheet-tabs-padding";
+    /// <summary>Gap between sheet tabs.</summary>
+    public const string SheetTabsGap = "--flare-ide-sheet-tabs-gap";
+    /// <summary>Underline bar height under a sheet tab.</summary>
+    public const string SheetTabsUnderlineHeight = "--flare-ide-sheet-tabs-underline-height";
 }

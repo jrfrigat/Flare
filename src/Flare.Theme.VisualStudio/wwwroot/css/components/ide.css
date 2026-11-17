@@ -100,4 +100,15 @@
     .flare-statusbar .flare-icon {
         font-size: 1rem;
     }
+
+    /* VS 2026 bottom-panel sheet tabs: the measured 33px strip is definite through the token, and
+       the tabs fill its content box so the 3px underline sits at the 4px bottom padding edge. The
+       opt-in add button keeps its own size instead of stretching with them. */
+    .flare-sheet-tabs {
+        align-items: stretch;
+    }
+
+    .flare-sheet-tabs__add {
+        align-self: center;
+    }
 }

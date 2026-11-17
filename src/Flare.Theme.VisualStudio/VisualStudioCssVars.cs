@@ -38,6 +38,8 @@ public static class VisualStudioCssVars
     public const string ChromeField = "--flare-vs-chrome-field";
     /// <summary>Bottom panel tab strip surface.</summary>
     public const string ChromeBottomPanel = "--flare-vs-chrome-bottom-panel";
+    /// <summary>Underline bar under a bottom-panel tab.</summary>
+    public const string ChromeBottomTabUnderline = "--flare-vs-chrome-bottom-tab-underline";
     /// <summary>Status bar surface.</summary>
     public const string ChromeStatusBar = "--flare-vs-chrome-status-bar";
     /// <summary>Hard edge line under the title and command bars.</summary>

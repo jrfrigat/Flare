@@ -60,6 +60,7 @@ public sealed class VisualStudio2026ParityTests
         Assert.Equal("#282828", dark[VisualStudioCssVars.ChromeToolTab]);
         Assert.Equal("#353535", dark[VisualStudioCssVars.ChromeField]);
         Assert.Equal("#1C1C1C", dark[VisualStudioCssVars.ChromeBottomPanel]);
+        Assert.Equal("#404040", dark[VisualStudioCssVars.ChromeBottomTabUnderline]);
         Assert.Equal("#141414", dark[VisualStudioCssVars.ChromeStatusBar]);
         Assert.Equal("#0E0E0E", dark[VisualStudioCssVars.ChromeBarEdge]);
         Assert.Equal("#3D3D3D", dark[VisualStudioCssVars.ChromeDivider]);
@@ -238,6 +239,45 @@ public sealed class VisualStudio2026ParityTests
         var extended = VisualStudio.DesignReference.Extended;
 
         Assert.Equal("1.875rem", extended["--flare-ide-menubar-height"]);
+    }
+
+    [Fact]
+    public void BottomSheetTabs_TakeTheMeasuredStripAndUnderline()
+    {
+        var light = VisualStudio.DesignReference.Extended;
+        var dark = Theme.ExtendedDarkOverride;
+        Assert.NotNull(dark);
+
+        foreach (var map in new[] { light, dark })
+        {
+            Assert.Equal("var(--flare-vs-chrome-bottom-panel)", map["--flare-ide-sheet-tabs-surface"]);
+            Assert.Equal("var(--flare-vs-chrome-text-secondary)", map["--flare-ide-sheet-tabs-color"]);
+            Assert.Equal("transparent", map["--flare-ide-sheet-tabs-active-bg"]);
+            Assert.Equal("transparent", map["--flare-ide-sheet-tabs-active-border-color"]);
+            Assert.Equal("var(--flare-vs-chrome-text)", map["--flare-ide-sheet-tabs-active-color"]);
+            Assert.Equal("var(--flare-vs-chrome-bottom-tab-underline)", map["--flare-ide-sheet-tabs-underline-color"]);
+            Assert.Equal("var(--flare-vs-chrome-accent)", map["--flare-ide-sheet-tabs-divider"]);
+            Assert.Equal("2.0625rem", map["--flare-ide-sheet-tabs-height"]);
+            Assert.Equal("0.875rem", map["--flare-ide-sheet-tabs-gap"]);
+            Assert.Equal("0 0.4375rem 0.25rem", map["--flare-ide-sheet-tabs-padding"]);
+            Assert.Equal("3px", map["--flare-ide-sheet-tabs-underline-height"]);
+        }
+
+        Assert.Equal($"var({Css.Tokens.Color.OutlineVariant})", light[VisualStudioCssVars.ChromeBottomTabUnderline]);
+        Assert.Equal("#404040", dark[VisualStudioCssVars.ChromeBottomTabUnderline]);
+    }
+
+    [Fact]
+    public void ThemeCss_EmitsTheMeasuredBottomSheetTabs()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        Assert.Contains("--flare-ide-sheet-tabs-surface:var(--flare-vs-chrome-bottom-panel);", css);
+        Assert.Contains("--flare-ide-sheet-tabs-height:2.0625rem;", css);
+        Assert.Contains("--flare-ide-sheet-tabs-gap:0.875rem;", css);
+        Assert.Contains("--flare-ide-sheet-tabs-padding:0 0.4375rem 0.25rem;", css);
+        Assert.Contains("--flare-ide-sheet-tabs-underline-height:3px;", css);
+        Assert.Contains("--flare-vs-chrome-bottom-tab-underline:#404040;", css);
     }
 
     [Fact]

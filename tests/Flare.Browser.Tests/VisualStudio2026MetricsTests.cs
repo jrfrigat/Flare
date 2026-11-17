@@ -133,6 +133,65 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task BottomSheetTabs_AreTheMeasuredStripAndUnderline()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var root = page.Locator($"#metric-sheettabs .{Css.Classes.Ide.SheetTabs.Root}");
+        await root.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-sheettabs .flare-sheet-tabs'))
+                    .backgroundColor === 'rgb(28, 28, 28)'
+            """);
+
+        // The measured 33px #1C1C1C strip, with the 1px accent divider inside its top edge.
+        Assert.Equal(33, await root.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        await Expect(root).ToHaveCSSAsync("background-color", "rgb(28, 28, 28)");
+        await Expect(root).ToHaveCSSAsync("gap", "14px");
+        await Expect(root).ToHaveCSSAsync("padding-left", "7px");
+        await Expect(root).ToHaveCSSAsync("padding-bottom", "4px");
+        var divider = await root.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow");
+        Assert.Contains("inset", divider);
+        Assert.Contains("rgb(145, 132, 238)", divider);
+
+        // Every tab fills the strip content box and carries the 3px #404040 underline.
+        var tabs = root.Locator($".{Css.Classes.Ide.SheetTabs.Tab}");
+        await Expect(tabs).ToHaveCountAsync(3);
+        var first = tabs.Nth(0);
+        Assert.Equal(29, await first.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        await Expect(first).ToHaveCSSAsync("font-size", "12px");
+        var underline = await first.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow");
+        Assert.Contains("inset", underline);
+        Assert.Contains("rgb(64, 64, 64)", underline);
+        Assert.Contains("-3px", underline);
+
+        // 7px start inset, 14px between tabs and 4px from the bar to the strip's bottom edge.
+        var offsets = await page.EvaluateAsync<double[]>("""
+            () => {
+              const root = document.querySelector('#metric-sheettabs .flare-sheet-tabs');
+              const tabs = [...root.querySelectorAll('.flare-sheet-tabs__tab')];
+              const r = root.getBoundingClientRect();
+              return [
+                tabs[0].getBoundingClientRect().left - r.left,
+                tabs[1].getBoundingClientRect().left - tabs[0].getBoundingClientRect().right,
+                r.bottom - tabs[0].getBoundingClientRect().bottom,
+              ];
+            }
+            """);
+        Assert.Equal(7, offsets[0], 0.5);
+        Assert.Equal(14, offsets[1], 0.5);
+        Assert.Equal(4, offsets[2], 0.5);
+
+        // Selection has no pill, fill or outline; only the label takes the brighter chrome text.
+        var active = root.Locator($".{Css.Classes.Ide.SheetTabs.TabActive}");
+        await Expect(active).ToHaveCSSAsync("background-color", "rgba(0, 0, 0, 0)");
+        await Expect(active).ToHaveCSSAsync("border-top-color", "rgba(0, 0, 0, 0)");
+        await Expect(active).ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+    }
+
+    [Fact]
     public async Task ChromeText_IsTwelvePixelsAndToolTitlesAreSentenceCase()
     {
         await using var context = await OpenDarkContextAsync();

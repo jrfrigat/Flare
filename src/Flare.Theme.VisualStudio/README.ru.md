@@ -71,6 +71,7 @@ IDE-семейство Flare существует именно для прило
 | `--flare-vs-chrome-tool-tab` | Полоса вкладок и заголовок инструмента |
 | `--flare-vs-chrome-field` | Поле поиска инструмента и поле ввода |
 | `--flare-vs-chrome-bottom-panel` | Полоса вкладок нижней панели |
+| `--flare-vs-chrome-bottom-tab-underline` | Подчеркивание вкладки нижней панели |
 | `--flare-vs-chrome-status-bar` | Строка состояния |
 | `--flare-vs-chrome-bar-edge` / `--flare-vs-chrome-divider` | Кромка панели и разделители |
 | `--flare-vs-chrome-outline` | Контуры элементов |

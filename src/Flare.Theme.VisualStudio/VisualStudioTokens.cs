@@ -643,6 +643,7 @@ internal class VisualStudioTokens
         [VisualStudioCssVars.ChromeToolTab] = "var(--flare-color-surface-container)",
         [VisualStudioCssVars.ChromeField] = "var(--flare-color-surface)",
         [VisualStudioCssVars.ChromeBottomPanel] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeBottomTabUnderline] = "var(--flare-color-outline-variant)",
         [VisualStudioCssVars.ChromeStatusBar] = "var(--flare-color-surface-container)",
         [VisualStudioCssVars.ChromeBarEdge] = "var(--flare-color-surface-container-high)",
         [VisualStudioCssVars.ChromeDivider] = "var(--flare-color-outline-variant)",
@@ -705,6 +706,22 @@ internal class VisualStudioTokens
         [IdeStatusBarPadding] = "0 0.5rem",
         [IdeStatusBarGap] = "0.75rem",
 
+        // Bottom-panel sheet tabs - the measured 33px strip on #1C1C1C carrying a 3px #404040
+        // underline under every tab, 14px gaps and a 7px start inset. The bar sits 4px above the
+        // strip's bottom edge through the bottom padding; selection has no pill, fill or outline; a
+        // 1px accent line separates the strip from the editor above it.
+        [IdeSheetTabsSurface] = "var(--flare-vs-chrome-bottom-panel)",
+        [IdeSheetTabsColor] = "var(--flare-vs-chrome-text-secondary)",
+        [IdeSheetTabsActiveBg] = "transparent",
+        [IdeSheetTabsActiveBorderColor] = "transparent",
+        [IdeSheetTabsActiveColor] = "var(--flare-vs-chrome-text)",
+        [IdeSheetTabsUnderlineColor] = "var(--flare-vs-chrome-bottom-tab-underline)",
+        [IdeSheetTabsDivider] = "var(--flare-vs-chrome-accent)",
+        [IdeSheetTabsHeight] = "2.0625rem",
+        [IdeSheetTabsGap] = "0.875rem",
+        [IdeSheetTabsPadding] = "0 0.4375rem 0.25rem",
+        [IdeSheetTabsUnderlineHeight] = "3px",
+
         // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
         // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
         [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
@@ -749,6 +766,17 @@ internal class VisualStudioTokens
     internal const string IdeStatusBarColor = "--flare-ide-statusbar-color";
     internal const string IdeStatusBarPadding = "--flare-ide-statusbar-padding";
     internal const string IdeStatusBarGap = "--flare-ide-statusbar-gap";
+    internal const string IdeSheetTabsSurface = "--flare-ide-sheet-tabs-surface";
+    internal const string IdeSheetTabsColor = "--flare-ide-sheet-tabs-color";
+    internal const string IdeSheetTabsActiveBg = "--flare-ide-sheet-tabs-active-bg";
+    internal const string IdeSheetTabsActiveBorderColor = "--flare-ide-sheet-tabs-active-border-color";
+    internal const string IdeSheetTabsActiveColor = "--flare-ide-sheet-tabs-active-color";
+    internal const string IdeSheetTabsUnderlineColor = "--flare-ide-sheet-tabs-underline-color";
+    internal const string IdeSheetTabsDivider = "--flare-ide-sheet-tabs-divider";
+    internal const string IdeSheetTabsHeight = "--flare-ide-sheet-tabs-height";
+    internal const string IdeSheetTabsGap = "--flare-ide-sheet-tabs-gap";
+    internal const string IdeSheetTabsPadding = "--flare-ide-sheet-tabs-padding";
+    internal const string IdeSheetTabsUnderlineHeight = "--flare-ide-sheet-tabs-underline-height";
     internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
     internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
     internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";
@@ -960,6 +988,7 @@ internal class VisualStudioTokens
             [VisualStudioCssVars.ChromeToolTab] = "#282828",
             [VisualStudioCssVars.ChromeField] = "#353535",
             [VisualStudioCssVars.ChromeBottomPanel] = "#1C1C1C",
+            [VisualStudioCssVars.ChromeBottomTabUnderline] = "#404040",
             [VisualStudioCssVars.ChromeStatusBar] = "#141414",
             [VisualStudioCssVars.ChromeBarEdge] = "#0E0E0E",
             [VisualStudioCssVars.ChromeDivider] = "#3D3D3D",

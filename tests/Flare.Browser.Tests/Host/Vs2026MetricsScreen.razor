@@ -70,6 +70,9 @@
                 </ChildContent>
             </FlareDocumentTabs>
         </div>
+        <div id="metric-sheettabs">
+            <FlareSheetTabs Sheets="@BottomSheets" ActiveIndex="0" ShowAddButton="false" />
+        </div>
         <div id="metric-menubar">
             <FlareMenuBar>
                 <FlareMenu AriaLabel="File">
@@ -92,6 +95,8 @@
 
 @code {
     private string? _activeDocument = "main";
+
+    private static readonly string[] BottomSheets = ["Output", "Error List", "Terminal"];
 
     private RenderFragment FileGroup => @<text>
         <FlareButton Size="ButtonSize.Xs" AriaLabel="Save">
