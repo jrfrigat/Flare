@@ -31,6 +31,7 @@ exists for exactly this shape of application.
 | Solution Explorer tree | `FlareTreeView`, `FlareDataTree` | |
 | Properties window | `FlarePropertyGrid` | |
 | Status bar | `FlareStatusBar` | |
+| Window caption controls (minimize, maximize, close) | `FlareCaptionButton` | the host passes the glyph, label and command |
 | Splitter between panes | `FlareSplitter` | |
 | Output / error list | `FlareDataGrid` | |
 | Options dialog | `FlareDialog` + `FlareNavMenu` | |
@@ -90,6 +91,10 @@ without host overrides.
 - **Fields.** A 23px well with a `#353535` fill, a 1px `#454545` stroke, 4px corners and an 8px text
   inset. The Xs..Xl ramp is 20/22/23/26/30px.
 - **Command buttons.** 24px square, 16px glyph, 4px corners.
+- **Caption controls.** 44px wide inside the 30px title row, with a 10px drawn glyph. Rest is
+  transparent on the title-bar surface, hover takes `--flare-vs-chrome-hover`, pressed takes
+  `--flare-vs-chrome-outline`, and the close control takes `#C42B1C` on hover and `#B22A1A` pressed
+  with a white glyph.
 - **Command-bar wells.** The combos and controls inside a command-bar group sit in a 24px well: a
   22px `#333333` interior inside a 1px `#353535` stroke. A host reaches the whole combination through
   `--flare-ide-toolbar-well-surface`, `--flare-ide-toolbar-well-border-color` and

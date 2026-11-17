@@ -45,6 +45,7 @@ This component exposes no documented public methods.
 - `FlareButton`
 - `FlareButtonGroup`
 - `FlareCalendar`
+- `FlareCaptionButton`
 - `FlareCard`
 - `FlareCardActions`
 - `FlareCardContent`

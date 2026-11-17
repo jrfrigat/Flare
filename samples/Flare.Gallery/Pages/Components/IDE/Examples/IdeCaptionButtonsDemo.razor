@@ -1,0 +1,28 @@
+@using Flare.Components.IDE
+
+@* Window caption controls: Flare owns the measured title-bar box and every state; the host passes
+   the glyph, the accessible label and the command. The last control shows the disabled state. *@
+<FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+    <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Ide_Caption_AppTitle</FlareText>
+    <FlareCaptionButton Kind="CaptionButtonKind.Minimize"
+                        AriaLabel="@GalleryStrings.Ide_Caption_Minimize"
+                        Tooltip="@GalleryStrings.Ide_Caption_Minimize"
+                        Icon="@FlareIcons.Remove" />
+    <FlareCaptionButton Kind="CaptionButtonKind.Maximize"
+                        AriaLabel="@GalleryStrings.Ide_Caption_Maximize"
+                        Tooltip="@GalleryStrings.Ide_Caption_Maximize"
+                        Icon="@FlareIcons.CheckBoxOutlineBlank" />
+    <FlareCaptionButton Kind="CaptionButtonKind.Restore"
+                        AriaLabel="@GalleryStrings.Ide_Caption_Restore"
+                        Tooltip="@GalleryStrings.Ide_Caption_Restore"
+                        Icon="@FlareIcons.Fullscreen" />
+    <FlareCaptionButton Kind="CaptionButtonKind.Close"
+                        AriaLabel="@GalleryStrings.Ide_Caption_Close"
+                        Tooltip="@GalleryStrings.Ide_Caption_Close"
+                        Icon="@FlareIcons.Close" />
+    <FlareCaptionButton Kind="CaptionButtonKind.Close"
+                        AriaLabel="@GalleryStrings.Ide_Caption_CloseDisabled"
+                        Tooltip="@GalleryStrings.Ide_Caption_CloseDisabled"
+                        Disabled="true"
+                        Icon="@FlareIcons.Close" />
+</FlareStack>

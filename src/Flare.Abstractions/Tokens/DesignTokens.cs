@@ -46,6 +46,8 @@ public sealed record DesignTokens
     public required EmptyStateTokens EmptyState { get; init; }
     /// <summary>Button token.</summary>
     public required ButtonTokens Button { get; init; }
+    /// <summary>Title-bar caption control token.</summary>
+    public required CaptionButtonTokens Caption { get; init; }
     /// <summary>Button group token.</summary>
     public required ButtonGroupTokens ButtonGroup { get; init; }
     /// <summary>Split button token.</summary>

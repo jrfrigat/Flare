@@ -1,0 +1,29 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A title-bar caption control. It owns the measured title-bar box, every visual state and the
+   mousedown suppression the platform needs, but no command, label or glyph: the host passes all
+   three, because what a caption does is the window's business, not the library's. *@
+<button @ref="_element"
+        type="button"
+        class="@ButtonCssClass"
+        style="@Style"
+        disabled="@Disabled"
+        aria-label="@AriaLabel"
+        title="@Tooltip"
+        data-flare-caption="@_kindValue"
+        @onclick="OnClick"
+        @onmousedown="HandleMouseDown"
+        @onmousedown:stopPropagation="true"
+        @attributes="AdditionalAttributes">
+    <span class="@Css.Classes.Ide.CaptionButton.Icon">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else if (Icon is not null)
+        {
+            <FlareIconView Value="Icon" />
+        }
+    </span>
+</button>

@@ -104,6 +104,21 @@
                 </ToolbarContent>
             </FlareEditorBreadcrumbBar>
         </div>
+        <div id="metric-caption-titlebar" @onmousedown="OnTitleBarMouseDown">
+            <span id="metric-caption-title">Contoso</span>
+            <FlareCaptionButton id="metric-caption-minimize" Kind="CaptionButtonKind.Minimize"
+                                AriaLabel="Minimize" Tooltip="Minimize" Icon="@FlareIcons.Remove" />
+            <FlareCaptionButton id="metric-caption-maximize" Kind="CaptionButtonKind.Maximize"
+                                AriaLabel="Maximize" Tooltip="Maximize" Icon="@FlareIcons.CheckBoxOutlineBlank" />
+            <FlareCaptionButton id="metric-caption-restore" Kind="CaptionButtonKind.Restore"
+                                AriaLabel="Restore" Tooltip="Restore" Icon="@FlareIcons.Fullscreen" />
+            <FlareCaptionButton id="metric-caption-close" Kind="CaptionButtonKind.Close"
+                                AriaLabel="Close" Tooltip="Close" Icon="@FlareIcons.Close" />
+            <FlareCaptionButton id="metric-caption-disabled" Kind="CaptionButtonKind.Close"
+                                AriaLabel="Close (disabled)" Tooltip="Close" Disabled="true"
+                                Icon="@FlareIcons.Close" />
+        </div>
+        <div id="metric-caption-mousedowns">@_titleMouseDowns</div>
         <div id="metric-menubar">
             <FlareMenuBar>
                 <FlareMenu AriaLabel="File">
@@ -126,6 +141,9 @@
 
 @code {
     private string? _activeDocument = "main";
+    private int _titleMouseDowns;
+
+    private void OnTitleBarMouseDown() => _titleMouseDowns++;
 
     private static readonly string[] BottomSheets = ["Output", "Error List", "Terminal"];
 

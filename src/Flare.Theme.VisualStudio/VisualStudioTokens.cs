@@ -831,6 +831,29 @@ internal class VisualStudioTokens
     internal const string IdeTypescaleLabelSmallWeight = "--flare-ide-typescale-label-small-weight";
 
 
+    // Title-bar caption controls: the measured 44px control in the 30px title row, carrying a 10px
+    // glyph. Rest is transparent on the title-bar surface, hover takes the chrome hover surface,
+    // pressed the chrome outline, and close takes the platform's close red on hover and a darker red
+    // while held down, both with a white glyph.
+    internal static readonly CaptionButtonTokens Caption = new()
+    {
+        Width = "2.75rem",      // 44px
+        Height = "1.875rem",    // 30px
+        GlyphSize = "0.625rem", // 10px
+        Background = "transparent",
+        Color = "var(--flare-vs-chrome-text)",
+        HoverBackground = "var(--flare-vs-chrome-hover)",
+        HoverColor = "var(--flare-vs-chrome-text)",
+        PressedBackground = "var(--flare-vs-chrome-outline)",
+        PressedColor = "var(--flare-vs-chrome-text)",
+        FocusOutline = "1px solid var(--flare-color-primary)",
+        CloseHoverBackground = "#C42B1C",
+        CloseHoverColor = "#FFFFFF",
+        ClosePressedBackground = "#B22A1A",
+        ClosePressedColor = "#FFFFFF",
+    };
+
+
     /// <summary>The complete Visual Studio 2026 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = FluentUI2Tokens.Design with
     {
@@ -846,6 +869,7 @@ internal class VisualStudioTokens
         Alert = Alert,
         EmptyState = EmptyState,
         Button = Button,
+        Caption = Caption,
         ButtonGroup = FluentUI2Tokens.Design.ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,

@@ -1266,6 +1266,18 @@ public class MaterialDesign3Tokens
     };
 
 
+    // Title-bar caption controls: a compact square target for a 30px window title row. The record's
+    // defaults take the hover, pressed, focus and disabled states from the base scales, and the close
+    // control from the error roles.
+    internal static readonly CaptionButtonTokens Caption = new()
+    {
+        Width = "2.75rem",     // 44px
+        Height = "1.875rem",   // 30px
+        GlyphSize = "0.75rem", // 12px
+        Background = "transparent",
+    };
+
+
     /// <summary>The complete baseline MD3 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
@@ -1320,6 +1332,7 @@ public class MaterialDesign3Tokens
         Alert = Alert,
         EmptyState = EmptyState,
         Button = Button,
+        Caption = Caption,
         ButtonGroup = ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,

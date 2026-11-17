@@ -1417,3 +1417,71 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-sheet-tabs__add .flare-icon {
     font-size: 1.1rem;
 }
+
+/* Title-bar caption controls. Box, glyph size and every state come from the public
+   --flare-caption-* tokens; the host supplies the glyph, the label and the command. Mousedown
+   propagation is stopped in the component so a title-bar drag never starts, and the app-region
+   exclusion keeps the control reachable when the title bar itself is a CSS drag region. */
+.flare-caption-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--flare-caption-width);
+    block-size: var(--flare-caption-height);
+    padding: 0;
+    border: 0;
+    border-radius: var(--flare-caption-radius);
+    background: var(--flare-caption-bg);
+    color: var(--flare-caption-color);
+    font: inherit;
+    line-height: 1;
+    cursor: default;
+    user-select: none;
+    -webkit-app-region: no-drag;
+}
+
+.flare-caption-btn__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--flare-caption-glyph-size);
+    block-size: var(--flare-caption-glyph-size);
+}
+
+.flare-caption-btn__icon .flare-icon {
+    inline-size: var(--flare-caption-glyph-size);
+    block-size: var(--flare-caption-glyph-size);
+    font-size: var(--flare-caption-glyph-size);
+}
+
+.flare-caption-btn:not(:disabled):hover {
+    background: var(--flare-caption-hover-bg);
+    color: var(--flare-caption-hover-color);
+}
+
+.flare-caption-btn:not(:disabled):active {
+    background: var(--flare-caption-pressed-bg);
+    color: var(--flare-caption-pressed-color);
+}
+
+.flare-caption-btn--close:not(:disabled):hover {
+    background: var(--flare-caption-close-hover-bg);
+    color: var(--flare-caption-close-hover-color);
+}
+
+.flare-caption-btn--close:not(:disabled):active {
+    background: var(--flare-caption-close-pressed-bg);
+    color: var(--flare-caption-close-pressed-color);
+}
+
+.flare-caption-btn:focus-visible {
+    outline: var(--flare-caption-focus-outline);
+    outline-offset: var(--flare-caption-focus-offset);
+}
+
+.flare-caption-btn:disabled {
+    opacity: var(--flare-caption-disabled-opacity);
+    cursor: default;
+}

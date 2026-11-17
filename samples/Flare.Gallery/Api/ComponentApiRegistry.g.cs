@@ -685,6 +685,40 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareCaptionButton"] = new ApiComponentInfo(
+            @"FlareCaptionButton",
+            @"Flare.Components.IDE.FlareCaptionButton",
+            @"Flare.Components.IDE",
+            @"A title-bar caption control: one native button carrying the host's glyph, accessible label and command. The component owns the measured title-bar box and every visual state through the public --flare-caption-* tokens; it adds no product text, icon or command of its own. Mousedown propagation is always stopped, so pressing a caption never starts a title-bar drag, and OnMouseDown lets the host observe the press when it needs to.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label forwarded as aria-label. Strongly recommended: the control is icon-only and the library supplies no product text.", null, false, false, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom glyph content, used in place of Icon. The host owns its size and paint when it supplies this.", null, false, false, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control. The disabled state still reserves the measured title-bar box but draws no hover or pressed surface.", null, false, false, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"The glyph rendered inside the control - any provider (FlareSvgIcon or an add-on pack type). It is drawn at the theme's caption glyph size unless the descriptor states its own size. Ignored when ChildContent is supplied.", null, false, false, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"Kind", @"CaptionButtonKind", @"CaptionButtonKind.Minimize", @"Which window command the control represents. The kind marks the control for tests and styling and gives the close control its danger paint; it does not decide the glyph, label or command. Defaults to Minimize, the harmless choice when a host omits it.", null, false, false, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the control is clicked. The host runs its window command here.", null, false, true, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"OnMouseDown", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the control receives a mousedown, after propagation has been stopped. Use it when the host needs to observe the press; the stop itself is always applied, so a title-bar drag never starts from a caption control.", null, false, true, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"Tooltip", @"string?", null, @"Hint shown on hover (native title), normally the same words as the accessible label. For a styled bubble, wrap the control in a FlareTooltip instead.", null, false, false, false, @"FlareCaptionButton"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the control.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareCard"] = new ApiComponentInfo(
             @"FlareCard",
             @"Flare.Components.FlareCard",
@@ -1794,6 +1828,7 @@ public static class ComponentApiRegistry
                 @"FlareButton",
                 @"FlareButtonGroup",
                 @"FlareCalendar",
+                @"FlareCaptionButton",
                 @"FlareCard",
                 @"FlareCardActions",
                 @"FlareCardContent",
@@ -9376,6 +9411,24 @@ public static class ComponentApiRegistry
                 @"FlareIconButton",
                 @"FlareSplitButton",
                 @"FlareToggleButton",
+            });
+
+        e[@"CaptionButtonKind"] = new ApiEnumInfo(
+            @"CaptionButtonKind",
+            @"Flare.Components.IDE.CaptionButtonKind",
+            @"Flare.Components.IDE",
+            @"The command a title-bar caption control represents. The kind selects the semantic marker and the close control's danger paint; the host still supplies the visible glyph, the accessible label and the command.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Minimize", @"0", @"Minimize the window."),
+                new ApiEnumMember(@"Maximize", @"1", @"Maximize the window."),
+                new ApiEnumMember(@"Restore", @"2", @"Restore the window from its maximized state."),
+                new ApiEnumMember(@"Close", @"3", @"Close the window. This is the only kind that takes the danger paint."),
+            },
+            new string[]
+            {
+                @"FlareCaptionButton",
             });
 
         e[@"CardActionsAlign"] = new ApiEnumInfo(

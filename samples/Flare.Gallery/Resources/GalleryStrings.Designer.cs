@@ -14815,5 +14815,21 @@ namespace Flare.Gallery.Resources {
         public static string IdeWorkspace_Ready { get { return ResourceManager.GetString("IdeWorkspace_Ready", resourceCulture); } }
         /// <summary>Show group handles</summary>
         public static string IdeWorkspace_ReorderHandles { get { return ResourceManager.GetString("IdeWorkspace_ReorderHandles", resourceCulture); } }
+        /// <summary>Window caption controls</summary>
+        public static string Ide_Caption_Title { get { return ResourceManager.GetString("Ide_Caption_Title", resourceCulture); } }
+        /// <summary>Title-bar caption controls from Flare.Components.IDE. The host passes the glyph, the accessible label and the command; the component owns the measured box and the rest, hover, pressed, focus, disabled and close-danger states from the public --flare-caption-* tokens. The close control takes the platform danger paint; the disabled control keeps its box but draws no state.</summary>
+        public static string Ide_Caption_Desc { get { return ResourceManager.GetString("Ide_Caption_Desc", resourceCulture); } }
+        /// <summary>Contoso - Main</summary>
+        public static string Ide_Caption_AppTitle { get { return ResourceManager.GetString("Ide_Caption_AppTitle", resourceCulture); } }
+        /// <summary>Minimize</summary>
+        public static string Ide_Caption_Minimize { get { return ResourceManager.GetString("Ide_Caption_Minimize", resourceCulture); } }
+        /// <summary>Maximize</summary>
+        public static string Ide_Caption_Maximize { get { return ResourceManager.GetString("Ide_Caption_Maximize", resourceCulture); } }
+        /// <summary>Restore</summary>
+        public static string Ide_Caption_Restore { get { return ResourceManager.GetString("Ide_Caption_Restore", resourceCulture); } }
+        /// <summary>Close</summary>
+        public static string Ide_Caption_Close { get { return ResourceManager.GetString("Ide_Caption_Close", resourceCulture); } }
+        /// <summary>Close (disabled)</summary>
+        public static string Ide_Caption_CloseDisabled { get { return ResourceManager.GetString("Ide_Caption_CloseDisabled", resourceCulture); } }
     }
 }

@@ -5020,4 +5020,12 @@
   <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Нет заголовка</value></data>
   <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Готово</value></data>
   <data name="IdeWorkspace_ReorderHandles" xml:space="preserve"><value>Показывать ручки групп</value></data>
+  <data name="Ide_Caption_Title" xml:space="preserve"><value>Кнопки заголовка окна</value></data>
+  <data name="Ide_Caption_Desc" xml:space="preserve"><value>Кнопки управления окном в заголовке из Flare.Components.IDE. Хост передает глиф, доступную подпись и команду, а компонент отвечает за измеренный размер и состояния покоя, наведения, нажатия, фокуса, отключения и опасное состояние закрытия из публичных токенов --flare-caption-*. Кнопка закрытия получает платформенную красную заливку, а отключенная сохраняет размер, но не рисует состояния.</value></data>
+  <data name="Ide_Caption_AppTitle" xml:space="preserve"><value>Contoso - Главная</value></data>
+  <data name="Ide_Caption_Minimize" xml:space="preserve"><value>Свернуть</value></data>
+  <data name="Ide_Caption_Maximize" xml:space="preserve"><value>Развернуть</value></data>
+  <data name="Ide_Caption_Restore" xml:space="preserve"><value>Восстановить</value></data>
+  <data name="Ide_Caption_Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="Ide_Caption_CloseDisabled" xml:space="preserve"><value>Закрыть (недоступно)</value></data>
 </root>
