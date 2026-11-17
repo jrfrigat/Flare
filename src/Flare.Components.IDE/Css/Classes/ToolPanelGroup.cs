@@ -14,6 +14,8 @@ public static class ToolPanelGroup
     public const string TabsBottomRoot = "flare-toolpanel-group--tabs-bottom";
     public const string Tab = "flare-toolpanel-group__tab";
     public const string TabActive = "flare-toolpanel-group__tab--active";
+    /// <summary>Tab label text; ellipsizes when the tab is narrow.</summary>
+    public const string TabLabel = "flare-toolpanel-group__tab-label";
     /// <summary>Active tool title shown in the header when the tab strip is at the bottom.</summary>
     public const string Title = "flare-toolpanel-group__title";
     /// <summary>Text part of the header title that ellipsizes in a narrow region.</summary>

@@ -8,14 +8,18 @@ namespace Flare.Components.IDE;
 
 /// <summary>
 /// Presents several <see cref="FlareToolPanel"/> children as one tabbed tool area: a tab strip, a single
-/// visible panel and the panel bodies kept mounted while hidden. Inside a <see cref="FlareIdeLayout"/>
-/// region the hosted panels still report their titles and modes, so the region rail and auto-hide
-/// behavior are unchanged; the group draws the region's collapse button because the individual panel
-/// headers are replaced by the tabs.
+/// visible panel and the panel bodies kept mounted while hidden. The strip never scrolls horizontally:
+/// tabs share one row and their labels ellipsize as the group narrows; a tab whose tool has an icon and
+/// which becomes too narrow for text keeps the icon alone while the accessible name stays on the tab.
+/// Inside a <see cref="FlareIdeLayout"/> region the hosted panels still report their titles and modes,
+/// so the region rail and auto-hide behavior are unchanged; the group draws the region's collapse
+/// button because the individual panel headers are replaced by the tabs (see
+/// <see cref="ShowCollapseButton"/>).
 /// </summary>
 public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 {
     [Inject] private IUiJsService Ui { get; set; } = default!;
+    [Inject] private IJSRuntime Js { get; set; } = default!;
 
     /// <summary>The enclosing IDE layout, when the group is used in one of its regions.</summary>
     [CascadingParameter] internal FlareIdeLayout? Layout { get; set; }
@@ -60,8 +64,17 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 
     /// <summary>Host actions shown in the group header after the tab strip and before the collapse button -
     /// for example pin, close or other region commands. Inside a <see cref="FlareIdeLayout"/> the group still
-    /// draws the region's collapse button, so the slot adds controls rather than replacing it.</summary>
+    /// draws the region's collapse button unless <see cref="ShowCollapseButton"/> is false, so the slot adds
+    /// controls rather than replacing them.</summary>
     [Parameter] public RenderFragment? ToolbarContent { get; set; }
+
+    /// <summary>Whether the group draws the region's collapse control in its header while it is inside a
+    /// <see cref="FlareIdeLayout"/>. The default is true, so an existing consumer keeps the control. Set it
+    /// to false when the host supplies its own pin/close actions for the region and the built-in chevron
+    /// is redundant; the host can still collapse the region through <c>FlareIdeLayout.BottomCollapsed</c>
+    /// and the side equivalents, and a rail click reopens it. Ignored outside a layout, which never draws
+    /// the control.</summary>
+    [Parameter] public bool ShowCollapseButton { get; set; } = true;
 
     protected override string ComponentCssClass => Css.Classes.Ide.ToolPanelGroup.Root;
 
@@ -102,6 +115,9 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     private TabStripPlacement _placementAtLastRender = TabStripPlacement.Top;
     private DotNetObjectReference<FlareToolPanelGroup>? _reference;
     private bool _keyboardRegistered;
+    private IJSObjectReference? _fittingModule;
+    private IJSObjectReference? _fittingHandle;
+    private ElementReference _fittingBar;
     private bool _disposed;
 
     /// <inheritdoc />
@@ -248,17 +264,17 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         {
             // The strip is suppressed while the region floats; the module must not hold an element
             // that is no longer in the document.
-            if (_keyboardRegistered)
-            {
-                try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
-                catch (InvalidOperationException) { }
-                catch (JSException) { }
-                _keyboardRegistered = false;
-                _registeredBar = default;
-            }
+            await UnregisterTabKeyboardAsync();
+            await UnregisterTabFittingAsync();
             return;
         }
 
+        await RegisterTabKeyboardAsync();
+        await RegisterTabFittingAsync();
+    }
+
+    private async Task RegisterTabKeyboardAsync()
+    {
         // The tab strip is one fragment rendered in one of two positions. When a placement change (or
         // any other re-render) replaces the element, the module still holds the old one, so bind it
         // again to the current tablist.
@@ -282,19 +298,64 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         catch (JSException) { }
     }
 
+    private async Task UnregisterTabKeyboardAsync()
+    {
+        if (!_keyboardRegistered) return;
+        try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+        _keyboardRegistered = false;
+        _registeredBar = default;
+    }
+
+    // The strip never scrolls: tabs shrink and their labels ellipsize in CSS, and this observer only
+    // decides when a tab is narrow enough to show its icon alone. The handle owns the observers, so
+    // removing a strip the renderer replaced does not need to resolve its element again.
+    private async Task RegisterTabFittingAsync()
+    {
+        if (_fittingHandle is not null && _bar.Id == _fittingBar.Id) return;
+        await UnregisterTabFittingAsync();
+        try
+        {
+            _fittingModule ??= await Js.InvokeAsync<IJSObjectReference?>("import", IdeInterop.ModulePath);
+            if (_fittingModule is null) return;
+            _fittingHandle = await _fittingModule.InvokeAsync<IJSObjectReference?>("registerTabFitting", _bar);
+            _fittingBar = _bar;
+        }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
+
+    private async Task UnregisterTabFittingAsync()
+    {
+        _fittingBar = default;
+        if (_fittingHandle is null) return;
+        var handle = _fittingHandle;
+        _fittingHandle = null;
+        try { await handle.InvokeVoidAsync("dispose"); }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+        try { await handle.DisposeAsync(); }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
+
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
         _disposed = true;
         if (_reference is not null)
         {
-            if (_keyboardRegistered)
-            {
-                try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
-                catch (InvalidOperationException) { }
-                catch (JSException) { }
-            }
+            await UnregisterTabKeyboardAsync();
             _reference.Dispose();
+        }
+        await UnregisterTabFittingAsync();
+        if (_fittingModule is not null)
+        {
+            try { await _fittingModule.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _fittingModule = null;
         }
         await base.DisposeAsync();
     }

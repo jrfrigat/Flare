@@ -5,6 +5,7 @@
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
         <FlareSwitch @bind-Value="_showLeftRegion" Label="@GalleryStrings.IdeWorkspace_LeftRegion" />
         <FlareSwitch @bind-Value="_showRightRegion" Label="@GalleryStrings.IdeWorkspace_RightRegion" />
+        <FlareSwitch @bind-Value="_showGroupHandles" Label="@GalleryStrings.IdeWorkspace_ReorderHandles" />
     </FlareStack>
     <FlareDocumentTabs ActiveKey="_stripActive" ActiveKeyChanged="SelectFromStrip"
                         Reorderable="true" Dockable="true" OnCloseRequested="CloseDocumentKey"
@@ -29,7 +30,8 @@
                     DocumentMounting="IdeDocumentMounting.ActiveOnly"
                     RetainDocumentContent="KeepDocumentMounted" CenterDockHeader="CenterHeader">
         <MenuBar>
-            <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true" />
+            <FlareToolbar Groups="Groups" @bind-GroupOrder="_groupOrder" Reorderable="true"
+                          ShowReorderHandles="_showGroupHandles" />
         </MenuBar>
         <LeftToolPanel>
             <FlareToolPanelGroup Position="ToolPanelPosition.Left">
@@ -68,6 +70,7 @@
     private string? _stripActive = "main";
     private bool _showLeftRegion = true;
     private bool _showRightRegion = true;
+    private bool _showGroupHandles = true;
     private IdeDocument[] _documents =
         [new("main", "Main.cs"), new("guide", "Guide.md", IdeDocumentRegion.Right, Modified: true)];
     private Dictionary<IdeDocumentRegion, string?> _activeDocuments =

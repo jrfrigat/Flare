@@ -5019,4 +5019,5 @@ Read the card, check the tests, and report what is left.</value>
   <data name="IdeWorkspace_ParseError" xml:space="preserve"><value>Undefined symbol</value></data>
   <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Missing heading</value></data>
   <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Ready</value></data>
+  <data name="IdeWorkspace_ReorderHandles" xml:space="preserve"><value>Show group handles</value></data>
 </root>

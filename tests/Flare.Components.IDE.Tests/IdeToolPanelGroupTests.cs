@@ -1,5 +1,6 @@
 using System.Globalization;
 using Flare.Components.IDE;
+using Flare.Icons;
 using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components.Tests;
@@ -13,7 +14,7 @@ public class IdeToolPanelGroupTests : FlareTestContext
     public IdeToolPanelGroupTests() => Services.AddFlareIde();
 
     private sealed record Panel(string Title, string Text, IdePanelMode Mode = IdePanelMode.Docked,
-        string? Key = null);
+        string? Key = null, FlareIcon? Icon = null);
 
     private static RenderFragment Panels(params Panel[] panels) => builder =>
     {
@@ -25,6 +26,8 @@ public class IdeToolPanelGroupTests : FlareTestContext
             builder.AddAttribute(sequence++, nameof(FlareToolPanel.Mode), panel.Mode);
             if (panel.Key is not null)
                 builder.AddAttribute(sequence++, nameof(FlareToolPanel.Key), panel.Key);
+            if (panel.Icon is not null)
+                builder.AddAttribute(sequence++, nameof(FlareToolPanel.Icon), panel.Icon);
             builder.AddAttribute(sequence++, nameof(FlareToolPanel.ChildContent),
                 (RenderFragment)(content => content.AddContent(0, panel.Text)));
             builder.CloseComponent();
@@ -47,11 +50,12 @@ public class IdeToolPanelGroupTests : FlareTestContext
         builder.CloseElement();
     };
 
-    private static RenderFragment GroupWithActions(RenderFragment panels) => builder =>
+    private static RenderFragment GroupWithActions(RenderFragment panels, bool showCollapseButton = true) => builder =>
     {
         builder.OpenComponent<FlareToolPanelGroup>(0);
         builder.AddAttribute(1, nameof(FlareToolPanelGroup.ChildContent), panels);
         builder.AddAttribute(2, nameof(FlareToolPanelGroup.ToolbarContent), Actions());
+        builder.AddAttribute(3, nameof(FlareToolPanelGroup.ShowCollapseButton), showCollapseButton);
         builder.CloseComponent();
     };
 
@@ -259,6 +263,53 @@ public class IdeToolPanelGroupTests : FlareTestContext
 
         await cut.InvokeAsync(() => cut.Find(
             $".{Css.Classes.Ide.ToolPanelGroup.Header} > button").ClickAsync(new()));
+
+        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
+        Assert.Equal(["Explorer", "Properties"],
+            cut.FindAll($".{Css.Classes.Ide.Layout.RailTitle}").Select(title => title.TextContent));
+    }
+
+    [Fact]
+    public void Group_TabShowsItsIconAndKeepsTheLabelInOneElement()
+    {
+        var cut = RenderGroup(new("Explorer", "", Icon: FlareIcons.Folder), new("Properties", ""));
+
+        var tabs = cut.FindAll("[role=tab]");
+        Assert.Single(tabs[0].QuerySelectorAll("svg"));
+        Assert.Empty(tabs[1].QuerySelectorAll("svg"));
+        Assert.Equal("true", tabs[0].GetAttribute("data-flare-tab-icon"));
+        Assert.Null(tabs[1].GetAttribute("data-flare-tab-icon"));
+        Assert.Equal("Explorer",
+            tabs[0].QuerySelector($".{Css.Classes.Ide.ToolPanelGroup.TabLabel}")!.TextContent.Trim());
+        Assert.Equal("Explorer", tabs[0].TextContent.Trim());
+        Assert.False(tabs[0].HasAttribute("data-flare-tab-compact"));
+    }
+
+    [Fact]
+    public void Layout_GroupWithoutCollapseButtonKeepsTabsAndActions()
+    {
+        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
+            GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")), showCollapseButton: false)));
+
+        var header = cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Header}");
+        Assert.Equal(2, header.Children.Length);
+        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Tabs, header.Children[0].ClassName);
+        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Actions, header.Children[1].ClassName);
+        Assert.Single(header.Children[1].QuerySelectorAll("button[aria-label='Pin panel']"));
+        Assert.Empty(header.QuerySelectorAll(":scope > button"));
+    }
+
+    [Fact]
+    public void Layout_GroupWithoutCollapseButtonStillCollapsesThroughTheRegionState()
+    {
+        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
+            GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")), showCollapseButton: false)));
+        Assert.NotNull(cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
+
+        cut.Render(p => p
+            .Add(x => x.LeftCollapsed, true)
+            .Add(x => x.LeftToolPanel,
+                GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")), showCollapseButton: false)));
 
         Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
         Assert.Equal(["Explorer", "Properties"],

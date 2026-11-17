@@ -22,10 +22,11 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
     /// <summary>Panel title displayed in the header (and on the collapsed rail inside a layout).</summary>
     [Parameter] public string? Title { get; set; }
 
-    /// <summary>Icon that represents the tool. Inside a <see cref="FlareToolPanelGroup"/> with
-    /// <see cref="FlareToolPanelGroup.TabStripPlacement"/> set to
-    /// <see cref="Flare.Components.IDE.TabStripPlacement.Bottom"/> it is shown beside the active tool's
-    /// title in the header; inside a <see cref="FlareIdeLayout"/> it identifies the tool on the per-tool
+    /// <summary>Icon that represents the tool. Inside a <see cref="FlareToolPanelGroup"/> it is shown in the
+    /// tool's tab, and it is the only visible content of that tab once the tab is too narrow for text;
+    /// with <see cref="FlareToolPanelGroup.TabStripPlacement"/> set to
+    /// <see cref="Flare.Components.IDE.TabStripPlacement.Bottom"/> it is also shown beside the active tool's
+    /// title in the header. Inside a <see cref="FlareIdeLayout"/> it identifies the tool on the per-tool
     /// auto-hide rail. Null renders no icon.</summary>
     [Parameter] public FlareIcon? Icon { get; set; }
 

@@ -27,7 +27,7 @@
                 @ToolbarContent
             </div>
         }
-        @if (Layout is not null)
+        @if (Layout is not null && ShowCollapseButton)
         {
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                          OnClick="CollapseAsync"
@@ -60,8 +60,13 @@
             <button @key="panel" type="button" class="@TabClass(panel)" id="@panel.TabId"
                     role="tab" aria-selected="@(active ? "true" : "false")"
                     aria-controls="@panel.PanelId" tabindex="@(active ? 0 : -1)"
+                    data-flare-tab-icon="@(panel.Icon is not null ? "true" : null)"
                     @ref="panel.TabElement" @onclick="@(() => SelectAsync(panel, focus: false))">
-                @TabLabel(panel)
+                @if (panel.Icon is not null)
+                {
+                    <FlareIconView Value="panel.Icon" Size="1rem" />
+                }
+                <span class="@Css.Classes.Ide.ToolPanelGroup.TabLabel">@TabLabel(panel)</span>
             </button>
         }
     </div>;

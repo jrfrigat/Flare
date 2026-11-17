@@ -14813,5 +14813,7 @@ namespace Flare.Gallery.Resources {
         public static string IdeWorkspace_HeadingError { get { return ResourceManager.GetString("IdeWorkspace_HeadingError", resourceCulture); } }
         /// <summary>Ready</summary>
         public static string IdeWorkspace_Ready { get { return ResourceManager.GetString("IdeWorkspace_Ready", resourceCulture); } }
+        /// <summary>Show group handles</summary>
+        public static string IdeWorkspace_ReorderHandles { get { return ResourceManager.GetString("IdeWorkspace_ReorderHandles", resourceCulture); } }
     }
 }

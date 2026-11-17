@@ -5019,4 +5019,5 @@
   <data name="IdeWorkspace_ParseError" xml:space="preserve"><value>Неизвестный символ</value></data>
   <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Нет заголовка</value></data>
   <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Готово</value></data>
+  <data name="IdeWorkspace_ReorderHandles" xml:space="preserve"><value>Показывать ручки групп</value></data>
 </root>

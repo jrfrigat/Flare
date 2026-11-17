@@ -15,6 +15,7 @@
 | `GroupOrderChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Reports the updated sequence of all current group keys. |
 | `Groups` | `IReadOnlyList<IdeToolbarGroup>?` | `` | Parameter |  | Groups in their default order. Keys must be unique within the toolbar. |
 | `Reorderable` | `bool` | `false` | Parameter |  | Enables group drag handles and accessible move actions. |
+| `ShowReorderHandles` | `bool` | `true` | Parameter |  | Whether each reorderable group renders its drag/move handle (the MoreVert button). The default is true. Set it to false when the host hides per-group chrome: the groups and their content stay, no handle element is rendered (so no space is reserved), and user-initiated reordering is unavailable because the handle is its only activator. A controlled GroupOrder still arranges the groups. Ignored unless Reorderable is true. |
 | `TrailingContent` | `RenderFragment?` | `` | Parameter |  | Controls pinned after the groups, outside group reordering. The content shares the toolbar's flex row, so a spacer placed before it pushes it to the trailing edge. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

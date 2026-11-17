@@ -9,7 +9,7 @@
         var position = index;
         <div @key="group.Key" role="group" aria-label="@group.Label" class="@Css.Classes.Ide.Toolbar.Group"
              @ondragover:preventDefault="@CanReorder" @ondrop="@(() => DropAsync(position))">
-            @if (Reorderable)
+            @if (Reorderable && ShowReorderHandles)
             {
                 <FlareMenu>
                     <Activator Context="menu">
@@ -51,6 +51,14 @@
     /// <summary>Enables group drag handles and accessible move actions.</summary>
     [Parameter] public bool Reorderable { get; set; }
 
+    /// <summary>Whether each reorderable group renders its drag/move handle (the <c>MoreVert</c> button).
+    /// The default is true. Set it to false when the host hides per-group chrome: the groups and their
+    /// content stay, no handle element is rendered (so no space is reserved), and user-initiated
+    /// reordering is unavailable because the handle is its only activator. A controlled
+    /// <see cref="GroupOrder"/> still arranges the groups. Ignored unless <see cref="Reorderable"/> is
+    /// true.</summary>
+    [Parameter] public bool ShowReorderHandles { get; set; } = true;
+
     /// <summary>Disables group movement. The host controls the availability of the commands themselves.</summary>
     [Parameter] public bool Disabled { get; set; }
 
@@ -69,7 +77,7 @@
     private string? _focusGroup;
     private readonly Dictionary<string, ElementReference> _handles = new(StringComparer.Ordinal);
 
-    private bool CanReorder => Reorderable && !Disabled;
+    private bool CanReorder => Reorderable && !Disabled && ShowReorderHandles;
 
     protected override void OnParametersSet()
     {

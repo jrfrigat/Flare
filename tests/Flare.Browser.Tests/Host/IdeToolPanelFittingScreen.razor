@@ -1,0 +1,30 @@
+@page "/ide-toolpanel-fitting"
+@using Flare.Components.IDE
+@using Flare.Icons
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareIdeLayout id="fitting" Height="420px" LeftPanelWidth="400px">
+        <ChildContent><p id="document">Document</p></ChildContent>
+        <LeftToolPanel>
+            <FlareToolPanelGroup id="top-group" Position="ToolPanelPosition.Left" ShowCollapseButton="false">
+                <FlareToolPanel Title="Solution Explorer" Key="explorer-top" Icon="@FlareIcons.Folder">
+                    <p>Explorer body</p>
+                </FlareToolPanel>
+                <FlareToolPanel Title="File System" Key="files-top" Icon="@FlareIcons.FolderOpen">
+                    <p>Files body</p>
+                </FlareToolPanel>
+            </FlareToolPanelGroup>
+        </LeftToolPanel>
+        <BottomPanel>
+            <FlareToolPanelGroup id="bottom-group" Position="ToolPanelPosition.Bottom"
+                                 TabStripPlacement="TabStripPlacement.Bottom" ShowCollapseButton="false">
+                <FlareToolPanel Title="Solution Explorer" Key="explorer-bottom" Icon="@FlareIcons.Folder">
+                    <p>Bottom explorer body</p>
+                </FlareToolPanel>
+                <FlareToolPanel Title="File System" Key="files-bottom" Icon="@FlareIcons.FolderOpen">
+                    <p>Bottom files body</p>
+                </FlareToolPanel>
+            </FlareToolPanelGroup>
+        </BottomPanel>
+    </FlareIdeLayout>
+</FlareThemeProvider>

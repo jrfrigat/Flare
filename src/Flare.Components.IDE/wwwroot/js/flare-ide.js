@@ -151,3 +151,46 @@ export function disposeFlyoutDismissal(layoutId) {
     if (!flyouts.delete(layoutId)) return;
     syncFlyoutListeners();
 }
+
+// Tool panel tab fitting. The strip never scrolls: tabs shrink and their labels ellipsize in CSS.
+// The one state CSS cannot decide is whether a tab has become too narrow for text at all - that
+// depends on the strip width and the tab count, not on any single element's content. When the
+// per-tab share falls below this width, a tab that has an icon shows the icon alone; the label is
+// clipped by CSS, not removed, so the accessible name survives.
+const minTabTextWidth = 72;
+// Leaving the icon-only state needs a wider tab than entering it: clipping the labels changes the
+// strip's max-content width, so a group inside a shrink-to-fit host could otherwise flip states
+// forever. A layout region has a definite width and never reaches this branch.
+const minTabTextWidthToExpand = 96;
+
+const compactAttribute = 'data-flare-tab-compact';
+const iconAttribute = 'data-flare-tab-icon';
+
+export function registerTabFitting(bar) {
+    if (!bar) return null;
+
+    let compact = null;
+    const apply = () => {
+        const tabs = Array.from(bar.children).filter(child => child.matches('[role="tab"]'));
+        if (tabs.length === 0 || bar.clientWidth === 0) return;
+        const share = bar.clientWidth / tabs.length;
+        compact = compact === true ? share > minTabTextWidthToExpand : share < minTabTextWidth;
+        for (const tab of tabs)
+            tab.toggleAttribute(compactAttribute, compact && tab.hasAttribute(iconAttribute));
+    };
+
+    // Both observers coalesce their own bursts, so the decision runs once per delivered batch;
+    // no animation frame is involved and a page that never paints still gets the state right.
+    const resizes = new ResizeObserver(apply);
+    resizes.observe(bar);
+    const mutations = new MutationObserver(apply);
+    mutations.observe(bar, { childList: true });
+    apply();
+
+    return {
+        dispose: () => {
+            resizes.disconnect();
+            mutations.disconnect();
+        },
+    };
+}

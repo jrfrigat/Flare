@@ -759,16 +759,17 @@
     border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
+/* Every tab stays in one row: the strip never scrolls, the tabs shrink and their labels ellipsize.
+   The IDE module marks a tab narrow enough to show its icon alone (see the compact rule below). */
 .flare-toolpanel-group__tabs {
     display: flex;
     flex: 1;
     min-inline-size: 0;
-    overflow-x: auto;
-    scrollbar-width: thin;
+    overflow: hidden;
 }
 
 /* Host actions (pin, close, custom) sit at the end of the header and never shrink, so a narrow
-   region scrolls its tabs instead of pushing the actions out of view. */
+   region shrinks its tabs instead of pushing the actions out of view. */
 .flare-toolpanel-group__actions {
     display: flex;
     flex-shrink: 0;
@@ -777,7 +778,11 @@
 }
 
 .flare-toolpanel-group__tab {
-    flex-shrink: 0;
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    min-inline-size: 0;
+    overflow: hidden;
     padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
     border: none;
     border-bottom: 2px solid transparent;
@@ -790,6 +795,41 @@
     font-weight: var(--flare-ide-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
     line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
     letter-spacing: var(--flare-ide-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
+}
+
+/* The icon keeps its size; the label is the part that gives way. Inline SVG, the morph wrapper and
+   the font-based providers (a span carrying .flare-icon) are all covered. */
+.flare-toolpanel-group__tab > :is(svg, .flare-icon, .flare-icon-morph) {
+    flex-shrink: 0;
+}
+
+.flare-toolpanel-group__tab-label {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Narrowest tab: the icon alone stays visible and the label is clipped into the
+   visually-hidden recipe instead of display:none, so the tab keeps its accessible name. The
+   attribute is owned by the IDE module; the class list stays the render tree's. */
+.flare-toolpanel-group__tab[data-flare-tab-compact] {
+    position: relative;
+    justify-content: center;
+}
+
+.flare-toolpanel-group__tab[data-flare-tab-compact] .flare-toolpanel-group__tab-label {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .flare-toolpanel-group__tab:hover {
