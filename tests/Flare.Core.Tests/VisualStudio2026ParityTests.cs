@@ -213,17 +213,19 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
-    public void CommandWell_TakesTheMeasuredSurfaceBorderAndHeight()
+    public void CommandWell_IsOwnedByTheIdePackage()
     {
         var light = VisualStudio.DesignReference.Extended;
         var dark = Theme.ExtendedDarkOverride;
         Assert.NotNull(dark);
 
+        // The optional IDE package publishes these hooks with base-token defaults; the theme does not
+        // know about the IDE and must not declare them.
         foreach (var map in new[] { light, dark })
         {
-            Assert.Equal("var(--flare-vs-chrome-command-well)", map["--flare-ide-toolbar-well-surface"]);
-            Assert.Equal("var(--flare-vs-chrome-command-well-border)", map["--flare-ide-toolbar-well-border-color"]);
-            Assert.Equal("1.5rem", map["--flare-ide-toolbar-well-height"]);
+            Assert.False(map.ContainsKey("--flare-ide-toolbar-well-surface"));
+            Assert.False(map.ContainsKey("--flare-ide-toolbar-well-border-color"));
+            Assert.False(map.ContainsKey("--flare-ide-toolbar-well-height"));
         }
 
         Assert.Equal($"var({Css.Tokens.Color.Surface})", light[VisualStudioCssVars.ChromeCommandWell]);
@@ -239,13 +241,11 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
-    public void ThemeCss_EmitsTheMeasuredCommandWell()
+    public void ThemeCss_LeavesTheCommandWellToTheIdePackage()
     {
         var css = TokensToCss.ThemeCss(Theme);
 
-        Assert.Contains("--flare-ide-toolbar-well-surface:var(--flare-vs-chrome-command-well);", css);
-        Assert.Contains("--flare-ide-toolbar-well-border-color:var(--flare-vs-chrome-command-well-border);", css);
-        Assert.Contains("--flare-ide-toolbar-well-height:1.5rem;", css);
+        Assert.DoesNotContain("--flare-ide-toolbar-well-", css);
         Assert.Contains("--flare-vs-chrome-command-well:#333333;", css);
         Assert.Contains("--flare-vs-chrome-command-well-border:#353535;", css);
     }

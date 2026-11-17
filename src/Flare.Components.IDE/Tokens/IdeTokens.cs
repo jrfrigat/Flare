@@ -111,6 +111,8 @@ public sealed record IdeTokens
     [CssVar(Names.ToolbarWellSurface)] public string ToolbarWellSurface { get; init; } = Var(Css.Tokens.Color.Surface);
     /// <summary>Design override for <c>--flare-ide-toolbar-well-border-color</c>.</summary>
     [CssVar(Names.ToolbarWellBorderColor)] public string ToolbarWellBorderColor { get; init; } = Var(Css.Tokens.Color.Outline);
+    /// <summary>Design override for <c>--flare-ide-toolbar-well-height</c>.</summary>
+    [CssVar(Css.Tokens.Ide.Layout.ToolbarWellHeight)] public string ToolbarWellHeight { get; init; } = Var(Css.Tokens.Spacing.S6);
     /// <summary>Design override for <c>--flare-ide-statusbar-surface</c>.</summary>
     [CssVar(Names.StatusBarSurface)] public string StatusBarSurface { get; init; } = "transparent";
     /// <summary>Design override for <c>--flare-ide-statusbar-color</c>.</summary>

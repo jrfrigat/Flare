@@ -81,19 +81,20 @@ a generic color role:
 | `--flare-vs-chrome-accent` | Focus and selection accent |
 | `--flare-vs-chrome-scrollbar-thumb` / `--flare-vs-chrome-scrollbar-track` | Scrollbar |
 
-The optional IDE shell in `Flare.Components.IDE` reads the same roles through its own
-`--flare-ide-*` hooks, which this theme fills in, so `FlareIdeLayout` renders the measured surfaces
-without host overrides.
+The optional IDE shell in `Flare.Components.IDE` owns its own `--flare-ide-*` hooks and their base
+defaults. This theme does not declare them: an application that wants the measured IDE surfaces sets
+those tokens in its own scope.
 
 ## VS 2026 component metrics
 
 - **Fields.** A 23px well with a `#353535` fill, a 1px `#454545` stroke, 4px corners and an 8px text
   inset. The Xs..Xl ramp is 20/22/23/26/30px.
 - **Command buttons.** 24px square, 16px glyph, 4px corners.
-- **Command-bar wells.** The combos and controls inside a command-bar group sit in a 24px well: a
-  22px `#333333` interior inside a 1px `#353535` stroke. A host reaches the whole combination through
+- **Command-bar wells.** The combos and controls inside a command-bar group can sit in a 24px well: a
+  22px `#333333` interior inside a 1px `#353535` stroke. The IDE package owns
   `--flare-ide-toolbar-well-surface`, `--flare-ide-toolbar-well-border-color` and
-  `--flare-ide-toolbar-well-height`; a 1px border-box stroke leaves the measured 22px interior.
+  `--flare-ide-toolbar-well-height` with base-token defaults; an application sets the measured values
+  in its own scope. A 1px border-box stroke leaves the measured 22px interior.
 - **Focus.** A single 1px `#9184EE` accent line on fields, buttons, checkboxes and radios; no outer
   glow.
 - **Scrollbars.** A 2px square `#9D9D9D` thumb on the panel surface. Chromium and WebView2 draw this

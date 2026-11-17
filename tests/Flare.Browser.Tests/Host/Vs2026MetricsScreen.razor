@@ -61,11 +61,15 @@
                 </RightContent>
             </FlareStatusBar>
         </div>
-        <div id="metric-commandbar">
+        <div id="metric-commandbar"
+             style="--flare-ide-toolbar-well-surface: var(--flare-vs-chrome-command-well);
+                    --flare-ide-toolbar-well-border-color: var(--flare-vs-chrome-command-well-border);
+                    --flare-ide-toolbar-well-height: 1.5rem;">
             <FlareToolbar Reorderable="true" Groups="ToolbarGroups">
                 <TrailingContent>
-                    @* The host-owned combo a VS-theme toolbar carries; every visual value comes from
-                       the theme's toolbar hooks, as an application's native select would use them. *@
+                    @* The host-owned combo a VS-theme toolbar carries. The IDE package owns the
+                       --flare-ide-toolbar-well-* hooks; this host sets the measured values in its own
+                       scope, as an application would. *@
                     <select id="metric-toolbar-combo" aria-label="Language"
                             style="box-sizing: border-box; block-size: var(--flare-ide-toolbar-well-height, 1.5rem); border: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-toolbar-well-border-color); border-radius: var(--flare-shape-small); background-color: var(--flare-ide-toolbar-well-surface); color: var(--flare-vs-chrome-text); padding: 0 4px;">
                         <option value="en">English</option>
