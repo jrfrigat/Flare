@@ -66,6 +66,9 @@
     [Parameter] public ThemeStylesheets Stylesheets { get; set; } = ThemeStylesheets.Automatic;
 
     private readonly string _id = Guid.NewGuid().ToString("N");
+    // Cancels the startup interop when the circuit goes away. Without it a pending reveal could
+    // outlive the component (an idle circuit disposes the renderer) and surface as a canceled task.
+    private readonly CancellationTokenSource _lifetime = new();
     private DotNetObjectReference<FlareThemeProvider>? _dotNetRef;
     private ThemeSnapshot _snapshot = default!;
     private int _version;
@@ -125,6 +128,7 @@
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (OperationCanceledException) { }
     }
 
     // Gate the readiness signal on the last thing that still loads asynchronously after the themed
@@ -134,6 +138,11 @@
     {
         try
         {
+            // The whole reveal is bounded: a module that never settles must not keep an interop call
+            // alive until the circuit is torn down.
+            using var reveal = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
+            reveal.CancelAfter(TimeSpan.FromSeconds(5));
+
             // Best-effort enhancement: wait for web fonts, then let revealApp do the framed fade.
             // These live in the theme JS module, which a stale PWA service-worker cache can still be
             // serving from a previous build (the module loads at a fingerprint-free URL, unlike the
@@ -142,17 +151,19 @@
             // defined, so the app is revealed instead of stranded behind its splash (or crashing).
             try
             {
-                await ThemeJsService.WhenFontsReadyAsync();
-                await ThemeJsService.RevealAppAsync();
+                await ThemeJsService.WhenFontsReadyAsync(timeoutMs: 3000, reveal.Token);
+                await ThemeJsService.RevealAppAsync(reveal.Token);
                 return;
             }
             catch (JSDisconnectedException) { }
             catch (JSException) { }
+            catch (OperationCanceledException) { return; }
 
             await JS.InvokeVoidAsync("hideFlareSplash");
         }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (OperationCanceledException) { }
     }
 
     [JSInvokable]
@@ -265,9 +276,11 @@
 
     public async ValueTask DisposeAsync()
     {
+        _lifetime.Cancel();
         ThemeService.OnThemeChanged -= HandleThemeChangedAsync;
         try { await ThemeJsService.UnsubscribeColorSchemeAsync(_id); } catch { }
         try { await ThemeJsService.UnsubscribeAccentAsync(_id); } catch { }
         _dotNetRef?.Dispose();
+        _lifetime.Dispose();
     }
 }

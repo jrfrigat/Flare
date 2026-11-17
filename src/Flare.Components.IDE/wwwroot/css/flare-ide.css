@@ -36,6 +36,16 @@
     --flare-ide-right-track: var(--flare-ide-right-width);
     grid-template-columns: var(--flare-ide-left-track) auto minmax(0, 1fr) auto var(--flare-ide-right-track);
     grid-template-rows: auto minmax(0, 1fr);
+    gap: var(--flare-ide-layout-gap, 0);
+}
+
+/* A host that wants the Visual Studio gutters rather than a flush frame sets the gap and radius
+   tokens; both default to the old flush behavior. */
+.flare-ide-layout__panel,
+.flare-ide-layout__main,
+.flare-ide-layout__document,
+.flare-toolpanel-group {
+    border-radius: var(--flare-ide-panel-radius, 0);
 }
 
 .flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
@@ -676,6 +686,15 @@
 .flare-doc-tabs__tab--active {
     background: var(--flare-ide-tab-active-bg, var(--flare-ide-surface, var(--flare-color-surface)));
     border-bottom-color: var(--flare-ide-primary, var(--flare-color-primary));
+    color: var(--flare-ide-tab-active-color, var(--flare-ide-on-surface, var(--flare-color-on-surface)));
+}
+
+.flare-doc-tabs__tab:focus-visible,
+.flare-sheet-tabs__tab:focus-visible,
+.flare-toolpanel-group__tab:focus-visible,
+.flare-tabs__tab:focus-visible {
+    outline: 2px solid var(--flare-ide-primary, var(--flare-color-primary));
+    outline-offset: -2px;
 }
 
 .flare-doc-tabs__icon {
@@ -1090,6 +1109,7 @@
    toolbar's backdrop visible in the gaps between them. */
 .flare-toolbar__group {
     background: var(--flare-ide-toolbar-group-surface, transparent);
+    gap: var(--flare-ide-toolbar-group-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
 }
 
 /* Editor breadcrumb/toolbar row: the 22px chrome strip under the document tabs. The host fills the
@@ -1395,8 +1415,10 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-sheet-tabs__tab--active {
     background: var(--flare-ide-sheet-tabs-active-bg, var(--flare-ide-surface, var(--flare-color-surface)));
     border-color: var(--flare-ide-sheet-tabs-active-border-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
-    color: var(--flare-ide-sheet-tabs-active-color, var(--flare-color-on-surface));
+    color: var(--flare-ide-sheet-tabs-active-color, var(--flare-ide-primary, var(--flare-color-primary)));
     font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
+    box-shadow: inset 0 calc(-1 * var(--flare-ide-sheet-tabs-underline-height, 2px)) 0 0
+        var(--flare-ide-sheet-tabs-underline-color, var(--flare-ide-primary, var(--flare-color-primary)));
 }
 
 .flare-sheet-tabs__add {

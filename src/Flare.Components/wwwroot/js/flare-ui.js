@@ -190,7 +190,16 @@ export function registerTabScroller(bar, dotNetRef) {
         observer.observe(bar, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-selected'] });
         observeTabs();
     }
-    _tabScrollers.keep(bar, all(listen(bar, 'scroll', onScroll, { passive: true }), () => {
+    // A horizontal tab strip follows the wheel: the bar is exactly as tall as its tabs, so the
+    // browser would otherwise scroll the page (or nothing) under the pointer.
+    const onWheel = e => {
+        if (e.ctrlKey || bar.getAttribute('aria-orientation') === 'vertical') return;
+        const delta = e.deltaX !== 0 ? e.deltaX : (e.shiftKey ? 0 : e.deltaY);
+        if (!delta) return;
+        e.preventDefault();
+        bar.scrollBy({ left: delta, behavior: 'auto' });
+    };
+    _tabScrollers.keep(bar, all(listen(bar, 'scroll', onScroll, { passive: true }), listen(bar, 'wheel', onWheel, { passive: false }), () => {
         ro.disconnect();
         observer?.disconnect();
         if (frame) cancelAnimationFrame(frame);
