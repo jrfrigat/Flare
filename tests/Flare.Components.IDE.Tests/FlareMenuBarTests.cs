@@ -20,17 +20,21 @@ public class FlareMenuBarTests : FlareTestContext
         b.CloseElement();
     };
 
-    private static RenderFragment Menu(string title, string item, string ariaLabel) => b =>
+    private static RenderFragment Menu(string title, string item, string ariaLabel) =>
+        Menu(title, ariaLabel, b =>
+        {
+            b.OpenComponent<FlareMenuItem>(0);
+            b.AddAttribute(1, nameof(FlareMenuItem.ChildContent), (RenderFragment)(x => x.AddContent(0, item)));
+            b.CloseComponent();
+        });
+
+    private static RenderFragment Menu(string title, string ariaLabel, RenderFragment content, bool freeContent = false) => b =>
     {
         b.OpenComponent<FlareMenu>(0);
         b.AddAttribute(1, nameof(FlareMenu.AriaLabel), ariaLabel);
-        b.AddAttribute(2, nameof(FlareMenu.ChildContent), (RenderFragment)(cb =>
-        {
-            cb.OpenComponent<FlareMenuItem>(0);
-            cb.AddAttribute(1, nameof(FlareMenuItem.ChildContent), (RenderFragment)(x => x.AddContent(0, item)));
-            cb.CloseComponent();
-        }));
+        b.AddAttribute(2, nameof(FlareMenu.ChildContent), content);
         b.AddAttribute(3, nameof(FlareMenu.Activator), Activator(title));
+        b.AddAttribute(4, nameof(FlareMenu.FreeContent), freeContent);
         b.CloseComponent();
     };
 
@@ -80,6 +84,28 @@ public class FlareMenuBarTests : FlareTestContext
 
         Assert.Equal("Edit menu", OpenPanelLabel(cut));
         Assert.Single(cut.FindAll($".{Css.Classes.Menu.Panel}"));
+    }
+
+    [Fact]
+    public async Task NestedMenu_OpensIndependentlyOfTheBar()
+    {
+        var nested = Menu("Export", "PDF", "Export menu");
+        var cut = Render<FlareMenuBar>(p => p.Add(x => x.ChildContent,
+            Menu("File", "File panel", nested, freeContent: true)));
+        await cut.InvokeAsync(() => ActivatorWrappers(cut)[0].Click());
+
+        var activator = $".{Css.Classes.Menu.Panel} .{Css.Classes.Menu.Activator}";
+        await cut.InvokeAsync(() => cut.Find(activator).TriggerEvent("onmouseenter", new MouseEventArgs()));
+        Assert.Equal("File panel", OpenPanelLabel(cut));
+
+        await cut.InvokeAsync(() => cut.Find(activator).Click());
+        var panels = cut.FindAll($".{Css.Classes.Menu.Panel}");
+        Assert.Equal(new[] { "File panel", "Export menu" }, panels.Select(p => p.GetAttribute("aria-label")));
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Menu.Backdrop}").Count);
+
+        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Panel} .{Css.Classes.Menu.Backdrop}").Click());
+        Assert.Equal("File panel", OpenPanelLabel(cut));
+        Assert.Single(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
     }
 
     [Fact]

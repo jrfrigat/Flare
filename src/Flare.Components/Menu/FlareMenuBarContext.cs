@@ -3,9 +3,9 @@ namespace Flare.Components;
 /// <summary>
 /// Coordinates the top-level <see cref="FlareMenu"/> instances of one menu bar: at most one is open,
 /// opening another closes the previous one without pulling the focus back, and the owner renders one
-/// shared backdrop for the whole bar. A bar component cascades an instance, so a menu placed inside it
-/// joins the coordination automatically; a host-owned bar must render the shared backdrop itself and
-/// call <see cref="CloseOpenMenuAsync"/> when that backdrop is clicked.
+/// shared backdrop for the whole bar. A menu inside another menu's panel has its own backdrop and
+/// does not join the bar. A host-owned bar cascades an instance, renders the shared backdrop and calls
+/// <see cref="CloseOpenMenuAsync"/> when that backdrop is clicked.
 /// </summary>
 public sealed class FlareMenuBarContext
 {

@@ -1,0 +1,22 @@
+@page "/menu-bar-nested"
+@using Flare.Components.IDE
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareMenuBar>
+        <FlareMenu AriaLabel="File panel" FreeContent="true">
+            <Activator>
+                <FlareButton @attributes="context.Attributes">File</FlareButton>
+            </Activator>
+            <ChildContent>
+                <FlareMenu AriaLabel="Export menu">
+                    <Activator>
+                        <FlareButton @attributes="context.Attributes">Export</FlareButton>
+                    </Activator>
+                    <ChildContent>
+                        <FlareMenuItem>PDF</FlareMenuItem>
+                    </ChildContent>
+                </FlareMenu>
+            </ChildContent>
+        </FlareMenu>
+    </FlareMenuBar>
+</FlareThemeProvider>

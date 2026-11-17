@@ -27,7 +27,7 @@ public partial class FlareMenu
     /// The point is honoured regardless of <see cref="PositionAtCursor"/>, which only governs the
     /// activator click. The panel otherwise opens like any other: the same placement engine flips and
     /// clamps it inside the viewport and raises it into the top layer, the backdrop and Escape close it,
-    /// and it joins a <see cref="FlareMenuBarContext"/> bar when one is present. Raises
+    /// and a top-level menu in a <see cref="FlareMenuBarContext"/> joins the bar's coordination. Raises
     /// <see cref="OnToggle"/>.
     /// </para>
     /// <para>

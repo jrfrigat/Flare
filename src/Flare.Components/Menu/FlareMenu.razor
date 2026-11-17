@@ -3,9 +3,7 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes">
-    @* The wrapper carries the click, the position anchor and nothing a screen reader reads: the ARIA of
-       the popup travels to the activator itself through the context, because this div has no role and
-       cannot take the focus, and ARIA on such an element announces nothing at all. *@
+    @* The wrapper owns activation and positioning. The slot applies ARIA to its focusable element. *@
     <div class="@Css.Classes.Menu.Activator" @ref="_activatorEl"
          @onclick="HandleActivatorClick"
          @onmouseenter="HandleActivatorMouseEnter"
@@ -13,8 +11,7 @@
          @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)">
         @Activator?.Invoke(ActivatorContext)
     </div>
-    @* A coordinated menu (inside a bar) leaves the backdrop to the bar: one element covers the page
-       and the bar's own menus are raised above it, so another title stays clickable. *@
+    @* Only top-level menus in a coordinating bar share its backdrop. *@
     @if (_open && MenuBarContext is null)
     {
         <div data-flare-backdrop class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
@@ -23,10 +20,14 @@
     {
         <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
              aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
-             @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="_ownsKeyboard">
-            <CascadingValue Value="_menuContext" IsFixed="true">
-                <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
-                    @ChildContent
+             @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="_ownsKeyboard"
+             @onkeydown:stopPropagation="@(ParentMenuContext is not null)">
+            @* Panel content starts a new menu scope. Its menus are independent of the bar. *@
+            <CascadingValue TValue="FlareMenuBarContext" Value="null" IsFixed="true">
+                <CascadingValue Value="_menuContext" IsFixed="true">
+                    <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
+                        @ChildContent
+                    </CascadingValue>
                 </CascadingValue>
             </CascadingValue>
         </div>
@@ -107,9 +108,9 @@
     private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
-    // Present when this menu sits inside a coordinating bar; then the bar owns which menu is open and
-    // the shared backdrop, and a pointer entering another title switches menus.
+    // A top-level bar menu shares the backdrop and switches on hover.
     [CascadingParameter] private FlareMenuBarContext? MenuBarContext { get; set; }
+    [CascadingParameter] private FlareMenuContext? ParentMenuContext { get; set; }
     // A top-level menu opened by the pointer moving onto its title. A click that follows confirms that
     // switch instead of toggling the menu shut.
     private bool _openedByHover;
@@ -282,7 +283,6 @@
     };
 
     private string _scrollClass => string.IsNullOrEmpty(MaxHeight) ? string.Empty : Css.Classes.Menu.PanelScroll;
-
     // Only the MaxHeight cap rides on an inline style; sanitize the caller-supplied length before
     // injecting it. The cursor coordinates used to be written here too and are now handed to the
     // placement engine as an anchor rectangle - one owner for top/left, or the two overwrite each other.
