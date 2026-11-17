@@ -119,7 +119,7 @@ else
             <button type="button" class="@Css.Classes.Ide.DocTabs.Close" @onclick="@(() => CloseAsync(tab))"
                     @onclick:stopPropagation="true" @onkeydown:stopPropagation="true"
                     aria-label="@($"{Text["DocTabs_Close"]}: {tab.Title}")">
-                <FlareIconView Value="FlareIcons.Close" Size="0.875rem" />
+                <FlareIconView Value="FlareIcons.Close" Size="var(--flare-ide-doc-tab-close-icon, 0.875rem)" />
             </button>
         }
     </div>;

@@ -698,6 +698,7 @@
     justify-content: center;
     width: 18px;
     height: 18px;
+    padding: 0;
     border: none;
     background: none;
     border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));

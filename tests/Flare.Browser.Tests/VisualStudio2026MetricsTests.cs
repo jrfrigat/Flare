@@ -165,6 +165,51 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task DocumentTabs_AreTheMeasuredFlowingStrip()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var strip = page.Locator($"#metric-doctabs .{Css.Classes.Ide.DocTabs.Strip}");
+        await strip.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-doctabs .flare-doc-tabs'))
+                    .getPropertyValue('--flare-ide-doc-tab-close-icon').trim() === '0.625rem'
+            """);
+
+        Assert.Equal(24, await strip.EvaluateAsync<int>("el => el.clientHeight"));
+        await Expect(strip).ToHaveCSSAsync("background-color", "rgb(38, 38, 38)");
+        var stripShadow = await strip.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow");
+        Assert.Contains("inset", stripShadow);
+        Assert.Contains("rgb(145, 132, 238)", stripShadow);
+
+        var bar = page.Locator($"#metric-doctabs .{Css.Classes.Ide.DocTabs.Bar}");
+        await Expect(bar).ToHaveCSSAsync("gap", "2px");
+        await Expect(bar).ToHaveCSSAsync("padding-left", "6px");
+
+        var active = page.Locator($"#metric-doctabs .{Css.Classes.Ide.DocTabs.TabActive}");
+        await Expect(active).ToHaveCSSAsync("height", "24px");
+        await Expect(active).ToHaveCSSAsync("background-color", "rgb(40, 40, 40)");
+        await Expect(active).ToHaveCSSAsync("border-top-left-radius", "4px");
+        await Expect(active).ToHaveCSSAsync("border-bottom-left-radius", "0px");
+        await Expect(active).ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+        await Expect(active).ToHaveCSSAsync("font-weight", "600");
+        var activeShadow = await active.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow");
+        Assert.Contains("inset", activeShadow);
+        Assert.Contains("rgb(145, 132, 238)", activeShadow);
+
+        var inactive = page.Locator($"#metric-doctabs .{Css.Classes.Ide.DocTabs.Tab}").Nth(1);
+        await Expect(inactive).ToHaveCSSAsync("color", "rgb(207, 207, 207)");
+
+        var close = active.Locator($".{Css.Classes.Ide.DocTabs.Close}");
+        await Expect(close).ToHaveCSSAsync("width", "20px");
+        await Expect(close).ToHaveCSSAsync("height", "20px");
+        var glyph = close.Locator($".{Css.Classes.Icon.Svg}");
+        await Expect(glyph).ToHaveCSSAsync("width", "10px");
+    }
+
+    [Fact]
     public async Task Scrollbar_UsesTheTwoPixelWebKitPath()
     {
         await using var context = await OpenDarkContextAsync();

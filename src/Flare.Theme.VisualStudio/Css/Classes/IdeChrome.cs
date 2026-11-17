@@ -11,4 +11,14 @@ public static class IdeChrome
     public const string ToolbarGroup = "flare-toolbar__group";
     /// <summary>The <c>flare-toolbar__handle</c> CSS class - the compact group drag handle.</summary>
     public const string ToolbarHandle = "flare-toolbar__handle";
+    /// <summary>The <c>flare-doc-tabs__strip</c> CSS class - the document tab row.</summary>
+    public const string DocTabStrip = "flare-doc-tabs__strip";
+    /// <summary>The <c>flare-doc-tabs__bar</c> CSS class - the scrolling tab list.</summary>
+    public const string DocTabBar = "flare-doc-tabs__bar";
+    /// <summary>The <c>flare-doc-tabs__tab</c> CSS class - one document tab.</summary>
+    public const string DocTab = "flare-doc-tabs__tab";
+    /// <summary>The <c>flare-doc-tabs__tab--active</c> CSS class - the selected document tab.</summary>
+    public const string DocTabActive = "flare-doc-tabs__tab--active";
+    /// <summary>The <c>flare-doc-tabs__close</c> CSS class - the tab close button.</summary>
+    public const string DocTabClose = "flare-doc-tabs__close";
 }

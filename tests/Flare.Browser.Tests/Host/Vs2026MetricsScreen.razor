@@ -31,10 +31,20 @@
         <div id="metric-commandbar">
             <FlareToolbar Reorderable="true" Groups="ToolbarGroups" />
         </div>
+        <div id="metric-doctabs">
+            <FlareDocumentTabs @bind-ActiveKey="_activeDocument">
+                <ChildContent>
+                    <FlareDocumentTab Key="main" Title="Main.cs">Main document</FlareDocumentTab>
+                    <FlareDocumentTab Key="other" Title="Other.cs">Other document</FlareDocumentTab>
+                </ChildContent>
+            </FlareDocumentTabs>
+        </div>
     </main>
 </FlareThemeProvider>
 
 @code {
+    private string? _activeDocument = "main";
+
     private RenderFragment FileGroup => @<text>
         <FlareButton Size="ButtonSize.Xs" AriaLabel="Save">
             <LeadingIcon><FlareIconView Value="@FlareIcons.Save" /></LeadingIcon>

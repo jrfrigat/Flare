@@ -671,6 +671,10 @@ internal class VisualStudioTokens
         [IdeToolbarDensePadding] = "0",
         [IdeToolbarEdgeColor] = "var(--flare-vs-chrome-bar-edge)",
 
+        // The measured document tab close glyph is 10px inside a 20px target (the target size is in
+        // the theme's scoped tabs.css); the default keeps every other theme's 14px glyph.
+        [IdeDocTabCloseIcon] = "0.625rem",
+
         // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
         // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
         [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
@@ -709,6 +713,7 @@ internal class VisualStudioTokens
     internal const string IdeToolbarPadding = "--flare-ide-toolbar-padding";
     internal const string IdeToolbarDensePadding = "--flare-ide-toolbar-dense-padding";
     internal const string IdeToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
+    internal const string IdeDocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
     internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
     internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
     internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";
