@@ -209,6 +209,38 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
+    public void Menus_TakeTheMeasuredPanelItemAndPillMetrics()
+    {
+        var menu = VisualStudio.DesignReference.Menu;
+
+        Assert.Equal("var(--flare-vs-chrome-menu)", menu.PanelBg);
+        Assert.Equal($"var({Css.Tokens.Shape.Large})", menu.PanelRadius);
+        Assert.Equal("0.0625rem", menu.PanelPaddingBlock);
+        Assert.Equal("0.0625rem", menu.PanelPaddingInline);
+        Assert.Equal("1.375rem", menu.ItemHeight);
+        Assert.Equal("0", menu.ItemPaddingBlock);
+        Assert.Equal("0.75rem", menu.ItemPaddingInline);
+        Assert.Equal("0.125rem", menu.ItemGapBetween);
+        Assert.Equal("0.125rem", menu.ItemGap);
+        Assert.Equal("1rem", menu.ItemIconSize);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", menu.ItemRadius);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", menu.ItemRadiusEnd);
+        Assert.Equal("var(--flare-vs-chrome-text-disabled)", menu.ItemShortcutColor);
+        Assert.Equal("var(--flare-vs-chrome-accent)", menu.ItemCheckColor);
+        Assert.Equal("1", menu.ItemDisabledOpacity);
+        Assert.Equal("1px solid var(--flare-vs-chrome-divider)", menu.SeparatorRule);
+        Assert.Equal("0.3125rem", menu.SeparatorSpacing);
+    }
+
+    [Fact]
+    public void MenuBar_TakesTheMeasuredThirtyPixelBar()
+    {
+        var extended = VisualStudio.DesignReference.Extended;
+
+        Assert.Equal("1.875rem", extended["--flare-ide-menubar-height"]);
+    }
+
+    [Fact]
     public void CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
     {
         var button = VisualStudio.DesignReference.Button;

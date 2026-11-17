@@ -39,6 +39,23 @@
                 </ChildContent>
             </FlareDocumentTabs>
         </div>
+        <div id="metric-menubar">
+            <FlareMenuBar>
+                <FlareMenu AriaLabel="File">
+                    <Activator Context="menu">
+                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                                     @attributes="menu.Attributes">File</FlareButton>
+                    </Activator>
+                    <ChildContent>
+                        <FlareMenuItem Shortcut="Ctrl+N">New</FlareMenuItem>
+                        <FlareMenuItem Shortcut="Ctrl+O">Open</FlareMenuItem>
+                        <FlareMenuItem Disabled="true">Disabled entry</FlareMenuItem>
+                        <FlareMenuSeparator />
+                        <FlareMenuItem Checked="true" Shortcut="Ctrl+K">Checked entry</FlareMenuItem>
+                    </ChildContent>
+                </FlareMenu>
+            </FlareMenuBar>
+        </div>
     </main>
 </FlareThemeProvider>
 

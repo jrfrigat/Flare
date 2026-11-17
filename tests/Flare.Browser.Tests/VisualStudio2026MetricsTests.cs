@@ -210,6 +210,98 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task MenuBar_IsTheMeasuredThirtyPixelBarWithAPill()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var bar = page.Locator($"#metric-menubar .{Css.Classes.Ide.MenuBar.Root}");
+        await bar.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-menubar .flare-menubar'))
+                    .getPropertyValue('--flare-ide-menubar-height').trim() === '1.875rem'
+            """);
+
+        Assert.Equal(30, await bar.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        await Expect(bar).ToHaveCSSAsync("background-color", "rgb(28, 28, 28)");
+        await Expect(bar).ToHaveCSSAsync("border-bottom-color", "rgb(14, 14, 14)");
+        await Expect(bar).ToHaveCSSAsync("gap", "2px");
+
+        var title = bar.Locator($".{Css.Classes.Button.Root}").First;
+        await Expect(title).ToHaveCSSAsync("height", "24px");
+        await Expect(title).ToHaveCSSAsync("border-radius", "4px");
+        await Expect(title).ToHaveCSSAsync("padding-left", "8px");
+        await Expect(title).ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+        await Expect(title).ToHaveCSSAsync("font-weight", "400");
+
+        await title.HoverAsync();
+        var pill = await title.EvaluateAsync<string>("el => getComputedStyle(el, '::before').backgroundColor");
+        Assert.Equal("rgb(41, 41, 41)", pill);
+    }
+
+    [Fact]
+    public async Task DropdownMenu_IsTheMeasuredPanelAndItemRhythm()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+            """);
+        var title = page.Locator($"#metric-menubar .{Css.Classes.Button.Root}").First;
+        await title.ClickAsync();
+
+        var panel = page.Locator($".{Css.Classes.Menu.Panel}").First;
+        await Expect(panel).ToBeVisibleAsync();
+        await Expect(panel).ToHaveCSSAsync("background-color", "rgb(44, 44, 44)");
+        await Expect(panel).ToHaveCSSAsync("border-top-left-radius", "6px");
+        await Expect(panel).ToHaveCSSAsync("border-top-color", "rgb(14, 14, 14)");
+        await Expect(panel).ToHaveCSSAsync("padding", "1px");
+        await Expect(panel).ToHaveCSSAsync("row-gap", "2px");
+
+        var first = panel.Locator($".{Css.Classes.Menu.Item}").First;
+        await Expect(first).ToHaveCSSAsync("height", "22px");
+        await Expect(first).ToHaveCSSAsync("border-radius", "4px");
+        await Expect(first).ToHaveCSSAsync("padding-left", "12px");
+        await Expect(first).ToHaveCSSAsync("padding-right", "8px");
+        await Expect(first).ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+        await Expect(first.Locator($".{Css.Classes.Menu.ItemShortcut}")).ToHaveCSSAsync("color", "rgb(133, 133, 133)");
+
+        await first.HoverAsync();
+        var pill = await first.EvaluateAsync<string>("el => getComputedStyle(el, '::before').backgroundColor");
+        Assert.Equal("rgb(56, 56, 56)", pill);
+
+        var disabled = panel.Locator($".{Css.Classes.Menu.ItemDisabled}").First;
+        await Expect(disabled).ToHaveCSSAsync("color", "rgb(133, 133, 133)");
+
+        var separator = panel.Locator($".{Css.Classes.Menu.Separator}");
+        await Expect(separator).ToHaveCSSAsync("border-top-color", "rgb(61, 61, 61)");
+        await Expect(separator).ToHaveCSSAsync("margin-top", "5px");
+
+        var check = panel.Locator($".{Css.Classes.Menu.ItemCheckIcon}");
+        await Expect(check).ToHaveCSSAsync("color", "rgb(145, 132, 238)");
+
+        // The checked row reserves the 16px check slot plus the 2px gap: its label starts 32px from
+        // the panel edge, and its shortcut ends 10px from the panel's right edge.
+        var offsets = await page.EvaluateAsync<double[]>("""
+            () => {
+              const panel = document.querySelector('.flare-menu__panel');
+              const row = panel.querySelector('.flare-menu-item[aria-checked="true"]');
+              const label = row.querySelector('.flare-menu-item__label');
+              const shortcut = row.querySelector('.flare-menu-item__shortcut');
+              const p = panel.getBoundingClientRect();
+              return [
+                label.getBoundingClientRect().left - p.left,
+                p.right - shortcut.getBoundingClientRect().right,
+              ];
+            }
+            """);
+        Assert.Equal(32, offsets[0], 0.5);
+        Assert.Equal(10, offsets[1], 0.5);
+    }
+
+    [Fact]
     public async Task Scrollbar_UsesTheTwoPixelWebKitPath()
     {
         await using var context = await OpenDarkContextAsync();

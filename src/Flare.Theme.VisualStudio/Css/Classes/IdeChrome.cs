@@ -21,4 +21,6 @@ public static class IdeChrome
     public const string DocTabActive = "flare-doc-tabs__tab--active";
     /// <summary>The <c>flare-doc-tabs__close</c> CSS class - the tab close button.</summary>
     public const string DocTabClose = "flare-doc-tabs__close";
+    /// <summary>The <c>flare-menubar</c> CSS class - the 30px VS menu bar.</summary>
+    public const string MenuBar = "flare-menubar";
 }

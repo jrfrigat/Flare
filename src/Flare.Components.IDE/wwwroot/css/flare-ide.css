@@ -1033,7 +1033,8 @@
     display: flex;
     align-items: center;
     padding: 0 var(--flare-ide-spacing-2, var(--flare-spacing-2));
-    min-height: 28px;
+    min-block-size: var(--flare-ide-menubar-height, 28px);
+    background: var(--flare-ide-menubar-bg, transparent);
 }
 
 /* While a menu is open the bar renders one shared backdrop. Raising the bar's own menus above it keeps

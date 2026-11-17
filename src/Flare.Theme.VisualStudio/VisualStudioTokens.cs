@@ -348,8 +348,27 @@ internal class VisualStudioTokens
 
     internal static readonly MenuTokens Menu = FluentUI2Tokens.Design.Menu with
     {
-        // 6px dropdown corners; items and panels stay otherwise Fluent-flat.
+        // VS 2026 dropdowns: a #2C2C2C panel with 6px corners and a 2px inset, 22px items on a 24px
+        // pitch, 4px hover pills, a 16px icon/check gutter and the measured shortcut/check/rule
+        // colours. The hover fill is a scoped state-layer re-point in components/ide.css.
+        PanelBg = "var(--flare-vs-chrome-menu)",
         PanelRadius = "var(--flare-shape-large)",
+        PanelShadow = "var(--flare-elevation-3)",
+        PanelPaddingBlock = "0.0625rem",
+        PanelPaddingInline = "0.0625rem",
+        ItemHeight = "1.375rem",
+        ItemPaddingBlock = "0",
+        ItemPaddingInline = "0.75rem",
+        ItemGapBetween = "0.125rem",
+        ItemGap = "0.125rem",
+        ItemIconSize = "1rem",
+        ItemRadius = "var(--flare-shape-small)",
+        ItemRadiusEnd = "var(--flare-shape-small)",
+        ItemShortcutColor = "var(--flare-vs-chrome-text-disabled)",
+        ItemCheckColor = "var(--flare-vs-chrome-accent)",
+        ItemDisabledOpacity = "1",
+        SeparatorRule = "1px solid var(--flare-vs-chrome-divider)",
+        SeparatorSpacing = "0.3125rem",
     };
 
     // Checkbox/Radio - VS: 1px border, 4px corner, no MD3 halo, a single 1px accent focus line.
@@ -675,6 +694,10 @@ internal class VisualStudioTokens
         // the theme's scoped tabs.css); the default keeps every other theme's 14px glyph.
         [IdeDocTabCloseIcon] = "0.625rem",
 
+        // The measured menu bar is 30px tall including its 1px bottom edge; scoped ide.css paints
+        // the edge, the gap and the 24px hover pill.
+        [IdeMenubarHeight] = "1.875rem",
+
         // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
         // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
         [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
@@ -714,6 +737,7 @@ internal class VisualStudioTokens
     internal const string IdeToolbarDensePadding = "--flare-ide-toolbar-dense-padding";
     internal const string IdeToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
     internal const string IdeDocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
+    internal const string IdeMenubarHeight = "--flare-ide-menubar-height";
     internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
     internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
     internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";

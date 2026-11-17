@@ -16,7 +16,12 @@
     width: 100%;
     box-sizing: border-box;
     min-height: var(--flare-menu-item-height);
-    padding: var(--flare-menu-item-padding-block) var(--flare-menu-item-padding-inline);
+    /* One token keeps the sides equal by default. The private pair lets a theme give the leading
+       content and the trailing shortcut column their own measured insets without a second public
+       token; both fall back to the shared value. */
+    padding-block: var(--flare-menu-item-padding-block);
+    padding-inline: var(--_flare-menu-item-padding-inline-start, var(--flare-menu-item-padding-inline))
+        var(--_flare-menu-item-padding-inline-end, var(--flare-menu-item-padding-inline));
     background: transparent;
     border: none;
     border-radius: var(--flare-menu-item-radius);

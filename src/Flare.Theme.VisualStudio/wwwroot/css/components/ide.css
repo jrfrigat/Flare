@@ -54,4 +54,44 @@
     .flare-toolbar:not(:has(> .flare-toolbar__group)) {
         background: var(--flare-vs-chrome-command-bar);
     }
+
+    /* VS 2026 menu bar: border-box 30px including the 1px hard bottom edge, 2px between entries,
+       white 13px regular labels and the measured 24px #292929 hover pill. The pill's height,
+       radius and 8px inline padding already come from the theme's Sm button metrics. */
+    .flare-menubar {
+        box-sizing: border-box;
+        min-block-size: 1.875rem;
+        gap: 0.125rem;
+        border-bottom: 1px solid var(--flare-vs-chrome-bar-edge);
+    }
+
+    .flare-menubar .flare-btn {
+        color: var(--flare-vs-chrome-text);
+        font-weight: var(--flare-typescale-body-large-weight);
+        --flare-state-hover-layer: var(--flare-vs-chrome-menubar-hover);
+    }
+
+    /* VS 2026 dropdowns and flyouts: the measured 1px dark edge sits on the 6px panel; items take
+       the #383838 hover pill from the state layer, the 12px/8px content insets, and repaint (not
+       fade) when disabled so the label and icon can take the measured #858585. */
+    .flare-menu__panel,
+    .flare-submenu__panel {
+        border: 1px solid var(--flare-vs-chrome-bar-edge);
+    }
+
+    .flare-menu-item {
+        --flare-state-hover-layer: var(--flare-vs-chrome-hover);
+        --_flare-menu-item-padding-inline-start: 0.75rem;
+        --_flare-menu-item-padding-inline-end: 0.5rem;
+    }
+
+    .flare-menu-item:disabled,
+    .flare-menu-item--disabled {
+        color: var(--flare-vs-chrome-text-disabled);
+    }
+
+    .flare-menu-item:disabled .flare-icon.flare-menu-item__icon,
+    .flare-menu-item--disabled .flare-icon.flare-menu-item__icon {
+        color: var(--flare-vs-chrome-text-disabled);
+    }
 }

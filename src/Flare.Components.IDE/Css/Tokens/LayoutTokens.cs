@@ -34,4 +34,6 @@ public static class Layout
     public const string ToolbarDensePadding = "--flare-ide-toolbar-dense-padding";
     /// <summary>Glyph size of a document tab's close button.</summary>
     public const string DocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
+    /// <summary>Menu-bar height.</summary>
+    public const string MenubarHeight = "--flare-ide-menubar-height";
 }
