@@ -19,4 +19,39 @@
         min-block-size: 1.5rem;
         padding-block: 0;
     }
+
+    /* VS 2026 command bar: surfaces, height, gaps and padding come from the optional IDE shell's
+       toolbar hooks (VisualStudioTokens.Extended). This sheet adds the measured 1px hard edge above
+       the 28px strip; the toolbar's own bottom border takes the edge colour from the same hook. */
+    .flare-toolbar {
+        border-top: 1px solid var(--flare-vs-chrome-bar-edge);
+    }
+
+    /* The group's 2px block padding lets its #262626 surface fill the full 28px strip, so the
+       #1C1C1C backdrop only shows in the 4px gaps between groups. */
+    .flare-toolbar__group {
+        padding-block: 0.125rem;
+    }
+
+    /* A group's reorderable handle lives in a FlareMenu wrapper. As a flex item the wrapper would
+       still lay the inline activator out on a line box, adding space around the handle and pushing
+       the strip past 28px; flex display keeps the wrapper at the activator's own height. */
+    .flare-toolbar__group > .flare-menu {
+        display: flex;
+    }
+
+    /* The handle is a plain button around an inline glyph, so its line box (17px) plus padding made
+       it taller than the 24px command button beside it. Centering the glyph keeps the handle at its
+       22px box and still leaves the whole button as the drag target. */
+    .flare-toolbar__handle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* A toolbar of fixed commands with no reorderable groups has no group surface to paint the fill;
+       keep it on the command-bar role so it does not read as a title-bar strip. */
+    .flare-toolbar:not(:has(> .flare-toolbar__group)) {
+        background: var(--flare-vs-chrome-command-bar);
+    }
 }

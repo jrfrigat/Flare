@@ -116,6 +116,55 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task CommandBar_IsTheMeasuredTwentyEightPixelStrip()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var bar = page.Locator($"#metric-commandbar .{Css.Classes.Ide.Toolbar.Root}");
+        await bar.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-commandbar .flare-toolbar'))
+                    .getPropertyValue('--flare-ide-toolbar-height').trim() === '1.75rem'
+            """);
+
+        // The measured strip is 28px between its two 1px hard edges, so the border box is 30px.
+        Assert.Equal(28, await bar.EvaluateAsync<int>("bar => bar.clientHeight"));
+        await Expect(bar).ToHaveCSSAsync("border-top-width", "1px");
+        await Expect(bar).ToHaveCSSAsync("border-bottom-width", "1px");
+        await Expect(bar).ToHaveCSSAsync("background-color", "rgb(28, 28, 28)");
+        await Expect(bar).ToHaveCSSAsync("gap", "4px");
+        await Expect(bar).ToHaveCSSAsync("border-top-color", "rgb(14, 14, 14)");
+        await Expect(bar).ToHaveCSSAsync("border-bottom-color", "rgb(14, 14, 14)");
+
+        var group = bar.Locator($".{Css.Classes.Ide.Toolbar.Group}").First;
+        await Expect(group).ToHaveCSSAsync("height", "28px");
+        await Expect(group).ToHaveCSSAsync("background-color", "rgb(38, 38, 38)");
+
+        var button = group.Locator($".{Css.Classes.Button.Root}").First;
+        await Expect(button).ToHaveCSSAsync("height", "24px");
+        await Expect(button).ToHaveCSSAsync("border-radius", "4px");
+
+        var icon = button.Locator($".{Css.Classes.Button.Icon}");
+        await Expect(icon).ToHaveCSSAsync("width", "16px");
+        await Expect(icon).ToHaveCSSAsync("height", "16px");
+    }
+
+    [Fact]
+    public async Task CommandBar_KeepsTheGroupDragHandle()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var handle = page.Locator($"#metric-commandbar .{Css.Classes.Ide.Toolbar.Handle}");
+
+        await Expect(handle).ToHaveCountAsync(2);
+        await Expect(handle.First).ToBeVisibleAsync();
+        Assert.Equal("true", await handle.First.GetAttributeAsync("draggable"));
+    }
+
+    [Fact]
     public async Task Scrollbar_UsesTheTwoPixelWebKitPath()
     {
         await using var context = await OpenDarkContextAsync();

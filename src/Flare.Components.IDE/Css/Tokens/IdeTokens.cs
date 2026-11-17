@@ -93,4 +93,14 @@ public static class Vars
     public const string Spacing12 = "--flare-ide-spacing-12";
     /// <summary>CSS custom property <c>--flare-ide-spacing-16</c>.</summary>
     public const string Spacing16 = "--flare-ide-spacing-16";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-surface</c>.</summary>
+    public const string ToolbarSurface = "--flare-ide-toolbar-surface";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-group-surface</c>.</summary>
+    public const string ToolbarGroupSurface = "--flare-ide-toolbar-group-surface";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-gap</c>.</summary>
+    public const string ToolbarGap = "--flare-ide-toolbar-gap";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-dense-gap</c>.</summary>
+    public const string ToolbarDenseGap = "--flare-ide-toolbar-dense-gap";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-edge-color</c>.</summary>
+    public const string ToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
 }

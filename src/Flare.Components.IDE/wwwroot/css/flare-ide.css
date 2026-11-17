@@ -1054,18 +1054,24 @@
 .flare-toolbar {
     display: flex;
     align-items: center;
-    gap: var(--flare-ide-spacing-2, var(--flare-spacing-2));
-    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
-    min-height: 36px;
+    gap: var(--flare-ide-toolbar-gap, var(--flare-ide-spacing-2, var(--flare-spacing-2)));
+    padding: var(--flare-ide-toolbar-padding, var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4)));
+    min-height: var(--flare-ide-toolbar-height, 36px);
     flex-wrap: wrap;
-    background: var(--flare-ide-commandbar-bg, transparent);
-    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+    background: var(--flare-ide-toolbar-surface, var(--flare-ide-commandbar-bg, transparent));
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-toolbar-edge-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
 }
 
 .flare-toolbar--dense {
-    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
-    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-2, var(--flare-spacing-2));
-    min-height: 28px;
+    gap: var(--flare-ide-toolbar-dense-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
+    padding: var(--flare-ide-toolbar-dense-padding, var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-2, var(--flare-spacing-2)));
+    min-height: var(--flare-ide-toolbar-dense-height, 28px);
+}
+
+/* A group can carry its own surface so a theme can paint the command-bar fill per group and leave the
+   toolbar's backdrop visible in the gaps between them. */
+.flare-toolbar__group {
+    background: var(--flare-ide-toolbar-group-surface, transparent);
 }
 
 .flare-backstage {

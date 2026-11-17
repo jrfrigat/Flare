@@ -177,6 +177,38 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
+    public void CommandBar_CarriesTheMeasuredStripSurfacesAndMetrics()
+    {
+        var light = VisualStudio.DesignReference.Extended;
+        var dark = Theme.ExtendedDarkOverride;
+        Assert.NotNull(dark);
+
+        foreach (var map in new[] { light, dark })
+        {
+            Assert.Equal("var(--flare-vs-chrome-title-bar)", map["--flare-ide-toolbar-surface"]);
+            Assert.Equal("var(--flare-vs-chrome-command-bar)", map["--flare-ide-toolbar-group-surface"]);
+            Assert.Equal("var(--flare-vs-chrome-bar-edge)", map["--flare-ide-toolbar-edge-color"]);
+            Assert.Equal("0.25rem", map["--flare-ide-toolbar-gap"]);
+            Assert.Equal("0.25rem", map["--flare-ide-toolbar-dense-gap"]);
+            Assert.Equal("1.75rem", map["--flare-ide-toolbar-height"]);
+            Assert.Equal("1.75rem", map["--flare-ide-toolbar-dense-height"]);
+            Assert.Equal("0", map["--flare-ide-toolbar-padding"]);
+            Assert.Equal("0", map["--flare-ide-toolbar-dense-padding"]);
+        }
+    }
+
+    [Fact]
+    public void ThemeCss_EmitsTheMeasuredCommandBar()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        Assert.Contains("--flare-ide-toolbar-surface:var(--flare-vs-chrome-title-bar);", css);
+        Assert.Contains("--flare-ide-toolbar-group-surface:var(--flare-vs-chrome-command-bar);", css);
+        Assert.Contains("--flare-ide-toolbar-height:1.75rem;", css);
+        Assert.Contains("--flare-ide-toolbar-edge-color:var(--flare-vs-chrome-bar-edge);", css);
+    }
+
+    [Fact]
     public void CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
     {
         var button = VisualStudio.DesignReference.Button;

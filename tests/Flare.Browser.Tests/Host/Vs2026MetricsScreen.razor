@@ -28,5 +28,28 @@
                 <LeftContent>Ready</LeftContent>
             </FlareStatusBar>
         </div>
+        <div id="metric-commandbar">
+            <FlareToolbar Reorderable="true" Groups="ToolbarGroups" />
+        </div>
     </main>
 </FlareThemeProvider>
+
+@code {
+    private RenderFragment FileGroup => @<text>
+        <FlareButton Size="ButtonSize.Xs" AriaLabel="Save">
+            <LeadingIcon><FlareIconView Value="@FlareIcons.Save" /></LeadingIcon>
+        </FlareButton>
+    </text>;
+
+    private RenderFragment EditGroup => @<text>
+        <FlareButton Size="ButtonSize.Xs" AriaLabel="Edit">
+            <LeadingIcon><FlareIconView Value="@FlareIcons.Edit" /></LeadingIcon>
+        </FlareButton>
+    </text>;
+
+    private IReadOnlyList<IdeToolbarGroup> ToolbarGroups =>
+    [
+        new("file", "File", FileGroup),
+        new("edit", "Edit", EditGroup),
+    ];
+}

@@ -658,6 +658,19 @@ internal class VisualStudioTokens
         [IdeStatusBarBg] = "var(--flare-vs-chrome-status-bar)",
         [IdePanelBg] = "var(--flare-vs-chrome-tool-window)",
 
+        // Command bar - the measured 28px strip: #262626 under the groups, #1C1C1C in the gaps and
+        // the rest of the row, with a #0E0E0E hard edge above and below. The group carries its own
+        // 2px block padding, so its surface spans the full 28px strip.
+        [IdeToolbarSurface] = "var(--flare-vs-chrome-title-bar)",
+        [IdeToolbarGroupSurface] = "var(--flare-vs-chrome-command-bar)",
+        [IdeToolbarGap] = "0.25rem",
+        [IdeToolbarDenseGap] = "0.25rem",
+        [IdeToolbarHeight] = "1.75rem",
+        [IdeToolbarDenseHeight] = "1.75rem",
+        [IdeToolbarPadding] = "0",
+        [IdeToolbarDensePadding] = "0",
+        [IdeToolbarEdgeColor] = "var(--flare-vs-chrome-bar-edge)",
+
         // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
         // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
         [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
@@ -687,6 +700,15 @@ internal class VisualStudioTokens
     internal const string IdeBottomTabStripBg = "--flare-ide-bottom-tab-strip-bg";
     internal const string IdeStatusBarBg = "--flare-ide-statusbar-bg";
     internal const string IdePanelBg = "--flare-ide-panel-bg";
+    internal const string IdeToolbarSurface = "--flare-ide-toolbar-surface";
+    internal const string IdeToolbarGroupSurface = "--flare-ide-toolbar-group-surface";
+    internal const string IdeToolbarGap = "--flare-ide-toolbar-gap";
+    internal const string IdeToolbarDenseGap = "--flare-ide-toolbar-dense-gap";
+    internal const string IdeToolbarHeight = "--flare-ide-toolbar-height";
+    internal const string IdeToolbarDenseHeight = "--flare-ide-toolbar-dense-height";
+    internal const string IdeToolbarPadding = "--flare-ide-toolbar-padding";
+    internal const string IdeToolbarDensePadding = "--flare-ide-toolbar-dense-padding";
+    internal const string IdeToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
     internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
     internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
     internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";

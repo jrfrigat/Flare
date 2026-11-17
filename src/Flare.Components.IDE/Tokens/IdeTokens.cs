@@ -97,4 +97,14 @@ public sealed record IdeTokens
     [CssVar(Names.Spacing12)] public string Spacing12 { get; init; } = Var(Css.Tokens.Spacing.S12);
     /// <summary>Design override for <c>--flare-ide-spacing-16</c>.</summary>
     [CssVar(Names.Spacing16)] public string Spacing16 { get; init; } = Var(Css.Tokens.Spacing.S16);
+    /// <summary>Design override for <c>--flare-ide-toolbar-surface</c>.</summary>
+    [CssVar(Names.ToolbarSurface)] public string ToolbarSurface { get; init; } = "transparent";
+    /// <summary>Design override for <c>--flare-ide-toolbar-group-surface</c>.</summary>
+    [CssVar(Names.ToolbarGroupSurface)] public string ToolbarGroupSurface { get; init; } = "transparent";
+    /// <summary>Design override for <c>--flare-ide-toolbar-gap</c>.</summary>
+    [CssVar(Names.ToolbarGap)] public string ToolbarGap { get; init; } = Var(Css.Tokens.Spacing.S2);
+    /// <summary>Design override for <c>--flare-ide-toolbar-dense-gap</c>.</summary>
+    [CssVar(Names.ToolbarDenseGap)] public string ToolbarDenseGap { get; init; } = Var(Css.Tokens.Spacing.S1);
+    /// <summary>Design override for <c>--flare-ide-toolbar-edge-color</c>.</summary>
+    [CssVar(Names.ToolbarEdgeColor)] public string ToolbarEdgeColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
 }
