@@ -1,6 +1,7 @@
 using Flare.Components.IDE;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
@@ -13,6 +14,8 @@ namespace Flare.Components.Tests;
 public sealed class RibbonTabDisposeTests : FlareTestContext
 {
     public RibbonTabDisposeTests() => Services.AddFlareIde();
+
+    private const string UiModule = "./_content/Flare.Components/js/flare-ui.js";
 
     private sealed class RibbonHost : ComponentBase
     {
@@ -49,6 +52,26 @@ public sealed class RibbonTabDisposeTests : FlareTestContext
 
         Assert.Equal("First", Active(cut));
         Assert.NotEmpty(cut.FindAll("[role=tabpanel]"));
+    }
+
+    // The circuit is already gone when the page unloads, so the keyboard unregistration the ribbon does
+    // on the way out can never succeed; it must not fault the disposal.
+    [Fact]
+    public async Task DisposingAfterTheCircuitDisconnected_DoesNotThrow()
+    {
+        var module = JSInterop.SetupModule(UiModule);
+        module.SetupVoid("registerTabKeyboard", _ => true).SetVoidResult();
+        module.SetupVoid("removeTabKeyboard", _ => true)
+            .SetException(new JSDisconnectedException("circuit gone"));
+
+        var cut = Render<RibbonHost>();
+        cut.WaitForAssertion(() => Assert.Contains(module.Invocations,
+            invocation => invocation.Identifier == "registerTabKeyboard"));
+
+        await cut.FindComponent<FlareRibbon>().Instance.DisposeAsync();
+
+        Assert.Contains(module.Invocations, invocation => invocation.Identifier == "removeTabKeyboard");
+        Assert.NotEmpty(cut.FindAll("[role=tab]"));
     }
 
     private static string Active(IRenderedComponent<RibbonHost> cut) =>

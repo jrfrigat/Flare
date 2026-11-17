@@ -2,6 +2,7 @@ using System.Globalization;
 using Flare.Components.IDE;
 using Flare.Icons;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
@@ -12,6 +13,8 @@ namespace Flare.Components.Tests;
 public class IdeToolPanelGroupTests : FlareTestContext
 {
     public IdeToolPanelGroupTests() => Services.AddFlareIde();
+
+    private const string UiModule = "./_content/Flare.Components/js/flare-ui.js";
 
     private sealed record Panel(string Title, string Text, IdePanelMode Mode = IdePanelMode.Docked,
         string? Key = null, FlareIcon? Icon = null);
@@ -267,6 +270,29 @@ public class IdeToolPanelGroupTests : FlareTestContext
         Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
         Assert.Equal(["Explorer", "Properties"],
             cut.FindAll($".{Css.Classes.Ide.Layout.RailTitle}").Select(title => title.TextContent));
+    }
+
+    // The tab strip disconnects with the circuit; the keyboard unregistration in DisposeAsync then throws
+    // JSDisconnectedException, which is not a JSException and must not fault the disposal.
+    [Fact]
+    public async Task Group_DisposingAfterTheCircuitDisconnected_DoesNotThrow()
+    {
+        var module = JSInterop.SetupModule(UiModule);
+        module.SetupVoid("registerTabKeyboard", _ => true).SetVoidResult();
+        module.SetupVoid("removeTabKeyboard", _ => true)
+            .SetException(new JSDisconnectedException("circuit gone"));
+
+        var cut = RenderGroup(new("Explorer", "Files"), new("Properties", "Details"));
+        // The disposal unregisters only after the asynchronous registration has completed; wait for
+        // that state, or the test would pass without the removal call ever being made.
+        var registered = typeof(FlareToolPanelGroup).GetField("_keyboardRegistered",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
+        cut.WaitForAssertion(() => Assert.True((bool)registered.GetValue(cut.Instance)!));
+
+        await cut.Instance.DisposeAsync();
+
+        Assert.Contains(module.Invocations, invocation => invocation.Identifier == "removeTabKeyboard");
+        Assert.NotEmpty(cut.FindAll("[role=tab]"));
     }
 
     [Fact]

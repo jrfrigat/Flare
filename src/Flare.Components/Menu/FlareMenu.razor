@@ -172,7 +172,10 @@
             // the first arrow key still lands on the first item because the index starts at -1.
             if (_openedByKeyboard)
                 _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
-            try { await _panelEl.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
+            try { await _panelEl.FocusAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
             _suppressActivatorFocus = false;
             StateHasChanged();
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
@@ -57,6 +58,21 @@ public class FlareMenuDisposalTests : FlareTestContext
 
         Assert.Equal(3, ids.Distinct().Count());
         Assert.All(ids, id => Assert.Contains(id, LayerIds("removeAnchoredPanel")));
+    }
+
+    // Focus is an enhancement: a menu that opens while the circuit is going away still has to render.
+    [Fact]
+    public async Task FocusFailingAfterADisconnect_StillOpensThePanel()
+    {
+        JSInterop.SetupVoid("Blazor._internal.domWrapper.focus", _ => true)
+            .SetException(new JSDisconnectedException("circuit gone"));
+
+        var cut = Render<MenuHost>();
+        await OpenMenuAsync(cut);
+
+        cut.WaitForAssertion(() => Assert.Contains(JSInterop.Invocations,
+            invocation => invocation.Identifier == "Blazor._internal.domWrapper.focus"));
+        cut.WaitForAssertion(() => Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}")));
     }
 
     [Fact]
