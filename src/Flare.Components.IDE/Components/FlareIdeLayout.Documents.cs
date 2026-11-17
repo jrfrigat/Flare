@@ -202,8 +202,34 @@ public partial class FlareIdeLayout
         StateHasChanged();
     }
 
+    // The per-tool rail has child buttons, so a pointer crossing them fires dragenter/dragleave on
+    // the rail for every child. Count the depth and clear the highlight only when the drag leaves
+    // the rail for good.
+    private void RailDragEnter(ToolPanelPosition position)
+    {
+        if (DocumentRegionOf(position) is null) return;
+        if (_railDragPosition != position)
+        {
+            _railDragPosition = position;
+            _railDragDepth = 0;
+        }
+        _railDragDepth++;
+        SetRailDropTarget(position, true);
+    }
+
+    private void RailDragLeave(ToolPanelPosition position)
+    {
+        if (_railDragPosition != position) return;
+        _railDragDepth = Math.Max(0, _railDragDepth - 1);
+        if (_railDragDepth > 0) return;
+        _railDragPosition = null;
+        SetRailDropTarget(position, false);
+    }
+
     private async Task DropOnRailAsync(ToolPanelPosition position)
     {
+        _railDragPosition = null;
+        _railDragDepth = 0;
         _railDropTarget = null;
         StateHasChanged();
         if (DocumentRegionOf(position) is not { } region) return;

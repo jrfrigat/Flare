@@ -36,6 +36,13 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     /// window keeps its name visible while the tabs sit at the bottom edge.</summary>
     [Parameter] public TabStripPlacement TabStripPlacement { get; set; } = TabStripPlacement.Top;
 
+    /// <summary>Whether the tab strip stays visible while this group's region floats as an auto-hide
+    /// flyout. The default is true. Set it to false for a single tool window whose header carries the
+    /// active tool's title (and icon), the host <see cref="ToolbarContent"/> - for example a pin control -
+    /// and the collapse button; the per-tool rail then switches tools. Ignored outside a
+    /// <see cref="FlareIdeLayout"/> and outside a floating auto-hide region.</summary>
+    [Parameter] public bool ShowTabStripWhenFloating { get; set; } = true;
+
     /// <summary>Effective key (<see cref="FlareToolPanel.Key"/>, or the title when that is unset) of the
     /// panel to show. Null or empty keeps the group's own selection. A key that matches no panel keeps
     /// the current one, so a stale or not-yet-registered key never leaves the body empty. Bind it with
@@ -65,6 +72,16 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     internal bool IsActive(FlareToolPanel panel) => ReferenceEquals(_active, panel);
 
     private bool TabsAtBottom => TabStripPlacement == TabStripPlacement.Bottom;
+
+    // A floating auto-hide region can ask for a single tool window: no horizontal strip, the rail
+    // is the switcher and the header keeps the active title.
+    private bool TabsVisible => ShowTabStripWhenFloating || Layout?.IsFloating(Position) != true;
+
+    private bool TitleInHeader => TabsAtBottom || !TabsVisible;
+
+    private bool TabsInHeader => TabsVisible && !TabsAtBottom;
+
+    private bool TabsInFooter => TabsVisible && TabsAtBottom;
 
     private string? _placementClass =>
         TabsAtBottom ? Css.Classes.Ide.ToolPanelGroup.TabsBottomRoot : null;
@@ -223,6 +240,25 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // The per-tool rail marks the active tool from the group's report while the host does not
+        // control the side's key.
+        Layout?.ReportActiveTool(Position, _active?.EffectiveKey);
+
+        if (!TabsVisible)
+        {
+            // The strip is suppressed while the region floats; the module must not hold an element
+            // that is no longer in the document.
+            if (_keyboardRegistered)
+            {
+                try { await Ui.RemoveTabKeyboardAsync(_registeredBar); }
+                catch (InvalidOperationException) { }
+                catch (JSException) { }
+                _keyboardRegistered = false;
+                _registeredBar = default;
+            }
+            return;
+        }
+
         // The tab strip is one fragment rendered in one of two positions. When a placement change (or
         // any other re-render) replaces the element, the module still holds the old one, so bind it
         // again to the current tablist.

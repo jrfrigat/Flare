@@ -32,8 +32,16 @@ public static class Layout
     public const string PanelFloating = "flare-ide-layout__panel--floating";
     public const string PanelLeft = "flare-ide-layout__panel--left";
     public const string PanelRight = "flare-ide-layout__panel--right";
+    /// <summary>Side region whose rail lists one entry per hosted tool.</summary>
+    public const string PanelToolRail = "flare-ide-layout__panel--tool-rail";
     public const string PanelBody = "flare-ide-layout__panel-body";
     public const string Rail = "flare-ide-layout__rail";
+    /// <summary>Rail holding one entry per tool in a per-tool auto-hide region.</summary>
+    public const string ToolRail = "flare-ide-layout__tool-rail";
+    /// <summary>One tool entry on a per-tool rail.</summary>
+    public const string ToolRailEntry = "flare-ide-layout__tool-rail-entry";
+    /// <summary>Tool entry whose flyout is open.</summary>
+    public const string ToolRailEntryActive = "flare-ide-layout__tool-rail-entry--active";
     /// <summary>Rail highlighted while a document is dragged over it.</summary>
     public const string RailDropTarget = "flare-ide-layout__rail--drop-target";
     public const string RailTitle = "flare-ide-layout__rail-title";

@@ -23,6 +23,8 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `DocumentMounting` | `IdeDocumentMounting` | `IdeDocumentMounting.All` | Parameter |  | Whether every document mounts its content or only the active document of each region. The default, All, preserves each document's state at one content instance per document. ActiveOnly disposes the content of a document that becomes inactive, so its transient state is lost when it mounts again; a document that stays active across a region move remains mounted. |
 | `Documents` | `IReadOnlyList<IdeDocument>?` | `` | Parameter |  | Enables docking and supplies documents keyed within this layout. |
 | `Height` | `string?` | `` | Parameter |  | Height of the layout frame as a CSS length (e.g. "520px" or "100%"). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen. |
+| `LeftActiveToolKey` | `string?` | `` | Parameter |  | Controlled key of the tool selected in the left rail in PerTool mode. The key is the hosted tool's effective key (Key, or its title). Bind the same value to the hosted group's ActiveKey so the flyout shows the tool the rail selected; with it unset the rail marks the group's own selection. Bind it with LeftActiveToolKeyChanged to persist the selected tool in a host layout state. |
+| `LeftActiveToolKeyChanged` | `EventCallback<string?>` | `` | Callback |  | Reports the tool the user selected on the left rail. Bind it to LeftActiveToolKey and feed the value to the hosted group's ActiveKey. |
 | `LeftCollapsed` | `bool` | `false` | Parameter |  | Whether the left region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `LeftCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when LeftCollapsed changes. |
 | `LeftPanelWidth` | `string` | `"300px"` | Parameter |  | Width of the left tool panel. Default 300px. |
@@ -37,6 +39,8 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `RailSize` | `string` | `"32px"` | Parameter |  | Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px. |
 | `RetainDocumentContent` | `Func<IdeDocument, bool>?` | `` | Parameter |  | Documents whose content stays mounted in ActiveOnly mode even while they are not the active document of their region. Ignored when every document mounts. |
 | `Ribbon` | `RenderFragment?` | `` | Parameter |  | Top ribbon area rendered above the menu bar. |
+| `RightActiveToolKey` | `string?` | `` | Parameter |  | Controlled key of the tool selected in the right rail in PerTool mode; the counterpart of LeftActiveToolKey. |
+| `RightActiveToolKeyChanged` | `EventCallback<string?>` | `` | Callback |  | Reports the tool the user selected on the right rail. Bind it to RightActiveToolKey and feed the value to the hosted group's ActiveKey. |
 | `RightCollapsed` | `bool` | `false` | Parameter |  | Whether the right region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `RightCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when RightCollapsed changes. |
 | `RightPanelWidth` | `string` | `"300px"` | Parameter |  | Width of the right tool panel. Default 300px. |
@@ -45,6 +49,7 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `RightToolPanel` | `RenderFragment?` | `` | Parameter |  | Right tool panel (e.g. Properties). |
 | `ShowCenterDockStrip` | `bool` | `true` | Parameter |  | Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone. |
 | `StatusBar` | `RenderFragment?` | `` | Parameter |  | Status bar at the bottom of the IDE. |
+| `ToolRailMode` | `IdeToolRailMode` | `IdeToolRailMode.Region` | Parameter |  | How a collapsed or auto-hidden side region lists its tools. Region (the default) keeps one button for the whole region. PerTool gives an auto-hide side region one rail entry per hosted tool group tab, with the tool's icon and label: selecting an entry opens that tool in the flyout, the active entry is marked, and selecting it again closes the flyout. Docked regions, the bottom region and regions without a hosted tool group keep the region button. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

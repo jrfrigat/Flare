@@ -85,7 +85,7 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
         // Inside a layout the panel only renders while expanded; report its title/mode so the layout
         // can label the collapsed rail and decide docked-vs-flyout sizing. A group owns the region
         // position, so its panels do not repeat it.
-        Layout?.RegisterPanel(this, Group?.Position ?? Position, Title, Mode);
+        Layout?.RegisterPanel(this, Group?.Position ?? Position, Title, Mode, EffectiveKey, Icon);
     }
 
     /// <inheritdoc />

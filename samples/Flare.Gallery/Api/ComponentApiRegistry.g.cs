@@ -4045,6 +4045,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"DocumentMounting", @"IdeDocumentMounting", @"IdeDocumentMounting.All", @"Whether every document mounts its content or only the active document of each region. The default, All, preserves each document's state at one content instance per document. ActiveOnly disposes the content of a document that becomes inactive, so its transient state is lost when it mounts again; a document that stays active across a region move remains mounted.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Documents", @"IReadOnlyList<IdeDocument>?", null, @"Enables docking and supplies documents keyed within this layout.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Height", @"string?", null, @"Height of the layout frame as a CSS length (e.g. ""520px"" or ""100%""). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"LeftActiveToolKey", @"string?", null, @"Controlled key of the tool selected in the left rail in PerTool mode. The key is the hosted tool's effective key (Key, or its title). Bind the same value to the hosted group's ActiveKey so the flyout shows the tool the rail selected; with it unset the rail marks the group's own selection. Bind it with LeftActiveToolKeyChanged to persist the selected tool in a host layout state.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"LeftActiveToolKeyChanged", @"EventCallback<string?>", null, @"Reports the tool the user selected on the left rail. Bind it to LeftActiveToolKey and feed the value to the hosted group's ActiveKey.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"LeftCollapsed", @"bool", @"false", @"Whether the left region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"LeftCollapsedChanged", @"EventCallback<bool>", null, @"Raised when LeftCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"LeftPanelWidth", @"string", @"""300px""", @"Width of the left tool panel. Default 300px.", null, false, false, false, @"FlareIdeLayout"),
@@ -4059,6 +4061,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"RailSize", @"string", @"""32px""", @"Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RetainDocumentContent", @"Func<IdeDocument, bool>?", null, @"Documents whose content stays mounted in ActiveOnly mode even while they are not the active document of their region. Ignored when every document mounts.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"Ribbon", @"RenderFragment?", null, @"Top ribbon area rendered above the menu bar.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"RightActiveToolKey", @"string?", null, @"Controlled key of the tool selected in the right rail in PerTool mode; the counterpart of LeftActiveToolKey.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"RightActiveToolKeyChanged", @"EventCallback<string?>", null, @"Reports the tool the user selected on the right rail. Bind it to RightActiveToolKey and feed the value to the hosted group's ActiveKey.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightCollapsed", @"bool", @"false", @"Whether the right region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightCollapsedChanged", @"EventCallback<bool>", null, @"Raised when RightCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightPanelWidth", @"string", @"""300px""", @"Width of the right tool panel. Default 300px.", null, false, false, false, @"FlareIdeLayout"),
@@ -4067,6 +4071,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"RightToolPanel", @"RenderFragment?", null, @"Right tool panel (e.g. Properties).", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"ShowCenterDockStrip", @"bool", @"true", @"Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"StatusBar", @"RenderFragment?", null, @"Status bar at the bottom of the IDE.", null, false, false, false, @"FlareIdeLayout"),
+                new ApiParameterInfo(@"ToolRailMode", @"IdeToolRailMode", @"IdeToolRailMode.Region", @"How a collapsed or auto-hidden side region lists its tools. Region (the default) keeps one button for the whole region. PerTool gives an auto-hide side region one rail entry per hosted tool group tab, with the tool's icon and label: selecting an entry opens that tool in the flyout, the active entry is marked, and selecting it again closes the flyout. Docked regions, the bottom region and regions without a hosted tool group keep the region button.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -8495,6 +8500,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Tool panels shown as tabs. Every child is a FlareToolPanel; its content stays mounted while another tab is active.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"OnActiveChanged", @"EventCallback<string?>", null, @"Reports the title of the panel the user activated, for a status line or command state. Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour.", null, false, true, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Region that hosts the group inside a FlareIdeLayout. The hosted panels use this position for rail labels, auto-hide and collapse instead of their own Position.", null, false, false, false, @"FlareToolPanelGroup"),
+                new ApiParameterInfo(@"ShowTabStripWhenFloating", @"bool", @"true", @"Whether the tab strip stays visible while this group's region floats as an auto-hide flyout. The default is true. Set it to false for a single tool window whose header carries the active tool's title (and icon), the host ToolbarContent - for example a pin control - and the collapse button; the per-tool rail then switches tools. Ignored outside a FlareIdeLayout and outside a floating auto-hide region.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"TabStripPlacement", @"TabStripPlacement", @"TabStripPlacement.Top", @"Which edge carries the tool tab strip. Top keeps the strip in the header above the body, the default and the only placement used before this parameter existed. Bottom renders the strip below the body and shows the active tool's title (and its icon, when set) in the header, so a pinned tool window keeps its name visible while the tabs sit at the bottom edge.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Host actions shown in the group header after the tab strip and before the collapse button - for example pin, close or other region commands. Inside a FlareIdeLayout the group still draws the region's collapse button, so the slot adds controls rather than replacing it.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -10582,6 +10588,22 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareToolPanel",
+            });
+
+        e[@"IdeToolRailMode"] = new ApiEnumInfo(
+            @"IdeToolRailMode",
+            @"Flare.Components.IDE.IdeToolRailMode",
+            @"Flare.Components.IDE",
+            @"How the rail of a collapsed or auto-hidden side region lists its tools in a FlareIdeLayout.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Region", @"0", @"One button for the whole region: it labels every hosted tool and expands the region. This is the default and the behavior every consumer had before the option existed."),
+                new ApiEnumMember(@"PerTool", @"1", @"One entry per hosted tool in an auto-hide side region, with the tool's icon and rotated label. Selecting an entry opens that tool in the region's flyout; the active tool is marked and selecting it again closes the flyout. Regions in the docked mode, the bottom region and regions without a hosted tool group keep the region button."),
+            },
+            new string[]
+            {
+                @"FlareIdeLayout",
             });
 
         e[@"ImageObjectFit"] = new ApiEnumInfo(

@@ -1,7 +1,9 @@
 @using Flare.Components.IDE
 
 <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None" Overflow="hidden">
-<FlareIdeLayout Height="460px" @bind-LeftCollapsed="_leftCollapsed">
+<FlareIdeLayout Height="460px" @bind-LeftCollapsed="_leftCollapsed"
+               ToolRailMode="IdeToolRailMode.PerTool"
+               LeftActiveToolKey="@_activeTool" LeftActiveToolKeyChanged="OnActiveToolChanged">
     <Ribbon>
         <FlareRibbon OnTabChanged="OnRibbonTab">
             <FlareRibbonTab Title="Home">
@@ -41,7 +43,8 @@
     <LeftToolPanel>
         <FlareToolPanelGroup ActiveKey="@_activeTool" ActiveKeyChanged="OnActiveToolChanged"
                              OnActiveChanged="OnActiveToolTitle"
-                             TabStripPlacement="TabStripPlacement.Bottom">
+                             TabStripPlacement="TabStripPlacement.Bottom"
+                             ShowTabStripWhenFloating="false">
             <ToolbarContent>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                              AriaLabel="@(_pinned ? "Unpin panel" : "Pin panel")"
@@ -55,7 +58,7 @@
                 </FlareButton>
             </ToolbarContent>
             <ChildContent>
-                <FlareToolPanel Title="Explorer" Key="explorer"
+                <FlareToolPanel Title="Explorer" Key="explorer" Icon="@FlareIcons.Folder"
                                 Mode="@(_pinned ? IdePanelMode.Docked : IdePanelMode.AutoHide)">
                     <FlareTreeView AriaLabel="Explorer">
                         <FlareTreeItem Label="src" Icon="@FlareIcons.Folder" Expanded="true">
@@ -68,7 +71,7 @@
                         <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />
                     </FlareTreeView>
                 </FlareToolPanel>
-                <FlareToolPanel Title="Search" Key="search"
+                <FlareToolPanel Title="Search" Key="search" Icon="@FlareIcons.Search"
                                 Mode="@(_pinned ? IdePanelMode.Docked : IdePanelMode.AutoHide)">
                     <FlareStack Gap="FlareSpacing.Small" Padding="FlareSpacing.Small">
                         <FlareTextField Label="Find in files" />

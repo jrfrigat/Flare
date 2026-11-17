@@ -3,11 +3,11 @@
 
 <div class="@BuildCssClass(_placementClass)" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Ide.ToolPanelGroup.Header">
-        @if (!TabsAtBottom)
+        @if (TabsInHeader)
         {
             @TabStrip
         }
-        else
+        else if (TitleInHeader)
         {
             <span class="@Css.Classes.Ide.ToolPanelGroup.Title">
                 @if (ActiveIcon is not null)
@@ -41,7 +41,7 @@
             @ChildContent
         </CascadingValue>
     </div>
-    @if (TabsAtBottom)
+    @if (TabsInFooter)
     {
         @TabStrip
     }

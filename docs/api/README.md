@@ -332,6 +332,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.IDE.IdeDocumentMounting`](enums/flare-components-ide-idedocumentmounting.md) — How FlareIdeLayout mounts the content of docked documents.
 - [`Flare.Components.IDE.IdeDocumentRegion`](enums/flare-components-ide-idedocumentregion.md) — Region in which an IDE document can be displayed.
 - [`Flare.Components.IDE.IdePanelMode`](enums/flare-components-ide-idepanelmode.md) — Controls how a docked tool panel in FlareIdeLayout behaves when expanded.
+- [`Flare.Components.IDE.IdeToolRailMode`](enums/flare-components-ide-idetoolrailmode.md) — How the rail of a collapsed or auto-hidden side region lists its tools in a FlareIdeLayout.
 - [`Flare.Components.ImageObjectFit`](enums/flare-components-imageobjectfit.md) — How a FlareImage is fitted into its box (maps to CSS object-fit).
 - [`Flare.Components.InputVariant`](enums/flare-components-inputvariant.md) — Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). Default keeps the theme's own field style; Filled and Outlined ask for the active theme's filled or outlined field, so the same variant follows each design language.
 - [`Flare.Components.LabelPlacement`](enums/flare-components-labelplacement.md) — Position of a control's label relative to the control (checkbox, radio, switch).

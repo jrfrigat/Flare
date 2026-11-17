@@ -63,6 +63,36 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     /// <summary>Raised when <see cref="BottomCollapsed"/> changes.</summary>
     [Parameter] public EventCallback<bool> BottomCollapsedChanged { get; set; }
 
+    /// <summary>How a collapsed or auto-hidden side region lists its tools.
+    /// <see cref="IdeToolRailMode.Region"/> (the default) keeps one button for the whole region.
+    /// <see cref="IdeToolRailMode.PerTool"/> gives an auto-hide side region one rail entry per hosted
+    /// tool group tab, with the tool's icon and label: selecting an entry opens that tool in the
+    /// flyout, the active entry is marked, and selecting it again closes the flyout. Docked regions,
+    /// the bottom region and regions without a hosted tool group keep the region button.</summary>
+    [Parameter] public IdeToolRailMode ToolRailMode { get; set; } = IdeToolRailMode.Region;
+
+    /// <summary>Controlled key of the tool selected in the left rail in
+    /// <see cref="IdeToolRailMode.PerTool"/> mode. The key is the hosted tool's effective key
+    /// (<see cref="FlareToolPanel.Key"/>, or its title). Bind the same value to the hosted group's
+    /// <see cref="FlareToolPanelGroup.ActiveKey"/> so the flyout shows the tool the rail selected; with
+    /// it unset the rail marks the group's own selection. Bind it with
+    /// <see cref="LeftActiveToolKeyChanged"/> to persist the selected tool in a host layout state.</summary>
+    [Parameter] public string? LeftActiveToolKey { get; set; }
+
+    /// <summary>Reports the tool the user selected on the left rail. Bind it to
+    /// <see cref="LeftActiveToolKey"/> and feed the value to the hosted group's
+    /// <see cref="FlareToolPanelGroup.ActiveKey"/>.</summary>
+    [Parameter] public EventCallback<string?> LeftActiveToolKeyChanged { get; set; }
+
+    /// <summary>Controlled key of the tool selected in the right rail in
+    /// <see cref="IdeToolRailMode.PerTool"/> mode; the counterpart of <see cref="LeftActiveToolKey"/>.</summary>
+    [Parameter] public string? RightActiveToolKey { get; set; }
+
+    /// <summary>Reports the tool the user selected on the right rail. Bind it to
+    /// <see cref="RightActiveToolKey"/> and feed the value to the hosted group's
+    /// <see cref="FlareToolPanelGroup.ActiveKey"/>.</summary>
+    [Parameter] public EventCallback<string?> RightActiveToolKeyChanged { get; set; }
+
     /// <summary>Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px.</summary>
     [Parameter] public string RailSize { get; set; } = "32px";
 
@@ -175,30 +205,49 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     }
 
     // Panels mounted in the layout, in first-registration (markup) order. A region may host several.
-    private readonly List<(FlareToolPanel Panel, ToolPanelPosition Position, string? Title, IdePanelMode Mode)> _panels = new();
+    private readonly List<PanelRegistration> _panels = new();
 
-    // Rail titles and mode of each region, derived from all of its mounted panels. Kept while a collapsed
-    // region has no panel mounted, so the rail keeps its labels after the panels unmount.
-    private readonly Dictionary<ToolPanelPosition, (string[] Titles, IdePanelMode Mode)> _regions = new();
+    // Tools, titles and mode of each region, derived from all of its mounted panels. Kept while a
+    // collapsed region has no panel mounted, so the rail keeps its labels after the panels unmount.
+    private readonly Dictionary<ToolPanelPosition, RegionState> _regions = new();
+
+    // Last effective key each hosted group reported. The per-tool rail marks it while the host does
+    // not control the side's active tool key.
+    private readonly Dictionary<ToolPanelPosition, string?> _reportedActiveTool = new();
+
+    // Enter/leave depth of a document drag over a rail: moving across the per-tool buttons enters and
+    // leaves nested children, which must not clear the highlight until the pointer leaves the rail.
+    private ToolPanelPosition? _railDragPosition;
+    private int _railDragDepth;
 
     private bool _disposed;
 
-    /// <summary>Called by a hosted <see cref="FlareToolPanel"/> to report its region, title and mode.</summary>
-    internal void RegisterPanel(FlareToolPanel panel, ToolPanelPosition position, string? title, IdePanelMode mode)
+    private sealed record PanelRegistration(FlareToolPanel Panel, ToolPanelPosition Position,
+        string? Title, IdePanelMode Mode, string? Key, FlareIcon? Icon);
+
+    private sealed record RegionTool(string? Key, string? Title, FlareIcon? Icon);
+
+    private sealed record RegionState(RegionTool[] Tools, IdePanelMode Mode);
+
+    /// <summary>Called by a hosted <see cref="FlareToolPanel"/> to report its region, title, mode,
+    /// key and icon.</summary>
+    internal void RegisterPanel(FlareToolPanel panel, ToolPanelPosition position, string? title,
+        IdePanelMode mode, string? key, FlareIcon? icon)
     {
         var index = _panels.FindIndex(p => ReferenceEquals(p.Panel, panel));
         ToolPanelPosition? previous = null;
         if (index >= 0)
         {
             var entry = _panels[index];
-            if (entry.Position == position && entry.Title == title && entry.Mode == mode)
+            if (entry.Position == position && entry.Title == title && entry.Mode == mode &&
+                entry.Key == key && Equals(entry.Icon, icon))
                 return;
             previous = entry.Position;
-            _panels[index] = (panel, position, title, mode);
+            _panels[index] = new(panel, position, title, mode, key, icon);
         }
         else
         {
-            _panels.Add((panel, position, title, mode));
+            _panels.Add(new(panel, position, title, mode, key, icon));
         }
 
         var changed = UpdateRegion(position);
@@ -216,17 +265,20 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
             return;
         var position = _panels[index].Position;
         _panels.RemoveAt(index);
-        // A collapsing region unmounts its panels one by one; its rail keeps what they reported while expanded.
-        if (!IsCollapsed(position) && UpdateRegion(position) && !_disposed)
+        // A collapsing region unmounts its panels one by one; its rail keeps what they reported while
+        // expanded. In per-tool mode the body stays mounted while collapsed, so the rail must follow
+        // even then.
+        if ((!IsCollapsed(position) || IsPerToolRailMode(position)) &&
+            UpdateRegion(position) && !_disposed)
             StateHasChanged();
     }
 
-    // Recomputes a region from its mounted panels; returns true when its titles or mode changed. The result
+    // Recomputes a region from its mounted panels; returns true when its tools or mode changed. The result
     // depends only on the set of panels, not on the order their parameters were set within a render, so
     // re-rendering settles instead of alternating between panels.
     private bool UpdateRegion(ToolPanelPosition position)
     {
-        var titles = new List<string>();
+        var tools = new List<RegionTool>();
         var mounted = false;
         var allAutoHide = true;
         foreach (var p in _panels)
@@ -234,8 +286,7 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
             if (p.Position != position)
                 continue;
             mounted = true;
-            if (!string.IsNullOrEmpty(p.Title))
-                titles.Add(p.Title);
+            tools.Add(new(p.Key, p.Title, p.Icon));
             if (p.Mode != IdePanelMode.AutoHide)
                 allAutoHide = false;
         }
@@ -244,9 +295,10 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
             return _regions.Remove(position);
 
         var mode = allAutoHide ? IdePanelMode.AutoHide : IdePanelMode.Docked;
-        if (_regions.TryGetValue(position, out var current) && current.Mode == mode && current.Titles.SequenceEqual(titles))
+        if (_regions.TryGetValue(position, out var current) && current.Mode == mode &&
+            current.Tools.SequenceEqual(tools))
             return false;
-        _regions[position] = (titles.ToArray(), mode);
+        _regions[position] = new(tools.ToArray(), mode);
         return true;
     }
 
@@ -284,13 +336,117 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     private IdePanelMode ModeOf(ToolPanelPosition position) =>
         _regions.TryGetValue(position, out var i) ? i.Mode : IdePanelMode.Docked;
 
-    private string[] TitlesOf(ToolPanelPosition position) =>
-        _regions.TryGetValue(position, out var i) ? i.Titles : [];
+    // Non-empty titles of a region's tools, in registration order, for the region rail button.
+    private string[] TitlesOf(ToolPanelPosition position) => _regions.TryGetValue(position, out var i)
+        ? i.Tools.Where(tool => !string.IsNullOrEmpty(tool.Title)).Select(tool => tool.Title!).ToArray()
+        : [];
 
     // A region floats (overlay) when expanded in auto-hide mode.
-    private bool IsFloating(ToolPanelPosition position) =>
+    internal bool IsFloating(ToolPanelPosition position) =>
         !IsCollapsed(position) && ModeOf(position) == IdePanelMode.AutoHide &&
         !DocumentFillsRegion(position);
+
+    // The per-tool rail is an opt-in for auto-hide side regions that host tool group tabs. Docked
+    // regions, the bottom region and regions hosting standalone panels keep the region button.
+    private bool IsPerToolRailMode(ToolPanelPosition position) =>
+        ToolRailMode == IdeToolRailMode.PerTool && position != ToolPanelPosition.Bottom &&
+        ModeOf(position) == IdePanelMode.AutoHide;
+
+    private bool HasGroupedTools(ToolPanelPosition position) =>
+        _panels.Any(p => p.Position == position && p.Panel.Group is not null);
+
+    // In per-tool mode the side region always renders its rail slot and its body, so the panel
+    // content stays mounted while the region is collapsed and the rail is populated from the first
+    // registration. The body is hidden then; see the layout markup and CSS.
+    private bool UsesPerToolBody(ToolPanelPosition position) =>
+        ToolRailMode == IdeToolRailMode.PerTool && position != ToolPanelPosition.Bottom;
+
+    private bool RendersToolRail(ToolPanelPosition position) =>
+        IsPerToolRailMode(position) && HasGroupedTools(position);
+
+    // The rail slot shows something only while the region occupies rail width: collapsed or
+    // floating. In a docked expanded region it stays empty and hidden.
+    private bool ShowsRail(ToolPanelPosition position) => IsCollapsed(position) || IsFloating(position);
+
+    private bool RegionModeKnown(ToolPanelPosition position) => _regions.ContainsKey(position);
+
+    // Tools listed on the per-tool rail, in registration order.
+    private IEnumerable<PanelRegistration> RailToolsOf(ToolPanelPosition position) =>
+        _panels.Where(p => p.Position == position && p.Panel.Group is not null);
+
+    /// <summary>Called by a hosted <see cref="FlareToolPanelGroup"/> to report the effective key of
+    /// its active tool. The per-tool rail marks it while the host does not control the side's
+    /// active tool key.</summary>
+    internal void ReportActiveTool(ToolPanelPosition position, string? key)
+    {
+        _reportedActiveTool.TryGetValue(position, out var current);
+        if (string.Equals(current, key, StringComparison.Ordinal)) return;
+        _reportedActiveTool[position] = key;
+        if (RendersToolRail(position)) StateHasChanged();
+    }
+
+    private string? ActiveToolKey(ToolPanelPosition position)
+    {
+        var controlled = position == ToolPanelPosition.Right ? RightActiveToolKey : LeftActiveToolKey;
+        if (!string.IsNullOrEmpty(controlled)) return controlled;
+        return _reportedActiveTool.TryGetValue(position, out var reported) ? reported : null;
+    }
+
+    private bool IsActiveRailTool(ToolPanelPosition position, PanelRegistration tool) =>
+        tool.Key is not null &&
+        string.Equals(ActiveToolKey(position), tool.Key, StringComparison.Ordinal);
+
+    // Selecting a rail entry opens its tool. The layout follows the same controlled contract as
+    // every other region state: the local parameter moves for uncontrolled use and the callback lets
+    // the host feed the value to the group's ActiveKey.
+    private async Task SelectRailToolAsync(ToolPanelPosition position, PanelRegistration tool)
+    {
+        if (!RendersToolRail(position)) return;
+        if (!IsCollapsed(position))
+        {
+            if (IsActiveRailTool(position, tool))
+            {
+                await SetCollapsedAsync(position, true);
+                return;
+            }
+            await SetActiveToolAsync(position, tool.Key);
+            return;
+        }
+        await SetActiveToolAsync(position, tool.Key);
+        await SetCollapsedAsync(position, false);
+    }
+
+    private async Task SetActiveToolAsync(ToolPanelPosition position, string? key)
+    {
+        var current = position == ToolPanelPosition.Right ? RightActiveToolKey : LeftActiveToolKey;
+        if (!string.Equals(current, key, StringComparison.Ordinal))
+        {
+            if (position == ToolPanelPosition.Right)
+            {
+                RightActiveToolKey = key;
+                await RightActiveToolKeyChanged.InvokeAsync(key);
+            }
+            else
+            {
+                LeftActiveToolKey = key;
+                await LeftActiveToolKeyChanged.InvokeAsync(key);
+            }
+        }
+        StateHasChanged();
+    }
+
+    private string ToolRailClass(ToolPanelPosition position) =>
+        _railDropTarget == position
+            ? $"{Css.Classes.Ide.Layout.ToolRail} {Css.Classes.Ide.Layout.RailDropTarget}"
+            : Css.Classes.Ide.Layout.ToolRail;
+
+    private string ToolRailEntryClass(ToolPanelPosition position, PanelRegistration tool) =>
+        IsActiveRailTool(position, tool)
+            ? $"{Css.Classes.Ide.Layout.ToolRailEntry} {Css.Classes.Ide.Layout.ToolRailEntryActive}"
+            : Css.Classes.Ide.Layout.ToolRailEntry;
+
+    private string ToolRailLabel(PanelRegistration tool) =>
+        string.IsNullOrWhiteSpace(tool.Title) ? IdeText["ToolPanelGroup_Untitled"].Value : tool.Title!;
 
     private string _rootStyle =>
         $"{Css.Tokens.Ide.Layout.LeftWidth}:{EffectiveLeftWidth};{Css.Tokens.Ide.Layout.RightWidth}:{EffectiveRightWidth};" +
@@ -310,6 +466,7 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
         var cls = $"{Css.Classes.Ide.Layout.Panel} {sideClass}";
         if (IsCollapsed(position)) cls += $" {Css.Classes.Ide.Layout.PanelCollapsed}";
         if (IsFloating(position)) cls += $" {Css.Classes.Ide.Layout.PanelFloating}";
+        if (RendersToolRail(position)) cls += $" {Css.Classes.Ide.Layout.PanelToolRail}";
         return cls;
     }
 

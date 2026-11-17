@@ -43,7 +43,13 @@
             @if (LeftRegionVisible && (LeftToolPanel is not null || Docking))
             {
                 <div class="@PanelClass(ToolPanelPosition.Left, Css.Classes.Ide.Layout.PanelLeft)">
-                    @if (LeftCollapsed)
+                    @if (UsesPerToolBody(ToolPanelPosition.Left))
+                    {
+                        @RenderToolSlot(ToolPanelPosition.Left)
+                        <div class="@Css.Classes.Ide.Layout.PanelBody" hidden="@LeftCollapsed"
+                             inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
+                    }
+                    else if (LeftCollapsed)
                     {
                         @RenderRail(ToolPanelPosition.Left)
                     }
@@ -69,7 +75,13 @@
             @if (RightRegionVisible && (RightToolPanel is not null || Docking))
             {
                 <div class="@PanelClass(ToolPanelPosition.Right, Css.Classes.Ide.Layout.PanelRight)">
-                    @if (RightCollapsed)
+                    @if (UsesPerToolBody(ToolPanelPosition.Right))
+                    {
+                        @RenderToolSlot(ToolPanelPosition.Right)
+                        <div class="@Css.Classes.Ide.Layout.PanelBody" hidden="@RightCollapsed"
+                             inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
+                    }
+                    else if (RightCollapsed)
                     {
                         @RenderRail(ToolPanelPosition.Right)
                     }
@@ -137,8 +149,8 @@
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@RailClass(position)"
             @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value"
             @ondragover:preventDefault="@(DocumentRegionOf(position) is not null)"
-            @ondragenter="@(() => SetRailDropTarget(position, true))"
-            @ondragleave="@(() => SetRailDropTarget(position, false))"
+            @ondragenter="@(() => RailDragEnter(position))"
+            @ondragleave="@(() => RailDragLeave(position))"
             @ondrop="@(() => DropOnRailAsync(position))">
         <FlareIconView Value="RailIcon(position)" />
         @foreach (var title in TitlesOf(position))
@@ -146,6 +158,49 @@
             <span class="@Css.Classes.Ide.Layout.RailTitle">@title</span>
         }
     </button>;
+
+    // The rail slot of a per-tool side region is always present so the body beside it keeps its
+    // place in the render tree. It is empty while the region is expanded and docked, the region
+    // button until the mode is known or when the region hosts no tool group, and the per-tool
+    // entries in an auto-hide region with tools.
+    private RenderFragment RenderToolSlot(ToolPanelPosition position)
+    {
+        if (!ShowsRail(position))
+        {
+            return @<div class="@Css.Classes.Ide.Layout.ToolRail" hidden="true" aria-hidden="true"></div>;
+        }
+        if (RendersToolRail(position))
+        {
+            return RenderToolRail(position);
+        }
+        if (RegionModeKnown(position))
+        {
+            return RenderRail(position);
+        }
+        return @<div class="@Css.Classes.Ide.Layout.ToolRail" aria-hidden="true"></div>;
+    }
+
+    private RenderFragment RenderToolRail(ToolPanelPosition position) => @<div
+        class="@ToolRailClass(position)" role="group"
+        aria-label="@IdeText[$"Dock_{DocumentRegionOf(position)}"].Value"
+        @ondragover:preventDefault="true"
+        @ondragenter="@(() => RailDragEnter(position))"
+        @ondragleave="@(() => RailDragLeave(position))"
+        @ondrop="@(() => DropOnRailAsync(position))">
+        @foreach (var tool in RailToolsOf(position))
+        {
+            <button @key="tool.Panel" type="button" class="@ToolRailEntryClass(position, tool)"
+                    aria-pressed="@(IsActiveRailTool(position, tool) ? "true" : "false")"
+                    data-flare-tool-key="@tool.Key"
+                    @onclick="@(() => SelectRailToolAsync(position, tool))">
+                @if (tool.Icon is not null)
+                {
+                    <FlareIconView Value="tool.Icon" Size="1rem" />
+                }
+                <span class="@Css.Classes.Ide.Layout.RailTitle">@ToolRailLabel(tool)</span>
+            </button>
+        }
+    </div>;
 
     private RenderFragment RenderDockTabs(IdeDocumentRegion region) => @<div
         class="@Css.Classes.Ide.Layout.DockTabs" data-region="@region"

@@ -164,6 +164,12 @@
     overflow: auto;
 }
 
+/* A per-tool region keeps its body mounted while the region is collapsed, so its tools stay
+   registered for the rail; the attribute has to beat the display rule above. */
+.flare-ide-layout__panel-body[hidden] {
+    display: none;
+}
+
 .flare-ide-layout__panel-body > .flare-toolpanel,
 .flare-ide-layout__panel-body > .flare-toolpanel-group {
     flex: 1 1 0;
@@ -238,6 +244,16 @@
     height: var(--flare-ide-bottom-height);
 }
 
+/* A per-tool flyout keeps its rail at the edge: the body starts after the rail, and the region
+   still reserves only the rail width, so the center does not move. */
+.flare-ide-layout__panel--left.flare-ide-layout__panel--floating.flare-ide-layout__panel--tool-rail .flare-ide-layout__panel-body {
+    left: var(--flare-ide-rail);
+}
+
+.flare-ide-layout__panel--right.flare-ide-layout__panel--floating.flare-ide-layout__panel--tool-rail .flare-ide-layout__panel-body {
+    right: var(--flare-ide-rail);
+}
+
 /* Collapsed-rail affordance (expand button). */
 .flare-ide-layout__rail {
     display: flex;
@@ -275,10 +291,61 @@
     pointer-events: none;
 }
 
-.flare-ide-layout__rail.flare-ide-layout__rail--drop-target {
+.flare-ide-layout__rail.flare-ide-layout__rail--drop-target,
+.flare-ide-layout__tool-rail.flare-ide-layout__rail--drop-target {
     background: color-mix(in srgb, var(--flare-ide-primary, var(--flare-color-primary)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
     outline: var(--flare-ide-border-width, var(--flare-border-width)) solid var(--flare-ide-primary, var(--flare-color-primary));
     outline-offset: calc(var(--flare-ide-border-width, var(--flare-border-width)) * -1);
+}
+
+/* Per-tool rail: one button per tool, each with its icon and rotated label. The entries stay
+   pointer-interactive (unlike the region rail's inert children) because each one is a control. */
+.flare-ide-layout__tool-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.flare-ide-layout__tool-rail[hidden] {
+    display: none;
+}
+
+.flare-ide-layout__tool-rail-entry {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    width: 100%;
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) 0;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+}
+
+.flare-ide-layout__tool-rail-entry:hover {
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
+}
+
+.flare-ide-layout__tool-rail-entry--active,
+.flare-ide-layout__tool-rail-entry[aria-pressed="true"] {
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    color: var(--flare-ide-primary, var(--flare-color-primary));
+}
+
+.flare-ide-layout__tool-rail-entry--active .flare-ide-layout__rail-title,
+.flare-ide-layout__tool-rail-entry[aria-pressed="true"] .flare-ide-layout__rail-title {
+    color: var(--flare-ide-primary, var(--flare-color-primary));
 }
 
 .flare-ide-layout__rail-title {
