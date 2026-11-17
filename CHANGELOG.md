@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.58.1] - 2026-11-17
+
+### Fixed
+
+- Components ignore a disconnected Blazor Server circuit during teardown and other best-effort JavaScript calls, so disposing an IDE layout, ribbon, tool panel group or menu no longer logs an unhandled `JSDisconnectedException`.
+
 ## [0.58.0] - 2026-11-17
 
 ### Added
