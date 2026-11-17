@@ -1414,18 +1414,6 @@ public class FluentUI2Tokens
     };
 
 
-    // Title-bar caption controls: Fluent's caption row is slightly wider than MD3's. The record's
-    // defaults supply the hover, pressed, focus and disabled states from the base scales, and the
-    // close control from the error roles.
-    internal static readonly CaptionButtonTokens Caption = new()
-    {
-        Width = "2.875rem",    // 46px
-        Height = "2rem",       // 32px
-        GlyphSize = "0.75rem", // 12px
-        Background = "transparent",
-    };
-
-
     /// <summary>The complete Fluent UI 2 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
@@ -1469,7 +1457,6 @@ public class FluentUI2Tokens
         Alert = Alert,
         EmptyState = EmptyState,
         Button = Button,
-        Caption = Caption,
         ButtonGroup = ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,

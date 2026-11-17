@@ -75,17 +75,11 @@ public class TokenParityTests
     }
 
     [Fact]
-    public void CssVarMap_Flatten_Should_Contain_All_Caption_Tokens()
+    public void CssVarMap_Flatten_LeavesCaptionTokensToIde()
     {
         var flat = Flat();
 
-        Assert.Contains(Css.Tokens.CaptionButton.Width, flat.Keys);
-        Assert.Contains(Css.Tokens.CaptionButton.Height, flat.Keys);
-        Assert.Contains(Css.Tokens.CaptionButton.GlyphSize, flat.Keys);
-        Assert.Contains(Css.Tokens.CaptionButton.Background, flat.Keys);
-        Assert.Contains(Css.Tokens.CaptionButton.FocusOutline, flat.Keys);
-        Assert.Contains(Css.Tokens.CaptionButton.CloseHoverBackground, flat.Keys);
-        Assert.Contains(Css.Tokens.CaptionButton.ClosePressedColor, flat.Keys);
+        Assert.DoesNotContain(flat.Keys, key => key.StartsWith("--flare-caption-", StringComparison.Ordinal));
     }
 
     [Fact]

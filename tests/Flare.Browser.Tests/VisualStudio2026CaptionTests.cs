@@ -4,18 +4,16 @@ using static Microsoft.Playwright.Assertions;
 namespace Flare.Browser.Tests;
 
 /// <summary>
-/// The VS 2026 title-bar caption controls, read from the rendered shell: a 44x30 control in the
-/// title row with a 10px glyph, the chrome hover and pressed surfaces, the accent focus line, the
-/// faded disabled state, the Windows close red, and a mousedown that never starts a title-bar drag.
+/// Verifies the base palette fallbacks and the VS 2026 measurements supplied by a host container.
 /// </summary>
 public sealed class VisualStudio2026CaptionTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
-    private async Task<IBrowserContext> OpenDarkContextAsync()
+    private async Task<IBrowserContext> OpenDarkContextAsync(string theme = "visualstudio", string palette = "vs-blue")
     {
         var context = await fixture.Browser.NewContextAsync();
-        await context.AddInitScriptAsync("""
-            localStorage.setItem('flare-theme', 'visualstudio');
-            localStorage.setItem('flare-palette', 'vs-blue');
+        await context.AddInitScriptAsync($$"""
+            localStorage.setItem('flare-theme', '{{theme}}');
+            localStorage.setItem('flare-palette', '{{palette}}');
             localStorage.setItem('flare-mode', 'dark');
             """);
         return context;
@@ -27,13 +25,13 @@ public sealed class VisualStudio2026CaptionTests(BrowserFixture fixture) : IClas
         await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
         await page.WaitForFunctionAsync("""
             () => document.documentElement.classList.contains('flare-mode-dark')
-                && getComputedStyle(document.querySelector('#metric-caption-minimize')).color === 'rgb(255, 255, 255)'
+                && getComputedStyle(document.documentElement).getPropertyValue('--flare-spacing-20').trim() !== ''
             """);
         return page;
     }
 
     [Fact]
-    public async Task CaptionControls_AreTheMeasuredTitleBarBoxes()
+    public async Task CaptionControls_InheritTheHostsMeasuredTitleBarBoxes()
     {
         await using var context = await OpenDarkContextAsync();
         var page = await OpenMetricsAsync(context);
@@ -43,6 +41,7 @@ public sealed class VisualStudio2026CaptionTests(BrowserFixture fixture) : IClas
         await Expect(minimize).ToHaveCSSAsync("height", "30px");
         await Expect(minimize).ToHaveCSSAsync("background-color", "rgba(0, 0, 0, 0)");
         await Expect(minimize).ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+        await Expect(minimize).ToHaveCSSAsync("border-top-left-radius", "0px");
 
         var glyph = minimize.Locator($".{Css.Classes.Ide.CaptionButton.Icon} .{Css.Classes.Icon.Root}");
         await Expect(glyph).ToHaveCSSAsync("width", "10px");
@@ -105,7 +104,7 @@ public sealed class VisualStudio2026CaptionTests(BrowserFixture fixture) : IClas
         await Expect(minimize).ToHaveCSSAsync("outline-color", "rgb(145, 132, 238)");
         await Expect(minimize).ToHaveCSSAsync("outline-style", "solid");
         await Expect(minimize).ToHaveCSSAsync("outline-width", "1px");
-        await Expect(minimize).ToHaveCSSAsync("outline-offset", "-2px");
+        await Expect(minimize).ToHaveCSSAsync("outline-offset", "0px");
     }
 
     [Fact]
@@ -120,6 +119,42 @@ public sealed class VisualStudio2026CaptionTests(BrowserFixture fixture) : IClas
 
         await disabled.HoverAsync();
         await Expect(disabled).ToHaveCSSAsync("background-color", "rgba(0, 0, 0, 0)");
+    }
+
+    [Theory]
+    [InlineData("visualstudio", "vs-blue")]
+    [InlineData("md3", "md3-violet")]
+    public async Task CaptionOutsideTheHostContainer_FollowsTheBaseTheme(string theme, string palette)
+    {
+        await using var context = await OpenDarkContextAsync(theme, palette);
+        var page = await OpenMetricsAsync(context);
+        await page.WaitForFunctionAsync(
+            "themeClass => document.documentElement.classList.contains(themeClass)",
+            Css.Classes.Theme.ForTheme(theme));
+        var close = page.Locator("#metric-caption-default");
+        var colors = await close.EvaluateAsync<string[]>("""
+            button => {
+                const probe = document.createElement('span');
+                probe.style.backgroundColor = 'var(--flare-color-surface)';
+                probe.style.color = 'var(--flare-color-on-surface-variant)';
+                probe.style.borderTopColor = 'var(--flare-color-error)';
+                probe.style.borderBottomColor = 'var(--flare-color-on-error)';
+                button.append(probe);
+                const style = getComputedStyle(probe);
+                const colors = [style.backgroundColor, style.color, style.borderTopColor, style.borderBottomColor];
+                probe.remove();
+                return colors;
+            }
+            """);
+
+        await Expect(close).ToHaveCSSAsync("width", "40px");
+        await Expect(close).ToHaveCSSAsync("height", "32px");
+        await Expect(close).ToHaveCSSAsync("background-color", colors[0]);
+        await Expect(close).ToHaveCSSAsync("color", colors[1]);
+
+        await close.HoverAsync();
+        await Expect(close).ToHaveCSSAsync("background-color", colors[2]);
+        await Expect(close).ToHaveCSSAsync("color", colors[3]);
     }
 
     [Fact]

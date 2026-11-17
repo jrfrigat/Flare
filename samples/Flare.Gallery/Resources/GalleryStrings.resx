@@ -5021,7 +5021,7 @@ Read the card, check the tests, and report what is left.</value>
   <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Ready</value></data>
   <data name="IdeWorkspace_ReorderHandles" xml:space="preserve"><value>Show group handles</value></data>
   <data name="Ide_Caption_Title" xml:space="preserve"><value>Window caption controls</value></data>
-  <data name="Ide_Caption_Desc" xml:space="preserve"><value>Title-bar caption controls from Flare.Components.IDE. The host passes the glyph, the accessible label and the command; the component owns the measured box and the rest, hover, pressed, focus, disabled and close-danger states from the public --flare-caption-* tokens. The close control takes the platform danger paint; the disabled control keeps its box but draws no state.</value></data>
+  <data name="Ide_Caption_Desc" xml:space="preserve"><value>The host supplies the glyph, accessible label and window command. Size and visual states follow the base theme tokens. An app can override individual --flare-caption-* tokens on its title bar.</value></data>
   <data name="Ide_Caption_AppTitle" xml:space="preserve"><value>Contoso - Main</value></data>
   <data name="Ide_Caption_Minimize" xml:space="preserve"><value>Minimize</value></data>
   <data name="Ide_Caption_Maximize" xml:space="preserve"><value>Maximize</value></data>

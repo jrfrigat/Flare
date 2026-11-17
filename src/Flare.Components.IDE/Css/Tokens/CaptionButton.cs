@@ -1,6 +1,6 @@
-namespace Flare.Css.Tokens;
+namespace Flare.Css.Tokens.Ide;
 
-/// <summary>CSS variable tokens for the title-bar caption control.</summary>
+/// <summary>Inherited CSS overrides for IDE title-bar caption controls.</summary>
 public static class CaptionButton
 {
     /// <summary>CSS custom-property name for the control width.</summary>

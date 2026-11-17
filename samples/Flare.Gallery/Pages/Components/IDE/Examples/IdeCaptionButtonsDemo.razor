@@ -1,7 +1,6 @@
 @using Flare.Components.IDE
 
-@* Window caption controls: Flare owns the measured title-bar box and every state; the host passes
-   the glyph, the accessible label and the command. The last control shows the disabled state. *@
+@* The controls use the active theme's base tokens. The last control shows the disabled state. *@
 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
     <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Ide_Caption_AppTitle</FlareText>
     <FlareCaptionButton Kind="CaptionButtonKind.Minimize"

@@ -106,7 +106,22 @@
                 </ToolbarContent>
             </FlareEditorBreadcrumbBar>
         </div>
-        <div id="metric-caption-titlebar" @onmousedown="OnTitleBarMouseDown">
+        <div id="metric-caption-titlebar" @onmousedown="OnTitleBarMouseDown"
+             style="--flare-caption-width: 2.75rem;
+                    --flare-caption-height: 1.875rem;
+                    --flare-caption-glyph-size: .625rem;
+                    --flare-caption-bg: transparent;
+                    --flare-caption-color: var(--flare-vs-chrome-text);
+                    --flare-caption-hover-bg: var(--flare-vs-chrome-hover);
+                    --flare-caption-hover-color: var(--flare-vs-chrome-text);
+                    --flare-caption-pressed-bg: var(--flare-vs-chrome-outline);
+                    --flare-caption-pressed-color: var(--flare-vs-chrome-text);
+                    --flare-caption-focus-outline: 1px solid var(--flare-color-primary);
+                    --flare-caption-focus-offset: 0;
+                    --flare-caption-close-hover-bg: #C42B1C;
+                    --flare-caption-close-hover-color: #FFFFFF;
+                    --flare-caption-close-pressed-bg: #B22A1A;
+                    --flare-caption-close-pressed-color: #FFFFFF;">
             <span id="metric-caption-title">Contoso</span>
             <FlareCaptionButton id="metric-caption-minimize" Kind="CaptionButtonKind.Minimize"
                                 AriaLabel="Minimize" Tooltip="Minimize" Icon="@FlareIcons.Remove" />
@@ -121,6 +136,8 @@
                                 Icon="@FlareIcons.Close" />
         </div>
         <div id="metric-caption-mousedowns">@_titleMouseDowns</div>
+        <FlareCaptionButton id="metric-caption-default" Kind="CaptionButtonKind.Close"
+                            AriaLabel="Close with base tokens" Icon="@FlareIcons.Close" />
         <div id="metric-menubar">
             <FlareMenuBar>
                 <FlareMenu AriaLabel="File">

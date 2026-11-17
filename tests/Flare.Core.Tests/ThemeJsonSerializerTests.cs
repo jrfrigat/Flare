@@ -1,5 +1,7 @@
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3;
 using Flare.Theming;
+using System.Text.Json.Nodes;
 
 namespace Flare.Core.Tests;
 
@@ -29,5 +31,20 @@ public sealed class ThemeJsonSerializerTests
 
         Assert.Contains("\"light\":", json);
         Assert.DoesNotContain("\"Light\":", json);
+    }
+
+    [Fact]
+    public void ImportsAThemeSavedWithoutCaptionTokens()
+    {
+        var theme = new MaterialDesign3Theme();
+        var json = JsonNode.Parse(ThemeJsonSerializer.ExportTheme(theme))!.AsObject();
+        json["design"]!.AsObject().Remove("caption");
+
+        var restored = ThemeJsonSerializer.ImportTheme(json.ToJsonString());
+
+        Assert.Equal(theme.Id, restored.Id);
+        Assert.Equal(theme.Design.FocusRing, restored.Design.FocusRing);
+        var exported = JsonNode.Parse(ThemeJsonSerializer.ExportTheme(restored))!.AsObject();
+        Assert.False(exported["design"]!.AsObject().ContainsKey("caption"));
     }
 }

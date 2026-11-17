@@ -14817,7 +14817,7 @@ namespace Flare.Gallery.Resources {
         public static string IdeWorkspace_ReorderHandles { get { return ResourceManager.GetString("IdeWorkspace_ReorderHandles", resourceCulture); } }
         /// <summary>Window caption controls</summary>
         public static string Ide_Caption_Title { get { return ResourceManager.GetString("Ide_Caption_Title", resourceCulture); } }
-        /// <summary>Title-bar caption controls from Flare.Components.IDE. The host passes the glyph, the accessible label and the command; the component owns the measured box and the rest, hover, pressed, focus, disabled and close-danger states from the public --flare-caption-* tokens. The close control takes the platform danger paint; the disabled control keeps its box but draws no state.</summary>
+        /// <summary>The host supplies the glyph, accessible label and window command. Size and visual states follow the base theme tokens. An app can override individual --flare-caption-* tokens on its title bar.</summary>
         public static string Ide_Caption_Desc { get { return ResourceManager.GetString("Ide_Caption_Desc", resourceCulture); } }
         /// <summary>Contoso - Main</summary>
         public static string Ide_Caption_AppTitle { get { return ResourceManager.GetString("Ide_Caption_AppTitle", resourceCulture); } }

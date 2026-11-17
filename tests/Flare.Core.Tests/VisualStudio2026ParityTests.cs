@@ -458,29 +458,7 @@ public sealed class VisualStudio2026ParityTests
         Assert.Contains($"{Css.Tokens.Scrollbar.Radius}:0px;", css);
         Assert.Contains($"{Css.Tokens.MenuPanel.Radius}:var({Css.Tokens.Shape.Large});", css);
         Assert.Contains($"{Css.Tokens.Tree.IconSize}:1rem;", css);
-        Assert.Contains($"{Css.Tokens.CaptionButton.Width}:2.75rem;", css);
-        Assert.Contains($"{Css.Tokens.CaptionButton.Height}:1.875rem;", css);
-        Assert.Contains($"{Css.Tokens.CaptionButton.GlyphSize}:0.625rem;", css);
-        Assert.Contains($"{Css.Tokens.CaptionButton.CloseHoverBackground}:#C42B1C;", css);
-    }
-
-    [Fact]
-    public void CaptionControls_AreTheMeasuredTitleBarControls()
-    {
-        var caption = VisualStudio.DesignReference.Caption;
-
-        Assert.Equal("2.75rem", caption.Width);       // 44px
-        Assert.Equal("1.875rem", caption.Height);     // 30px title row
-        Assert.Equal("0.625rem", caption.GlyphSize);  // 10px drawn glyph
-        Assert.Equal("transparent", caption.Background);
-        Assert.Equal("var(--flare-vs-chrome-text)", caption.Color);
-        Assert.Equal("var(--flare-vs-chrome-hover)", caption.HoverBackground);
-        Assert.Equal("var(--flare-vs-chrome-outline)", caption.PressedBackground);
-        Assert.Equal($"1px solid var({Css.Tokens.Color.Primary})", caption.FocusOutline);
-        Assert.Equal("#C42B1C", caption.CloseHoverBackground);
-        Assert.Equal("#FFFFFF", caption.CloseHoverColor);
-        Assert.Equal("#B22A1A", caption.ClosePressedBackground);
-        Assert.Equal("#FFFFFF", caption.ClosePressedColor);
+        Assert.DoesNotContain("--flare-caption-", css);
     }
 
     [Fact]

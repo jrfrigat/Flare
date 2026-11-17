@@ -27,7 +27,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareButton`](components/flare-components-flarebutton.md)
 - [`FlareButtonGroup`](components/flare-components-flarebuttongroup.md)
 - [`FlareCalendar`](components/flare-components-flarecalendar.md)
-- [`FlareCaptionButton`](components/flare-components-ide-flarecaptionbutton.md) — A title-bar caption control: one native button carrying the host's glyph, accessible label and command. The component owns the measured title-bar box and every visual state through the public --flare-caption-* tokens; it adds no product text, icon or command of its own. Mousedown propagation is always stopped, so pressing a caption never starts a title-bar drag, and OnMouseDown lets the host observe the press when it needs to.
+- [`FlareCaptionButton`](components/flare-components-ide-flarecaptionbutton.md) — A title-bar button for a host-provided glyph, accessible label and window command. Its size and visual states use base theme tokens. Hosts can override individual --flare-caption-* variables on the title-bar container. Pressing the button stops mousedown propagation so the title bar does not start dragging. OnMouseDown lets the host observe the press.
 - [`FlareCard`](components/flare-components-flarecard.md)
 - [`FlareCardActions`](components/flare-components-flarecardactions.md)
 - [`FlareCardContent`](components/flare-components-flarecardcontent.md)

@@ -1299,18 +1299,6 @@ internal static class MaterialDesign2Tokens
     };
 
 
-    // Title-bar caption controls: Material 2's 48px touch target narrowed to a 32px title row. The
-    // record's defaults supply the hover, pressed, focus and disabled states from the base scales,
-    // and the close control from the error roles.
-    internal static readonly CaptionButtonTokens Caption = new()
-    {
-        Width = "3rem",          // 48px
-        Height = "2rem",         // 32px
-        GlyphSize = "0.875rem",  // 14px
-        Background = "transparent",
-    };
-
-
     /// <summary>The complete Material Design 2 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
@@ -1366,7 +1354,6 @@ internal static class MaterialDesign2Tokens
         Alert = Alert,
         EmptyState = EmptyState,
         Button = Button,
-        Caption = Caption,
         ButtonGroup = ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,

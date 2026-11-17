@@ -1418,23 +1418,22 @@ button.flare-editor-breadcrumb-bar__segment-button {
     font-size: 1.1rem;
 }
 
-/* Title-bar caption controls. Box, glyph size and every state come from the public
-   --flare-caption-* tokens; the host supplies the glyph, the label and the command. Mousedown
-   propagation is stopped in the component so a title-bar drag never starts, and the app-region
-   exclusion keeps the control reachable when the title bar itself is a CSS drag region. */
+/* Caption overrides inherit from the host. Resolve base tokens at each use so that a default on
+   the button never shadows a variable set on the title bar. The app-region exclusion keeps the
+   button clickable inside a CSS drag region. */
 .flare-caption-btn {
     box-sizing: border-box;
     display: inline-flex;
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    inline-size: var(--flare-caption-width);
-    block-size: var(--flare-caption-height);
+    inline-size: var(--flare-caption-width, var(--flare-spacing-20));
+    block-size: var(--flare-caption-height, var(--flare-spacing-16));
     padding: 0;
     border: 0;
-    border-radius: var(--flare-caption-radius);
-    background: var(--flare-caption-bg);
-    color: var(--flare-caption-color);
+    border-radius: var(--flare-caption-radius, var(--flare-shape-none));
+    background: var(--flare-caption-bg, var(--flare-color-surface));
+    color: var(--flare-caption-color, var(--flare-color-on-surface-variant));
     font: inherit;
     line-height: 1;
     cursor: default;
@@ -1446,42 +1445,42 @@ button.flare-editor-breadcrumb-bar__segment-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: var(--flare-caption-glyph-size);
-    block-size: var(--flare-caption-glyph-size);
+    inline-size: var(--flare-caption-glyph-size, var(--flare-spacing-6));
+    block-size: var(--flare-caption-glyph-size, var(--flare-spacing-6));
 }
 
 .flare-caption-btn__icon .flare-icon {
-    inline-size: var(--flare-caption-glyph-size);
-    block-size: var(--flare-caption-glyph-size);
-    font-size: var(--flare-caption-glyph-size);
+    inline-size: var(--flare-caption-glyph-size, var(--flare-spacing-6));
+    block-size: var(--flare-caption-glyph-size, var(--flare-spacing-6));
+    font-size: var(--flare-caption-glyph-size, var(--flare-spacing-6));
 }
 
 .flare-caption-btn:not(:disabled):hover {
-    background: var(--flare-caption-hover-bg);
-    color: var(--flare-caption-hover-color);
+    background: var(--flare-caption-hover-bg, var(--flare-color-surface-container-high));
+    color: var(--flare-caption-hover-color, var(--flare-color-on-surface));
 }
 
 .flare-caption-btn:not(:disabled):active {
-    background: var(--flare-caption-pressed-bg);
-    color: var(--flare-caption-pressed-color);
+    background: var(--flare-caption-pressed-bg, var(--flare-color-surface-container-highest));
+    color: var(--flare-caption-pressed-color, var(--flare-color-on-surface));
 }
 
 .flare-caption-btn--close:not(:disabled):hover {
-    background: var(--flare-caption-close-hover-bg);
-    color: var(--flare-caption-close-hover-color);
+    background: var(--flare-caption-close-hover-bg, var(--flare-color-error));
+    color: var(--flare-caption-close-hover-color, var(--flare-color-on-error));
 }
 
 .flare-caption-btn--close:not(:disabled):active {
-    background: var(--flare-caption-close-pressed-bg);
-    color: var(--flare-caption-close-pressed-color);
+    background: var(--flare-caption-close-pressed-bg, var(--flare-color-error));
+    color: var(--flare-caption-close-pressed-color, var(--flare-color-on-error));
 }
 
 .flare-caption-btn:focus-visible {
-    outline: var(--flare-caption-focus-outline);
-    outline-offset: var(--flare-caption-focus-offset);
+    outline: var(--flare-caption-focus-outline, var(--flare-focus-ring));
+    outline-offset: var(--flare-caption-focus-offset, calc(-1 * var(--flare-spacing-1)));
 }
 
 .flare-caption-btn:disabled {
-    opacity: var(--flare-caption-disabled-opacity);
+    opacity: var(--flare-caption-disabled-opacity, var(--flare-state-disabled-opacity));
     cursor: default;
 }

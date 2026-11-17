@@ -4,7 +4,7 @@
 
 `Flare.Components.IDE.FlareCaptionButton`
 
-A title-bar caption control: one native button carrying the host's glyph, accessible label and command. The component owns the measured title-bar box and every visual state through the public --flare-caption-* tokens; it adds no product text, icon or command of its own. Mousedown propagation is always stopped, so pressing a caption never starts a title-bar drag, and OnMouseDown lets the host observe the press when it needs to.
+A title-bar button for a host-provided glyph, accessible label and window command. Its size and visual states use base theme tokens. Hosts can override individual --flare-caption-* variables on the title-bar container. Pressing the button stops mousedown propagation so the title bar does not start dragging. OnMouseDown lets the host observe the press.
 
 ## Parameters
 
@@ -12,8 +12,8 @@ A title-bar caption control: one native button carrying the host's glyph, access
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label forwarded as aria-label. Strongly recommended: the control is icon-only and the library supplies no product text. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Custom glyph content, used in place of Icon. The host owns its size and paint when it supplies this. |
-| `Disabled` | `bool` | `false` | Parameter |  | Disables the control. The disabled state still reserves the measured title-bar box but draws no hover or pressed surface. |
-| `Icon` | `FlareIcon?` | `` | Parameter |  | The glyph rendered inside the control - any provider (FlareSvgIcon or an add-on pack type). It is drawn at the theme's caption glyph size unless the descriptor states its own size. Ignored when ChildContent is supplied. |
+| `Disabled` | `bool` | `false` | Parameter |  | Disables the control. The disabled state still reserves the title-bar space but draws no hover or pressed surface. |
+| `Icon` | `FlareIcon?` | `` | Parameter |  | The glyph rendered inside the control - any provider (FlareSvgIcon or an add-on pack type). It uses the caption glyph size unless the descriptor states its own size. Ignored when ChildContent is supplied. |
 | `Kind` | `CaptionButtonKind` | `CaptionButtonKind.Minimize` | Parameter |  | Which window command the control represents. The kind marks the control for tests and styling and gives the close control its danger paint; it does not decide the glyph, label or command. Defaults to Minimize, the harmless choice when a host omits it. |
 | `OnClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback invoked when the control is clicked. The host runs its window command here. |
 | `OnMouseDown` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback invoked when the control receives a mousedown, after propagation has been stopped. Use it when the host needs to observe the press; the stop itself is always applied, so a title-bar drag never starts from a caption control. |
