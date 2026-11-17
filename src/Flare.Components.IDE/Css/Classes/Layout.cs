@@ -10,6 +10,20 @@ public static class Layout
     /// <summary>Body modifier that removes the right docking column.</summary>
     public const string BodyHideRight = "flare-ide-layout__body--hide-right";
     public const string Bottom = "flare-ide-layout__bottom";
+    /// <summary>Tool-window header drawn above the bottom panel content.</summary>
+    public const string BottomHeader = "flare-ide-layout__bottom-header";
+    /// <summary>Host labels or actions at the start of the bottom header.</summary>
+    public const string BottomHeaderContent = "flare-ide-layout__bottom-header-content";
+    /// <summary>Toolbar that holds the typed bottom panel controls.</summary>
+    public const string BottomHeaderActions = "flare-ide-layout__bottom-header-actions";
+    /// <summary>Bottom panel body that keeps its header fixed and scrolls only the content.</summary>
+    public const string BottomBody = "flare-ide-layout__bottom-body";
+    /// <summary>Scrolling content area below the bottom panel header.</summary>
+    public const string BottomContent = "flare-ide-layout__bottom-content";
+    /// <summary>Pin icon in the bottom header; the unpinned modifier rotates it.</summary>
+    public const string BottomPinIcon = "flare-ide-layout__pin-icon";
+    /// <summary>Pin icon state for an unpinned bottom panel.</summary>
+    public const string BottomPinUnpinned = "flare-ide-layout__pin-icon--unpinned";
     /// <summary>Slot in the Center dock row that hosts a custom main tab strip.</summary>
     public const string CenterHeader = "flare-ide-layout__center-header";
     public const string Content = "flare-ide-layout__content";

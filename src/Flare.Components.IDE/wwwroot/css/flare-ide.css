@@ -198,6 +198,56 @@
     overflow: auto;
 }
 
+/* With the tool-window header the body itself does not scroll: the header keeps its place and only
+   the content below it scrolls. */
+.flare-ide-layout__bottom .flare-ide-layout__bottom-body {
+    overflow: hidden;
+}
+
+.flare-ide-layout__bottom-header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    min-height: 28px;
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+}
+
+.flare-ide-layout__bottom-header-content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--flare-ide-spacing-2, var(--flare-spacing-2));
+    min-inline-size: 0;
+    overflow: hidden;
+}
+
+.flare-ide-layout__bottom-header-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+}
+
+.flare-ide-layout__bottom-content {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+/* The pin shows the state: upright while pinned, tilted while the bottom panel is an auto-hide
+   flyout. The rotation follows the motion tokens like the rest of the IDE chrome. */
+.flare-ide-layout__pin-icon {
+    display: inline-block;
+    transition: rotate var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+}
+
+.flare-ide-layout__pin-icon--unpinned {
+    rotate: 45deg;
+}
+
 /* Collapsed: the region shrinks to a thin rail and frees its docked space. */
 .flare-ide-layout__panel--left.flare-ide-layout__panel--collapsed,
 .flare-ide-layout__panel--right.flare-ide-layout__panel--collapsed {
@@ -237,10 +287,12 @@
     width: var(--flare-ide-right-width);
 }
 
+/* The bottom flyout starts above the rail, so the rail stays visible and clickable below the
+   overlay just like a side flyout keeps its rail at the edge. */
 .flare-ide-layout__bottom.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: var(--flare-ide-rail);
     height: var(--flare-ide-bottom-height);
 }
 

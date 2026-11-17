@@ -23,22 +23,23 @@ public partial class FlareIdeLayout
     // Set when Escape collapsed a flyout; the next render focuses that tool's rail entry.
     private (ToolPanelPosition Position, string? Key)? _pendingRailFocus;
 
-    private static readonly ToolPanelPosition[] SidePositions =
-        [ToolPanelPosition.Left, ToolPanelPosition.Right];
+    private static readonly ToolPanelPosition[] FlyoutPositions =
+        [ToolPanelPosition.Left, ToolPanelPosition.Right, ToolPanelPosition.Bottom];
 
     // Registers the open flyouts with the module and removes the ones that closed. Listeners exist
-    // in the module only while at least one side is registered.
+    // in the module only while at least one region is registered.
     private async Task SyncFlyoutDismissalAsync()
     {
         try
         {
-            foreach (var position in SidePositions)
+            foreach (var position in FlyoutPositions)
             {
                 if (IsFloating(position))
                 {
                     if (!_panelBodies.TryGetValue(position, out var body) || body.Id is null)
                         continue;
-                    _toolRails.TryGetValue(position, out var rail);
+                    if (!_toolRails.TryGetValue(position, out var rail) || rail.Id is null)
+                        _regionRails.TryGetValue(position, out rail);
                     var railId = rail.Id;
                     if (_flyoutSynced.TryGetValue(position, out var sent) &&
                         sent.BodyId == body.Id && sent.RailId == railId)
@@ -122,38 +123,50 @@ public partial class FlareIdeLayout
 
     /// <summary>Called by the IDE's JS module when a pointer press lands outside an open auto-hide
     /// flyout and outside its rail. Collapses the region through
-    /// <see cref="LeftCollapsed"/> or <see cref="RightCollapsed"/>; a region the host already
-    /// collapsed, and a docked region, are left alone.</summary>
-    /// <param name="position">The side whose flyout is open: <c>Left</c> or <c>Right</c>.</param>
+    /// <see cref="LeftCollapsed"/>, <see cref="RightCollapsed"/> or <see cref="BottomCollapsed"/>; a
+    /// region the host already collapsed, and a docked region, are left alone. The bottom
+    /// participates only while it is unpinned.</summary>
+    /// <param name="position">The region whose flyout is open: <c>Left</c>, <c>Right</c> or
+    /// <c>Bottom</c>.</param>
     [JSInvokable]
     public async Task OnFlyoutOutsidePressAsync(string position)
     {
-        if (!TryParseSide(position, out var side) || !IsFloating(side)) return;
-        await SetCollapsedAsync(side, true);
+        if (!TryParsePosition(position, out var region) || !IsFloating(region)) return;
+        await SetCollapsedAsync(region, true);
     }
 
     /// <summary>Called by the IDE's JS module when Escape is pressed while an auto-hide flyout is
-    /// open. Collapses the region through <see cref="LeftCollapsed"/> or
-    /// <see cref="RightCollapsed"/> and returns focus to the active tool's rail entry on the next
-    /// render; a region the host already collapsed, and a docked region, are left alone.</summary>
-    /// <param name="position">The side whose flyout is open: <c>Left</c> or <c>Right</c>.</param>
+    /// open. Collapses the region through <see cref="LeftCollapsed"/>, <see cref="RightCollapsed"/> or
+    /// <see cref="BottomCollapsed"/> and returns focus to the active tool's rail entry, or to the
+    /// region rail for the bottom, on the next render; a region the host already collapsed, and a
+    /// docked region, are left alone. The bottom participates only while it is unpinned.</summary>
+    /// <param name="position">The region whose flyout is open: <c>Left</c>, <c>Right</c> or
+    /// <c>Bottom</c>.</param>
     [JSInvokable]
     public async Task OnFlyoutEscapeAsync(string position)
     {
-        if (!TryParseSide(position, out var side) || !IsFloating(side)) return;
-        _pendingRailFocus = (side, ActiveToolKey(side));
-        await SetCollapsedAsync(side, true);
+        if (!TryParsePosition(position, out var region) || !IsFloating(region)) return;
+        _pendingRailFocus = (region, ActiveToolKey(region));
+        await SetCollapsedAsync(region, true);
     }
 
-    private static bool TryParseSide(string position, out ToolPanelPosition side)
+    private static bool TryParsePosition(string position, out ToolPanelPosition parsed)
     {
-        side = position switch
+        switch (position)
         {
-            nameof(ToolPanelPosition.Left) => ToolPanelPosition.Left,
-            nameof(ToolPanelPosition.Right) => ToolPanelPosition.Right,
-            _ => ToolPanelPosition.Bottom,
-        };
-        return side != ToolPanelPosition.Bottom;
+            case nameof(ToolPanelPosition.Left):
+                parsed = ToolPanelPosition.Left;
+                return true;
+            case nameof(ToolPanelPosition.Right):
+                parsed = ToolPanelPosition.Right;
+                return true;
+            case nameof(ToolPanelPosition.Bottom):
+                parsed = ToolPanelPosition.Bottom;
+                return true;
+            default:
+                parsed = ToolPanelPosition.Left;
+                return false;
+        }
     }
 
     private async Task DisposeFlyoutAsync()

@@ -101,6 +101,8 @@ public static class FlareIcons
     public static FlareSvgIcon MoreVert { get; } = Reg("more_vert", "M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z");
     /// <summary>The built-in <c>more_horiz</c> icon.</summary>
     public static FlareSvgIcon MoreHoriz { get; } = Reg("more_horiz", "M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z");
+    /// <summary>The built-in <c>push_pin</c> icon (a pin pointing down).</summary>
+    public static FlareSvgIcon PushPin { get; } = Reg("push_pin", "M14 4v5c0 1.12.37 2.16 1 3H9c.65-.86 1-1.9 1-3V4h4m3-2H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3V4h1c.55 0 1-.45 1-1s-.45-1-1-1z");
     /// <summary>The built-in <c>info</c> icon.</summary>
     public static FlareSvgIcon Info { get; } = Reg("info", "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z");
     /// <summary>The built-in <c>warning</c> icon.</summary>

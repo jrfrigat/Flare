@@ -122,13 +122,54 @@
         @if (BottomPanel is not null)
         {
             <div class="@PanelClass(ToolPanelPosition.Bottom, Css.Classes.Ide.Layout.Bottom)">
-                @if (BottomCollapsed)
+                @if (BottomCollapsed || IsFloating(ToolPanelPosition.Bottom))
                 {
                     @RenderRail(ToolPanelPosition.Bottom)
                 }
-                else
+                @if (!BottomCollapsed)
                 {
-                    <div class="@Css.Classes.Ide.Layout.PanelBody">@BottomPanel</div>
+                    <div class="@BottomBodyClass()" @ref="_panelBodies[ToolPanelPosition.Bottom]">
+                        @if (HasBottomHeader)
+                        {
+                            <div class="@Css.Classes.Ide.Layout.BottomHeader">
+                                @if (BottomHeaderContent is not null)
+                                {
+                                    <div class="@Css.Classes.Ide.Layout.BottomHeaderContent">@BottomHeaderContent</div>
+                                }
+                                @if (ShowBottomPin || ShowBottomCollapse)
+                                {
+                                    <div class="@Css.Classes.Ide.Layout.BottomHeaderActions" role="toolbar"
+                                         aria-label="@IdeText["BottomPanel_Actions"].Value">
+                                        @if (ShowBottomPin)
+                                        {
+                                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                                         OnClick="ToggleBottomPinAsync"
+                                                         AriaPressed="@BottomPinned"
+                                                         AriaLabel="@IdeText["BottomPanel_Pin"].Value">
+                                                <FlareIconView Value="FlareIcons.PushPin" Size="1rem"
+                                                               Class="@(BottomPinned
+                                                                   ? Css.Classes.Ide.Layout.BottomPinIcon
+                                                                   : $"{Css.Classes.Ide.Layout.BottomPinIcon} {Css.Classes.Ide.Layout.BottomPinUnpinned}")" />
+                                            </FlareButton>
+                                        }
+                                        @if (ShowBottomCollapse)
+                                        {
+                                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                                         OnClick="@(() => SetCollapsedAsync(ToolPanelPosition.Bottom, true))"
+                                                         AriaLabel="@IdeText["ToolPanel_Collapse"].Value">
+                                                <FlareIconView Value="FlareIcons.ExpandMore" Size="1rem" />
+                                            </FlareButton>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="@Css.Classes.Ide.Layout.BottomContent">@BottomPanel</div>
+                        }
+                        else
+                        {
+                            @BottomPanel
+                        }
+                    </div>
                 }
             </div>
         }
@@ -154,7 +195,8 @@
 
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@RailClass(position)"
             @ref="_regionRails[position]"
-            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value"
+            @onclick="@(() => ToggleRailAsync(position))"
+            aria-label="@(IsCollapsed(position) ? IdeText["Layout_ExpandPanel"].Value : IdeText["ToolPanel_Collapse"].Value)"
             @ondragover:preventDefault="@(DocumentRegionOf(position) is not null)"
             @ondragenter="@(() => RailDragEnter(position))"
             @ondragleave="@(() => RailDragLeave(position))"

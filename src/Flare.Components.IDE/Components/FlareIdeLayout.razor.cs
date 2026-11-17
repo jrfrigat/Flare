@@ -9,7 +9,9 @@ namespace Flare.Components.IDE;
 /// tool panels, document area, bottom panel, and status bar in a Visual Studio-style layout.
 /// All styling is composed from base Flare CSS classes and design tokens - no custom tokens.
 /// The layout owns each region's collapsed state so a collapsed panel frees its docked space
-/// (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels.
+/// (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels. The bottom region
+/// can draw a tool-window header with pin and collapse controls: pinned keeps it docked, unpinned
+/// turns it into an auto-hide flyout.
 /// </summary>
 public partial class FlareIdeLayout : FlareLocalizedComponentBase
 {
@@ -62,6 +64,43 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     [Parameter] public bool BottomCollapsed { get; set; }
     /// <summary>Raised when <see cref="BottomCollapsed"/> changes.</summary>
     [Parameter] public EventCallback<bool> BottomCollapsedChanged { get; set; }
+
+    /// <summary>Whether the bottom region is pinned. The default is true: a pinned bottom panel stays
+    /// docked and open. Set it to false for an auto-hide bottom panel - while expanded it overlays the
+    /// content above the rail, a pointer press outside it or Escape collapses it, and a rail click
+    /// reopens it. Bind it with <see cref="BottomPinnedChanged"/> to persist the state. The pin is
+    /// authoritative for the bottom region, whose content is often a host surface rather than a
+    /// <see cref="FlareToolPanel"/>; the side regions keep using <see cref="FlareToolPanel.Mode"/>.
+    /// </summary>
+    [Parameter] public bool BottomPinned { get; set; } = true;
+
+    /// <summary>Reports the new bottom pin state when the built-in pin control, or a host command
+    /// through the layout, changes it. Bind it to <see cref="BottomPinned"/>.</summary>
+    [Parameter] public EventCallback<bool> BottomPinnedChanged { get; set; }
+
+    /// <summary>Whether the expanded bottom region draws the built-in tool-window header above its
+    /// content. The default is false, so existing layouts keep their chrome. The header renders
+    /// <see cref="BottomHeaderContent"/>, the typed pin control (see <see cref="ShowBottomPin"/>), the
+    /// collapse control (see <see cref="ShowBottomCollapse"/>), and keeps the panel content, resizer,
+    /// height and scrolling unchanged. Nothing is drawn while the region is collapsed or when
+    /// <see cref="BottomPanel"/> is null.</summary>
+    [Parameter] public bool ShowBottomHeader { get; set; }
+
+    /// <summary>Host content rendered at the inline start of the bottom header - a title, tabs or the
+    /// host's own commands. The typed pin and collapse controls follow it at the inline end; hide
+    /// either with <see cref="ShowBottomPin"/> or <see cref="ShowBottomCollapse"/> and draw a custom
+    /// replacement here.</summary>
+    [Parameter] public RenderFragment? BottomHeaderContent { get; set; }
+
+    /// <summary>Whether the bottom header draws the built-in pin control. The default is true; it has
+    /// no effect unless <see cref="ShowBottomHeader"/> is true. The control reflects
+    /// <see cref="BottomPinned"/> and raises <see cref="BottomPinnedChanged"/>.</summary>
+    [Parameter] public bool ShowBottomPin { get; set; } = true;
+
+    /// <summary>Whether the bottom header draws the built-in collapse control. The default is true; it
+    /// has no effect unless <see cref="ShowBottomHeader"/> is true. The control collapses the region
+    /// through <see cref="BottomCollapsed"/> and the rail reopens it.</summary>
+    [Parameter] public bool ShowBottomCollapse { get; set; } = true;
 
     /// <summary>How a collapsed or auto-hidden side region lists its tools.
     /// <see cref="IdeToolRailMode.Region"/> (the default) keeps one button for the whole region.
@@ -327,6 +366,29 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
         StateHasChanged();
     }
 
+    // A rail is the control of the region it fronts: it expands a collapsed region and closes an
+    // auto-hide flyout that is already open.
+    private Task ToggleRailAsync(ToolPanelPosition position) =>
+        SetCollapsedAsync(position, !IsCollapsed(position));
+
+    private async Task SetBottomPinnedAsync(bool pinned)
+    {
+        BottomPinned = pinned;
+        await BottomPinnedChanged.InvokeAsync(pinned);
+        StateHasChanged();
+    }
+
+    private Task ToggleBottomPinAsync() => SetBottomPinnedAsync(!BottomPinned);
+
+    private bool HasBottomHeader => ShowBottomHeader && BottomPanel is not null &&
+        (BottomHeaderContent is not null || ShowBottomPin || ShowBottomCollapse);
+
+    // The header keeps its place while the content scrolls; without a header the body keeps the
+    // historical single scrolling box.
+    private string BottomBodyClass() => HasBottomHeader
+        ? $"{Css.Classes.Ide.Layout.PanelBody} {Css.Classes.Ide.Layout.BottomBody}"
+        : Css.Classes.Ide.Layout.PanelBody;
+
     private bool IsCollapsed(ToolPanelPosition position) => position switch
     {
         ToolPanelPosition.Right => RightCollapsed,
@@ -343,10 +405,13 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
         ? i.Tools.Where(tool => !string.IsNullOrEmpty(tool.Title)).Select(tool => tool.Title!).ToArray()
         : [];
 
-    // A region floats (overlay) when expanded in auto-hide mode.
+    // A region floats (overlay) when expanded in auto-hide mode. The bottom region takes its mode
+    // from the pin instead of the hosted panels: its content is often a host surface with no
+    // FlareToolPanel to report a Mode.
     internal bool IsFloating(ToolPanelPosition position) =>
-        !IsCollapsed(position) && ModeOf(position) == IdePanelMode.AutoHide &&
-        !DocumentFillsRegion(position);
+        !IsCollapsed(position) && (position == ToolPanelPosition.Bottom
+            ? BottomPanel is not null && !BottomPinned
+            : ModeOf(position) == IdePanelMode.AutoHide && !DocumentFillsRegion(position));
 
     // The per-tool rail is an opt-in for auto-hide side regions that host tool group tabs. Docked
     // regions, the bottom region and regions hosting standalone panels keep the region button.
@@ -389,6 +454,8 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
 
     private string? ActiveToolKey(ToolPanelPosition position)
     {
+        // The bottom rail lists no per-tool entries, so it has no active tool to mark.
+        if (position == ToolPanelPosition.Bottom) return null;
         var controlled = position == ToolPanelPosition.Right ? RightActiveToolKey : LeftActiveToolKey;
         if (!string.IsNullOrEmpty(controlled)) return controlled;
         return _reportedActiveTool.TryGetValue(position, out var reported) ? reported : null;
@@ -472,10 +539,12 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
         return cls;
     }
 
+    // A rail's icon names what its click does: opening a collapsed region, or closing the open
+    // bottom flyout it fronts.
     private FlareIcon RailIcon(ToolPanelPosition position) => position switch
     {
         ToolPanelPosition.Right => FlareIcons.ChevronLeft,
-        ToolPanelPosition.Bottom => FlareIcons.ExpandLess,
+        ToolPanelPosition.Bottom => IsCollapsed(position) ? FlareIcons.ExpandLess : FlareIcons.ExpandMore,
         _ => FlareIcons.ChevronRight,
     };
 }

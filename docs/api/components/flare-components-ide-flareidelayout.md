@@ -4,7 +4,7 @@
 
 `Flare.Components.IDE.FlareIdeLayout`
 
-Root layout component for an IDE-style interface. Arranges ribbon, menu bar, tool panels, document area, bottom panel, and status bar in a Visual Studio-style layout. All styling is composed from base Flare CSS classes and design tokens - no custom tokens. The layout owns each region's collapsed state so a collapsed panel frees its docked space (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels.
+Root layout component for an IDE-style interface. Arranges ribbon, menu bar, tool panels, document area, bottom panel, and status bar in a Visual Studio-style layout. All styling is composed from base Flare CSS classes and design tokens - no custom tokens. The layout owns each region's collapsed state so a collapsed panel frees its docked space (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels. The bottom region can draw a tool-window header with pin and collapse controls: pinned keeps it docked, unpinned turns it into an auto-hide flyout.
 
 ## Parameters
 
@@ -13,8 +13,11 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `ActiveDocuments` | `IReadOnlyDictionary<IdeDocumentRegion, string?>?` | `` | Parameter |  | Controlled selection per region. A null value in the dictionary selects the existing tool or main content. |
 | `BottomCollapsed` | `bool` | `false` | Parameter |  | Whether the bottom region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `BottomCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when BottomCollapsed changes. |
+| `BottomHeaderContent` | `RenderFragment?` | `` | Parameter |  | Host content rendered at the inline start of the bottom header - a title, tabs or the host's own commands. The typed pin and collapse controls follow it at the inline end; hide either with ShowBottomPin or ShowBottomCollapse and draw a custom replacement here. |
 | `BottomPanel` | `RenderFragment?` | `` | Parameter |  | Bottom panel (e.g. Output, Terminal). |
 | `BottomPanelHeight` | `string` | `"200px"` | Parameter |  | Height of the bottom panel. Default 200px. |
+| `BottomPinned` | `bool` | `true` | Parameter |  | Whether the bottom region is pinned. The default is true: a pinned bottom panel stays docked and open. Set it to false for an auto-hide bottom panel - while expanded it overlays the content above the rail, a pointer press outside it or Escape collapses it, and a rail click reopens it. Bind it with BottomPinnedChanged to persist the state. The pin is authoritative for the bottom region, whose content is often a host surface rather than a FlareToolPanel; the side regions keep using Mode. |
+| `BottomPinnedChanged` | `EventCallback<bool>` | `` | Callback |  | Reports the new bottom pin state when the built-in pin control, or a host command through the layout, changes it. Bind it to BottomPinned. |
 | `BottomResizable` | `bool` | `true` | Parameter |  | Whether the bottom region can be drag-resized. |
 | `CenterDockHeader` | `RenderFragment?` | `` | Parameter |  | Content rendered in place of the built-in Center dock strip - a host tab strip for the main document area. The fragment occupies the Center column of the layout's dock row. It wins over ShowCenterDockStrip; as with a suppressed strip, Center selection comes only from ActiveDocuments and the host supplies the return-to-main-content control. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main document/content area. |
@@ -47,6 +50,9 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `RightRegionVisible` | `bool` | `true` | Parameter |  | Whether the right region is rendered. When false, the layout draws no right panel, dock strip, documents or resizer, and its documents stay in Documents unmounted; the document area takes the freed space. Unlike RightCollapsed, a hidden region keeps no rail, so it represents a View command that closes the dock. Default true. |
 | `RightResizable` | `bool` | `true` | Parameter |  | Whether the right region can be drag-resized. |
 | `RightToolPanel` | `RenderFragment?` | `` | Parameter |  | Right tool panel (e.g. Properties). |
+| `ShowBottomCollapse` | `bool` | `true` | Parameter |  | Whether the bottom header draws the built-in collapse control. The default is true; it has no effect unless ShowBottomHeader is true. The control collapses the region through BottomCollapsed and the rail reopens it. |
+| `ShowBottomHeader` | `bool` | `false` | Parameter |  | Whether the expanded bottom region draws the built-in tool-window header above its content. The default is false, so existing layouts keep their chrome. The header renders BottomHeaderContent, the typed pin control (see ShowBottomPin), the collapse control (see ShowBottomCollapse), and keeps the panel content, resizer, height and scrolling unchanged. Nothing is drawn while the region is collapsed or when BottomPanel is null. |
+| `ShowBottomPin` | `bool` | `true` | Parameter |  | Whether the bottom header draws the built-in pin control. The default is true; it has no effect unless ShowBottomHeader is true. The control reflects BottomPinned and raises BottomPinnedChanged. |
 | `ShowCenterDockStrip` | `bool` | `true` | Parameter |  | Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone. |
 | `StatusBar` | `RenderFragment?` | `` | Parameter |  | Status bar at the bottom of the IDE. |
 | `ToolRailMode` | `IdeToolRailMode` | `IdeToolRailMode.Region` | Parameter |  | How a collapsed or auto-hidden side region lists its tools. Region (the default) keeps one button for the whole region. PerTool gives an auto-hide side region one rail entry per hosted tool group tab, with the tool's icon and label: selecting an entry opens that tool in the flyout, the active entry is marked, and selecting it again closes the flyout. Docked regions, the bottom region and regions without a hosted tool group keep the region button. |
@@ -58,21 +64,21 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 
 ### `OnFlyoutEscapeAsync(string position)`
 
-Called by the IDE's JS module when Escape is pressed while an auto-hide flyout is open. Collapses the region through LeftCollapsed or RightCollapsed and returns focus to the active tool's rail entry on the next render; a region the host already collapsed, and a docked region, are left alone.
+Called by the IDE's JS module when Escape is pressed while an auto-hide flyout is open. Collapses the region through LeftCollapsed, RightCollapsed or BottomCollapsed and returns focus to the active tool's rail entry, or to the region rail for the bottom, on the next render; a region the host already collapsed, and a docked region, are left alone. The bottom participates only while it is unpinned.
 Returns: `Task`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `position` | `string` | The side whose flyout is open: Left or Right. |
+| `position` | `string` | The region whose flyout is open: Left, Right or Bottom. |
 
 ### `OnFlyoutOutsidePressAsync(string position)`
 
-Called by the IDE's JS module when a pointer press lands outside an open auto-hide flyout and outside its rail. Collapses the region through LeftCollapsed or RightCollapsed; a region the host already collapsed, and a docked region, are left alone.
+Called by the IDE's JS module when a pointer press lands outside an open auto-hide flyout and outside its rail. Collapses the region through LeftCollapsed, RightCollapsed or BottomCollapsed; a region the host already collapsed, and a docked region, are left alone. The bottom participates only while it is unpinned.
 Returns: `Task`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `position` | `string` | The side whose flyout is open: Left or Right. |
+| `position` | `string` | The region whose flyout is open: Left, Right or Bottom. |
 
 ### `ResizePanel(string position, int sizePx)`
 
