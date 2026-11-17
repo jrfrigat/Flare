@@ -23,6 +23,29 @@
                 </FlareTreeView>
             </FlareToolPanel>
         </div>
+        <div id="metric-toolgroup" style="height: 200px;">
+            <FlareIdeLayout Height="200px" LeftPanelWidth="280px">
+                <ChildContent><span>Document</span></ChildContent>
+                <LeftToolPanel>
+                    <FlareToolPanelGroup TabStripPlacement="TabStripPlacement.Bottom">
+                        <ToolbarContent>
+                            <FlareButton id="metric-toolgroup-action" Variant="ButtonVariant.Text"
+                                         Size="ButtonSize.Xs" AriaLabel="Pin panel">
+                                <LeadingIcon><FlareIconView Value="@FlareIcons.PushPin" /></LeadingIcon>
+                            </FlareButton>
+                        </ToolbarContent>
+                        <ChildContent>
+                            <FlareToolPanel Title="Solution Explorer" Icon="@FlareIcons.Folder">
+                                <span>Explorer body</span>
+                            </FlareToolPanel>
+                            <FlareToolPanel Title="Properties" Icon="@FlareIcons.Description">
+                                <span>Properties body</span>
+                            </FlareToolPanel>
+                        </ChildContent>
+                    </FlareToolPanelGroup>
+                </LeftToolPanel>
+            </FlareIdeLayout>
+        </div>
         <div id="metric-statusbar">
             <FlareStatusBar>
                 <LeftContent>

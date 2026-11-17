@@ -84,6 +84,55 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task ToolWindow_IsTheMeasuredTitleRowAndOutlineTab()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var group = page.Locator($"#metric-toolgroup .{Css.Classes.Ide.ToolPanelGroup.Root}");
+        await group.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-toolgroup .flare-toolpanel-group__header'))
+                    .backgroundColor === 'rgb(40, 40, 40)'
+            """);
+
+        // The measured 26px title row sits on the tool-window surface.
+        var header = group.Locator($":scope > .{Css.Classes.Ide.ToolPanelGroup.Header}");
+        Assert.Equal(26, await header.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        await Expect(header).ToHaveCSSAsync("background-color", "rgb(40, 40, 40)");
+
+        // Selection is one 1px accent outline on a 4px corner, with no contrasting fill.
+        var active = group.Locator($".{Css.Classes.Ide.ToolPanelGroup.TabActive}");
+        Assert.Equal(24, await active.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        await Expect(active).ToHaveCSSAsync("border-top-left-radius", "4px");
+        await Expect(active).ToHaveCSSAsync("border-top-width", "1px");
+        await Expect(active).ToHaveCSSAsync("border-top-color", "rgb(145, 132, 238)");
+        await Expect(active).ToHaveCSSAsync("border-bottom-color", "rgb(145, 132, 238)");
+        await Expect(active).ToHaveCSSAsync("background-color", "rgb(40, 40, 40)");
+
+        var inactive = group.Locator("[role=tab]").Nth(1);
+        await Expect(inactive).ToHaveCSSAsync("background-color", "rgba(0, 0, 0, 0)");
+        await Expect(inactive).ToHaveCSSAsync("border-top-color", "rgba(0, 0, 0, 0)");
+        await Expect(inactive).ToHaveCSSAsync("color", "rgb(204, 204, 204)");
+
+        // The pinned tool window keeps its tabs below the body; the rail and flyout are untouched.
+        var order = await group.EvaluateAsync<string[]>("""
+            el => [...el.children].map(c => c.getAttribute('role') || c.className)
+            """);
+        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Header, order[0]);
+        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Body, order[1]);
+        Assert.Equal("tablist", order[2]);
+
+        // Host and built-in header controls are neutral chrome with a 16px glyph.
+        var action = page.Locator("#metric-toolgroup-action");
+        await Expect(action).ToHaveCSSAsync("color", "rgb(204, 204, 204)");
+        await Expect(action.Locator($".{Css.Classes.Icon.Svg}")).ToHaveCSSAsync("width", "16px");
+        var collapse = header.Locator($":scope > .{Css.Classes.Button.Root}");
+        await Expect(collapse).ToHaveCSSAsync("color", "rgb(204, 204, 204)");
+    }
+
+    [Fact]
     public async Task ChromeText_IsTwelvePixelsAndToolTitlesAreSentenceCase()
     {
         await using var context = await OpenDarkContextAsync();

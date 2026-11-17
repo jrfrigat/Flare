@@ -812,13 +812,25 @@
     overflow: hidden;
 }
 
+/* The tool-window title row: the measured 26px on the panel surface, with the host's pin/close
+   actions and the group's own collapse control sitting in it. The height is a public hook so a
+   theme or host can take it back to the older, taller row. */
 .flare-toolpanel-group__header {
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    box-sizing: border-box;
+    min-block-size: var(--flare-ide-tool-header-height, 1.625rem);
     gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
     background: var(--flare-ide-tool-header-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
     border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+}
+
+/* Header controls are neutral chrome: a text button in the title row or its action slot keeps the
+   measured grey foreground instead of the accent a bare text button would use. */
+.flare-toolpanel-group__header > .flare-btn--text,
+.flare-toolpanel-group__actions .flare-btn--text {
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
 }
 
 /* Every tab stays in one row: the strip never scrolls, the tabs shrink and their labels ellipsize.
@@ -839,17 +851,22 @@
     gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
 }
 
+/* One 24px tab with a transparent stroke reserved for the selected outline, so switching selection
+   never moves the row. The stroke is the whole indicator - there is no separate accent line - and
+   the same box works in the header and in the bottom strip. */
 .flare-toolpanel-group__tab {
     display: flex;
     flex: 0 1 auto;
     align-items: center;
+    box-sizing: border-box;
+    block-size: var(--flare-ide-tool-tab-height, 1.5rem);
     min-inline-size: 0;
     overflow: hidden;
     padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
-    border: none;
-    border-bottom: 2px solid transparent;
+    border: var(--flare-ide-border-width, var(--flare-border-width)) solid transparent;
+    border-radius: var(--flare-ide-shape-small, var(--flare-shape-small));
     background: none;
-    color: inherit;
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
     cursor: pointer;
     white-space: nowrap;
     font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
@@ -898,14 +915,17 @@
     background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
+/* Selection is the 1px accent outline alone. The fill hook stays available for a theme that wants
+   one; a theme whose panel surface is the same colour gets the measured unfilled tab either way. */
 .flare-toolpanel-group__tab--active {
-    background: var(--flare-ide-tool-tab-active-bg, var(--flare-ide-surface, var(--flare-color-surface)));
-    border-bottom-color: var(--flare-ide-primary, var(--flare-color-primary));
+    background: var(--flare-ide-tool-tab-active-bg, transparent);
+    border-color: var(--flare-ide-primary, var(--flare-color-primary));
+    color: var(--flare-ide-on-surface, var(--flare-color-on-surface));
 }
 
 /* Bottom placement: the strip sits below the body and the header carries the active tool title.
-   The strip's divider and the active indicator move to the top edge, as FlareTabs does for its
-   own bottom placement. */
+   It stays the same tool-window chrome, so it takes the tool header surface rather than the bottom
+   panel's sheet-tab surface; the selected tab keeps the one accent outline. */
 .flare-toolpanel-group__title {
     display: flex;
     flex: 1;
@@ -914,6 +934,7 @@
     min-inline-size: 0;
     padding-inline: var(--flare-ide-spacing-4, var(--flare-spacing-4));
     overflow: hidden;
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
     font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
     font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
     font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
@@ -929,18 +950,9 @@
 
 .flare-toolpanel-group__tabs--bottom {
     flex: none;
+    align-items: center;
     border-top: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
-    background: var(--flare-ide-bottom-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
-}
-
-.flare-toolpanel-group__tabs--bottom .flare-toolpanel-group__tab {
-    border-bottom: none;
-    border-top: 2px solid transparent;
-}
-
-.flare-toolpanel-group__tabs--bottom .flare-toolpanel-group__tab--active {
-    border-bottom-color: transparent;
-    border-top-color: var(--flare-ide-primary, var(--flare-color-primary));
+    background: var(--flare-ide-tool-header-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
 }
 
 .flare-toolpanel-group__body {

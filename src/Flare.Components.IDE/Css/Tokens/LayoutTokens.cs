@@ -24,6 +24,10 @@ public static class Layout
     public const string LeftTrack = "--flare-ide-left-track";
     /// <summary>Grid track the right docking column currently occupies.</summary>
     public const string RightTrack = "--flare-ide-right-track";
+    /// <summary>Tool-window title row height.</summary>
+    public const string ToolHeaderHeight = "--flare-ide-tool-header-height";
+    /// <summary>Tool-window tab height.</summary>
+    public const string ToolTabHeight = "--flare-ide-tool-tab-height";
     /// <summary>Command-bar height.</summary>
     public const string ToolbarHeight = "--flare-ide-toolbar-height";
     /// <summary>Command-bar height in the dense variant.</summary>
