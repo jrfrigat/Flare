@@ -58,6 +58,12 @@
     grid-row: 2;
 }
 
+/* A side region draws a dock strip only while it has documents. Without one the panel starts at the
+   top of the body and fills the row the strip would have taken, so no empty strip row is reserved. */
+.flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__panel--no-dock-strip {
+    grid-row: 1 / span 2;
+}
+
 .flare-ide-layout__body[data-flare-ide-docking] > .flare-ide-layout__resizer {
     grid-row: 1 / span 2;
 }

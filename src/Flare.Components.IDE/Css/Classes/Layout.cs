@@ -46,6 +46,8 @@ public static class Layout
     public const string PanelFloating = "flare-ide-layout__panel--floating";
     public const string PanelLeft = "flare-ide-layout__panel--left";
     public const string PanelRight = "flare-ide-layout__panel--right";
+    /// <summary>Side region that draws no dock strip and fills the strip row itself.</summary>
+    public const string PanelNoDockStrip = "flare-ide-layout__panel--no-dock-strip";
     /// <summary>Side region whose rail lists one entry per hosted tool.</summary>
     public const string PanelToolRail = "flare-ide-layout__panel--tool-rail";
     public const string PanelBody = "flare-ide-layout__panel-body";

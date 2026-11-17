@@ -11,7 +11,9 @@ namespace Flare.Components.IDE;
 /// The layout owns each region's collapsed state so a collapsed panel frees its docked space
 /// (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels. The bottom region
 /// can draw a tool-window header with pin and collapse controls: pinned keeps it docked, unpinned
-/// turns it into an auto-hide flyout.
+/// turns it into an auto-hide flyout. The Center region draws its dock strip; a side region draws
+/// one only while it has documents, so an empty side reserves no strip row, and the strip's compact
+/// region control returns from a covering document to the tool group.
 /// </summary>
 public partial class FlareIdeLayout : FlareLocalizedComponentBase
 {
@@ -536,6 +538,11 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
         if (IsCollapsed(position)) cls += $" {Css.Classes.Ide.Layout.PanelCollapsed}";
         if (IsFloating(position)) cls += $" {Css.Classes.Ide.Layout.PanelFloating}";
         if (RendersToolRail(position)) cls += $" {Css.Classes.Ide.Layout.PanelToolRail}";
+        // Without a dock strip above it the side region starts at the top of the body and fills the
+        // row a strip would have taken.
+        if (position != ToolPanelPosition.Bottom && Docking &&
+            DocumentRegionOf(position) is { } region && !RegionShowsDockStrip(region))
+            cls += $" {Css.Classes.Ide.Layout.PanelNoDockStrip}";
         return cls;
     }
 

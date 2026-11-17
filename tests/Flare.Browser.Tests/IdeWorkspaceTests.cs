@@ -51,13 +51,16 @@ public sealed class IdeWorkspaceTests(BrowserFixture fixture) : IClassFixture<Br
         var page = await OpenAsync(context);
         var editor = page.Locator("#editor-a");
         var dock = page.Locator("#dock");
-        var right = dock.Locator(".flare-ide-layout__dock-tabs[data-region=Right]");
         await editor.FillAsync("Persistent draft");
 
+        // A side region without documents draws no dock strip, so its tool body is the drop target.
         var heading = dock.GetByRole(AriaRole.Button, new() { Name = "Document A", Exact = true });
-        await heading.DragToAsync(page.Locator("#other-dock .flare-ide-layout__dock-tabs[data-region=Left]"));
+        await heading.DragToAsync(page.Locator(
+            "#other-dock .flare-ide-layout__panel--left .flare-ide-layout__panel-body"));
         await Expect(page.Locator("#other-moved")).ToHaveTextAsync("False");
-        await heading.DragToAsync(right.GetByRole(AriaRole.Button, new() { Name = "Right tools" }));
+        await heading.DragToAsync(dock.Locator(
+            ".flare-ide-layout__panel--right .flare-ide-layout__panel-body"));
+        var right = dock.Locator(".flare-ide-layout__dock-tabs[data-region=Right]");
         await Expect(right.GetByRole(AriaRole.Button, new() { Name = "Document A", Exact = true })).ToBeFocusedAsync();
         await Expect(dock.Locator(".flare-ide-layout__document[data-region=Right] #editor-a")).ToHaveValueAsync("Persistent draft");
         await Expect(page.Locator("#other-moved")).ToHaveTextAsync("False");

@@ -7,7 +7,12 @@ public partial class FlareIdeLayout
 {
     [Inject] private IJSRuntime Js { get; set; } = default!;
 
-    /// <summary>Enables docking and supplies documents keyed within this layout.</summary>
+    /// <summary>Enables docking and supplies documents keyed within this layout. A side region draws
+    /// its document tab strip only while it has documents, so an empty side never reserves a strip
+    /// row; the strip is also the drop target for moving a document into the region. While a side
+    /// document covers the tool group, that strip carries a compact control - named with the region's
+    /// localized label - that returns to the tools. Without a strip the side tool body accepts the
+    /// drop instead.</summary>
     [Parameter] public IReadOnlyList<IdeDocument>? Documents { get; set; }
 
     /// <summary>Whether the layout draws its built-in Center dock strip. Set it to false when the host
@@ -134,13 +139,23 @@ public partial class FlareIdeLayout
     };
 
     // A region reserving only its rail has no width for a dock strip; its controls would spill into
-    // the neighboring column. The rail is the only control until the region is expanded.
+    // the neighboring column. The rail is the only control until the region is expanded. A side
+    // strip is the document tab row, so it exists only while the region has documents: without one
+    // the row is not drawn and the panel fills its place.
     private bool RegionShowsDockStrip(IdeDocumentRegion region)
     {
         if (region == IdeDocumentRegion.Center) return true;
         var position = SidePosition(region);
-        return !IsCollapsed(position) && !IsFloating(position);
+        return !IsCollapsed(position) && !IsFloating(position) && HasDocuments(region);
     }
+
+    private bool HasDocuments(IdeDocumentRegion region) =>
+        Documents?.Any(document => document.Region == region) == true;
+
+    // A side region without a dock strip has no strip to drop a document onto; its tool body keeps
+    // the same move working. The rail keeps its own drop handling when the region is collapsed.
+    private Task DropOnToolPanelAsync(ToolPanelPosition position) =>
+        DocumentRegionOf(position) is { } region ? DropDocumentAsync(region) : Task.CompletedTask;
 
     private async Task SelectDocumentAsync(IdeDocumentRegion region, string? key)
     {

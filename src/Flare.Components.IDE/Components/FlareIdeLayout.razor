@@ -22,23 +22,9 @@
         <div class="@BodyClass()" data-flare-ide-docking="@(Docking ? "true" : null)">
             @if (Docking)
             {
-                @foreach (var region in DocumentRegions)
-                {
-                    if (!RegionVisible(region))
-                    {
-                        continue;
-                    }
-                    if (region == IdeDocumentRegion.Center && CenterDockHeader is not null)
-                    {
-                        <div class="@Css.Classes.Ide.Layout.CenterHeader" data-region="@region">@CenterDockHeader</div>
-                    }
-                    else if (region == IdeDocumentRegion.Center
-                        ? ShowCenterDockStrip
-                        : RegionShowsDockStrip(region))
-                    {
-                        @RenderDockTabs(region)
-                    }
-                }
+                @RenderRegionDock(IdeDocumentRegion.Left)
+                @RenderRegionDock(IdeDocumentRegion.Center)
+                @RenderRegionDock(IdeDocumentRegion.Right)
             }
             @if (LeftRegionVisible && (LeftToolPanel is not null || Docking))
             {
@@ -48,7 +34,9 @@
                         @RenderToolSlot(ToolPanelPosition.Left)
                         <div class="@Css.Classes.Ide.Layout.PanelBody" hidden="@LeftCollapsed"
                              @ref="_panelBodies[ToolPanelPosition.Left]"
-                             inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
+                             inert="@ToolContentCovered(IdeDocumentRegion.Left)"
+                             @ondragover:preventDefault="@Docking"
+                             @ondrop="@(() => DropOnToolPanelAsync(ToolPanelPosition.Left))">@LeftToolPanel</div>
                     }
                     else if (LeftCollapsed)
                     {
@@ -58,7 +46,9 @@
                     {
                         <div class="@Css.Classes.Ide.Layout.PanelBody"
                              @ref="_panelBodies[ToolPanelPosition.Left]"
-                             inert="@ToolContentCovered(IdeDocumentRegion.Left)">@LeftToolPanel</div>
+                             inert="@ToolContentCovered(IdeDocumentRegion.Left)"
+                             @ondragover:preventDefault="@Docking"
+                             @ondrop="@(() => DropOnToolPanelAsync(ToolPanelPosition.Left))">@LeftToolPanel</div>
                     }
                 </div>
             }
@@ -83,7 +73,9 @@
                         @RenderToolSlot(ToolPanelPosition.Right)
                         <div class="@Css.Classes.Ide.Layout.PanelBody" hidden="@RightCollapsed"
                              @ref="_panelBodies[ToolPanelPosition.Right]"
-                             inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
+                             inert="@ToolContentCovered(IdeDocumentRegion.Right)"
+                             @ondragover:preventDefault="@Docking"
+                             @ondrop="@(() => DropOnToolPanelAsync(ToolPanelPosition.Right))">@RightToolPanel</div>
                     }
                     else if (RightCollapsed)
                     {
@@ -93,7 +85,9 @@
                     {
                         <div class="@Css.Classes.Ide.Layout.PanelBody"
                              @ref="_panelBodies[ToolPanelPosition.Right]"
-                             inert="@ToolContentCovered(IdeDocumentRegion.Right)">@RightToolPanel</div>
+                             inert="@ToolContentCovered(IdeDocumentRegion.Right)"
+                             @ondragover:preventDefault="@Docking"
+                             @ondrop="@(() => DropOnToolPanelAsync(ToolPanelPosition.Right))">@RightToolPanel</div>
                     }
                 </div>
             }
@@ -253,11 +247,30 @@
         }
     </div>;
 
+    // Each region has its own fixed call site, so a strip that appears or disappears (a side
+    // document arriving or leaving) cannot shift the sibling frames that follow it: dropping the
+    // strip out of a shared loop position remounted the hosted tool panels.
+    private RenderFragment RenderRegionDock(IdeDocumentRegion region)
+    {
+        if (!RegionVisible(region)) return EmptyFragment;
+        if (region == IdeDocumentRegion.Center && CenterDockHeader is not null)
+        {
+            return @<div class="@Css.Classes.Ide.Layout.CenterHeader" data-region="@region">@CenterDockHeader</div>;
+        }
+        var showsStrip = region == IdeDocumentRegion.Center
+            ? ShowCenterDockStrip
+            : RegionShowsDockStrip(region);
+        return showsStrip ? RenderDockTabs(region) : EmptyFragment;
+    }
+
     private RenderFragment RenderDockTabs(IdeDocumentRegion region) => @<div
         class="@Css.Classes.Ide.Layout.DockTabs" data-region="@region"
         role="group" aria-label="@IdeText[$"Dock_{region}"]"
         @ondragover:preventDefault="true" @ondrop="@(() => DropDocumentAsync(region))">
-        @RenderDockCaption(region)
+        @if (region == IdeDocumentRegion.Center || ActiveDocument(region) is not null)
+        {
+            @RenderDockCaption(region)
+        }
         @foreach (var document in Documents!.Where(doc => doc.Region == region))
         {
             if (DocumentContextMenu is null)
@@ -275,15 +288,26 @@
         }
     </div>;
 
-    // The built-in strips never paint a region caption. The icon is the visible part of the control
-    // that returns from a covering document to the tools or main content; the localized region name
-    // stays its accessible name.
-    private RenderFragment RenderDockCaption(IdeDocumentRegion region) => @<FlareIconButton
-        Icon="@(region == IdeDocumentRegion.Center ? FlareIcons.Description : FlareIcons.ViewColumn)"
-        Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
-        AriaLabel="@IdeText[$"Dock_{region}"].Value"
-        AriaPressed="@(ActiveDocument(region) is null)"
-        OnClick="@(() => SelectDocumentAsync(region, null))" />;
+    // The built-in strips never paint a region caption. The Center strip keeps the control that
+    // returns from a covering document to the main content. A side strip exists only while the
+    // region has documents, and its compact control appears only while one of them covers the tool
+    // group - the row never reserves space for an idle control. The localized region name stays the
+    // accessible name in both cases.
+    private RenderFragment RenderDockCaption(IdeDocumentRegion region)
+    {
+        if (region == IdeDocumentRegion.Center)
+        {
+            return @<FlareIconButton Icon="FlareIcons.Description" Variant="ButtonVariant.Text"
+                                     Size="ButtonSize.Xs" AriaLabel="@IdeText[$"Dock_{region}"].Value"
+                                     AriaPressed="@(ActiveDocument(region) is null)"
+                                     OnClick="@(() => SelectDocumentAsync(region, null))" />;
+        }
+
+        return @<FlareIconButton Icon="FlareIcons.ViewColumn" Variant="ButtonVariant.Text"
+                                 Size="ButtonSize.Xs" AriaLabel="@IdeText[$"Dock_{region}"].Value"
+                                 Tooltip="@IdeText[$"Dock_{region}"].Value"
+                                 OnClick="@(() => SelectDocumentAsync(region, null))" />;
+    }
 
     private RenderFragment RenderDockTab(IdeDocument document, IdeDocumentRegion region,
         FlareMenuActivatorContext? menu) => @<div @key="document.Key" class="@Css.Classes.Ide.Layout.DockTab">
@@ -332,4 +356,5 @@
     </div>;
 
     private static readonly IReadOnlyDictionary<string, object> EmptyAttributes = new Dictionary<string, object>();
+    private static readonly RenderFragment EmptyFragment = _ => { };
 }

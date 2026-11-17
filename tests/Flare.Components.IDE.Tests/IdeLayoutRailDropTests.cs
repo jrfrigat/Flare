@@ -46,7 +46,10 @@ public class IdeLayoutRailDropTests : FlareTestContext
         Assert.Equal("a", moved!.Document.Key);
         Assert.Equal(IdeDocumentRegion.Left, moved.Destination);
         Assert.False(expanded);
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]"));
+        Assert.DoesNotContain(Css.Classes.Ide.Layout.PanelCollapsed,
+            cut.Find($".{Css.Classes.Ide.Layout.Panel}.{Css.Classes.Ide.Layout.PanelLeft}").ClassList);
+        // The host has not moved the document yet, so the left region draws no strip row.
+        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]"));
     }
 
     [Fact]

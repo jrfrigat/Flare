@@ -14,6 +14,10 @@ public class IdeDocumentDockingDragTests : FlareTestContext
 
     public IdeDocumentDockingDragTests() => Services.AddFlareIde();
 
+    // A side region with no documents draws no dock strip, so its tool body is the drop target.
+    private static string SideBodySelector(string sideClass) =>
+        $".{Css.Classes.Ide.Layout.Panel}.{sideClass} .{Css.Classes.Ide.Layout.PanelBody}";
+
     private static RenderFragment OneTab(string key = "a", string title = "A.cs") => builder =>
     {
         builder.OpenComponent<FlareDocumentTab>(0);
@@ -91,7 +95,7 @@ public class IdeDocumentDockingDragTests : FlareTestContext
                 EventCallback.Factory.Create<IdeDocumentMove>(this, value => moved = value)));
 
         cut.WaitForAssertion(() => module.VerifyInvoke("registerDocumentDragSource"));
-        var target = cut.Find($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]");
+        var target = cut.Find(SideBodySelector(Css.Classes.Ide.Layout.PanelLeft));
         await target.TriggerEventAsync("ondrop", new DragEventArgs());
         cut.WaitForAssertion(() => Assert.NotNull(moved));
 
@@ -113,7 +117,7 @@ public class IdeDocumentDockingDragTests : FlareTestContext
                 EventCallback.Factory.Create<IdeDocumentMove>(this, value => moved = value)));
 
         cut.WaitForAssertion(() => module.VerifyInvoke("registerDocumentDragSource"));
-        var target = cut.Find($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]");
+        var target = cut.Find(SideBodySelector(Css.Classes.Ide.Layout.PanelLeft));
         await target.TriggerEventAsync("ondrop", new DragEventArgs());
 
         Assert.Null(moved);
@@ -130,7 +134,7 @@ public class IdeDocumentDockingDragTests : FlareTestContext
 
         var select = cut.Find($".{Css.Classes.Ide.Layout.DockSelect}");
         await select.TriggerEventAsync("ondragstart", new DragEventArgs());
-        var target = cut.Find($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"]");
+        var target = cut.Find(SideBodySelector(Css.Classes.Ide.Layout.PanelLeft));
         await target.TriggerEventAsync("ondrop", new DragEventArgs());
         cut.WaitForAssertion(() => Assert.NotNull(moved));
 

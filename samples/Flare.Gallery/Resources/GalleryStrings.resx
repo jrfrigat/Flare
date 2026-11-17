@@ -5002,7 +5002,7 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Scheduler_MoreEvents" xml:space="preserve"><value>More events</value></data>
   <data name="Scheduler_Close" xml:space="preserve"><value>Close</value></data>
   <data name="IdeWorkspace_Title" xml:space="preserve"><value>Document workspace</value></data>
-  <data name="IdeWorkspace_Description" xml:space="preserve"><value>A host-owned tab strip controls the documents: drag a tab onto a side region or its collapsed rail (or use the tab's move menu), close it, or return to the main content; the left dock has tabbed tools and shortcuts can be edited without running commands.</value></data>
+  <data name="IdeWorkspace_Description" xml:space="preserve"><value>A host-owned tab strip controls the documents: drag a tab onto a side region or its collapsed rail (or use the tab's move menu), close it, or return to the main content. A side region draws its tab strip only while it has documents, and the strip carries a compact control that returns to that region's tools. The left dock has tabbed tools and shortcuts can be edited without running commands.</value></data>
   <data name="IdeWorkspace_Activate" xml:space="preserve"><value>Activate document</value></data>
   <data name="IdeWorkspace_Close" xml:space="preserve"><value>Close document</value></data>
   <data name="IdeWorkspace_Main" xml:space="preserve"><value>Main</value></data>

@@ -16,11 +16,11 @@ public class IdeLayoutCenterStripTests : FlareTestContext
         new() { [IdeDocumentRegion.Center] = center };
 
     [Fact]
-    public void DefaultLayout_DrawsAllThreeRegionStrips()
+    public void DefaultLayout_DrawsOnlyTheCenterStripWithoutSideDocuments()
     {
         var cut = Render<FlareIdeLayout>(p => p.Add(x => x.Documents, []));
 
-        Assert.Equal(["Left", "Center", "Right"],
+        Assert.Equal(["Center"],
             cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}").Select(strip => strip.GetAttribute("data-region")));
     }
 
@@ -32,7 +32,7 @@ public class IdeLayoutCenterStripTests : FlareTestContext
             .Add(x => x.ShowCenterDockStrip, false));
 
         Assert.Empty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Center\"]"));
-        Assert.Equal(2, cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}").Count);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}"));
         Assert.False(cut.Find($".{Css.Classes.Ide.Layout.Main}").HasAttribute("inert"));
         Assert.True(cut.Find($".{Css.Classes.Ide.Layout.Document}").HasAttribute("hidden"));
     }
@@ -74,7 +74,7 @@ public class IdeLayoutCenterStripTests : FlareTestContext
         var header = cut.Find($".{Css.Classes.Ide.Layout.CenterHeader}");
         Assert.Equal("Host tabs", header.TextContent);
         Assert.Empty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Center\"]"));
-        Assert.Equal(2, cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}").Count);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.Layout.DockTabs}"));
         Assert.False(cut.Find($".{Css.Classes.Ide.Layout.Document}").HasAttribute("hidden"));
     }
 }
