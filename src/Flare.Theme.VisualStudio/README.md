@@ -63,6 +63,7 @@ a generic color role:
 | :-- | :-- |
 | `--flare-vs-chrome-title-bar` | Menu and title bar |
 | `--flare-vs-chrome-command-bar` | Command bar |
+| `--flare-vs-chrome-command-well` / `--flare-vs-chrome-command-well-border` | Command-bar control well and its stroke |
 | `--flare-vs-chrome-tab-strip` | Document tab strip |
 | `--flare-vs-chrome-tab-active` | Active document tab |
 | `--flare-vs-chrome-editor` | Editor |
@@ -89,6 +90,10 @@ without host overrides.
 - **Fields.** A 23px well with a `#353535` fill, a 1px `#454545` stroke, 4px corners and an 8px text
   inset. The Xs..Xl ramp is 20/22/23/26/30px.
 - **Command buttons.** 24px square, 16px glyph, 4px corners.
+- **Command-bar wells.** The combos and controls inside a command-bar group sit in a 24px well: a
+  22px `#333333` interior inside a 1px `#353535` stroke. A host reaches the whole combination through
+  `--flare-ide-toolbar-well-surface`, `--flare-ide-toolbar-well-border-color` and
+  `--flare-ide-toolbar-well-height`; a 1px border-box stroke leaves the measured 22px interior.
 - **Focus.** A single 1px `#9184EE` accent line on fields, buttons, checkboxes and radios; no outer
   glow.
 - **Scrollbars.** A 2px square `#9D9D9D` thumb on the panel surface. Chromium and WebView2 draw this

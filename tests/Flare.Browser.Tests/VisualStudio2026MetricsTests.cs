@@ -315,6 +315,29 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task CommandWell_IsTheMeasuredTwentyFourPixelWell()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var well = page.Locator("#metric-toolbar-combo");
+        await well.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-toolbar-combo'))
+                    .getPropertyValue('--flare-ide-toolbar-well-height').trim() === '1.5rem'
+            """);
+
+        // The measured command-bar well: 24px total, so the 1px stroke leaves a 22px interior.
+        Assert.Equal(24, await well.EvaluateAsync<int>("el => el.getBoundingClientRect().height"));
+        Assert.Equal(22, await well.EvaluateAsync<int>("el => el.clientHeight"));
+        await Expect(well).ToHaveCSSAsync("background-color", "rgb(51, 51, 51)");
+        await Expect(well).ToHaveCSSAsync("border-top-width", "1px");
+        await Expect(well).ToHaveCSSAsync("border-top-color", "rgb(53, 53, 53)");
+        await Expect(well).ToHaveCSSAsync("border-radius", "4px");
+    }
+
+    [Fact]
     public async Task CommandBar_KeepsTheGroupDragHandle()
     {
         await using var context = await OpenDarkContextAsync();

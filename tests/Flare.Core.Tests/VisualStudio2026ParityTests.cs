@@ -52,6 +52,8 @@ public sealed class VisualStudio2026ParityTests
 
         Assert.Equal("#1C1C1C", dark[VisualStudioCssVars.ChromeTitleBar]);
         Assert.Equal("#262626", dark[VisualStudioCssVars.ChromeCommandBar]);
+        Assert.Equal("#333333", dark[VisualStudioCssVars.ChromeCommandWell]);
+        Assert.Equal("#353535", dark[VisualStudioCssVars.ChromeCommandWellBorder]);
         Assert.Equal("#262626", dark[VisualStudioCssVars.ChromeTabStrip]);
         Assert.Equal("#282828", dark[VisualStudioCssVars.ChromeTabActive]);
         Assert.Equal("#1E1E1E", dark[VisualStudioCssVars.ChromeEditor]);
@@ -208,6 +210,44 @@ public sealed class VisualStudio2026ParityTests
         Assert.Contains("--flare-ide-toolbar-group-surface:var(--flare-vs-chrome-command-bar);", css);
         Assert.Contains("--flare-ide-toolbar-height:1.75rem;", css);
         Assert.Contains("--flare-ide-toolbar-edge-color:var(--flare-vs-chrome-bar-edge);", css);
+    }
+
+    [Fact]
+    public void CommandWell_TakesTheMeasuredSurfaceBorderAndHeight()
+    {
+        var light = VisualStudio.DesignReference.Extended;
+        var dark = Theme.ExtendedDarkOverride;
+        Assert.NotNull(dark);
+
+        foreach (var map in new[] { light, dark })
+        {
+            Assert.Equal("var(--flare-vs-chrome-command-well)", map["--flare-ide-toolbar-well-surface"]);
+            Assert.Equal("var(--flare-vs-chrome-command-well-border)", map["--flare-ide-toolbar-well-border-color"]);
+            Assert.Equal("1.5rem", map["--flare-ide-toolbar-well-height"]);
+        }
+
+        Assert.Equal($"var({Css.Tokens.Color.Surface})", light[VisualStudioCssVars.ChromeCommandWell]);
+        Assert.Equal($"var({Css.Tokens.Color.Outline})", light[VisualStudioCssVars.ChromeCommandWellBorder]);
+        Assert.Equal("#333333", dark[VisualStudioCssVars.ChromeCommandWell]);
+        Assert.Equal("#353535", dark[VisualStudioCssVars.ChromeCommandWellBorder]);
+
+        // The form-field well keeps its measured #353535 fill and #454545 stroke.
+        var input = VisualStudio.DesignReference.Input;
+        Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.FilledBg);
+        Assert.Equal($"var({Css.Tokens.Color.Outline})", input.BorderColor);
+        Assert.Equal("1.4375rem", input.HeightMd);
+    }
+
+    [Fact]
+    public void ThemeCss_EmitsTheMeasuredCommandWell()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        Assert.Contains("--flare-ide-toolbar-well-surface:var(--flare-vs-chrome-command-well);", css);
+        Assert.Contains("--flare-ide-toolbar-well-border-color:var(--flare-vs-chrome-command-well-border);", css);
+        Assert.Contains("--flare-ide-toolbar-well-height:1.5rem;", css);
+        Assert.Contains("--flare-vs-chrome-command-well:#333333;", css);
+        Assert.Contains("--flare-vs-chrome-command-well-border:#353535;", css);
     }
 
     [Fact]

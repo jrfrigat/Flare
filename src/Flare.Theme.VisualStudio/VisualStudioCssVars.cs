@@ -22,6 +22,10 @@ public static class VisualStudioCssVars
     public const string ChromeTitleBar = "--flare-vs-chrome-title-bar";
     /// <summary>Command bar surface - the toolbar strip under the menu bar.</summary>
     public const string ChromeCommandBar = "--flare-vs-chrome-command-bar";
+    /// <summary>Control well inside the command bar - the combo and control interior.</summary>
+    public const string ChromeCommandWell = "--flare-vs-chrome-command-well";
+    /// <summary>Stroke around a control well inside the command bar.</summary>
+    public const string ChromeCommandWellBorder = "--flare-vs-chrome-command-well-border";
     /// <summary>Document tab strip surface.</summary>
     public const string ChromeTabStrip = "--flare-vs-chrome-tab-strip";
     /// <summary>Active document tab surface.</summary>

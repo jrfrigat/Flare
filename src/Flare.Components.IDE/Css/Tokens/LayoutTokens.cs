@@ -36,6 +36,8 @@ public static class Layout
     public const string ToolbarPadding = "--flare-ide-toolbar-padding";
     /// <summary>Command-bar padding shorthand in the dense variant.</summary>
     public const string ToolbarDensePadding = "--flare-ide-toolbar-dense-padding";
+    /// <summary>Command-bar control-well height (the measured 24px total).</summary>
+    public const string ToolbarWellHeight = "--flare-ide-toolbar-well-height";
     /// <summary>Glyph size of a document tab's close button.</summary>
     public const string DocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
     /// <summary>Menu-bar height.</summary>

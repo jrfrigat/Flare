@@ -60,7 +60,17 @@
             </FlareStatusBar>
         </div>
         <div id="metric-commandbar">
-            <FlareToolbar Reorderable="true" Groups="ToolbarGroups" />
+            <FlareToolbar Reorderable="true" Groups="ToolbarGroups">
+                <TrailingContent>
+                    @* The host-owned combo a VS-theme toolbar carries; every visual value comes from
+                       the theme's toolbar hooks, as an application's native select would use them. *@
+                    <select id="metric-toolbar-combo" aria-label="Language"
+                            style="box-sizing: border-box; block-size: var(--flare-ide-toolbar-well-height, 1.5rem); border: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-toolbar-well-border-color); border-radius: var(--flare-shape-small); background-color: var(--flare-ide-toolbar-well-surface); color: var(--flare-vs-chrome-text); padding: 0 4px;">
+                        <option value="en">English</option>
+                        <option value="ru">Russian</option>
+                    </select>
+                </TrailingContent>
+            </FlareToolbar>
         </div>
         <div id="metric-doctabs">
             <FlareDocumentTabs @bind-ActiveKey="_activeDocument">

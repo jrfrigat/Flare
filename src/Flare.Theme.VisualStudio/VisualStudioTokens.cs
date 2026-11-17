@@ -635,6 +635,8 @@ internal class VisualStudioTokens
         // above stays valid; DarkExtended below replaces them with the measured VS 2026 values.
         [VisualStudioCssVars.ChromeTitleBar] = "var(--flare-color-surface-container-low)",
         [VisualStudioCssVars.ChromeCommandBar] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.ChromeCommandWell] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.ChromeCommandWellBorder] = "var(--flare-color-outline)",
         [VisualStudioCssVars.ChromeTabStrip] = "var(--flare-color-surface-container)",
         [VisualStudioCssVars.ChromeTabActive] = "var(--flare-color-surface)",
         [VisualStudioCssVars.ChromeEditor] = "var(--flare-color-surface)",
@@ -691,6 +693,12 @@ internal class VisualStudioTokens
         [IdeToolbarPadding] = "0",
         [IdeToolbarDensePadding] = "0",
         [IdeToolbarEdgeColor] = "var(--flare-vs-chrome-bar-edge)",
+        // A host command-bar combo is its own well inside a group: the measured 24px total leaves a
+        // 22px interior behind the 1px --flare-ide-border-width, painted in #333333 with a #353535
+        // stroke. The form-field Input tokens keep their own #353535/#454545 look.
+        [IdeToolbarWellSurface] = "var(--flare-vs-chrome-command-well)",
+        [IdeToolbarWellBorderColor] = "var(--flare-vs-chrome-command-well-border)",
+        [IdeToolbarWellHeight] = "1.5rem",
 
         // The measured document tab close glyph is 10px inside a 20px target (the target size is in
         // the theme's scoped tabs.css); the default keeps every other theme's 14px glyph.
@@ -780,6 +788,9 @@ internal class VisualStudioTokens
     internal const string IdeToolbarPadding = "--flare-ide-toolbar-padding";
     internal const string IdeToolbarDensePadding = "--flare-ide-toolbar-dense-padding";
     internal const string IdeToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
+    internal const string IdeToolbarWellSurface = "--flare-ide-toolbar-well-surface";
+    internal const string IdeToolbarWellBorderColor = "--flare-ide-toolbar-well-border-color";
+    internal const string IdeToolbarWellHeight = "--flare-ide-toolbar-well-height";
     internal const string IdeDocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
     internal const string IdeMenubarHeight = "--flare-ide-menubar-height";
     internal const string IdeStatusBarSurface = "--flare-ide-statusbar-surface";
@@ -1015,6 +1026,8 @@ internal class VisualStudioTokens
             // overrides and the chrome still renders the measured shell.
             [VisualStudioCssVars.ChromeTitleBar] = "#1C1C1C",
             [VisualStudioCssVars.ChromeCommandBar] = "#262626",
+            [VisualStudioCssVars.ChromeCommandWell] = "#333333",
+            [VisualStudioCssVars.ChromeCommandWellBorder] = "#353535",
             [VisualStudioCssVars.ChromeTabStrip] = "#262626",
             [VisualStudioCssVars.ChromeTabActive] = "#282828",
             [VisualStudioCssVars.ChromeEditor] = "#1E1E1E",

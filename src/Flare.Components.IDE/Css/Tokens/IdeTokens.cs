@@ -103,6 +103,10 @@ public static class Vars
     public const string ToolbarDenseGap = "--flare-ide-toolbar-dense-gap";
     /// <summary>CSS custom property <c>--flare-ide-toolbar-edge-color</c>.</summary>
     public const string ToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-well-surface</c>.</summary>
+    public const string ToolbarWellSurface = "--flare-ide-toolbar-well-surface";
+    /// <summary>CSS custom property <c>--flare-ide-toolbar-well-border-color</c>.</summary>
+    public const string ToolbarWellBorderColor = "--flare-ide-toolbar-well-border-color";
     /// <summary>CSS custom property <c>--flare-ide-statusbar-surface</c>.</summary>
     public const string StatusBarSurface = "--flare-ide-statusbar-surface";
     /// <summary>CSS custom property <c>--flare-ide-statusbar-color</c>.</summary>
