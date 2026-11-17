@@ -698,6 +698,13 @@ internal class VisualStudioTokens
         // the edge, the gap and the 24px hover pill.
         [IdeMenubarHeight] = "1.875rem",
 
+        // Status bar - the measured 24px #141414 strip with 8px inline padding, a 12px gap between
+        // segments and a 16px icon slot (sized in scoped ide.css).
+        [IdeStatusBarSurface] = "var(--flare-vs-chrome-status-bar)",
+        [IdeStatusBarColor] = "var(--flare-vs-chrome-text)",
+        [IdeStatusBarPadding] = "0 0.5rem",
+        [IdeStatusBarGap] = "0.75rem",
+
         // The measured chrome text is 12px: the shell's body-small hooks resolve to this theme's
         // BodyMedium role, while menu and tree labels keep BodyLarge (13px).
         [IdeTypescaleBodySmallFont] = "var(--flare-typescale-body-medium-font)",
@@ -738,6 +745,10 @@ internal class VisualStudioTokens
     internal const string IdeToolbarEdgeColor = "--flare-ide-toolbar-edge-color";
     internal const string IdeDocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
     internal const string IdeMenubarHeight = "--flare-ide-menubar-height";
+    internal const string IdeStatusBarSurface = "--flare-ide-statusbar-surface";
+    internal const string IdeStatusBarColor = "--flare-ide-statusbar-color";
+    internal const string IdeStatusBarPadding = "--flare-ide-statusbar-padding";
+    internal const string IdeStatusBarGap = "--flare-ide-statusbar-gap";
     internal const string IdeTypescaleBodySmallFont = "--flare-ide-typescale-body-small-font";
     internal const string IdeTypescaleBodySmallSize = "--flare-ide-typescale-body-small-size";
     internal const string IdeTypescaleBodySmallWeight = "--flare-ide-typescale-body-small-weight";

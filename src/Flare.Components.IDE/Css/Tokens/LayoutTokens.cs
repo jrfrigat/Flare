@@ -36,4 +36,8 @@ public static class Layout
     public const string DocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
     /// <summary>Menu-bar height.</summary>
     public const string MenubarHeight = "--flare-ide-menubar-height";
+    /// <summary>Status-bar padding shorthand (block inline).</summary>
+    public const string StatusBarPadding = "--flare-ide-statusbar-padding";
+    /// <summary>Gap between status-bar segments.</summary>
+    public const string StatusBarGap = "--flare-ide-statusbar-gap";
 }

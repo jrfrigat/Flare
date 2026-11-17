@@ -241,6 +241,17 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
+    public void StatusBar_TakesTheMeasuredSurfacePaddingAndGaps()
+    {
+        var extended = VisualStudio.DesignReference.Extended;
+
+        Assert.Equal("var(--flare-vs-chrome-status-bar)", extended["--flare-ide-statusbar-surface"]);
+        Assert.Equal("var(--flare-vs-chrome-text)", extended["--flare-ide-statusbar-color"]);
+        Assert.Equal("0 0.5rem", extended["--flare-ide-statusbar-padding"]);
+        Assert.Equal("0.75rem", extended["--flare-ide-statusbar-gap"]);
+    }
+
+    [Fact]
     public void CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
     {
         var button = VisualStudio.DesignReference.Button;

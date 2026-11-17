@@ -302,6 +302,40 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task StatusBar_IsTheMeasuredTwentyFourPixelStrip()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var bar = page.Locator($"#metric-statusbar .{Css.Classes.Ide.StatusBar.Root}");
+        await bar.WaitForAsync();
+        await page.WaitForFunctionAsync("""
+            () => document.documentElement.classList.contains('flare-mode-dark')
+                && getComputedStyle(document.querySelector('#metric-statusbar .flare-statusbar'))
+                    .getPropertyValue('--flare-ide-statusbar-padding').trim() === '0 0.5rem'
+            """);
+
+        Assert.Equal(24, await bar.EvaluateAsync<int>("el => el.clientHeight"));
+        await Expect(bar).ToHaveCSSAsync("background-color", "rgb(20, 20, 20)");
+        await Expect(bar).ToHaveCSSAsync("color", "rgb(255, 255, 255)");
+        await Expect(bar).ToHaveCSSAsync("font-size", "12px");
+        await Expect(bar).ToHaveCSSAsync("padding-left", "8px");
+        await Expect(bar).ToHaveCSSAsync("padding-right", "8px");
+
+        var left = bar.Locator($".{Css.Classes.Ide.StatusBar.Left}");
+        var center = bar.Locator($".{Css.Classes.Ide.StatusBar.Center}");
+        var right = bar.Locator($".{Css.Classes.Ide.StatusBar.Right}");
+        await Expect(left).ToHaveCSSAsync("gap", "12px");
+        await Expect(right).ToHaveCSSAsync("gap", "12px");
+        await Expect(center).ToBeVisibleAsync();
+        await Expect(left).ToHaveCSSAsync("border-right-width", "0px");
+
+        var icon = left.Locator($".{Css.Classes.Icon.Svg}");
+        await Expect(icon).ToHaveCSSAsync("width", "16px");
+        await Expect(icon).ToHaveCSSAsync("height", "16px");
+    }
+
+    [Fact]
     public async Task Scrollbar_UsesTheTwoPixelWebKitPath()
     {
         await using var context = await OpenDarkContextAsync();

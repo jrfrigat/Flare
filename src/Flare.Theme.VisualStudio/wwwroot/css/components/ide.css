@@ -94,4 +94,10 @@
     .flare-menu-item--disabled .flare-icon.flare-menu-item__icon {
         color: var(--flare-vs-chrome-text-disabled);
     }
+
+    /* VS 2026 status bar: the measured 16px status icon is host content inside a segment slot, so
+       the theme only sizes it; the slot API stays untouched. */
+    .flare-statusbar .flare-icon {
+        font-size: 1rem;
+    }
 }

@@ -998,14 +998,15 @@
 .flare-statusbar {
     display: flex;
     align-items: center;
-    padding: 0 var(--flare-ide-spacing-6, var(--flare-spacing-6));
-    background: var(--flare-ide-statusbar-bg, transparent);
-    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    padding: var(--flare-ide-statusbar-padding, 0 var(--flare-ide-spacing-6, var(--flare-spacing-6)));
+    background: var(--flare-ide-statusbar-surface, var(--flare-ide-statusbar-bg, transparent));
+    color: var(--flare-ide-statusbar-color, inherit);
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
     min-height: 24px;
-    font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
-    font-weight: var(--flare-ide-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
-    line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
-    letter-spacing: var(--flare-ide-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-statusbar__left,
@@ -1013,7 +1014,7 @@
 .flare-statusbar__right {
     display: flex;
     align-items: center;
-    gap: var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    gap: var(--flare-ide-statusbar-gap, var(--flare-ide-spacing-4, var(--flare-spacing-4)));
 }
 
 .flare-statusbar__left {
