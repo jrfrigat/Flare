@@ -15,31 +15,15 @@ builder.Services.AddFlareTheme(new VisualStudioTheme());
 // await ThemeService.SetThemeAsync("visualstudio");
 ```
 
-## Visual Studio shell -> Flare
+## What this theme styles
 
-Visual Studio is a product, not a published design system, so this table maps the parts of its SHELL -
-the things you would point at in the IDE - onto the components that reproduce them. Flare's IDE family
-exists for exactly this shape of application.
+The theme styles Flare's base component set - buttons, fields, menus, trees, tabs, dialogs, grids. It
+does not style optional application-shell components or declare their tokens. An application that
+wants Visual Studio-like IDE chrome sets those tokens in its own scope; the shell package supplies
+base-token defaults.
 
-| Visual Studio | Flare | Notes |
-| :-- | :-- | :-- |
-| Menu bar (File, Edit, View...) | `FlareMenuBar` | |
-| Toolbar / command bar | `FlareToolbar`, `FlareQuickAccessToolbar` | |
-| Ribbon (Office-style hosts) | `FlareRibbon` | |
-| Document tabs | `FlareDocumentTabs` | |
-| Tool windows (Solution Explorer, Properties) | `FlareToolPanel` | docked panes |
-| Solution Explorer tree | `FlareTreeView`, `FlareDataTree` | |
-| Properties window | `FlarePropertyGrid` | |
-| Status bar | `FlareStatusBar` | |
-| Splitter between panes | `FlareSplitter` | |
-| Output / error list | `FlareDataGrid` | |
-| Options dialog | `FlareDialog` + `FlareNavMenu` | |
-| Command palette (Ctrl+Q) | `FlareCombobox`; `FlareShortcuts` documents the bindings | |
-| Backstage (File menu) | `FlareBackstage` | |
-| The whole shell | `FlareIdeLayout` | composes the above into one frame |
-
-Everything else - buttons, fields, checkboxes, grids - is the standard Flare component set wearing
-this theme's tokens; VS does not rename them.
+Buttons, fields, checkboxes and grids are the standard Flare component set wearing this theme's
+tokens; VS does not rename them.
 
 ## What this theme changes beyond colour
 
@@ -81,20 +65,14 @@ a generic color role:
 | `--flare-vs-chrome-accent` | Focus and selection accent |
 | `--flare-vs-chrome-scrollbar-thumb` / `--flare-vs-chrome-scrollbar-track` | Scrollbar |
 
-The optional IDE shell in `Flare.Components.IDE` owns its own `--flare-ide-*` hooks and their base
-defaults. This theme does not declare them: an application that wants the measured IDE surfaces sets
-those tokens in its own scope.
+Optional application-shell packages own their own tokens and base defaults. This theme does not
+declare them: an application that wants the measured IDE surfaces sets those tokens in its own scope.
 
 ## VS 2026 component metrics
 
 - **Fields.** A 23px well with a `#353535` fill, a 1px `#454545` stroke, 4px corners and an 8px text
   inset. The Xs..Xl ramp is 20/22/23/26/30px.
-- **Command buttons.** 24px square, 16px glyph, 4px corners.
-- **Command-bar wells.** The combos and controls inside a command-bar group can sit in a 24px well: a
-  22px `#333333` interior inside a 1px `#353535` stroke. The IDE package owns
-  `--flare-ide-toolbar-well-surface`, `--flare-ide-toolbar-well-border-color` and
-  `--flare-ide-toolbar-well-height` with base-token defaults; an application sets the measured values
-  in its own scope. A 1px border-box stroke leaves the measured 22px interior.
+- **Buttons.** 24px square, 16px glyph, 4px corners.
 - **Focus.** A single 1px `#9184EE` accent line on fields, buttons, checkboxes and radios; no outer
   glow.
 - **Scrollbars.** A 2px square `#9D9D9D` thumb on the panel surface. Chromium and WebView2 draw this
@@ -104,10 +82,8 @@ those tokens in its own scope.
 
 ## VS 2026 type and icon scale
 
-- **Chrome text.** Status bar, tool tabs and tool titles are 12px (BodyMedium); menu and tree labels
-  stay 13px (BodyLarge).
-- **Tool titles.** Sentence case, without the uppercase caption transform.
-- **Icons and rows.** Tree rows are 24px high; tree and command icons are 16px, while the expander
+- **Text.** Menu and tree labels stay 13px (BodyLarge); body text uses the theme's 12px BodyMedium.
+- **Icons and rows.** Tree rows are 24px high; tree and button icons are 16px, while the expander
   keeps a 24px target around its glyph.
 
 Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

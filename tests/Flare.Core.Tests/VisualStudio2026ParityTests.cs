@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Flare.Abstractions;
 using Flare.Theme.VisualStudio;
 using Flare.Theming;
@@ -102,25 +103,12 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
-    public void TheDocumentTabsAndIdeShellReadTheChromeRoles()
+    public void BaseTabsReadTheChromeRoles()
     {
         var light = VisualStudio.DesignReference.Extended;
 
         Assert.Equal("var(--flare-vs-chrome-tab-strip)", light[VisualStudioCssVars.TabStripBg]);
         Assert.Equal("var(--flare-vs-chrome-tab-active)", light[VisualStudioCssVars.TabActiveBg]);
-
-        Assert.Equal("var(--flare-vs-chrome-tool-window)", light["--flare-ide-surface"]);
-        Assert.Equal("var(--flare-vs-chrome-command-bar)", light["--flare-ide-surface-variant"]);
-        Assert.Equal("var(--flare-vs-chrome-divider)", light["--flare-ide-outline-variant"]);
-        Assert.Equal("var(--flare-vs-chrome-accent)", light["--flare-ide-primary"]);
-        Assert.Equal("var(--flare-vs-chrome-title-bar)", light["--flare-ide-menubar-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-command-bar)", light["--flare-ide-commandbar-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-tab-strip)", light["--flare-ide-tab-strip-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-tab-active)", light["--flare-ide-tab-active-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-editor)", light["--flare-ide-editor-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-bottom-panel)", light["--flare-ide-bottom-tab-strip-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-status-bar)", light["--flare-ide-statusbar-bg"]);
-        Assert.Equal("var(--flare-vs-chrome-tool-window)", light["--flare-ide-panel-bg"]);
     }
 
     [Fact]
@@ -178,38 +166,6 @@ public sealed class VisualStudio2026ParityTests
         Assert.Equal("none", input.OutlinedVariantFocusRing);
         Assert.Equal($"var({Css.Tokens.LocalColor.Main}, var({Css.Tokens.Color.Primary}))", input.FilledVariantFocusBorderColor);
         Assert.Equal($"var({Css.Tokens.LocalColor.Main}, var({Css.Tokens.Color.Primary}))", input.OutlinedVariantFocusBorderColor);
-    }
-
-    [Fact]
-    public void CommandBar_CarriesTheMeasuredStripSurfacesAndMetrics()
-    {
-        var light = VisualStudio.DesignReference.Extended;
-        var dark = Theme.ExtendedDarkOverride;
-        Assert.NotNull(dark);
-
-        foreach (var map in new[] { light, dark })
-        {
-            Assert.Equal("var(--flare-vs-chrome-title-bar)", map["--flare-ide-toolbar-surface"]);
-            Assert.Equal("var(--flare-vs-chrome-command-bar)", map["--flare-ide-toolbar-group-surface"]);
-            Assert.Equal("var(--flare-vs-chrome-bar-edge)", map["--flare-ide-toolbar-edge-color"]);
-            Assert.Equal("0.25rem", map["--flare-ide-toolbar-gap"]);
-            Assert.Equal("0.25rem", map["--flare-ide-toolbar-dense-gap"]);
-            Assert.Equal("1.75rem", map["--flare-ide-toolbar-height"]);
-            Assert.Equal("1.75rem", map["--flare-ide-toolbar-dense-height"]);
-            Assert.Equal("0", map["--flare-ide-toolbar-padding"]);
-            Assert.Equal("0", map["--flare-ide-toolbar-dense-padding"]);
-        }
-    }
-
-    [Fact]
-    public void ThemeCss_EmitsTheMeasuredCommandBar()
-    {
-        var css = TokensToCss.ThemeCss(Theme);
-
-        Assert.Contains("--flare-ide-toolbar-surface:var(--flare-vs-chrome-title-bar);", css);
-        Assert.Contains("--flare-ide-toolbar-group-surface:var(--flare-vs-chrome-command-bar);", css);
-        Assert.Contains("--flare-ide-toolbar-height:1.75rem;", css);
-        Assert.Contains("--flare-ide-toolbar-edge-color:var(--flare-vs-chrome-bar-edge);", css);
     }
 
     [Fact]
@@ -275,107 +231,6 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
-    public void MenuBar_TakesTheMeasuredThirtyPixelBar()
-    {
-        var extended = VisualStudio.DesignReference.Extended;
-
-        Assert.Equal("1.875rem", extended["--flare-ide-menubar-height"]);
-    }
-
-    [Fact]
-    public void BottomSheetTabs_TakeTheMeasuredStripAndUnderline()
-    {
-        var light = VisualStudio.DesignReference.Extended;
-        var dark = Theme.ExtendedDarkOverride;
-        Assert.NotNull(dark);
-
-        foreach (var map in new[] { light, dark })
-        {
-            Assert.Equal("var(--flare-vs-chrome-bottom-panel)", map["--flare-ide-sheet-tabs-surface"]);
-            Assert.Equal("var(--flare-vs-chrome-text-secondary)", map["--flare-ide-sheet-tabs-color"]);
-            Assert.Equal("transparent", map["--flare-ide-sheet-tabs-active-bg"]);
-            Assert.Equal("transparent", map["--flare-ide-sheet-tabs-active-border-color"]);
-            Assert.Equal("var(--flare-vs-chrome-text)", map["--flare-ide-sheet-tabs-active-color"]);
-            Assert.Equal("var(--flare-vs-chrome-bottom-tab-underline)", map["--flare-ide-sheet-tabs-underline-color"]);
-            Assert.Equal("var(--flare-vs-chrome-accent)", map["--flare-ide-sheet-tabs-divider"]);
-            Assert.Equal("2.0625rem", map["--flare-ide-sheet-tabs-height"]);
-            Assert.Equal("0.875rem", map["--flare-ide-sheet-tabs-gap"]);
-            Assert.Equal("0 0.4375rem 0.25rem", map["--flare-ide-sheet-tabs-padding"]);
-            Assert.Equal("3px", map["--flare-ide-sheet-tabs-underline-height"]);
-        }
-
-        Assert.Equal($"var({Css.Tokens.Color.OutlineVariant})", light[VisualStudioCssVars.ChromeBottomTabUnderline]);
-        Assert.Equal("#404040", dark[VisualStudioCssVars.ChromeBottomTabUnderline]);
-    }
-
-    [Fact]
-    public void ThemeCss_EmitsTheMeasuredBottomSheetTabs()
-    {
-        var css = TokensToCss.ThemeCss(Theme);
-
-        Assert.Contains("--flare-ide-sheet-tabs-surface:var(--flare-vs-chrome-bottom-panel);", css);
-        Assert.Contains("--flare-ide-sheet-tabs-height:2.0625rem;", css);
-        Assert.Contains("--flare-ide-sheet-tabs-gap:0.875rem;", css);
-        Assert.Contains("--flare-ide-sheet-tabs-padding:0 0.4375rem 0.25rem;", css);
-        Assert.Contains("--flare-ide-sheet-tabs-underline-height:3px;", css);
-        Assert.Contains("--flare-vs-chrome-bottom-tab-underline:#404040;", css);
-    }
-
-    [Fact]
-    public void EditorBreadcrumb_TakesTheMeasuredRowAndActionArea()
-    {
-        var light = VisualStudio.DesignReference.Extended;
-        var dark = Theme.ExtendedDarkOverride;
-        Assert.NotNull(dark);
-
-        foreach (var map in new[] { light, dark })
-        {
-            Assert.Equal("var(--flare-vs-chrome-breadcrumb)", map["--flare-ide-breadcrumb-surface"]);
-            Assert.Equal("var(--flare-vs-chrome-text-secondary)", map["--flare-ide-breadcrumb-color"]);
-            Assert.Equal("var(--flare-vs-chrome-breadcrumb-edge)", map["--flare-ide-breadcrumb-edge-color"]);
-            Assert.Equal("var(--flare-vs-chrome-divider)", map["--flare-ide-breadcrumb-separator-color"]);
-            Assert.Equal("var(--flare-vs-chrome-editor)", map["--flare-ide-breadcrumb-active-surface"]);
-            Assert.Equal("var(--flare-vs-chrome-text)", map["--flare-ide-breadcrumb-active-color"]);
-            Assert.Equal("var(--flare-vs-chrome-breadcrumb-edge)", map["--flare-ide-breadcrumb-actions-surface"]);
-            Assert.Equal("1.375rem", map["--flare-ide-breadcrumb-bar-height"]);
-            Assert.Equal("0.5rem", map["--flare-ide-breadcrumb-bar-padding"]);
-            Assert.Equal("0.5rem", map["--flare-ide-breadcrumb-segment-padding"]);
-            Assert.Equal("0.25rem", map["--flare-ide-breadcrumb-segment-gap"]);
-            Assert.Equal("1rem", map["--flare-ide-breadcrumb-icon-size"]);
-            Assert.Equal("0.75rem", map["--flare-ide-breadcrumb-chevron-size"]);
-            Assert.Equal("0.5rem", map["--flare-ide-breadcrumb-actions-padding"]);
-            Assert.Equal("0.25rem", map["--flare-ide-breadcrumb-actions-gap"]);
-        }
-
-        Assert.Equal($"var({Css.Tokens.Color.OutlineVariant})", light[VisualStudioCssVars.ChromeBreadcrumbEdge]);
-        Assert.Equal("#2E2E2E", dark[VisualStudioCssVars.ChromeBreadcrumbEdge]);
-    }
-
-    [Fact]
-    public void ThemeCss_EmitsTheMeasuredEditorBreadcrumb()
-    {
-        var css = TokensToCss.ThemeCss(Theme);
-
-        Assert.Contains("--flare-ide-breadcrumb-surface:var(--flare-vs-chrome-breadcrumb);", css);
-        Assert.Contains("--flare-ide-breadcrumb-edge-color:var(--flare-vs-chrome-breadcrumb-edge);", css);
-        Assert.Contains("--flare-ide-breadcrumb-actions-surface:var(--flare-vs-chrome-breadcrumb-edge);", css);
-        Assert.Contains("--flare-ide-breadcrumb-bar-height:1.375rem;", css);
-        Assert.Contains("--flare-ide-breadcrumb-icon-size:1rem;", css);
-        Assert.Contains("--flare-vs-chrome-breadcrumb-edge:#2E2E2E;", css);
-    }
-
-    [Fact]
-    public void StatusBar_TakesTheMeasuredSurfacePaddingAndGaps()
-    {
-        var extended = VisualStudio.DesignReference.Extended;
-
-        Assert.Equal("var(--flare-vs-chrome-status-bar)", extended["--flare-ide-statusbar-surface"]);
-        Assert.Equal("var(--flare-vs-chrome-text)", extended["--flare-ide-statusbar-color"]);
-        Assert.Equal("0 0.5rem", extended["--flare-ide-statusbar-padding"]);
-        Assert.Equal("0.75rem", extended["--flare-ide-statusbar-gap"]);
-    }
-
-    [Fact]
     public void CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
     {
         var button = VisualStudio.DesignReference.Button;
@@ -434,19 +289,6 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
-    public void ChromeTypeHooks_ResolveToTheTwelvePixelBodyMedium()
-    {
-        var extended = VisualStudio.DesignReference.Extended;
-
-        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Font})", extended["--flare-ide-typescale-body-small-font"]);
-        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Size})", extended["--flare-ide-typescale-body-small-size"]);
-        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Weight})", extended["--flare-ide-typescale-body-small-weight"]);
-        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Height})", extended["--flare-ide-typescale-body-small-height"]);
-        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Spacing})", extended["--flare-ide-typescale-body-small-spacing"]);
-        Assert.Equal($"var({Css.Tokens.Typography.BodyMedium.Weight})", extended["--flare-ide-typescale-label-small-weight"]);
-    }
-
-    [Fact]
     public void ThemeCss_EmitsTheMeasuredComponentMetrics()
     {
         var css = TokensToCss.ThemeCss(Theme);
@@ -459,6 +301,55 @@ public sealed class VisualStudio2026ParityTests
         Assert.Contains($"{Css.Tokens.MenuPanel.Radius}:var({Css.Tokens.Shape.Large});", css);
         Assert.Contains($"{Css.Tokens.Tree.IconSize}:1rem;", css);
         Assert.DoesNotContain("--flare-caption-", css);
+    }
+
+    [Fact]
+    public void Extended_DoesNotDeclareIdeTokens()
+    {
+        var light = VisualStudio.DesignReference.Extended;
+        var dark = Theme.ExtendedDarkOverride;
+        Assert.NotNull(dark);
+
+        foreach (var map in new[] { light, dark })
+        {
+            var ideKeys = map.Keys
+                .Where(key => key.StartsWith("--flare-ide-", StringComparison.Ordinal))
+                .ToArray();
+            Assert.True(ideKeys.Length == 0,
+                "The Visual Studio theme must not declare the optional IDE package's tokens: "
+                + string.Join(", ", ideKeys));
+        }
+    }
+
+    [Fact]
+    public void ThemeCss_DoesNotReferenceIdeClassesOrTokens()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        Assert.DoesNotContain("--flare-ide-", css);
+        Assert.DoesNotContain("flare-doc-tabs", css);
+        Assert.DoesNotContain("flare-toolbar", css);
+        Assert.DoesNotContain("flare-menubar", css);
+        Assert.DoesNotContain("flare-statusbar", css);
+        Assert.DoesNotContain("flare-sheet-tabs", css);
+        Assert.DoesNotContain("flare-toolpanel", css);
+    }
+
+    [Fact]
+    public void ThemeStylesheet_DoesNotReferenceTheIdePackage()
+    {
+        var cssPath = Path.Combine(FindRepoRoot(), "src", "Flare.Theme.VisualStudio",
+            "wwwroot", "css", "components.css");
+        Assert.True(File.Exists(cssPath), $"Missing generated theme stylesheet: {cssPath}");
+        var css = File.ReadAllText(cssPath);
+
+        Assert.DoesNotContain("--flare-ide-", css);
+        Assert.DoesNotContain("flare-doc-tabs", css);
+        Assert.DoesNotContain(".flare-toolbar", css);
+        Assert.DoesNotContain(".flare-menubar", css);
+        Assert.DoesNotContain(".flare-statusbar", css);
+        Assert.DoesNotContain(".flare-sheet-tabs", css);
+        Assert.DoesNotContain(".flare-toolpanel", css);
     }
 
     [Fact]
@@ -483,5 +374,15 @@ public sealed class VisualStudio2026ParityTests
         Assert.Contains(Css.Tokens.Color.Surface, light[VisualStudioCssVars.ChromeEditor]);
         Assert.StartsWith($"var({Css.Tokens.Color.Primary}", light[VisualStudioCssVars.ChromeAccent]);
         Assert.DoesNotContain("#1C1C1C", light[VisualStudioCssVars.ChromeTitleBar]);
+    }
+
+    // The compile-time path of this test file, walked up until the folder that contains "src".
+    private static string FindRepoRoot([CallerFilePath] string thisFile = "")
+    {
+        var dir = Path.GetDirectoryName(thisFile);
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, "src")))
+            dir = Path.GetDirectoryName(dir);
+        Assert.False(dir is null, "Could not locate the repository root (no ancestor 'src' folder).");
+        return dir!;
     }
 }

@@ -75,6 +75,26 @@ public static class Vars
     public const string Spacing6 = "--flare-ide-spacing-6";
     /// <summary>CSS custom property <c>--flare-ide-primary</c>.</summary>
     public const string Primary = "--flare-ide-primary";
+    /// <summary>CSS custom property <c>--flare-ide-menubar-bg</c>.</summary>
+    public const string MenuBarBg = "--flare-ide-menubar-bg";
+    /// <summary>CSS custom property <c>--flare-ide-commandbar-bg</c>.</summary>
+    public const string CommandBarBg = "--flare-ide-commandbar-bg";
+    /// <summary>CSS custom property <c>--flare-ide-tab-strip-bg</c>.</summary>
+    public const string TabStripBg = "--flare-ide-tab-strip-bg";
+    /// <summary>CSS custom property <c>--flare-ide-tab-active-bg</c>.</summary>
+    public const string TabActiveBg = "--flare-ide-tab-active-bg";
+    /// <summary>CSS custom property <c>--flare-ide-editor-bg</c>.</summary>
+    public const string EditorBg = "--flare-ide-editor-bg";
+    /// <summary>CSS custom property <c>--flare-ide-tool-header-bg</c>.</summary>
+    public const string ToolHeaderBg = "--flare-ide-tool-header-bg";
+    /// <summary>CSS custom property <c>--flare-ide-tool-tab-active-bg</c>.</summary>
+    public const string ToolTabActiveBg = "--flare-ide-tool-tab-active-bg";
+    /// <summary>CSS custom property <c>--flare-ide-bottom-tab-strip-bg</c>.</summary>
+    public const string BottomTabStripBg = "--flare-ide-bottom-tab-strip-bg";
+    /// <summary>CSS custom property <c>--flare-ide-statusbar-bg</c>.</summary>
+    public const string StatusBarBg = "--flare-ide-statusbar-bg";
+    /// <summary>CSS custom property <c>--flare-ide-panel-bg</c>.</summary>
+    public const string PanelBg = "--flare-ide-panel-bg";
     /// <summary>CSS custom property <c>--flare-ide-motion-duration-enter-small</c>.</summary>
     public const string MotionDurationEnterSmall = "--flare-ide-motion-duration-enter-small";
     /// <summary>CSS custom property <c>--flare-ide-state-pressed-opacity</c>.</summary>

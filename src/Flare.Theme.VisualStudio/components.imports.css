@@ -2,4 +2,3 @@
    wwwroot/css/components.css, the one stylesheet the theme ships (see Directory.Build.targets). */
 @import 'vs-base.css';
 @import 'components/tabs.css';
-@import 'components/ide.css';

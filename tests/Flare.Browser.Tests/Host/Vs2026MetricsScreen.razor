@@ -14,101 +14,14 @@
         <div id="metric-scroller" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
             <div style="block-size: 300px;"></div>
         </div>
-        <div id="metric-toolpanel">
-            <FlareToolPanel Title="Solution Explorer">
-                <FlareTreeView AriaLabel="Solution Explorer">
-                    <FlareTreeItem Label="Project" Icon="@FlareIcons.Folder" Expanded="true">
-                        <ChildContent>
-                            <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
-                        </ChildContent>
-                    </FlareTreeItem>
-                </FlareTreeView>
-            </FlareToolPanel>
-        </div>
-        <div id="metric-toolgroup" style="height: 200px;">
-            <FlareIdeLayout Height="200px" LeftPanelWidth="280px">
-                <ChildContent><span>Document</span></ChildContent>
-                <LeftToolPanel>
-                    <FlareToolPanelGroup TabStripPlacement="TabStripPlacement.Bottom">
-                        <ToolbarContent>
-                            <FlareButton id="metric-toolgroup-action" Variant="ButtonVariant.Text"
-                                         Size="ButtonSize.Xs" AriaLabel="Pin panel">
-                                <LeadingIcon><FlareIconView Value="@FlareIcons.PushPin" /></LeadingIcon>
-                            </FlareButton>
-                        </ToolbarContent>
-                        <ChildContent>
-                            <FlareToolPanel Title="Solution Explorer" Icon="@FlareIcons.Folder">
-                                <span>Explorer body</span>
-                            </FlareToolPanel>
-                            <FlareToolPanel Title="Properties" Icon="@FlareIcons.Description">
-                                <span>Properties body</span>
-                            </FlareToolPanel>
-                        </ChildContent>
-                    </FlareToolPanelGroup>
-                </LeftToolPanel>
-            </FlareIdeLayout>
-        </div>
-        <div id="metric-statusbar">
-            <FlareStatusBar>
-                <LeftContent>
-                    <FlareIconView Value="@FlareIcons.CheckCircle" />
-                    <span>Ready</span>
-                </LeftContent>
-                <CenterContent><span>Ln 1, Col 1</span></CenterContent>
-                <RightContent>
-                    <span>Spaces: 4</span>
-                    <span>UTF-8</span>
-                </RightContent>
-            </FlareStatusBar>
-        </div>
-        <div id="metric-commandbar"
-             style="--flare-ide-toolbar-well-surface: var(--flare-vs-chrome-command-well);
-                    --flare-ide-toolbar-well-border-color: var(--flare-vs-chrome-command-well-border);
-                    --flare-ide-toolbar-well-height: 1.5rem;">
-            <FlareToolbar Reorderable="true" Groups="ToolbarGroups">
-                <TrailingContent>
-                    @* The host-owned combo a VS-theme toolbar carries. The IDE package owns the
-                       --flare-ide-toolbar-well-* hooks; this host sets the measured values in its own
-                       scope, as an application would. *@
-                    <select id="metric-toolbar-combo" aria-label="Language"
-                            style="box-sizing: border-box; block-size: var(--flare-ide-toolbar-well-height, 1.5rem); border: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-toolbar-well-border-color); border-radius: var(--flare-shape-small); background-color: var(--flare-ide-toolbar-well-surface); color: var(--flare-vs-chrome-text); padding: 0 4px;">
-                        <option value="en">English</option>
-                        <option value="ru">Russian</option>
-                    </select>
-                </TrailingContent>
-            </FlareToolbar>
-        </div>
-        <div id="metric-doctabs">
-            <FlareDocumentTabs @bind-ActiveKey="_activeDocument">
-                <ChildContent>
-                    <FlareDocumentTab Key="main" Title="Main.cs">Main document</FlareDocumentTab>
-                    <FlareDocumentTab Key="other" Title="Other.cs">Other document</FlareDocumentTab>
-                </ChildContent>
-            </FlareDocumentTabs>
-        </div>
-        <div id="metric-sheettabs">
-            <FlareSheetTabs Sheets="@BottomSheets" ActiveIndex="0" ShowAddButton="false" />
-        </div>
-        <div id="metric-breadcrumb">
-            <FlareEditorBreadcrumbBar>
-                <BreadcrumbContent>
-                    <FlareEditorBreadcrumbSegment Text="Quas.Core" Icon="@FlareIcons.Folder">
-                        <MenuContent>
-                            <FlareMenuItem>Quas.Core</FlareMenuItem>
-                        </MenuContent>
-                    </FlareEditorBreadcrumbSegment>
-                    <FlareEditorBreadcrumbSegment Text="Quas.Core.Commands.CommandResult"
-                                                  Icon="@FlareIcons.Description" Active="true">
-                        <MenuContent>
-                            <FlareMenuItem>CommandResult</FlareMenuItem>
-                        </MenuContent>
-                    </FlareEditorBreadcrumbSegment>
-                </BreadcrumbContent>
-                <ToolbarContent>
-                    <FlareIconView Value="@FlareIcons.Error" />
-                    <span id="metric-breadcrumb-count">2</span>
-                </ToolbarContent>
-            </FlareEditorBreadcrumbBar>
+        <div id="metric-tree">
+            <FlareTreeView AriaLabel="Solution Explorer">
+                <FlareTreeItem Label="Project" Icon="@FlareIcons.Folder" Expanded="true">
+                    <ChildContent>
+                        <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
+                    </ChildContent>
+                </FlareTreeItem>
+            </FlareTreeView>
         </div>
         <div id="metric-caption-titlebar" @onmousedown="OnTitleBarMouseDown"
              style="--flare-caption-width: 2.75rem;
@@ -142,49 +55,37 @@
         <div id="metric-caption-mousedowns">@_titleMouseDowns</div>
         <FlareCaptionButton id="metric-caption-default" Kind="CaptionButtonKind.Close"
                             AriaLabel="Close with base tokens" Icon="@FlareIcons.Close" />
-        <div id="metric-menubar">
-            <FlareMenuBar>
-                <FlareMenu AriaLabel="File">
-                    <Activator Context="menu">
-                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
-                                     @attributes="menu.Attributes">File</FlareButton>
-                    </Activator>
-                    <ChildContent>
-                        <FlareMenuItem Shortcut="Ctrl+N">New</FlareMenuItem>
-                        <FlareMenuItem Shortcut="Ctrl+O">Open</FlareMenuItem>
-                        <FlareMenuItem Disabled="true">Disabled entry</FlareMenuItem>
-                        <FlareMenuSeparator />
-                        <FlareMenuItem Checked="true" Shortcut="Ctrl+K">Checked entry</FlareMenuItem>
-                    </ChildContent>
-                </FlareMenu>
-            </FlareMenuBar>
+        <div id="metric-menu">
+            <FlareMenu AriaLabel="File">
+                <Activator Context="menu">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                                 @attributes="menu.Attributes">File</FlareButton>
+                </Activator>
+                <ChildContent>
+                    <FlareMenuItem Shortcut="Ctrl+N">New</FlareMenuItem>
+                    <FlareMenuItem Shortcut="Ctrl+O">Open</FlareMenuItem>
+                    <FlareMenuItem Disabled="true">Disabled entry</FlareMenuItem>
+                    <FlareMenuSeparator />
+                    <FlareMenuItem Checked="true" Shortcut="Ctrl+K">Checked entry</FlareMenuItem>
+                </ChildContent>
+            </FlareMenu>
+        </div>
+        <div id="metric-ide-default">
+            <FlareStatusBar>
+                <LeftContent><span>Default IDE tokens</span></LeftContent>
+            </FlareStatusBar>
+        </div>
+        <div id="metric-ide-overridden"
+             style="--flare-ide-statusbar-surface: rgb(1, 2, 3);">
+            <FlareStatusBar>
+                <LeftContent><span>Application override</span></LeftContent>
+            </FlareStatusBar>
         </div>
     </main>
 </FlareThemeProvider>
 
 @code {
-    private string? _activeDocument = "main";
     private int _titleMouseDowns;
 
     private void OnTitleBarMouseDown() => _titleMouseDowns++;
-
-    private static readonly string[] BottomSheets = ["Output", "Error List", "Terminal"];
-
-    private RenderFragment FileGroup => @<text>
-        <FlareButton Size="ButtonSize.Xs" AriaLabel="Save">
-            <LeadingIcon><FlareIconView Value="@FlareIcons.Save" /></LeadingIcon>
-        </FlareButton>
-    </text>;
-
-    private RenderFragment EditGroup => @<text>
-        <FlareButton Size="ButtonSize.Xs" AriaLabel="Edit">
-            <LeadingIcon><FlareIconView Value="@FlareIcons.Edit" /></LeadingIcon>
-        </FlareButton>
-    </text>;
-
-    private IReadOnlyList<IdeToolbarGroup> ToolbarGroups =>
-    [
-        new("file", "File", FileGroup),
-        new("edit", "Edit", EditGroup),
-    ];
 }

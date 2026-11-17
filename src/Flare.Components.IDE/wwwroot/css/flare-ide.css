@@ -1484,3 +1484,30 @@ button.flare-editor-breadcrumb-bar__segment-button {
     opacity: var(--flare-caption-disabled-opacity, var(--flare-state-disabled-opacity));
     cursor: default;
 }
+
+/* Structural corrections the components need in every theme: the reorderable group's menu wrapper
+   must not add a line box around its handle, the handle centers its glyph in its own box, tool titles
+   keep sentence case, and sheet tabs fill the strip while the add button stays centered. Colours and
+   measured sizes stay in the theme or in the application's token overrides. */
+.flare-toolbar__group > .flare-menu {
+    display: flex;
+}
+
+.flare-toolbar__handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flare-toolpanel__title {
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.flare-sheet-tabs {
+    align-items: stretch;
+}
+
+.flare-sheet-tabs__add {
+    align-self: center;
+}
