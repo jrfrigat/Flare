@@ -1,0 +1,14 @@
+@page "/vs2026-metrics"
+@using Flare.Icons
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main id="metrics">
+        <FlareField id="metric-field" TValue="string" AriaLabel="Search field" />
+        <FlareButton id="metric-command" Size="ButtonSize.Xs" AriaLabel="Save">
+            <LeadingIcon><FlareIconView Value="@FlareIcons.Save" /></LeadingIcon>
+        </FlareButton>
+        <div id="metric-scroller" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
+            <div style="block-size: 300px;"></div>
+        </div>
+    </main>
+</FlareThemeProvider>

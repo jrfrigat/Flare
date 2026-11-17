@@ -82,4 +82,16 @@ The optional IDE shell in `Flare.Components.IDE` reads the same roles through it
 `--flare-ide-*` hooks, which this theme fills in, so `FlareIdeLayout` renders the measured surfaces
 without host overrides.
 
+## VS 2026 component metrics
+
+- **Fields.** A 23px well with a `#353535` fill, a 1px `#454545` stroke, 4px corners and an 8px text
+  inset. The Xs..Xl ramp is 20/22/23/26/30px.
+- **Command buttons.** 24px square, 16px glyph, 4px corners.
+- **Focus.** A single 1px `#9184EE` accent line on fields, buttons, checkboxes and radios; no outer
+  glow.
+- **Scrollbars.** A 2px square `#9D9D9D` thumb on the panel surface. Chromium and WebView2 draw this
+  from the WebKit scrollbar path, which the theme keeps enabled; Firefox keeps its native scrollbar.
+- **Panels.** 6px corners on dropdowns and popovers; a tool search field takes the same 6px through
+  `--flare-vs-chrome-search-radius`.
+
 Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

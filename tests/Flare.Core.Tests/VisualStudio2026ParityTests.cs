@@ -123,7 +123,7 @@ public sealed class VisualStudio2026ParityTests
     public void ThemeCss_EmitsTheMeasuredDarkChrome()
     {
         var css = TokensToCss.ThemeCss(Theme);
-        var darkRule = css[css.IndexOf(".flare-theme-visualstudio.flare-mode-dark", StringComparison.Ordinal)..];
+        var darkRule = css[css.IndexOf($".{Css.Classes.Theme.ForTheme(VisualStudioTheme.ThemeId)}.{Css.Classes.Theme.ModeDark}", StringComparison.Ordinal)..];
 
         Assert.Contains($"{VisualStudioCssVars.ChromeTitleBar}:#1C1C1C;", darkRule);
         Assert.Contains($"{VisualStudioCssVars.ChromeTabStrip}:#262626;", darkRule);
@@ -136,9 +136,106 @@ public sealed class VisualStudio2026ParityTests
     public void PaletteCss_EmitsThePurpleAccentInDark()
     {
         var css = TokensToCss.PaletteCss(VisualStudioPalettes.Blue);
-        var darkRule = css[css.IndexOf($".flare-palette-{VisualStudioPalettes.BlueId}.flare-mode-dark", StringComparison.Ordinal)..];
+        var darkRule = css[css.IndexOf($".{Css.Classes.Theme.ForPalette(VisualStudioPalettes.BlueId)}.{Css.Classes.Theme.ModeDark}", StringComparison.Ordinal)..];
 
         Assert.Contains("#9184EE", darkRule);
+    }
+
+    [Fact]
+    public void FieldMetrics_MatchTheMeasuredVs2026Well()
+    {
+        var input = VisualStudio.DesignReference.Input;
+
+        Assert.Equal("1.4375rem", input.HeightMd); // 23px
+        Assert.Equal("1.25rem", input.HeightXs);
+        Assert.Equal("1.375rem", input.HeightSm);
+        Assert.Equal("1.625rem", input.HeightLg);
+        Assert.Equal("1.875rem", input.HeightXl);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", input.OutlinedRadius);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", input.FilledVariantRadius);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", input.OutlinedVariantRadius);
+        Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.FilledBg);
+        Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.FilledVariantBg);
+        Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.OutlinedVariantBg);
+        Assert.Equal($"var({Css.Tokens.Color.Outline})", input.BorderColor);
+        Assert.Equal("0.125rem 0.5rem", input.PaddingMd);
+        Assert.Equal("1rem", input.IconSize);
+    }
+
+    [Fact]
+    public void FieldFocus_IsOneAccentLineWithoutAGlow()
+    {
+        var input = VisualStudio.DesignReference.Input;
+
+        Assert.Equal("none", input.FocusRing);
+        Assert.Equal($"1px solid var({Css.Tokens.LocalColor.Main}, var({Css.Tokens.Color.Primary}))", input.FocusOutline);
+        Assert.Equal("0", input.FocusOutlineOffset);
+        Assert.Equal("none", input.FilledVariantFocusRing);
+        Assert.Equal("none", input.OutlinedVariantFocusRing);
+        Assert.Equal($"var({Css.Tokens.LocalColor.Main}, var({Css.Tokens.Color.Primary}))", input.FilledVariantFocusBorderColor);
+        Assert.Equal($"var({Css.Tokens.LocalColor.Main}, var({Css.Tokens.Color.Primary}))", input.OutlinedVariantFocusBorderColor);
+    }
+
+    [Fact]
+    public void CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
+    {
+        var button = VisualStudio.DesignReference.Button;
+
+        Assert.Equal("1.5rem", button.HeightXs);
+        Assert.Equal("1rem", button.IconSizeXs);
+        Assert.Equal("none", button.FocusShadow);
+        Assert.Equal($"1px solid var({Css.Tokens.Color.Primary})", button.FocusOutline);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", button.RadiusXs.TopLeft);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", button.RadiusXs.BottomRight);
+    }
+
+    [Fact]
+    public void CheckboxAndRadio_FocusWithOneAccentLine()
+    {
+        var checkbox = VisualStudio.DesignReference.Checkbox;
+        var radio = VisualStudio.DesignReference.Radio;
+
+        Assert.Equal($"1px solid var({Css.Tokens.Color.Primary})", checkbox.FocusOutline);
+        Assert.Equal("none", checkbox.FocusShadow);
+        Assert.Equal($"var({Css.Tokens.Shape.Small})", checkbox.Radius);
+        Assert.Equal($"1px solid var({Css.Tokens.Color.Primary})", radio.FocusOutline);
+        Assert.Equal("none", radio.FocusShadow);
+        Assert.Equal("0", radio.FocusOutlineOffset);
+    }
+
+    [Fact]
+    public void Scrollbar_IsTwoPixelsSquareOnThePanelSurface()
+    {
+        var scrollbar = VisualStudio.DesignReference.Scrollbar;
+
+        Assert.Equal("auto", scrollbar.Width);
+        Assert.Equal("2px", scrollbar.Size);
+        Assert.Equal("#9D9D9D", scrollbar.Thumb);
+        Assert.Equal("var(--flare-vs-chrome-scrollbar-track)", scrollbar.Track);
+        Assert.Equal("0px", scrollbar.Radius);
+    }
+
+    [Fact]
+    public void DropdownsAndSearch_TakeSixPixelCorners()
+    {
+        Assert.Equal($"var({Css.Tokens.Shape.Large})", VisualStudio.DesignReference.Menu.PanelRadius);
+        Assert.Equal($"var({Css.Tokens.Shape.Large})", VisualStudio.DesignReference.Popover.Radius);
+        Assert.Equal(
+            $"var({Css.Tokens.Shape.Large})",
+            VisualStudio.DesignReference.Extended[VisualStudioCssVars.ChromeSearchRadius]);
+    }
+
+    [Fact]
+    public void ThemeCss_EmitsTheMeasuredComponentMetrics()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        Assert.Contains($"{Css.Tokens.Button.Height.Xs}:1.5rem;", css);
+        Assert.Contains($"{Css.Tokens.Button.IconSize.Xs}:1rem;", css);
+        Assert.Contains($"{Css.Tokens.InputField.HeightMd}:1.4375rem;", css);
+        Assert.Contains($"{Css.Tokens.Scrollbar.Size}:2px;", css);
+        Assert.Contains($"{Css.Tokens.Scrollbar.Radius}:0px;", css);
+        Assert.Contains($"{Css.Tokens.MenuPanel.Radius}:var({Css.Tokens.Shape.Large});", css);
     }
 
     [Fact]
@@ -159,9 +256,9 @@ public sealed class VisualStudio2026ParityTests
     {
         var light = VisualStudio.DesignReference.Extended;
 
-        Assert.StartsWith("var(--flare-color-", light[VisualStudioCssVars.ChromeTitleBar]);
-        Assert.StartsWith("var(--flare-color-", light[VisualStudioCssVars.ChromeEditor]);
-        Assert.StartsWith("var(--flare-color-", light[VisualStudioCssVars.ChromeAccent]);
+        Assert.Contains(Css.Tokens.Color.SurfaceContainerLow, light[VisualStudioCssVars.ChromeTitleBar]);
+        Assert.Contains(Css.Tokens.Color.Surface, light[VisualStudioCssVars.ChromeEditor]);
+        Assert.StartsWith($"var({Css.Tokens.Color.Primary}", light[VisualStudioCssVars.ChromeAccent]);
         Assert.DoesNotContain("#1C1C1C", light[VisualStudioCssVars.ChromeTitleBar]);
     }
 }

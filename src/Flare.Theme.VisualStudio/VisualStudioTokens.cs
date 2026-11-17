@@ -208,9 +208,9 @@ internal class VisualStudioTokens
         GapLg = "0.5rem",
         GapXl = "0.5rem",
 
-        // Compact VS command/toolbar button heights. The documented Windows UX toolbar button is
-        // 24x22, so Xs stops at that minimum instead of inventing a smaller target.
-        HeightXs = "1.375rem",  // 22px - the documented toolbar button height
+        // Compact VS command/toolbar button heights. The measured VS 2026 command button is a 24px
+        // square carrying a 16px glyph, so Xs stops at that size.
+        HeightXs = "1.5rem",  // 24px - the measured command button
         HeightSm = "1.5rem",
         HeightMd = "1.75rem",   // 28px - classic VS command button
         HeightLg = "2.25rem",
@@ -223,7 +223,7 @@ internal class VisualStudioTokens
         PaddingInlineXl = "1.375rem",
 
         // Tight 4px corners on every size.
-        RadiusXs = CornerRadiusTokens.All("var(--flare-shape-extra-small)"),
+        RadiusXs = CornerRadiusTokens.All("var(--flare-shape-small)"),
         RadiusSm = CornerRadiusTokens.All("var(--flare-shape-small)"),
         RadiusMd = CornerRadiusTokens.All("var(--flare-shape-small)"),
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-medium)"),
@@ -231,7 +231,7 @@ internal class VisualStudioTokens
 
         // A toggled tool-window button in Visual Studio changes colour and stays exactly where it is;
         // reshaping on selection would read as a different control appearing.
-        SelectedRadiusXs = "var(--flare-shape-extra-small)",
+        SelectedRadiusXs = "var(--flare-shape-small)",
         SelectedRadiusSm = "var(--flare-shape-small)",
         SelectedRadiusMd = "var(--flare-shape-small)",
         SelectedRadiusLg = "var(--flare-shape-medium)",
@@ -254,7 +254,8 @@ internal class VisualStudioTokens
 
         FocusOutline = "1px solid var(--flare-color-primary)",
         FocusOutlineOffset = "1px",
-        FocusShadow = "0 0 0 2px var(--flare-vs-focus, rgba(0,120,212,0.4))",
+        // The measured VS 2026 focus is a single 1px accent line - no outer glow ring.
+        FocusShadow = "none",
         FilledHoverShadow = "none",
         // Fluent repaints disabled controls in a flat palette rather than fading them: the solid variants take
         // the disabled fill, every variant the disabled foreground, the outlined one the disabled stroke.
@@ -264,7 +265,7 @@ internal class VisualStudioTokens
         DisabledContent = "var(--flare-fluent-disabled-fg, #BDBDBD)",
         DisabledStroke = "var(--flare-fluent-disabled-border, #E0E0E0)",
 
-        IconSizeXs = "0.875rem",
+        IconSizeXs = "1rem",
         IconSizeSm = "1rem",
         IconSizeMd = "1rem",
         IconSizeLg = "1.125rem",
@@ -326,6 +327,18 @@ internal class VisualStudioTokens
 
     internal static readonly ToggleButtonTokens ToggleButton = FluentUI2Tokens.Design.ToggleButton;
 
+    // VS 2026 scrollbars: a 2px square #9D9D9D thumb on the panel surface. The size is painted by the
+    // WebKit path; vs-base.css keeps the standard properties at auto so Chromium (WebView2) uses it.
+    internal static readonly ScrollbarTokens Scrollbar = new()
+    {
+        Width = "auto",
+        Size = "2px",
+        Thumb = "#9D9D9D",
+        ThumbHover = "#BDBDBD",
+        Track = "var(--flare-vs-chrome-scrollbar-track)",
+        Radius = "0px",
+    };
+
     internal static readonly FabTokens Fab = FluentUI2Tokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-small)",
@@ -333,15 +346,22 @@ internal class VisualStudioTokens
         RadiusLg = "var(--flare-shape-large)",
     };
 
-    internal static readonly MenuTokens Menu = FluentUI2Tokens.Design.Menu;
+    internal static readonly MenuTokens Menu = FluentUI2Tokens.Design.Menu with
+    {
+        // 6px dropdown corners; items and panels stay otherwise Fluent-flat.
+        PanelRadius = "var(--flare-shape-large)",
+    };
 
-    // Checkbox/Radio - VS: 1px border, tight corner, no MD3 halo.
+    // Checkbox/Radio - VS: 1px border, 4px corner, no MD3 halo, a single 1px accent focus line.
     internal static readonly CheckboxTokens Checkbox = FluentUI2Tokens.Design.Checkbox with
     {
         BorderWidth = "1px",
-        Radius = "var(--flare-shape-extra-small)",
+        Radius = "var(--flare-shape-small)",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
+        FocusOutline = "1px solid var(--flare-color-primary)",
+        FocusOutlineOffset = "0",
+        FocusShadow = "none",
     };
 
     internal static readonly RadioTokens Radio = new()
@@ -355,10 +375,10 @@ internal class VisualStudioTokens
         StateLayerSize = "2.5rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
-        // Matches the checkbox this theme derives from Fluent, so the family stays consistent.
-        FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
-        FocusOutlineOffset = "1px",
-        FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
+        // Matches the checkbox this theme derives from Fluent: one 1px accent line, no outer glow.
+        FocusOutline = "1px solid var(--flare-color-primary)",
+        FocusOutlineOffset = "0",
+        FocusShadow = "none",
         // Repaints, like its Fluent lineage.
         DisabledOpacity = "1",
     };
@@ -477,26 +497,48 @@ internal class VisualStudioTokens
         TonalColor = "var(--flare-color-on-secondary-container)",
     };
 
-    // Input - flat field with a 1px border; blue focus finished in scoped CSS.
+    // Input - the measured VS 2026 search/input well: a 23px box with an 8px text inset, a #353535
+    // fill, a 1px #454545 stroke and 4px corners. Focus is a single 1px accent outline, no glow.
     internal static readonly InputTokens Input = FluentUI2Tokens.Design.Input with
     {
-        FilledBg = "var(--flare-color-surface)",
-        OutlinedRadius = "var(--flare-shape-extra-small)",
+        FilledBg = "var(--flare-vs-chrome-field)",
+        OutlinedRadius = "var(--flare-shape-small)",
         BorderColor = "var(--flare-color-outline)",
         BorderBottomColor = "var(--flare-color-outline)",
-        // VS/Windows focuses with a rectangle around the control - a real outline (not a shadow ring),
-        // so this theme exercises the outline mechanism while MD3/Fluent use the box-shadow ring.
+        // VS/Windows focuses with a rectangle around the control - a real 1px outline, not a shadow.
         FocusRing = "none",
-        FocusOutline = "2px solid var(--fc-main, var(--flare-color-primary))",
-        FocusOutlineOffset = "1px",
-        // An explicit variant draws its focus with the ring, so both variants show the 2px accent rectangle as
-        // the accent border plus a 1px inset ring.
-        FilledVariantRadius = "var(--flare-shape-extra-small)",
-        FilledVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        FocusOutline = "1px solid var(--fc-main, var(--flare-color-primary))",
+        FocusOutlineOffset = "0",
+        // The resting stroke stays neutral on the default variant; the outline is the focus mark.
+        FocusBorderColor = "var(--flare-color-outline)",
+        FocusBorderBottomColor = "var(--flare-color-outline)",
+        // Height ramp measured from the 23px default: 20/22/23/26/30px. Block padding only places
+        // the line inside that definite height, so each step leaves room for text and stays ordered.
+        HeightXs = "1.25rem",   // 20px
+        HeightSm = "1.375rem",  // 22px
+        HeightMd = "1.4375rem", // 23px - the measured input/search/combobox well
+        HeightLg = "1.625rem",  // 26px
+        HeightXl = "1.875rem",  // 30px
+        PaddingXs = "0.0625rem 0.375rem",
+        PaddingSm = "0.09375rem 0.4375rem",
+        PaddingMd = "0.125rem 0.5rem",
+        PaddingLg = "0.1875rem 0.625rem",
+        PaddingXl = "0.25rem 0.75rem",
+        IconSize = "1rem",
+        // An explicit variant draws its focus with the ring, so it drops the ring and recolors the
+        // 1px stroke instead: the same single accent line as the default variant.
+        FilledVariantBg = "var(--flare-vs-chrome-field)",
+        FilledVariantBorderColor = "var(--flare-color-outline)",
+        FilledVariantBorderBottomColor = "var(--flare-color-outline)",
+        FilledVariantRadius = "var(--flare-shape-small)",
+        FilledVariantFocusRing = "none",
         FilledVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
         FilledVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
-        OutlinedVariantRadius = "var(--flare-shape-extra-small)",
-        OutlinedVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantBg = "var(--flare-vs-chrome-field)",
+        OutlinedVariantBorderColor = "var(--flare-color-outline)",
+        OutlinedVariantBorderBottomColor = "var(--flare-color-outline)",
+        OutlinedVariantRadius = "var(--flare-shape-small)",
+        OutlinedVariantFocusRing = "none",
         OutlinedVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
         OutlinedVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
     };
@@ -587,6 +629,7 @@ internal class VisualStudioTokens
         [VisualStudioCssVars.ChromeTextDisabled] = "var(--flare-color-on-surface-variant2)",
         [VisualStudioCssVars.ChromeScrollbarThumb] = "var(--flare-color-on-surface-variant2)",
         [VisualStudioCssVars.ChromeScrollbarTrack] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.ChromeSearchRadius] = "var(--flare-shape-large)",
 
         // The optional IDE shell reads its public hooks; this theme points them at the chrome roles so
         // a host gets the VS surfaces without overriding a single generic color role.
@@ -635,6 +678,7 @@ internal class VisualStudioTokens
         Typography = Typography,
         Shape = Shape,
         Spacing = Spacing,
+        Scrollbar = Scrollbar,
         Elevation = Elevation,
         Motion = Motion,
         State = State,
@@ -658,7 +702,7 @@ internal class VisualStudioTokens
         Progress = Progress,
         Nav = Nav,
         Dialog = FluentUI2Tokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
-        Popover = FluentUI2Tokens.Design.Popover with { Radius = "var(--flare-shape-small)", Shadow = "var(--flare-elevation-3)" },
+        Popover = FluentUI2Tokens.Design.Popover with { Radius = "var(--flare-shape-large)", Shadow = "var(--flare-elevation-3)" },
         Snackbar = FluentUI2Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         // The drawer toggle keeps the burger this theme drew before the Fluent record took the Hamburger's size and shape.
         Layout = FluentUI2Tokens.Design.Layout with { AppBarToggleSize = "36px", AppBarToggleGlyphWidth = "18px", AppBarToggleGlyphHeight = "14px", AppBarToggleBarThickness = "2px", AppBarToggleRadius = "var(--flare-shape-full)" },

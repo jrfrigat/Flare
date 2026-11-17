@@ -64,4 +64,6 @@ public static class VisualStudioCssVars
     public const string ChromeScrollbarThumb = "--flare-vs-chrome-scrollbar-thumb";
     /// <summary>Scrollbar track color, kept on the panel surface it sits over.</summary>
     public const string ChromeScrollbarTrack = "--flare-vs-chrome-scrollbar-track";
+    /// <summary>Corner radius of a tool search field (larger than a regular input).</summary>
+    public const string ChromeSearchRadius = "--flare-vs-chrome-search-radius";
 }
