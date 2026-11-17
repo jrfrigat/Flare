@@ -47,11 +47,11 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
 
     /// <summary>Completes once web fonts are loaded (or the safety timeout elapses).</summary>
     public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default)
-        => InvokeVoidAsync("whenFontsReady", timeoutMs);
+        => InvokeVoidAsync("whenFontsReady", ct, timeoutMs);
 
     /// <summary>Signals app-readiness (flare:ready + fades the app's own tagged splash) once the themed UI has painted.</summary>
     public ValueTask RevealAppAsync(CancellationToken ct = default)
-        => InvokeVoidAsync("revealApp");
+        => InvokeVoidAsync("revealApp", ct);
 
     /// <summary>Subscribes to OS color-scheme (light/dark) change notifications.</summary>
     public ValueTask SubscribeColorSchemeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
