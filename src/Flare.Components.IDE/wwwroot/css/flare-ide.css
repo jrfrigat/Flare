@@ -1141,7 +1141,6 @@
 
 .flare-editor-breadcrumb-bar__segment {
     display: flex;
-    flex-shrink: 0;
     align-items: stretch;
     min-inline-size: 0;
     background: transparent;

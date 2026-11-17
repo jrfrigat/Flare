@@ -3095,7 +3095,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Active", @"bool", @"false", @"Whether this is the active (current) segment. The active segment takes the editor surface and the full foreground colour instead of the muted row colour.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
-                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the segment's button and dropdown. Null uses Text; set it when the visible label is absent (an icon-only segment) or too terse.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of a dropdown segment's button and menu panel. Null uses Text; set it when the visible label is absent or too terse. A static segment has no button and takes its name from Text.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Leading icon of the segment, rendered at the row's icon size (16px by default).", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
                 new ApiParameterInfo(@"MenuContent", @"RenderFragment?", null, @"Dropdown content of the segment, typically FlareMenuItem items the host builds for its namespace/type path. Null renders a static icon-and-text segment with no menu and no chevron.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),
                 new ApiParameterInfo(@"Text", @"string?", null, @"The visible segment label, also the dropdown's accessible name when AriaLabel is unset.", null, false, false, false, @"FlareEditorBreadcrumbSegment"),

@@ -27,8 +27,9 @@ public partial class FlareEditorBreadcrumbSegment : FlareComponentBase
     /// and no chevron.</summary>
     [Parameter] public RenderFragment? MenuContent { get; set; }
 
-    /// <summary>Accessible name of the segment's button and dropdown. Null uses <see cref="Text"/>;
-    /// set it when the visible label is absent (an icon-only segment) or too terse.</summary>
+    /// <summary>Accessible name of a dropdown segment's button and menu panel. Null uses
+    /// <see cref="Text"/>; set it when the visible label is absent or too terse. A static segment
+    /// has no button and takes its name from <see cref="Text"/>.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
     /// <inheritdoc />

@@ -11,7 +11,7 @@ One segment of a FlareEditorBreadcrumbBar: an optional 16px icon, a label and, w
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Active` | `bool` | `false` | Parameter |  | Whether this is the active (current) segment. The active segment takes the editor surface and the full foreground colour instead of the muted row colour. |
-| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the segment's button and dropdown. Null uses Text; set it when the visible label is absent (an icon-only segment) or too terse. |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of a dropdown segment's button and menu panel. Null uses Text; set it when the visible label is absent or too terse. A static segment has no button and takes its name from Text. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Leading icon of the segment, rendered at the row's icon size (16px by default). |
 | `MenuContent` | `RenderFragment?` | `` | Parameter |  | Dropdown content of the segment, typically FlareMenuItem items the host builds for its namespace/type path. Null renders a static icon-and-text segment with no menu and no chevron. |
 | `Text` | `string?` | `` | Parameter |  | The visible segment label, also the dropdown's accessible name when AriaLabel is unset. |
