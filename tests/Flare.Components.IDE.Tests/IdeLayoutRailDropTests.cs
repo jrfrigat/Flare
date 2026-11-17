@@ -57,7 +57,7 @@ public class IdeLayoutRailDropTests : FlareTestContext
     {
         var module = JSInterop.SetupModule(ModulePath);
         module.SetupVoid("registerDocumentDragSource");
-        module.Setup<string?>("takeDroppedDocument").SetResult("a");
+        module.Setup<string?>("takeDroppedDocument", _ => true).SetResult("a");
         IdeDocumentMove? moved = null;
         bool? expanded = null;
         var cut = Render<FlareIdeLayout>(p => p

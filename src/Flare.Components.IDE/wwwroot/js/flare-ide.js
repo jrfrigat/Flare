@@ -11,12 +11,20 @@ export function registerShortcutCapture(root) {
 }
 
 // A Blazor drop event cannot read DataTransfer.getData(), so the document key is carried in module
-// state as well: dragstart records it, the capture-phase drop listener hands it to the layout before
-// Blazor's own drop handler runs, and takeDroppedDocument clears it after one read.
+// state as well: dragstart records it together with the layout that owns the source, the capture-phase
+// drop listener adds the layout that received the drop, and takeDroppedDocument clears the record
+// after one read. A key only resolves inside the layout where the drag both started and ended, so two
+// layouts may use the same document key without moving each other's document.
 const documentType = 'application/x-flare-ide-document';
 let dragSourceRegistered = false;
-let draggedKey = null;
-let droppedKey = null;
+let dragged = null;
+let dropped = null;
+
+const dockScopeOf = target =>
+    target instanceof Element ? target.closest('[data-flare-ide-dock-scope]') : null;
+
+const dockScopeId = target =>
+    dockScopeOf(target)?.dataset.flareIdeDockScope ?? null;
 
 export function registerDocumentDragSource() {
     if (dragSourceRegistered) return;
@@ -26,8 +34,8 @@ export function registerDocumentDragSource() {
         const target = event.target;
         const source = target instanceof Element ? target.closest('[data-flare-doc-key]') : null;
         const key = source ? source.dataset.flareDocKey : null;
-        draggedKey = key ?? null;
-        droppedKey = null;
+        dragged = key ? { key, sourceScope: dockScopeId(source) } : null;
+        dropped = null;
         if (!key || !event.dataTransfer) return;
 
         try {
@@ -39,20 +47,20 @@ export function registerDocumentDragSource() {
         }
     }, true);
 
-    document.addEventListener('drop', () => {
-        if (draggedKey !== null) droppedKey = draggedKey;
-        draggedKey = null;
+    document.addEventListener('drop', event => {
+        dropped = dragged ? { ...dragged, targetScope: dockScopeId(event.target) } : null;
+        dragged = null;
     }, true);
 
     document.addEventListener('dragend', () => {
-        draggedKey = null;
+        dragged = null;
     }, true);
 }
 
-export function takeDroppedDocument() {
-    const key = droppedKey;
-    droppedKey = null;
-    return key;
+export function takeDroppedDocument(scope) {
+    const drop = dropped;
+    dropped = null;
+    return drop && drop.sourceScope === scope && drop.targetScope === scope ? drop.key : null;
 }
 
 // Auto-hide tool flyout dismissal. The registry is module-level and keyed by layout and side; the

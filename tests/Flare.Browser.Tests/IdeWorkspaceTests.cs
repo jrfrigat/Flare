@@ -51,7 +51,14 @@ public sealed class IdeWorkspaceTests(BrowserFixture fixture) : IClassFixture<Br
         var page = await OpenAsync(context);
         var editor = page.Locator("#editor-a");
         var dock = page.Locator("#dock");
+        var otherDock = page.Locator("#other-dock");
         await editor.FillAsync("Persistent draft");
+
+        var dockScope = await dock.GetAttributeAsync("data-flare-ide-dock-scope");
+        var otherScope = await otherDock.GetAttributeAsync("data-flare-ide-dock-scope");
+        Assert.False(string.IsNullOrEmpty(dockScope));
+        Assert.False(string.IsNullOrEmpty(otherScope));
+        Assert.NotEqual(dockScope, otherScope);
 
         // A side region without documents draws no dock strip, so its tool body is the drop target.
         var heading = dock.GetByRole(AriaRole.Button, new() { Name = "Document A", Exact = true });

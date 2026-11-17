@@ -47,7 +47,9 @@ public partial class FlareDocumentTabs
     /// <summary>Makes every tab a drag source for <see cref="FlareIdeLayout"/> docking even when
     /// <see cref="Reorderable"/> is off. Each dockable tab needs an explicit <see cref="FlareDocumentTab.Key"/>;
     /// the key is what the layout receives through <see cref="FlareIdeLayout.OnDocumentMove"/>. The host
-    /// must declare the same key in <see cref="FlareIdeLayout.Documents"/>.</summary>
+    /// must declare the same key in <see cref="FlareIdeLayout.Documents"/>. A drop is accepted only by
+    /// the layout that contains the strip, so two layouts may use the same key without moving each
+    /// other's document; a strip outside every layout cannot dock into one.</summary>
     [Parameter] public bool Dockable { get; set; }
 
     /// <summary>Destinations offered in each tab's move menu. Set <see cref="OnDockRequested"/> too;

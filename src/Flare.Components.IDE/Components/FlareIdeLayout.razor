@@ -6,7 +6,8 @@
    A collapsed (or auto-hidden) region renders only a thin rail and frees its docked space.
    Docked, expanded regions get a drag-resize divider between them and the document. *@
 <CascadingValue Value="this">
-    <div class="@Css.Classes.Ide.Layout.Root" style="@_rootStyle" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.Layout.Root" style="@_rootStyle"
+         data-flare-ide-dock-scope="@_dockScopeId" @attributes="AdditionalAttributes">
         @if (Ribbon is not null)
         {
             <div class="@Css.Classes.Ide.Layout.Ribbon">

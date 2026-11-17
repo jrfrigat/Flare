@@ -86,7 +86,7 @@ public class IdeDocumentDockingDragTests : FlareTestContext
     {
         var module = JSInterop.SetupModule(ModulePath);
         module.SetupVoid("registerDocumentDragSource");
-        module.Setup<string?>("takeDroppedDocument").SetResult("a");
+        module.Setup<string?>("takeDroppedDocument", _ => true).SetResult("a");
         IdeDocumentMove? moved = null;
 
         var cut = Render<FlareIdeLayout>(p => p
@@ -108,7 +108,7 @@ public class IdeDocumentDockingDragTests : FlareTestContext
     {
         var module = JSInterop.SetupModule(ModulePath);
         module.SetupVoid("registerDocumentDragSource");
-        module.Setup<string?>("takeDroppedDocument").SetResult("missing");
+        module.Setup<string?>("takeDroppedDocument", _ => true).SetResult("missing");
         IdeDocumentMove? moved = null;
 
         var cut = Render<FlareIdeLayout>(p => p
@@ -140,5 +140,21 @@ public class IdeDocumentDockingDragTests : FlareTestContext
 
         Assert.Equal("a", moved!.Document.Key);
         Assert.Equal(IdeDocumentRegion.Left, moved.Destination);
+    }
+
+    [Fact]
+    public void Layouts_HaveDistinctDockScopes()
+    {
+        var first = Render<FlareIdeLayout>();
+        var second = Render<FlareIdeLayout>();
+
+        string? Scope(AngleSharp.Dom.IElement root) => root.GetAttribute("data-flare-ide-dock-scope");
+
+        var firstScope = Scope(first.Find($".{Css.Classes.Ide.Layout.Root}"));
+        var secondScope = Scope(second.Find($".{Css.Classes.Ide.Layout.Root}"));
+
+        Assert.False(string.IsNullOrEmpty(firstScope));
+        Assert.False(string.IsNullOrEmpty(secondScope));
+        Assert.NotEqual(firstScope, secondScope);
     }
 }

@@ -247,6 +247,9 @@ public partial class FlareIdeLayout : FlareLocalizedComponentBase
     }
 
     // Panels mounted in the layout, in first-registration (markup) order. A region may host several.
+    // Drag-and-drop state in the IDE module is page-global, so the layout stamps its own scope on the
+    // root and only accepts a document key whose drag started and ended inside this layout.
+    private readonly string _dockScopeId = Guid.NewGuid().ToString("N");
     private readonly List<PanelRegistration> _panels = new();
 
     // Tools, titles and mode of each region, derived from all of its mounted panels. Kept while a

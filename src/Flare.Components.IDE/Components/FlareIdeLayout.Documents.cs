@@ -177,7 +177,7 @@ public partial class FlareIdeLayout
         // external key on an internal drop.
         if (_ideModule is not null)
         {
-            try { key ??= await _ideModule.InvokeAsync<string?>("takeDroppedDocument"); }
+            try { key ??= await _ideModule.InvokeAsync<string?>("takeDroppedDocument", _dockScopeId); }
             catch (JSException) { }
             catch (ObjectDisposedException) { }
         }
