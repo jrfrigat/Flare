@@ -32,9 +32,13 @@ All notable changes to Flare are documented here. This project adheres to
 ### Changed
 
 - A side dock strip exists only while its region has documents: without side documents the row is not drawn and the tool panel fills the region. A collapsed or floating region shows no strip, and a docked document keeps the icon-only control that returns to the tools. The controls that return to the tools or main content are icon-only and keep their localized accessible names.
+- Document docking is scoped to the `FlareIdeLayout` that contains the tab strip: a drop no longer reaches a document with the same key in another layout.
 
 ### Fixed
 
+- A field label and its validation-summary link follow a consumer-supplied `InputAttributes` id, so a field that carries the host's id keeps both references on the control.
+- Menus outside a `FlareMenuBar` no longer attach a hover handler, so a pointer passing over an ordinary menu does not send an event to Blazor Server.
+- Scrollbar defaults resolve in each theme scope: a nested theme keeps its own scrollbar tokens, and a component's `scrollbar-width: none` is no longer overridden by the Visual Studio theme.
 - IDE dividers follow the active theme and offer drag and keyboard resizing without step buttons. Standalone splitters can opt out of step buttons with `ShowStepButtons`.
 - Gallery table-of-contents links scroll to their demo sections again.
 - `FlareSelect` and `FlareMultiSelect` show their focus ring again.
@@ -42,6 +46,11 @@ All notable changes to Flare are documented here. This project adheres to
 - The bottom auto-hide flyout is painted above its rail.
 - Tool panel tabs keep their icon-only state while the strip stays narrow.
 - A top-level menu title that wraps onto a second line remains clickable.
+
+### Breaking changes
+
+- `DesignTokens.Caption` and its required JSON group were removed. A source theme that initialized the property must delete that line. A saved theme JSON that still contains `design.caption` imports, and the value is ignored. `FlareCaptionButton` keeps all 17 `--flare-caption-*` names in the IDE package, with base-token fallbacks.
+- The `VisualStudio` theme no longer styles the optional IDE shell or declares `--flare-ide-*` tokens. The IDE package owns those tokens with base-token defaults; an application that wants the measured VS2026 IDE chrome sets them in its own scope. Base Button, Menu, Tree and Tabs keep their Visual Studio look.
 
 ## [0.57.0] - 2026-11-12
 
