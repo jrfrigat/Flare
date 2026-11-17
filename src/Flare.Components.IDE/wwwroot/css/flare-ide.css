@@ -639,11 +639,13 @@
     overflow-x: auto;
     gap: 1px;
     background: var(--flare-ide-tab-strip-bg, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
-    scrollbar-width: thin;
+    /* The strip is navigated by the chevron buttons on either side; a scrollbar under the tabs only
+       steals a row from the editor. */
+    scrollbar-width: none;
 }
 
 .flare-doc-tabs__bar::-webkit-scrollbar {
-    height: 3px;
+    display: none;
 }
 
 .flare-doc-tabs__tab {
@@ -1045,6 +1047,7 @@
 .flare-menubar {
     display: flex;
     align-items: center;
+    gap: var(--flare-ide-menubar-gap, 2px);
     padding: 0 var(--flare-ide-spacing-2, var(--flare-spacing-2));
     min-block-size: var(--flare-ide-menubar-height, 28px);
     background: var(--flare-ide-menubar-bg, transparent);
