@@ -52,6 +52,19 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
+    public async Task ComboWell_MatchesTheFieldHeight()
+    {
+        await using var context = await OpenDarkContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
+        var well = page.Locator($"#metric-combo .{Css.Classes.Input.Field}");
+
+        await Expect(well).ToHaveCSSAsync("height", "23px");
+        await Expect(well).ToHaveCSSAsync("border-radius", "4px");
+        await Expect(well).ToHaveCSSAsync("background-color", "rgb(53, 53, 53)");
+    }
+
+    [Fact]
     public async Task CommandButton_IsTwentyFourPixelsWithASixteenPixelIcon()
     {
         await using var context = await OpenDarkContextAsync();
