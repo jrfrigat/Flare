@@ -178,7 +178,7 @@ export function registerTabFitting(bar) {
         if (tabs.length === 0 || bar.clientWidth === 0) return;
         const fontSize = parseFloat(getComputedStyle(tabs[0]).fontSize) || 12;
         const share = bar.clientWidth / tabs.length;
-        compact = compact === true ? share > fontSize * expandEm : share < fontSize * compactEm;
+        compact = compact === true ? share <= fontSize * expandEm : share < fontSize * compactEm;
         for (const tab of tabs)
             tab.toggleAttribute(compactAttribute, compact && tab.hasAttribute(iconAttribute));
     };
