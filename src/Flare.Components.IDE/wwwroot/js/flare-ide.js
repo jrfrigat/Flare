@@ -157,11 +157,14 @@ export function disposeFlyoutDismissal(layoutId) {
 // depends on the strip width and the tab count, not on any single element's content. When the
 // per-tab share falls below this width, a tab that has an icon shows the icon alone; the label is
 // clipped by CSS, not removed, so the accessible name survives.
-const minTabTextWidth = 72;
+// The thresholds are expressed in the tab's own font size, so a theme or a user text scale that
+// enlarges the tab text moves them with it. At the default 12px body-small tab these are 72px and
+// 96px per tab.
+const compactEm = 6;
 // Leaving the icon-only state needs a wider tab than entering it: clipping the labels changes the
 // strip's max-content width, so a group inside a shrink-to-fit host could otherwise flip states
 // forever. A layout region has a definite width and never reaches this branch.
-const minTabTextWidthToExpand = 96;
+const expandEm = 8;
 
 const compactAttribute = 'data-flare-tab-compact';
 const iconAttribute = 'data-flare-tab-icon';
@@ -173,8 +176,9 @@ export function registerTabFitting(bar) {
     const apply = () => {
         const tabs = Array.from(bar.children).filter(child => child.matches('[role="tab"]'));
         if (tabs.length === 0 || bar.clientWidth === 0) return;
+        const fontSize = parseFloat(getComputedStyle(tabs[0]).fontSize) || 12;
         const share = bar.clientWidth / tabs.length;
-        compact = compact === true ? share > minTabTextWidthToExpand : share < minTabTextWidth;
+        compact = compact === true ? share > fontSize * expandEm : share < fontSize * compactEm;
         for (const tab of tabs)
             tab.toggleAttribute(compactAttribute, compact && tab.hasAttribute(iconAttribute));
     };

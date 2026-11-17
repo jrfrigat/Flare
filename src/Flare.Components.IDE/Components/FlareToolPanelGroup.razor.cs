@@ -323,6 +323,7 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
             _fittingBar = _bar;
         }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
@@ -334,9 +335,11 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         _fittingHandle = null;
         try { await handle.InvokeVoidAsync("dispose"); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
         try { await handle.DisposeAsync(); }
         catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
 
