@@ -444,12 +444,9 @@
 
 /* Drag-resize dividers between a docked region and the document. */
 .flare-ide-layout__resizer {
-    /* The gutter is the resize target: no idle paint, only the cursor and a hover tint, so the
-       dividers do not compete with the content. */
-    --flare-splitter-color: transparent;
-    --flare-splitter-hover-color: color-mix(in srgb, var(--flare-ide-primary, var(--flare-color-primary)) 35%, transparent);
-    --flare-splitter-grip-color: transparent;
-    --flare-splitter-grip-pressed-color: transparent;
+    --flare-splitter-color: var(--flare-ide-surface, var(--flare-color-surface));
+    --flare-splitter-grip-color: var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+    --flare-splitter-grip-pressed-color: var(--flare-splitter-grip-color);
     z-index: 5;
 }
 
