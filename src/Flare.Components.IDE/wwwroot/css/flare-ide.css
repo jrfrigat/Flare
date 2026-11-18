@@ -699,10 +699,9 @@
 
 .flare-doc-tabs__tab:focus-visible,
 .flare-sheet-tabs__tab:focus-visible,
-.flare-toolpanel-group__tab:focus-visible,
-.flare-tabs__tab:focus-visible {
-    outline: 2px solid var(--flare-ide-primary, var(--flare-color-primary));
-    outline-offset: -2px;
+.flare-toolpanel-group__tab:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: calc(-1 * var(--flare-border-width-emphasis));
 }
 
 .flare-doc-tabs__icon {
