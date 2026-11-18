@@ -106,12 +106,6 @@
     /// <c>--flare-splitter-hover-color</c> token).</summary>
     [Parameter] public string? HoverColor { get; set; }
 
-    /// <summary>
-    /// Makes the idle handle transparent so the layout gap itself is the resize target; the cursor and
-    /// hover tint stay. Ignored when <see cref="Color"/> is set.
-    /// </summary>
-    [Parameter] public bool Transparent { get; set; }
-
     /// <summary>Icon shown in the centre of the handle, replacing the default grip bar - any provider.</summary>
     [Parameter] public FlareIcon? Icon { get; set; }
 
@@ -159,7 +153,6 @@
             var parts = new List<string>(4);
             if (!string.IsNullOrEmpty(Size)) parts.Add($"{Css.Tokens.Splitter.GutterSize}:{Sanitize(Size)}");
             if (!string.IsNullOrEmpty(Color)) parts.Add($"{Css.Tokens.Splitter.Color}:{Sanitize(Color)}");
-            else if (Transparent) parts.Add($"{Css.Tokens.Splitter.Color}:transparent");
             if (!string.IsNullOrEmpty(HoverColor)) parts.Add($"{Css.Tokens.Splitter.HoverColor}:{Sanitize(HoverColor)}");
             if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
             return string.Join(";", parts);
