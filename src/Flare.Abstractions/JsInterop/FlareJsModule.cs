@@ -31,45 +31,53 @@ public abstract class FlareJsModule : IAsyncDisposable
     }
 
     /// <summary>Imports (once) and returns the module reference; a failed import is retried on the next call.</summary>
-    protected Task<IJSObjectReference> ModuleAsync() => ModuleAsync(CancellationToken.None);
-
-    /// <summary>
-    /// Imports (once) and returns the module reference, canceling the import with the caller's token.
-    /// A canceled import is retried by the next call.
-    /// </summary>
-    protected Task<IJSObjectReference> ModuleAsync(CancellationToken cancellationToken)
+    protected Task<IJSObjectReference> ModuleAsync()
     {
         lock (_moduleLock)
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
             if (_module is null || _module.IsFaulted || _module.IsCanceled)
-                _module = ImportModuleAsync(cancellationToken);
+                _module = ImportModuleAsync();
             return _module;
         }
     }
 
+    /// <summary>Waits for the shared import with caller-specific cancellation.</summary>
+    protected Task<IJSObjectReference> ModuleAsync(CancellationToken cancellationToken) =>
+        cancellationToken.IsCancellationRequested
+            ? Task.FromCanceled<IJSObjectReference>(cancellationToken)
+            : ModuleAsync().WaitAsync(cancellationToken);
+
 #pragma warning disable BL0016 // Strict helpers: interop failures, including a stale script, propagate to the caller's boundary.
     private async Task<IJSObjectReference> ImportModuleAsync() =>
         await _js.InvokeAsync<IJSObjectReference>("import", _modulePath);
-
-    private async Task<IJSObjectReference> ImportModuleAsync(CancellationToken cancellationToken) =>
-        await _js.InvokeAsync<IJSObjectReference>("import", cancellationToken, _modulePath);
 
     /// <summary>Invokes an exported function and returns its result.</summary>
     protected async ValueTask<T> InvokeAsync<[DynamicallyAccessedMembers(JsonSerialized)] T>(string identifier, params object?[] args) =>
         await (await ModuleAsync()).InvokeAsync<T>(identifier, args);
 
     /// <summary>Invokes an exported function and returns its result, cancelable by the caller.</summary>
-    protected async ValueTask<T> InvokeAsync<[DynamicallyAccessedMembers(JsonSerialized)] T>(string identifier, CancellationToken cancellationToken, params object?[] args) =>
-        await (await ModuleAsync(cancellationToken)).InvokeAsync<T>(identifier, cancellationToken, args);
+    protected async ValueTask<T> InvokeAsync<[DynamicallyAccessedMembers(JsonSerialized)] T>(string identifier, CancellationToken cancellationToken, params object?[] args)
+    {
+        var module = await ModuleAsync(cancellationToken);
+        return cancellationToken.CanBeCanceled
+            ? await module.InvokeAsync<T>(identifier, cancellationToken, args)
+            : await module.InvokeAsync<T>(identifier, args);
+    }
 
     /// <summary>Invokes an exported function with no return value.</summary>
     protected async ValueTask InvokeVoidAsync(string identifier, params object?[] args) =>
         await (await ModuleAsync()).InvokeVoidAsync(identifier, args);
 
     /// <summary>Invokes an exported function with no return value, cancelable by the caller.</summary>
-    protected async ValueTask InvokeVoidAsync(string identifier, CancellationToken cancellationToken, params object?[] args) =>
-        await (await ModuleAsync(cancellationToken)).InvokeVoidAsync(identifier, cancellationToken, args);
+    protected async ValueTask InvokeVoidAsync(string identifier, CancellationToken cancellationToken, params object?[] args)
+    {
+        var module = await ModuleAsync(cancellationToken);
+        if (cancellationToken.CanBeCanceled)
+            await module.InvokeVoidAsync(identifier, cancellationToken, args);
+        else
+            await module.InvokeVoidAsync(identifier, args);
+    }
 #pragma warning restore BL0016
 
     /// <summary>Disposes the cached module reference (best-effort; ignores teardown races). Override to
