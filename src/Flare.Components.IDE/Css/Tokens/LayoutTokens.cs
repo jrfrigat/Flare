@@ -24,6 +24,8 @@ public static class Layout
     public const string LeftTrack = "--flare-ide-left-track";
     /// <summary>Grid track the right docking column currently occupies.</summary>
     public const string RightTrack = "--flare-ide-right-track";
+    /// <summary>Gap between tracks of a docking layout.</summary>
+    public const string Gap = "--flare-ide-layout-gap";
     /// <summary>Tool-window title row height.</summary>
     public const string ToolHeaderHeight = "--flare-ide-tool-header-height";
     /// <summary>Tool-window tab height.</summary>
@@ -42,6 +44,8 @@ public static class Layout
     public const string DocTabCloseIcon = "--flare-ide-doc-tab-close-icon";
     /// <summary>Menu-bar height.</summary>
     public const string MenubarHeight = "--flare-ide-menubar-height";
+    /// <summary>Gap between menu-bar items.</summary>
+    public const string MenuBarGap = "--flare-ide-menubar-gap";
     /// <summary>Status-bar padding shorthand (block inline).</summary>
     public const string StatusBarPadding = "--flare-ide-statusbar-padding";
     /// <summary>Gap between status-bar segments.</summary>

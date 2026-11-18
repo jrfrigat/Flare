@@ -100,6 +100,20 @@ Barcode bar/ground colors and QR code colors keep scan-safe black/white defaults
 the page's light or dark mode. QR colors are also configurable through `ForeColor`/`BackColor`.
 IDE panel widths remain component geometry controlled by its sizing parameters.
 
+For IDE chrome, an application can set the following properties on its own container. The
+same overrides are available on `IdeTokens`.
+
+| CSS property | `IdeTokens` property | Default role |
+| :-- | :-- | :-- |
+| `--flare-ide-layout-gap` | `LayoutGap` | Base spacing 0 |
+| `--flare-ide-panel-radius` | `PanelRadius` | Base square shape |
+| `--flare-ide-menubar-gap` | `MenuBarGap` | Base spacing step 1 |
+| `--flare-ide-toolbar-group-gap` | `ToolbarGroupGap` | IDE spacing step 1, falling back to base spacing step 1 |
+| `--flare-ide-tab-active-color` | `TabActiveColor` | IDE on-surface color, falling back to base on-surface color |
+
+The existing `--flare-ide-sheet-tabs-underline-height` property defaults to the base emphasis
+border width on an active tab and zero in the normal state.
+
 A component package can own its token record without adding it to the core `DesignTokens` graph.
 Use the same `[CssVar]` attribute and semantic defaults, then pass `FlattenTokens()` to the existing
 theme service or merge its map into `DesignTokens.Extended`:

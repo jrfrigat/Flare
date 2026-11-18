@@ -36,16 +36,15 @@
     --flare-ide-right-track: var(--flare-ide-right-width);
     grid-template-columns: var(--flare-ide-left-track) auto minmax(0, 1fr) auto var(--flare-ide-right-track);
     grid-template-rows: auto minmax(0, 1fr);
-    gap: var(--flare-ide-layout-gap, 0);
+    gap: var(--flare-ide-layout-gap, var(--flare-spacing-0));
 }
 
-/* A host that wants the Visual Studio gutters rather than a flush frame sets the gap and radius
-   tokens; both default to the old flush behavior. */
+/* Hosts can add gutters and panel rounding through the IDE tokens. */
 .flare-ide-layout__panel,
 .flare-ide-layout__main,
 .flare-ide-layout__document,
 .flare-toolpanel-group {
-    border-radius: var(--flare-ide-panel-radius, 0);
+    border-radius: var(--flare-ide-panel-radius, var(--flare-shape-none));
 }
 
 /* The selected tab owns its surface: the content gets the same active accent as the tab, so the
@@ -1075,7 +1074,7 @@
 .flare-menubar {
     display: flex;
     align-items: center;
-    gap: var(--flare-ide-menubar-gap, 2px);
+    gap: var(--flare-ide-menubar-gap, var(--flare-spacing-1));
     padding: 0 var(--flare-ide-spacing-2, var(--flare-spacing-2));
     min-block-size: var(--flare-ide-menubar-height, 28px);
     background: var(--flare-ide-menubar-bg, transparent);
@@ -1426,7 +1425,7 @@ button.flare-editor-breadcrumb-bar__segment-button {
     border-color: var(--flare-ide-sheet-tabs-active-border-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
     color: var(--flare-ide-sheet-tabs-active-color, var(--flare-ide-primary, var(--flare-color-primary)));
     font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
-    box-shadow: inset 0 calc(-1 * var(--flare-ide-sheet-tabs-underline-height, 2px)) 0 0
+    box-shadow: inset 0 calc(-1 * var(--flare-ide-sheet-tabs-underline-height, var(--flare-border-width-emphasis))) 0 0
         var(--flare-ide-sheet-tabs-underline-color, var(--flare-ide-primary, var(--flare-color-primary)));
 }
 

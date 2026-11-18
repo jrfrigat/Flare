@@ -7,6 +7,14 @@ namespace Flare.Components.IDE;
 /// <summary>Optional Ide design overrides. Defaults follow the base theme; map with CssVarMap.FlattenTokens.</summary>
 public sealed record IdeTokens
 {
+    /// <summary>Design override for <c>--flare-ide-layout-gap</c>.</summary>
+    [CssVar(Css.Tokens.Ide.Layout.Gap)] public string LayoutGap { get; init; } = Var(Css.Tokens.Spacing.S0);
+    /// <summary>Design override for <c>--flare-ide-panel-radius</c>.</summary>
+    [CssVar(Names.PanelRadius)] public string PanelRadius { get; init; } = Var(Css.Tokens.Shape.None);
+    /// <summary>Design override for <c>--flare-ide-menubar-gap</c>.</summary>
+    [CssVar(Css.Tokens.Ide.Layout.MenuBarGap)] public string MenuBarGap { get; init; } = Var(Css.Tokens.Spacing.S1);
+    /// <summary>Design override for <c>--flare-ide-tab-active-color</c>.</summary>
+    [CssVar(Names.TabActiveColor)] public string TabActiveColor { get; init; } = $"var({Names.OnSurface}, {Var(Css.Tokens.Color.OnSurface)})";
     /// <summary>Design override for <c>--flare-ide-border-width</c>.</summary>
     [CssVar(Names.BorderWidth)] public string BorderWidth { get; init; } = Var(Css.Tokens.Border.Width);
     /// <summary>Design override for <c>--flare-ide-border-style</c>.</summary>
@@ -101,6 +109,8 @@ public sealed record IdeTokens
     [CssVar(Names.ToolbarSurface)] public string ToolbarSurface { get; init; } = "transparent";
     /// <summary>Design override for <c>--flare-ide-toolbar-group-surface</c>.</summary>
     [CssVar(Names.ToolbarGroupSurface)] public string ToolbarGroupSurface { get; init; } = "transparent";
+    /// <summary>Design override for <c>--flare-ide-toolbar-group-gap</c>.</summary>
+    [CssVar(Names.ToolbarGroupGap)] public string ToolbarGroupGap { get; init; } = $"var({Names.Spacing1}, {Var(Css.Tokens.Spacing.S1)})";
     /// <summary>Design override for <c>--flare-ide-toolbar-gap</c>.</summary>
     [CssVar(Names.ToolbarGap)] public string ToolbarGap { get; init; } = Var(Css.Tokens.Spacing.S2);
     /// <summary>Design override for <c>--flare-ide-toolbar-dense-gap</c>.</summary>
