@@ -7,7 +7,7 @@
              @onfocusin="@BeginCapture" @onfocusout="@CancelCapture" @onpointerdown="@BeginCapture">
             <FlareTextField Label="@FieldLabel" Value="@Value" ReadOnly="true"
                             Placeholder="@Text["Shortcut_Empty"]" Disabled="@Disabled"
-                            aria-describedby="@(StatusVisible ? _statusId : null)" />
+                            AriaDescribedBy="@(StatusVisible ? _statusId : null)" />
         </div>
         @if (Compact)
         {

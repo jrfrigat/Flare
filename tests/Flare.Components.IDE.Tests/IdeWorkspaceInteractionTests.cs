@@ -125,4 +125,27 @@ public sealed class IdeWorkspaceInteractionTests : FlareTestContext
             new KeyboardEventArgs { Key = "J", MetaKey = true, ShiftKey = true, AltKey = true });
         Assert.Equal("ctrl+alt+shift+j", value);
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ShortcutEditor_DescribesErrorsWithTheHintHidden(bool compact)
+    {
+        var cut = Render<FlareShortcutEditor>(p => p
+            .Add(x => x.Compact, compact)
+            .Add(x => x.ShowStatus, false));
+        var field = cut.Find("input");
+        Assert.Null(field.GetAttribute("aria-describedby"));
+
+        await field.FocusInAsync(new());
+        await field.TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "l", CtrlKey = true });
+
+        var error = cut.Find("[role=status]");
+        Assert.Contains("reserved", error.TextContent);
+        Assert.Equal(error.Id, cut.Find("input").GetAttribute("aria-describedby"));
+
+        await cut.Find("input").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "j", CtrlKey = true });
+        Assert.Empty(cut.FindAll("[role=status]"));
+        Assert.Null(cut.Find("input").GetAttribute("aria-describedby"));
+    }
 }

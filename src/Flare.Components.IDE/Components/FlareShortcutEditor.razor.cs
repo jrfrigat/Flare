@@ -33,14 +33,14 @@ public partial class FlareShortcutEditor
 
     /// <summary>
     /// Renders a single compact row: the clear action becomes an icon button, the reset button is
-    /// omitted and the shortcut hint is shown only while an input error is present.
+    /// omitted and the helper text is hidden. Validation errors remain visible.
     /// </summary>
     [Parameter] public bool Compact { get; set; }
 
     /// <summary>Shows the reset-to-default button in the non-compact layout.</summary>
     [Parameter] public bool ShowReset { get; set; } = true;
 
-    /// <summary>Shows the shortcut hint and error line in the non-compact layout.</summary>
+    /// <summary>Shows shortcut instructions and recording status in the non-compact layout. Validation errors remain visible.</summary>
     [Parameter] public bool ShowStatus { get; set; } = true;
 
     protected override string ComponentCssClass => Css.Classes.Ide.Shortcuts.Editor;
@@ -50,7 +50,7 @@ public partial class FlareShortcutEditor
 
     private string? FieldLabel => Compact ? Label : Label ?? Text["Shortcut_Label"];
 
-    private bool StatusVisible => Compact ? _message is not null : ShowStatus;
+    private bool StatusVisible => _message is not null || (!Compact && ShowStatus);
     private static readonly HashSet<string> BrowserShortcuts = new(StringComparer.Ordinal)
     {
         "alt+arrowleft", "alt+arrowright", "alt+f4", "ctrl+l", "ctrl+r", "ctrl+t", "ctrl+n",
