@@ -190,14 +190,24 @@ export function registerTabScroller(bar, dotNetRef) {
         observer.observe(bar, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-selected'] });
         observeTabs();
     }
-    // A horizontal tab strip follows the wheel: the bar is exactly as tall as its tabs, so the
-    // browser would otherwise scroll the page (or nothing) under the pointer.
+    // Redirect vertical wheel input only while the horizontal strip can move.
     const onWheel = e => {
-        if (e.ctrlKey || bar.getAttribute('aria-orientation') === 'vertical') return;
-        const delta = e.deltaX !== 0 ? e.deltaX : (e.shiftKey ? 0 : e.deltaY);
-        if (!delta) return;
+        if (!e.cancelable || e.defaultPrevented || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey ||
+            bar.getAttribute('aria-orientation') === 'vertical') return;
+        const mode = e.deltaMode;
+        if (e.deltaX || !e.deltaY) return;
+        const extent = bar.scrollWidth - bar.clientWidth;
+        if (extent <= 1) return;
+
+        const style = getComputedStyle(bar);
+        const direction = style.direction === 'rtl' ? -1 : 1;
+        const offset = direction * bar.scrollLeft;
+        if (e.deltaY < 0 ? offset <= 1 : offset >= extent - 1) return;
+
+        const unit = mode === 1 ? (parseFloat(style.lineHeight) || parseFloat(style.fontSize) || 16)
+            : mode === 2 ? bar.clientWidth : 1;
         e.preventDefault();
-        bar.scrollBy({ left: delta, behavior: 'auto' });
+        bar.scrollBy({ left: direction * e.deltaY * unit, behavior: 'auto' });
     };
     _tabScrollers.keep(bar, all(listen(bar, 'scroll', onScroll, { passive: true }), listen(bar, 'wheel', onWheel, { passive: false }), () => {
         ro.disconnect();
