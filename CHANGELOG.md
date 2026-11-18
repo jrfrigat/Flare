@@ -3,6 +3,25 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.59.0] - 2026-11-18
+
+### Added
+
+- `FlareShortcutEditor` supports compact rows with an icon-only clear button. `ShowReset` and `ShowStatus` control the reset button and guidance in the standard layout. `AriaLabel` gives the capture field a command-specific accessible name.
+- Flare IDE exposes app-scoped tokens for dock gaps, panel corner radius, menu and toolbar spacing, and active document tab text. Applications can opt into outlines on IDE content surfaces.
+
+### Changed
+
+- Horizontal tab strips use the vertical wheel while there is room to scroll sideways. Normal page scrolling resumes at the edges, and horizontal trackpad gestures retain their native behavior.
+- IDE document tabs use the overflow controls without a visible scrollbar. Active sheet tabs use the base emphasis border width for their underline by default.
+
+### Fixed
+
+- `FlareMenuItem` renders the supplied icon for both commands and links.
+- Shortcut validation remains visible with guidance hidden and is associated with the capture field. A compact field without a visible label has a localized accessible name.
+- Theme startup uses the readiness fallback if the font wait times out. On Blazor Server, a caller can cancel its JavaScript wait independently while the shared module import keeps the runtime timeout.
+- The IDE focus style applies to IDE tabs, and each panel outline is scoped to its own content.
+
 ## [0.58.1] - 2026-11-17
 
 ### Fixed
