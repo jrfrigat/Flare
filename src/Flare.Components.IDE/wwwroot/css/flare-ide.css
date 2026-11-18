@@ -47,16 +47,17 @@
     border-radius: var(--flare-ide-panel-radius, var(--flare-shape-none));
 }
 
-/* The selected tab owns its surface: the content gets the same active accent as the tab, so the
-   user can see which pane the tab belongs to. */
+/* An application can opt into an outline on its IDE content surfaces. */
 .flare-ide-layout__body > .flare-ide-layout__document[data-region="Center"],
 .flare-ide-layout__bottom > .flare-ide-layout__panel-body,
 .flare-toolpanel-group:has(
     > .flare-toolpanel-group__header > .flare-toolpanel-group__tabs > .flare-toolpanel-group__tab--active,
     > .flare-toolpanel-group__tabs > .flare-toolpanel-group__tab--active
 ) > .flare-toolpanel-group__body {
-    outline: 1px solid var(--flare-ide-panel-outline, var(--flare-ide-primary, var(--flare-color-primary)));
-    outline-offset: -1px;
+    outline: var(--flare-ide-border-width, var(--flare-border-width))
+        var(--flare-ide-border-style, var(--flare-border-style))
+        var(--flare-ide-panel-outline);
+    outline-offset: calc(-1 * var(--flare-ide-border-width, var(--flare-border-width)));
 }
 
 .flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
