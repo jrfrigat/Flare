@@ -256,7 +256,9 @@
         if (!RegionVisible(region)) return EmptyFragment;
         if (region == IdeDocumentRegion.Center && CenterDockHeader is not null)
         {
-            return @<div class="@Css.Classes.Ide.Layout.CenterHeader" data-region="@region">@CenterDockHeader</div>;
+            return @<div class="@Css.Classes.Ide.Layout.CenterHeader" data-region="@region"
+                         @ondragover:preventDefault="@OnDocumentMove.HasDelegate"
+                         @ondrop="@(() => DropDocumentAsync(region))">@CenterDockHeader</div>;
         }
         var showsStrip = region == IdeDocumentRegion.Center
             ? ShowCenterDockStrip

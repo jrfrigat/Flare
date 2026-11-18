@@ -143,6 +143,23 @@ public class IdeDocumentDockingDragTests : FlareTestContext
     }
 
     [Fact]
+    public async Task Layout_CustomCenterHeaderAcceptsADrop()
+    {
+        IdeDocumentMove? moved = null;
+        var cut = Render<FlareIdeLayout>(parameters => parameters
+            .Add(layout => layout.Documents, [new("a", "A.cs", IdeDocumentRegion.Left)])
+            .Add(layout => layout.CenterDockHeader, builder => builder.AddContent(0, "Host tabs"))
+            .Add(layout => layout.OnDocumentMove,
+                EventCallback.Factory.Create<IdeDocumentMove>(this, value => moved = value)));
+
+        await cut.Find($".{Css.Classes.Ide.Layout.DockSelect}").TriggerEventAsync("ondragstart", new DragEventArgs());
+        await cut.Find($".{Css.Classes.Ide.Layout.CenterHeader}").TriggerEventAsync("ondrop", new DragEventArgs());
+
+        Assert.Equal("a", moved?.Document.Key);
+        Assert.Equal(IdeDocumentRegion.Center, moved?.Destination);
+    }
+
+    [Fact]
     public void Layouts_HaveDistinctDockScopes()
     {
         var first = Render<FlareIdeLayout>();
