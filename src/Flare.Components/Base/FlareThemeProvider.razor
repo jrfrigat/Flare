@@ -138,28 +138,25 @@
     {
         try
         {
-            // The whole reveal is bounded: a module that never settles must not keep an interop call
-            // alive until the circuit is torn down.
-            using var reveal = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
+            var lifetime = _lifetime.Token;
+            using var reveal = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
             reveal.CancelAfter(TimeSpan.FromSeconds(5));
 
-            // Best-effort enhancement: wait for web fonts, then let revealApp do the framed fade.
-            // These live in the theme JS module, which a stale PWA service-worker cache can still be
-            // serving from a previous build (the module loads at a fingerprint-free URL, unlike the
-            // framework files) -- so if they are missing we must not let the JSException break the
-            // render. Fall back to the global readiness signal that flare-bootstrap.js has always
-            // defined, so the app is revealed instead of stranded behind its splash (or crashing).
+            // A slow or stale theme module falls back to the readiness signal from flare-bootstrap.js.
             try
             {
                 await ThemeJsService.WhenFontsReadyAsync(timeoutMs: 3000, reveal.Token);
                 await ThemeJsService.RevealAppAsync(reveal.Token);
                 return;
             }
-            catch (JSDisconnectedException) { }
+            catch (JSDisconnectedException) { return; }
             catch (JSException) { }
-            catch (OperationCanceledException) { return; }
+            catch (OperationCanceledException) when (!lifetime.IsCancellationRequested) { }
 
-            await JS.InvokeVoidAsync("hideFlareSplash");
+            lifetime.ThrowIfCancellationRequested();
+            using var fallback = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
+            fallback.CancelAfter(TimeSpan.FromSeconds(2));
+            await JS.InvokeVoidAsync("hideFlareSplash", fallback.Token);
         }
         catch (JSDisconnectedException) { }
         catch (JSException) { }

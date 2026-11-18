@@ -27,6 +27,35 @@ public sealed class FlareThemeProviderStylesheetsTests : FlareTestContext
         Assert.Single(cut.FindComponents<FlareStyles>());
     }
 
+    [Fact]
+    public void AFontWaitThatIsCanceledWhileMountedFallsBackToReady()
+    {
+        _js.WaitForFonts = _ => ValueTask.FromCanceled(new CancellationToken(canceled: true));
+        var cut = Render<FlareThemeProvider>();
+
+        cut.WaitForAssertion(() => Assert.Single(JSInterop.Invocations["hideFlareSplash"]));
+        Assert.Equal(0, _js.Reveals);
+    }
+
+    [Fact]
+    public async Task DisposingTheProviderCancelsStartupWithoutRevealing()
+    {
+        var waiting = new TaskCompletionSource<CancellationToken>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _js.WaitForFonts = token =>
+        {
+            waiting.SetResult(token);
+            return new ValueTask(Task.Delay(Timeout.InfiniteTimeSpan, token));
+        };
+
+        Render<FlareThemeProvider>();
+        var revealToken = await waiting.Task.WaitAsync(TimeSpan.FromSeconds(2), Xunit.TestContext.Current.CancellationToken);
+        await DisposeComponentsAsync();
+
+        Assert.True(revealToken.IsCancellationRequested);
+        Assert.Empty(JSInterop.Invocations["hideFlareSplash"]);
+        Assert.Equal(0, _js.Reveals);
+    }
+
     /// <summary>
     /// An app that links the theme stylesheets in its own head must not get a second set: the same
     /// sheet would be applied twice, the later copy moving the theme after the app's own overrides.
@@ -172,6 +201,8 @@ public sealed class FlareThemeProviderStylesheetsTests : FlareTestContext
     private sealed class RecordingThemeJsService : IThemeJsService
     {
         public List<string> Stylesheets { get; } = [];
+        public Func<CancellationToken, ValueTask>? WaitForFonts { get; set; }
+        public int Reveals { get; private set; }
 
         public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default)
         {
@@ -183,8 +214,14 @@ public sealed class FlareThemeProviderStylesheetsTests : FlareTestContext
         public ValueTask ClearCustomTokensAsync(IEnumerable<string> tokenNames, CancellationToken ct = default) => ValueTask.CompletedTask;
         public ValueTask SetStaticCssAsync(string css, CancellationToken ct = default) => ValueTask.CompletedTask;
         public ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default) => ValueTask.CompletedTask;
-        public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default) => ValueTask.CompletedTask;
-        public ValueTask RevealAppAsync(CancellationToken ct = default) => ValueTask.CompletedTask;
+        public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default) =>
+            WaitForFonts?.Invoke(ct) ?? ValueTask.CompletedTask;
+
+        public ValueTask RevealAppAsync(CancellationToken ct = default)
+        {
+            Reveals++;
+            return ValueTask.CompletedTask;
+        }
         public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class => ValueTask.CompletedTask;
         public ValueTask UnsubscribeColorSchemeAsync(string id, CancellationToken ct = default) => ValueTask.CompletedTask;
         public ValueTask<bool> PrefersColorSchemeDarkAsync(CancellationToken ct = default) => ValueTask.FromResult(false);
