@@ -95,6 +95,8 @@ public static class Vars
     public const string StatusBarBg = "--flare-ide-statusbar-bg";
     /// <summary>CSS custom property <c>--flare-ide-panel-bg</c>.</summary>
     public const string PanelBg = "--flare-ide-panel-bg";
+    /// <summary>CSS custom property <c>--flare-ide-panel-outline</c>.</summary>
+    public const string PanelOutline = "--flare-ide-panel-outline";
     /// <summary>CSS custom property <c>--flare-ide-motion-duration-enter-small</c>.</summary>
     public const string MotionDurationEnterSmall = "--flare-ide-motion-duration-enter-small";
     /// <summary>CSS custom property <c>--flare-ide-state-pressed-opacity</c>.</summary>

@@ -48,6 +48,15 @@
     border-radius: var(--flare-ide-panel-radius, 0);
 }
 
+/* The selected tab owns its surface: the content gets the same active accent as the tab, so the
+   user can see which pane the tab belongs to. */
+.flare-ide-layout__document[data-region="Center"],
+.flare-ide-layout__bottom .flare-ide-layout__panel-body,
+.flare-toolpanel-group:has(.flare-toolpanel-group__tab--active) .flare-toolpanel-group__body {
+    outline: 1px solid var(--flare-ide-panel-outline, var(--flare-ide-primary, var(--flare-color-primary)));
+    outline-offset: -1px;
+}
+
 .flare-ide-layout__body[data-flare-ide-docking]:has(> .flare-ide-layout__panel--left:is(.flare-ide-layout__panel--collapsed, .flare-ide-layout__panel--floating)) {
     --flare-ide-left-track: var(--flare-ide-rail);
 }
@@ -435,9 +444,12 @@
 
 /* Drag-resize dividers between a docked region and the document. */
 .flare-ide-layout__resizer {
-    --flare-splitter-color: var(--flare-ide-surface, var(--flare-color-surface));
-    --flare-splitter-grip-color: var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
-    --flare-splitter-grip-pressed-color: var(--flare-splitter-grip-color);
+    /* The gutter is the resize target: no idle paint, only the cursor and a hover tint, so the
+       dividers do not compete with the content. */
+    --flare-splitter-color: transparent;
+    --flare-splitter-hover-color: color-mix(in srgb, var(--flare-ide-primary, var(--flare-color-primary)) 35%, transparent);
+    --flare-splitter-grip-color: transparent;
+    --flare-splitter-grip-pressed-color: transparent;
     z-index: 5;
 }
 
