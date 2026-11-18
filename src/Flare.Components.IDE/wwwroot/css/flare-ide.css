@@ -47,7 +47,7 @@
     border-radius: var(--flare-ide-panel-radius, var(--flare-shape-none));
 }
 
-/* An application can opt into an outline on its IDE content surfaces. */
+/* Reset the entire outline when the app leaves its color unset, including in forced colors. */
 .flare-ide-layout__body > .flare-ide-layout__document[data-region="Center"],
 .flare-ide-layout__bottom > .flare-ide-layout__panel-body,
 .flare-toolpanel-group:has(
@@ -56,7 +56,7 @@
 ) > .flare-toolpanel-group__body {
     outline: var(--flare-ide-border-width, var(--flare-border-width))
         var(--flare-ide-border-style, var(--flare-border-style))
-        var(--flare-ide-panel-outline);
+        var(--flare-ide-panel-outline, initial);
     outline-offset: calc(-1 * var(--flare-ide-border-width, var(--flare-border-width)));
 }
 
