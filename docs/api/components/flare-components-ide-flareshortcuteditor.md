@@ -10,14 +10,15 @@ Captures and validates a shortcut assignment without executing the associated co
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name for the capture field. Use it to identify the command in a compact row. |
 | `AssignedShortcuts` | `IEnumerable<string>` | `` | Parameter |  | Assignments of other commands in this scope. Exclude the command currently being edited. |
-| `Compact` | `bool` | `false` | Parameter |  | Renders a single compact row: the clear action becomes an icon button, the reset button is omitted and the shortcut hint is shown only while an input error is present. |
+| `Compact` | `bool` | `false` | Parameter |  | Renders a single compact row: the clear action becomes an icon button, the reset button is omitted and the helper text is hidden. Validation errors remain visible. |
 | `DefaultValue` | `string?` | `` | Parameter |  | Assignment restored by Reset. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables capture, clearing and resetting. |
-| `Label` | `string?` | `` | Parameter |  | Accessible label for the capture field. |
+| `Label` | `string?` | `` | Parameter |  | Visible label for the capture field. |
 | `ReservedShortcuts` | `IEnumerable<string>` | `` | Parameter |  | Additional host-reserved shortcuts. Browser navigation keys are reserved by default. |
 | `ShowReset` | `bool` | `true` | Parameter |  | Shows the reset-to-default button in the non-compact layout. |
-| `ShowStatus` | `bool` | `true` | Parameter |  | Shows the shortcut hint and error line in the non-compact layout. |
+| `ShowStatus` | `bool` | `true` | Parameter |  | Shows shortcut instructions and recording status in the non-compact layout. Validation errors remain visible. |
 | `Value` | `string?` | `` | Parameter |  | Current shortcut, using the same gesture format as Keys. |
 | `ValueChanged` | `EventCallback<string?>` | `` | Callback |  | Reports a new shortcut or null when the assignment is cleared. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

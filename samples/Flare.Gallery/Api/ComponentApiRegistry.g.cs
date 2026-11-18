@@ -7067,14 +7067,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name for the capture field. Use it to identify the command in a compact row.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"AssignedShortcuts", @"IEnumerable<string>", null, @"Assignments of other commands in this scope. Exclude the command currently being edited.", null, false, false, false, @"FlareShortcutEditor"),
-                new ApiParameterInfo(@"Compact", @"bool", @"false", @"Renders a single compact row: the clear action becomes an icon button, the reset button is omitted and the shortcut hint is shown only while an input error is present.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"Compact", @"bool", @"false", @"Renders a single compact row: the clear action becomes an icon button, the reset button is omitted and the helper text is hidden. Validation errors remain visible.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"DefaultValue", @"string?", null, @"Assignment restored by Reset.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables capture, clearing and resetting.", null, false, false, false, @"FlareShortcutEditor"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Accessible label for the capture field.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Visible label for the capture field.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"ReservedShortcuts", @"IEnumerable<string>", null, @"Additional host-reserved shortcuts. Browser navigation keys are reserved by default.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"ShowReset", @"bool", @"true", @"Shows the reset-to-default button in the non-compact layout.", null, false, false, false, @"FlareShortcutEditor"),
-                new ApiParameterInfo(@"ShowStatus", @"bool", @"true", @"Shows the shortcut hint and error line in the non-compact layout.", null, false, false, false, @"FlareShortcutEditor"),
+                new ApiParameterInfo(@"ShowStatus", @"bool", @"true", @"Shows shortcut instructions and recording status in the non-compact layout. Validation errors remain visible.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Current shortcut, using the same gesture format as Keys.", null, false, false, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Reports a new shortcut or null when the assignment is cleared.", null, false, true, false, @"FlareShortcutEditor"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),

@@ -5,7 +5,7 @@
     <FlareStack Row="true" Gap="FlareSpacing.XSmall">
         <div @ref="_capture" data-flare-shortcut-capture="" @onkeydown="CaptureAsync"
              @onfocusin="@BeginCapture" @onfocusout="@CancelCapture" @onpointerdown="@BeginCapture">
-            <FlareTextField Label="@FieldLabel" Value="@Value" ReadOnly="true"
+            <FlareTextField Label="@FieldLabel" AriaLabel="@FieldAriaLabel" Value="@Value" ReadOnly="true"
                             Placeholder="@Text["Shortcut_Empty"]" Disabled="@Disabled"
                             AriaDescribedBy="@(StatusVisible ? _statusId : null)" />
         </div>

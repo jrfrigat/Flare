@@ -10,8 +10,11 @@ public partial class FlareShortcutEditor
 {
     [Inject] private IJSRuntime Js { get; set; } = default!;
 
-    /// <summary>Accessible label for the capture field.</summary>
+    /// <summary>Visible label for the capture field.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>Accessible name for the capture field. Use it to identify the command in a compact row.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     /// <summary>Current shortcut, using the same gesture format as <see cref="FlareShortcutEntry.Keys"/>.</summary>
     [Parameter] public string? Value { get; set; }
@@ -49,6 +52,9 @@ public partial class FlareShortcutEditor
     private readonly string _statusId = $"flare-shortcut-status-{Guid.NewGuid():N}";
 
     private string? FieldLabel => Compact ? Label : Label ?? Text["Shortcut_Label"];
+
+    private string? FieldAriaLabel => AriaLabel ??
+        (Compact && string.IsNullOrWhiteSpace(Label) ? Text["Shortcut_Label"].Value : null);
 
     private bool StatusVisible => _message is not null || (!Compact && ShowStatus);
     private static readonly HashSet<string> BrowserShortcuts = new(StringComparer.Ordinal)

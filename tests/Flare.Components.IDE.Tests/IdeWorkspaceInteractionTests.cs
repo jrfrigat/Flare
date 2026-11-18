@@ -148,4 +148,31 @@ public sealed class IdeWorkspaceInteractionTests : FlareTestContext
         Assert.Empty(cut.FindAll("[role=status]"));
         Assert.Null(cut.Find("input").GetAttribute("aria-describedby"));
     }
+
+    [Theory]
+    [InlineData(null, "Keyboard shortcut")]
+    [InlineData("Run query", "Run query")]
+    public void ShortcutEditor_CompactFieldIsNamedWithoutAVisibleLabel(string? ariaLabel, string expectedName)
+    {
+        var cut = Render<FlareShortcutEditor>(p => p
+            .Add(x => x.Compact, true)
+            .Add(x => x.AriaLabel, ariaLabel));
+
+        Assert.Empty(cut.FindAll("label"));
+        Assert.Equal(expectedName, cut.Find("input").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void ShortcutEditor_KeepsAnExplicitVisibleLabelInCompactMode()
+    {
+        var cut = Render<FlareShortcutEditor>(p => p
+            .Add(x => x.Compact, true)
+            .Add(x => x.Label, "Run query"));
+        var field = cut.Find("input");
+        var label = cut.Find("label");
+
+        Assert.Equal("Run query", label.TextContent.Trim());
+        Assert.Equal(field.Id, label.GetAttribute("for"));
+        Assert.Null(field.GetAttribute("aria-label"));
+    }
 }
