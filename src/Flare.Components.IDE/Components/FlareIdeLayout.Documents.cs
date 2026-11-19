@@ -28,6 +28,11 @@ public partial class FlareIdeLayout
     /// <see cref="ActiveDocuments"/> and the host supplies the return-to-main-content control.</summary>
     [Parameter] public RenderFragment? CenterDockHeader { get; set; }
 
+    /// <summary>Non-interactive content displayed in place of the title in each built-in dock tab.
+    /// The document title still supplies its accessible name. Use <see cref="CenterDockHeader"/> to
+    /// supply a whole tab strip for the Center region.</summary>
+    [Parameter] public RenderFragment<IdeDocument>? DocumentHeaderContent { get; set; }
+
     /// <summary>Renders each document. Which documents invoke it is chosen by <see cref="DocumentMounting"/>.</summary>
     [Parameter] public RenderFragment<IdeDocument>? DocumentContent { get; set; }
 

@@ -61,6 +61,35 @@ public class IdeLayoutDockTabTests : FlareTestContext
         Assert.Equal("Guide.md", cut.FindAll($".{Css.Classes.Ide.Layout.DockSelect}")[1].GetAttribute("aria-label"));
     }
 
+    [Theory]
+    [InlineData(IdeDocumentRegion.Left)]
+    [InlineData(IdeDocumentRegion.Center)]
+    [InlineData(IdeDocumentRegion.Right)]
+    public void DocumentHeaderContent_CustomizesEachBuiltInStrip(IdeDocumentRegion region)
+    {
+        var cut = Render<FlareIdeLayout>(p => p
+            .Add(x => x.Documents, [new("a", "Main.cs", region)])
+            .Add(x => x.DocumentHeaderContent, Header("Document")));
+
+        var select = cut.Find($"[data-region='{region}'] .{Css.Classes.Ide.Layout.DockSelect}");
+        Assert.Equal("Main.cs", select.GetAttribute("aria-label"));
+        Assert.Equal("Document a", select.QuerySelector("strong")?.TextContent);
+        Assert.Equal("true", select.GetAttribute("aria-pressed"));
+
+        cut.Render(p => p.Add(x => x.DocumentHeaderContent, Header("Updated")));
+
+        select = cut.Find($"[data-region='{region}'] .{Css.Classes.Ide.Layout.DockSelect}");
+        Assert.Equal("Updated a", select.QuerySelector("strong")?.TextContent);
+        Assert.Equal("Main.cs", select.GetAttribute("aria-label"));
+    }
+
+    private static RenderFragment<IdeDocument> Header(string prefix) => document => builder =>
+    {
+        builder.OpenElement(0, "strong");
+        builder.AddContent(1, $"{prefix} {document.Key}");
+        builder.CloseElement();
+    };
+
     [Fact]
     public async Task RightClick_OpensTheHostContextMenuForThatDocument()
     {

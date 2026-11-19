@@ -19,20 +19,23 @@
             @foreach (var doc in _docs)
             {
                 <FlareDocumentTab @key="doc.Id" Title="@doc.Title" Icon="@doc.Icon"
-                                  Modified="doc.Modified" Closeable="doc.Closeable">
-                    <FlareStack Gap="FlareSpacing.Custom" GapValue="0.35rem" Padding="FlareSpacing.Small">
-                        <FlareText Typo="TypographyScale.TitleSmall">@doc.Title</FlareText>
-                        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-                            @doc.Description
-                        </FlareText>
-                        @if (doc.Modified)
-                        {
-                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => Save(doc))">
-                                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Save" /></LeadingIcon>
-                                <ChildContent>Save (clear modified)</ChildContent>
-                            </FlareButton>
-                        }
-                    </FlareStack>
+                                  Modified="doc.Modified" Closeable="doc.Closeable"
+                                  HeaderContent="@(doc.Closeable ? null : PinnedHeader(doc))">
+                    <ChildContent>
+                        <FlareStack Gap="FlareSpacing.Custom" GapValue="0.35rem" Padding="FlareSpacing.Small">
+                            <FlareText Typo="TypographyScale.TitleSmall">@doc.Title</FlareText>
+                            <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                                @doc.Description
+                            </FlareText>
+                            @if (doc.Modified)
+                            {
+                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => Save(doc))">
+                                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Save" /></LeadingIcon>
+                                    <ChildContent>Save (clear modified)</ChildContent>
+                                </FlareButton>
+                            }
+                        </FlareStack>
+                    </ChildContent>
                 </FlareDocumentTab>
             }
         </FlareDocumentTabs>
@@ -63,6 +66,11 @@
         new() { Id = 2, Title = "README.md", Icon = MaterialDesign3Icons.Regular.Article, Description = "Project overview and docs." },
         new() { Id = 3, Title = "App.razor", Icon = MaterialDesign3Icons.Regular.Code, Description = "Root component (pinned).", Closeable = false },
     ];
+
+    private static RenderFragment PinnedHeader(Doc doc) => @<text>
+        <FlareIconView Value="@FlareIcons.PushPin" Size="0.875rem" />
+        <FlareText Element="span" Inherit>@doc.Title</FlareText>
+    </text>;
 
     private void OnChanged(string title) => _active = title;
 

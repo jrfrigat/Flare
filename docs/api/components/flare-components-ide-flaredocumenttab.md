@@ -10,11 +10,11 @@
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the document panel. |
 | `Closeable` | `bool` | `true` | Parameter |  | Whether the tab can be closed by the user. |
+| `HeaderContent` | `RenderFragment?` | `` | Parameter |  | Non-interactive content displayed in place of the visible title. Supply Title as the accessible name and overflow label. Icon is rendered separately. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in the tab header - any provider. Defaults to the built-in description icon. |
 | `Key` | `string?` | `` | Parameter |  | Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents. |
 | `Modified` | `bool` | `false` | Parameter |  | Whether the document has unsaved changes (shows a dot/asterisk indicator). |
-| `StatusIcon` | `FlareIcon?` | `` | Parameter |  | Optional status icon shown between Icon and the title, for example the connection state of a document. |
-| `Title` | `string` | `""` | Parameter |  | Display title for the document tab. |
+| `Title` | `string` | `""` | Parameter |  | Text displayed when no custom header is supplied. Also labels the tab for accessibility and the overflow menu. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

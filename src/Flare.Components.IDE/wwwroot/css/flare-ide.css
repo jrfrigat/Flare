@@ -712,12 +712,6 @@
     font-size: 1rem;
 }
 
-/* The status icon is a small badge next to the document icon: connection state, diagnostics and the
-   like. It keeps the tab's main icon readable instead of replacing it. */
-.flare-doc-tabs__status {
-    font-size: 0.875rem;
-}
-
 .flare-ide-layout__dock-modified,
 .flare-doc-tabs__modified {
     color: var(--flare-ide-primary, var(--flare-color-primary));

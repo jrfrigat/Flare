@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Document tabs accept custom title markup through HeaderContent. FlareIdeLayout exposes the same option for built-in dock tabs through DocumentHeaderContent. Title still labels the tab for accessibility. Wrap existing FlareDocumentTab panel markup in ChildContent to select the panel slot explicitly.
+
 ## [0.59.0] - 2026-11-18
 
 ### Added

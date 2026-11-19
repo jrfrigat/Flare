@@ -55,21 +55,25 @@
     <ChildContent>
         <FlareDocumentTabs>
             <FlareDocumentTab Title="Customers" Icon="@MaterialDesign3Icons.Regular.TableView">
-                <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
-                    <Columns>
-                        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
-                        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
-                        <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
-                        <FlareColumn Title="Score" Field="@(p => p.Score)" Type="ColumnDataType.Number" />
-                    </Columns>
-                </FlareDataGrid>
+                <ChildContent>
+                    <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
+                        <Columns>
+                            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+                            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+                            <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
+                            <FlareColumn Title="Score" Field="@(p => p.Score)" Type="ColumnDataType.Number" />
+                        </Columns>
+                    </FlareDataGrid>
+                </ChildContent>
             </FlareDocumentTab>
             <FlareDocumentTab Title="Program.cs" Icon="@MaterialDesign3Icons.Regular.Code" Modified="true">
-                <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
-                           Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">var builder = WebApplication.CreateBuilder(args);
+                <ChildContent>
+                    <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                               Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 var app = builder.Build();
 app.Run();</FlareText>
+                </ChildContent>
             </FlareDocumentTab>
         </FlareDocumentTabs>
     </ChildContent>

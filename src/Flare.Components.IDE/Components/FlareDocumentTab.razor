@@ -1,4 +1,5 @@
 @namespace Flare.Components.IDE
+@using Microsoft.AspNetCore.Components.Rendering
 @inherits FlareComponentBase
 @implements IDisposable
 
@@ -20,15 +21,15 @@
     /// <summary>Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents.</summary>
     [Parameter] public string? Key { get; set; }
 
-    /// <summary>Display title for the document tab.</summary>
+    /// <summary>Text displayed when no custom header is supplied. Also labels the tab for accessibility and the overflow menu.</summary>
     [Parameter] public string Title { get; set; } = "";
 
     /// <summary>Icon shown in the tab header - any provider. Defaults to the built-in description icon.</summary>
     [Parameter] public FlareIcon? Icon { get; set; } = FlareIcons.Description;
 
-    /// <summary>Optional status icon shown between <see cref="Icon"/> and the title, for example the
-    /// connection state of a document.</summary>
-    [Parameter] public FlareIcon? StatusIcon { get; set; }
+    /// <summary>Non-interactive content displayed in place of the visible title. Supply <see cref="Title"/>
+    /// as the accessible name and overflow label. <see cref="Icon"/> is rendered separately.</summary>
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
 
     /// <summary>Whether the document has unsaved changes (shows a dot/asterisk indicator).</summary>
     [Parameter] public bool Modified { get; set; }
@@ -50,16 +51,46 @@
     // no label at all, which leaves a tab panel unnamed to a screen reader.
     internal string TabButtonId => $"flare-doc-tab-{TabId}";
 
-    private (string?, string, FlareIcon?, FlareIcon?, bool, bool)? _registration;
+    private (string?, string, FlareIcon?, bool, bool, bool)? _registration;
+    private RenderFragment? _renderHeader;
+    private event Action? HeaderChanged;
     private bool _visited;
     internal bool ShouldKeepAlive => Tabs.KeepAlive && _visited;
 
+    internal RenderFragment RenderHeader => _renderHeader ??= builder =>
+    {
+        builder.OpenComponent<HeaderPresenter>(0);
+        builder.AddComponentParameter(1, nameof(HeaderPresenter.Tab), this);
+        builder.CloseComponent();
+    };
+
     protected override void OnParametersSet()
     {
-        var registration = (Key, Title, Icon, StatusIcon, Modified, Closeable);
-        if (_registration == registration) return;
+        var registration = (Key, Title, Icon, HeaderContent is not null, Modified, Closeable);
+        if (_registration == registration)
+        {
+            HeaderChanged?.Invoke();
+            return;
+        }
+
         _registration = registration;
         Tabs.Register(this);
+    }
+
+    // Refresh the fragment without rendering the strip again. Rendering the strip can reevaluate
+    // the tab declarations and pass a new Razor closure back to this tab.
+    private sealed class HeaderPresenter : ComponentBase, IDisposable
+    {
+        [Parameter, EditorRequired] public FlareDocumentTab Tab { get; set; } = default!;
+
+        public HeaderPresenter() { }
+
+        protected override void OnInitialized() => Tab.HeaderChanged += StateHasChanged;
+
+        protected override void BuildRenderTree(RenderTreeBuilder builder) =>
+            builder.AddContent(0, Tab.HeaderContent);
+
+        public void Dispose() => Tab.HeaderChanged -= StateHasChanged;
     }
 
     public void Dispose()

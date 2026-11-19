@@ -8,9 +8,15 @@
                 <FlareMenuItem OnClick="@(() => _contextKey = key)">Show document</FlareMenuItem>
             </ContextMenuContent>
             <ChildContent>
-                <FlareDocumentTab Key="a" Title="@_title"><input id="first-tab-input" /></FlareDocumentTab>
-                <FlareDocumentTab Key="b" Title="same-name.cs"><input id="other-tab-input" /></FlareDocumentTab>
-                <FlareDocumentTab Key="c" Title="A long new example document.cs"><span>Last document</span></FlareDocumentTab>
+                <FlareDocumentTab Key="a" Title="@_title">
+                    <ChildContent><input id="first-tab-input" /></ChildContent>
+                </FlareDocumentTab>
+                <FlareDocumentTab Key="b" Title="same-name.cs">
+                    <ChildContent><input id="other-tab-input" /></ChildContent>
+                </FlareDocumentTab>
+                <FlareDocumentTab Key="c" Title="A long new example document.cs">
+                    <ChildContent><span>Last document</span></ChildContent>
+                </FlareDocumentTab>
             </ChildContent>
         </FlareDocumentTabs>
     </div>

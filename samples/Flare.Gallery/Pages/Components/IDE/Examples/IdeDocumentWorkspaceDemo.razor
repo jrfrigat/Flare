@@ -49,6 +49,10 @@
                 <FlareText>@GalleryStrings.IdeWorkspace_MainContent</FlareText>
             </FlareStack>
         </ChildContent>
+        <DocumentHeaderContent Context="document">
+            <FlareIconView Value="@FlareIcons.Description" Size="0.875rem" />
+            <FlareText Element="span" Inherit>@document.Title</FlareText>
+        </DocumentHeaderContent>
         <DocumentContent Context="document">
             <FlareTextField Label="@document.Title" />
         </DocumentContent>

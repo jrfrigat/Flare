@@ -90,27 +90,33 @@
     <ChildContent>
         <FlareDocumentTabs OnTabChanged="OnDocTab">
             <FlareDocumentTab Title="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" Modified="true">
-                <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
-                           Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">var builder = WebApplication.CreateBuilder(args);
+                <ChildContent>
+                    <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                               Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 
 var app = builder.Build();
 app.MapRazorComponents&lt;App&gt;();
 app.Run();</FlareText>
+                </ChildContent>
             </FlareDocumentTab>
             <FlareDocumentTab Title="README.md" Icon="@MaterialDesign3Icons.Regular.Article">
-                <FlareStack Gap="FlareSpacing.XXSmall" Padding="FlareSpacing.Custom" PaddingValue="0.75rem">
-                    <FlareText Typo="TypographyScale.TitleMedium">Flare IDE</FlareText>
-                    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
-                        A desktop-style shell built from Flare components.
-                    </FlareText>
-                </FlareStack>
+                <ChildContent>
+                    <FlareStack Gap="FlareSpacing.XXSmall" Padding="FlareSpacing.Custom" PaddingValue="0.75rem">
+                        <FlareText Typo="TypographyScale.TitleMedium">Flare IDE</FlareText>
+                        <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+                            A desktop-style shell built from Flare components.
+                        </FlareText>
+                    </FlareStack>
+                </ChildContent>
             </FlareDocumentTab>
             <FlareDocumentTab Title="App.razor" Icon="@MaterialDesign3Icons.Regular.Code" Closeable="false">
-                <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
-                           Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">&lt;FlareThemeProvider&gt;
+                <ChildContent>
+                    <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                               Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">&lt;FlareThemeProvider&gt;
     &lt;Routes /&gt;
 &lt;/FlareThemeProvider&gt;</FlareText>
+                </ChildContent>
             </FlareDocumentTab>
         </FlareDocumentTabs>
     </ChildContent>

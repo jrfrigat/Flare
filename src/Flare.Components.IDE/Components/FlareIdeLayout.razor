@@ -321,7 +321,14 @@
                 @attributes="menu?.Attributes ?? EmptyAttributes"
                 @onclick="@(() => SelectDocumentAsync(region, document.Key))"
                 @ondragstart="@(() => BeginDocumentDrag(document.Key))" @ondragend="@EndDocumentDrag">
-            @document.Title
+            @if (DocumentHeaderContent is { } header)
+            {
+                @header(document)
+            }
+            else
+            {
+                @document.Title
+            }
             @if (document.Modified)
             {
                 <span class="@Css.Classes.Ide.Layout.DockModified" aria-hidden="true">*</span>
