@@ -712,6 +712,12 @@
     font-size: 1rem;
 }
 
+/* The status icon is a small badge next to the document icon: connection state, diagnostics and the
+   like. It keeps the tab's main icon readable instead of replacing it. */
+.flare-doc-tabs__status {
+    font-size: 0.875rem;
+}
+
 .flare-ide-layout__dock-modified,
 .flare-doc-tabs__modified {
     color: var(--flare-ide-primary, var(--flare-color-primary));
@@ -739,17 +745,15 @@
                 background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
 }
 
-/* Fading in on hover is the editor convention, and it is only available where a pointer can hover. A
-   touch screen got opacity 0 with the button still taking taps: invisible, and closing the document
-   anyway when a finger landed on it. Outside a hover context it stays visible. */
+/* Side dock tabs keep the close button on hover so a narrow strip stays quiet. A document tab keeps
+   it visible at all times, as an IDE's document tabs do. On a touch pointer every close button stays
+   visible because fading is only available where a pointer can hover. */
 @media (hover: hover) {
-    .flare-ide-layout__dock-close,
-    .flare-doc-tabs__close {
+    .flare-ide-layout__dock-close {
         opacity: 0;
     }
 
-    .flare-ide-layout__dock-tab:is(:hover, :focus-within) .flare-ide-layout__dock-close,
-    .flare-doc-tabs__tab:is(:hover, :focus-within) .flare-doc-tabs__close {
+    .flare-ide-layout__dock-tab:is(:hover, :focus-within) .flare-ide-layout__dock-close {
         opacity: 1;
     }
 }

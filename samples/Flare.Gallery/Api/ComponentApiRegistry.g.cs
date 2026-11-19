@@ -2844,6 +2844,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in the tab header - any provider. Defaults to the built-in description icon.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Key", @"string?", null, @"Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Modified", @"bool", @"false", @"Whether the document has unsaved changes (shows a dot/asterisk indicator).", null, false, false, false, @"FlareDocumentTab"),
+                new ApiParameterInfo(@"StatusIcon", @"FlareIcon?", null, @"Optional status icon shown between Icon and the title, for example the connection state of a document.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Display title for the document tab.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

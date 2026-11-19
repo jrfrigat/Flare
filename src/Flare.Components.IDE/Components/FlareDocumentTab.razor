@@ -26,6 +26,10 @@
     /// <summary>Icon shown in the tab header - any provider. Defaults to the built-in description icon.</summary>
     [Parameter] public FlareIcon? Icon { get; set; } = FlareIcons.Description;
 
+    /// <summary>Optional status icon shown between <see cref="Icon"/> and the title, for example the
+    /// connection state of a document.</summary>
+    [Parameter] public FlareIcon? StatusIcon { get; set; }
+
     /// <summary>Whether the document has unsaved changes (shows a dot/asterisk indicator).</summary>
     [Parameter] public bool Modified { get; set; }
 
@@ -46,13 +50,13 @@
     // no label at all, which leaves a tab panel unnamed to a screen reader.
     internal string TabButtonId => $"flare-doc-tab-{TabId}";
 
-    private (string?, string, FlareIcon?, bool, bool)? _registration;
+    private (string?, string, FlareIcon?, FlareIcon?, bool, bool)? _registration;
     private bool _visited;
     internal bool ShouldKeepAlive => Tabs.KeepAlive && _visited;
 
     protected override void OnParametersSet()
     {
-        var registration = (Key, Title, Icon, Modified, Closeable);
+        var registration = (Key, Title, Icon, StatusIcon, Modified, Closeable);
         if (_registration == registration) return;
         _registration = registration;
         Tabs.Register(this);

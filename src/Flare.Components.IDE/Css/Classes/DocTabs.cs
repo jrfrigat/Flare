@@ -11,6 +11,8 @@ public static class DocTabs
     public const string Dropdown = "flare-doc-tabs__dropdown";
     public const string DropdownItem = "flare-doc-tabs__dropdown-item";
     public const string Icon = "flare-doc-tabs__icon";
+    /// <summary>Optional status icon rendered between the document icon and the label.</summary>
+    public const string Status = "flare-doc-tabs__status";
     public const string Label = "flare-doc-tabs__label";
     public const string Modified = "flare-doc-tabs__modified";
     /// <summary>Wrapper of the per-tab move menu offered for host dock targets.</summary>

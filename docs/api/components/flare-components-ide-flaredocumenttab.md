@@ -13,6 +13,7 @@
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in the tab header - any provider. Defaults to the built-in description icon. |
 | `Key` | `string?` | `` | Parameter |  | Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents. |
 | `Modified` | `bool` | `false` | Parameter |  | Whether the document has unsaved changes (shows a dot/asterisk indicator). |
+| `StatusIcon` | `FlareIcon?` | `` | Parameter |  | Optional status icon shown between Icon and the title, for example the connection state of a document. |
 | `Title` | `string` | `""` | Parameter |  | Display title for the document tab. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

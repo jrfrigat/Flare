@@ -90,6 +90,10 @@ else
         {
             <FlareIconView Value="tab.Icon" Class="@Css.Classes.Ide.DocTabs.Icon" />
         }
+        @if (tab.StatusIcon is not null)
+        {
+            <FlareIconView Value="tab.StatusIcon" Class="@Css.Classes.Ide.DocTabs.Status" />
+        }
         <span class="@Css.Classes.Ide.DocTabs.Label">@tab.Title</span>
         @if (tab.Modified)
         {
