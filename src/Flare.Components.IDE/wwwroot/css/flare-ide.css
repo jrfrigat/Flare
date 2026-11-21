@@ -1643,19 +1643,19 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-dock__targets { pointer-events: none; z-index: 2; }
 .flare-dock__target { position: absolute; pointer-events: none; }
 .flare-dock__target.flare-drop-zone--candidate { pointer-events: auto; }
-.flare-dock__target--into { inset: 20%; }
+.flare-dock__target[data-flare-dock-zone="into"] { inset: 20%; }
 
-.flare-dock__target--start,
-.flare-dock__target--end { inset-block: 0; inline-size: 20%; }
+.flare-dock__target[data-flare-dock-zone="start"],
+.flare-dock__target[data-flare-dock-zone="end"] { inset-block: 0; inline-size: 20%; }
 
-.flare-dock__target--start { inset-inline-start: 0; }
-.flare-dock__target--end { inset-inline-end: 0; }
+.flare-dock__target[data-flare-dock-zone="start"] { inset-inline-start: 0; }
+.flare-dock__target[data-flare-dock-zone="end"] { inset-inline-end: 0; }
 
-.flare-dock__target--top,
-.flare-dock__target--bottom { inset-inline: 20%; block-size: 20%; }
+.flare-dock__target[data-flare-dock-zone="top"],
+.flare-dock__target[data-flare-dock-zone="bottom"] { inset-inline: 20%; block-size: 20%; }
 
-.flare-dock__target--top { inset-block-start: 0; }
-.flare-dock__target--bottom { inset-block-end: 0; }
+.flare-dock__target[data-flare-dock-zone="top"] { inset-block-start: 0; }
+.flare-dock__target[data-flare-dock-zone="bottom"] { inset-block-end: 0; }
 
 .flare-dock__status {
     position: absolute;

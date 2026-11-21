@@ -5028,4 +5028,13 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Ide_Caption_Restore" xml:space="preserve"><value>Restore</value></data>
   <data name="Ide_Caption_Close" xml:space="preserve"><value>Close</value></data>
   <data name="Ide_Caption_CloseDisabled" xml:space="preserve"><value>Close (disabled)</value></data>
+  <data name="DockDemo_Title" xml:space="preserve"><value>Dynamic docking</value></data>
+  <data name="DockDemo_Description" xml:space="preserve"><value>Move the table, chart, or draft between groups. Drop a tab at the edge or use its actions to split the workspace.</value></data>
+  <data name="DockDemo_Data" xml:space="preserve"><value>Table</value></data>
+  <data name="DockDemo_Chart" xml:space="preserve"><value>Chart</value></data>
+  <data name="DockDemo_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="DockDemo_DraftLabel" xml:space="preserve"><value>Draft notes</value></data>
+  <data name="DockDemo_Quarter" xml:space="preserve"><value>Quarter</value></data>
+  <data name="DockDemo_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="DockDemo_Empty" xml:space="preserve"><value>Empty group</value></data>
 </root>

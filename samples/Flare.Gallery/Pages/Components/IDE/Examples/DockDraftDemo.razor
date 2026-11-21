@@ -1,0 +1,9 @@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareTextField Label="@Label" @bind-Value="_draft" />
+</FlareStack>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+
+    private string _draft = "";
+}

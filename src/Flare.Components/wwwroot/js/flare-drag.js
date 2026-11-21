@@ -98,18 +98,24 @@ export function startDrag(handle, opts) {
         o.onCancel(e);
     }
 
+    function lostCapture(e) {
+        // A touch initially captures on the pressed child. Taking capture on the handle
+        // makes that child lose it and bubble the event, while the handle still owns the drag.
+        if (e.target === handle) cancel(e);
+    }
+
     handle.addEventListener('pointerdown', down);
     track.addEventListener('pointermove', move);
     track.addEventListener('pointerup', end);
     track.addEventListener('pointercancel', cancel);
-    if (o.onCancel) handle.addEventListener('lostpointercapture', cancel);
+    if (o.onCancel) handle.addEventListener('lostpointercapture', lostCapture);
     return () => {
         handle.removeEventListener('pointerdown', down);
         track.removeEventListener('pointermove', move);
         track.removeEventListener('pointerup', end);
         track.removeEventListener('pointercancel', cancel);
         if (o.onCancel) {
-            handle.removeEventListener('lostpointercapture', cancel);
+            handle.removeEventListener('lostpointercapture', lostCapture);
             cancel({ pointerId: pid });
         }
     };

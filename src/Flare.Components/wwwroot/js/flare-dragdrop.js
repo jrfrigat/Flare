@@ -252,6 +252,12 @@ export function registerDragContext(root, dotNetRef) {
         drag = null;
     }
 
+    function abort() {
+        if (!drag) return;
+        cleanup();
+        dotNetRef.invokeMethodAsync('OnDragEndAsync').catch(() => { });
+    }
+
     // Everything the drag shows for a given pointer position. Called from pointermove AND from the
     // frame loop after an auto-scroll, where the pointer has not moved but the page under it has.
     function update() {
@@ -325,8 +331,7 @@ export function registerDragContext(root, dotNetRef) {
             const onKey = ev => {
                 if (ev.key !== 'Escape') return;
                 ev.preventDefault();
-                cleanup();
-                dotNetRef.invokeMethodAsync('OnDragEndAsync').catch(() => { });
+                abort();
             };
 
             sourceEl.classList.add('flare-draggable--dragging');
@@ -347,8 +352,9 @@ export function registerDragContext(root, dotNetRef) {
             // The one call at the start. Until it answers, every zone in the group is a candidate; the
             // answer narrows them. A drag that is over before the answer lands simply used the wider
             // set, which is the same set HTML5 drag-and-drop would have offered.
-            dotNetRef.invokeMethodAsync('OnDragStartAsync', drag.sourceId).then(ruling => {
-                if (!drag || ruling == null) return;
+            const session = drag;
+            dotNetRef.invokeMethodAsync('OnDragStartAsync', session.sourceId).then(ruling => {
+                if (drag !== session || ruling == null) return;
                 const allow = ruling.allow ? new Set(ruling.allow) : null;
                 const deny = ruling.deny ? new Set(ruling.deny) : null;
                 if (!allow && !deny) return;
@@ -365,6 +371,7 @@ export function registerDragContext(root, dotNetRef) {
             drag.pointer.y = e.clientY;
             update();
         },
+        onCancel: abort,
         onEnd() {
             if (!drag) return;
             const hit = drag.hit;

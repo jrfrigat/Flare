@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `FlareDockWorkspace` brings dynamic tab groups, nested splits, and state-preserving moves to `Flare.Components.IDE`. Applications control which layout changes to accept.
+
 ## [0.60.0] - 2026-11-20
 
 ### Added

@@ -122,7 +122,8 @@
                 <div @key="targetsId" class="@DockCss.Targets" style="@BodyStyle(entry.Id)" aria-hidden="true">
                     @foreach (var zone in BodyZones)
                     {
-                        <FlareDropZone @key="zone" Target="@ZoneId(group.Key, zone)" Class="@($"{DockCss.Target} {DockCss.Target}--{zone}")" />
+                        <FlareDropZone @key="zone" Target="@ZoneId(group.Key, zone)" Class="@DockCss.Target"
+                                       data-flare-dock-zone="@zone" />
                     }
                 </div>
             }

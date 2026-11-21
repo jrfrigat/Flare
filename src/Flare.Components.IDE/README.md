@@ -11,4 +11,43 @@ dotnet add package Flare.Components.IDE
 Requires `Flare.Components` and a `Flare.Theme.*` package. Register with
 `builder.Services.AddFlareIde()` (see the `Flare.Components` readme for base setup).
 
+## Dynamic docking
+
+Use `FlareDockWorkspace` to make any Blazor content dockable. Supply a `DockGroup` for
+the initial tabs or a tree of `DockSplit` and `DockGroup` nodes. Reference
+`_content/Flare.Components.IDE/css/flare-ide.css` and give the workspace room to expand.
+
+```razor
+@using Flare.Components.IDE
+
+<FlareDockWorkspace Layout="_layout" Items="_items" OnChangeRequested="Apply">
+    <ContentTemplate Context="item">
+        <FlareText>@item.Title</FlareText>
+    </ContentTemplate>
+</FlareDockWorkspace>
+
+@code {
+    private DockNode _layout = new DockGroup("main", ["data", "report"], "data");
+    private readonly DockItem[] _items = [new("data", "Data"), new("report", "Report")];
+
+    private void Apply(DockLayoutChange change)
+    {
+        if (ReferenceEquals(change.Previous, _layout))
+            _layout = change.Proposed;
+    }
+}
+```
+
+Drag a tab to a group edge to create a split. The tab actions menu also supports moving,
+reordering, and splitting by click, tap, or keyboard. Each group keeps its own selection.
+Use unique item and node keys. A group can be empty when it is the root.
+
+The application owns the accepted layout. It can reject a request by keeping its current
+layout. After an asynchronous confirmation, check that the request's `Previous` layout
+is still current. Save your own layout representation and application data as needed.
+
+An active item retains its component when it moves within the same workspace and renderer.
+Use `DockItem.KeepAlive` to retain a visited item when its tab becomes inactive. Closing
+releases the component. The application can restore its data when it opens the item again.
+
 Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

@@ -1,0 +1,56 @@
+@using Flare.Components.IDE
+@inherits LocalizedPage
+
+<FlareStack Height="24rem">
+    <FlareDockWorkspace id="dynamic-dock-demo" Layout="_layout" Items="Items"
+                        OnChangeRequested="Apply" GroupLabel="DescribeGroup">
+        <ContentTemplate Context="item">
+            @switch (item.Key)
+            {
+                case "data":
+                    <FlareDataGrid Items="Rows" PageSize="8">
+                        <Columns>
+                            <FlareColumn Title="@Label("DockDemo_Quarter")" Field="@(row => row.Quarter)" />
+                            <FlareColumn Title="@Label("DockDemo_Total")" Field="@(row => row.Total)" Sortable="true" />
+                        </Columns>
+                    </FlareDataGrid>
+                    break;
+                case "chart":
+                    <FlareChart Type="ChartType.Bar" Title="@Label("DockDemo_Chart")" Data="Chart" />
+                    break;
+                case "draft":
+                    <DockDraftDemo Label="@Label("DockDemo_DraftLabel")" />
+                    break;
+            }
+        </ContentTemplate>
+    </FlareDockWorkspace>
+</FlareStack>
+
+@code {
+    private static readonly ReportRow[] Rows = [new("Q1", 45), new("Q2", 62), new("Q3", 58), new("Q4", 71)];
+    private static readonly ChartData Chart = new([new ChartSeries("2026", [45, 62, 58, 71])], ["Q1", "Q2", "Q3", "Q4"]);
+
+    private DockNode _layout = new DockSplit("workspace", DockAxis.Horizontal,
+        new DockGroup("reports", ["data", "draft"], "data"),
+        new DockGroup("visuals", ["chart"], "chart"), 0.57);
+
+    private IReadOnlyList<DockItem> Items =>
+    [
+        new("data", Label("DockDemo_Data")),
+        new("chart", Label("DockDemo_Chart")),
+        new("draft", Label("DockDemo_Draft"), KeepAlive: true)
+    ];
+
+    private void Apply(DockLayoutChange change)
+    {
+        if (ReferenceEquals(change.Previous, _layout))
+            _layout = change.Proposed;
+    }
+
+    private string DescribeGroup(DockGroup group) =>
+        group.ActiveKey is { } key ? Items.First(item => item.Key == key).Title : Label("DockDemo_Empty");
+
+    private static string Label(string name) => GalleryStrings.ResourceManager.GetString(name, GalleryStrings.Culture) ?? name;
+
+    private sealed record ReportRow(string Quarter, int Total);
+}
