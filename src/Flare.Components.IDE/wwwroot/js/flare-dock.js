@@ -3,12 +3,27 @@ const workspaces = new WeakMap();
 export function register(canvas, callback) {
     unregister(canvas);
     if (!canvas || !callback) return;
-    const state = { resize: null, keyboard: null, focus: null };
-    state.resize = new ResizeObserver(() => {
+    const state = { resize: null, keyboard: null, focus: null, direction: [] };
+    const report = () => {
         const rtl = getComputedStyle(canvas).direction === 'rtl';
         callback.invokeMethodAsync('UpdateDockViewport', canvas.clientWidth, canvas.clientHeight, rtl).catch(() => {});
-    });
+    };
+    state.resize = new ResizeObserver(report);
     state.resize.observe(canvas);
+    // A direction change does not resize the canvas, so the ResizeObserver never sees it. Watch the
+    // elements that can carry dir/class/style, including the document, for a live theme or locale flip.
+    if (typeof MutationObserver !== 'undefined') {
+        const watch = element => {
+            if (!element) return;
+            const observer = new MutationObserver(report);
+            observer.observe(element, { attributes: true, attributeFilter: ['dir', 'class', 'style'] });
+            state.direction.push(observer);
+        };
+        watch(canvas);
+        watch(canvas.parentElement);
+        watch(document.body);
+        watch(document.documentElement);
+    }
     state.keyboard = event => {
         if (event.defaultPrevented || !event.target.closest?.('[data-flare-dock-tabs] [role="tab"]')) return;
         if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) event.preventDefault();
@@ -21,6 +36,7 @@ export function unregister(canvas) {
     const state = canvas && workspaces.get(canvas);
     if (!state) return;
     state.resize.disconnect();
+    for (const observer of state.direction) observer.disconnect();
     canvas.removeEventListener('keydown', state.keyboard);
     workspaces.delete(canvas);
 }
