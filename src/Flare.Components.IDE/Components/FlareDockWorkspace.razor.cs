@@ -49,6 +49,8 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private DockGeometry _geometry = new();
     private double _width;
     private double _height;
+    private int _gutter = DockGeometry.Gutter;
+    private int _groupMin = DockGeometry.GroupMin;
     private int _nextId;
     private string? _openActions;
     private bool _focusMenu;
@@ -94,6 +96,8 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
             if (!_index.Groups.ContainsKey(key) && !_index.Splits.ContainsKey(key) && !_index.Owners.ContainsKey(key))
                 _ids.Remove(key);
         _status = null;
+        _gutter = Math.Max(1, (int)Math.Round(ReadTokenNum("--flare-dock-gutter", DockGeometry.Gutter)));
+        _groupMin = Math.Max(1, (int)Math.Round(ReadTokenNum("--flare-dock-group-min", DockGeometry.GroupMin)));
         if (_openActions is { } open && !_index.Groups.ContainsKey(open))
         {
             _openActions = null;
@@ -104,7 +108,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
 
     private void Rebuild()
     {
-        _geometry = DockGeometry.Build(_accepted, Id, _width, _height);
+        _geometry = DockGeometry.Build(_accepted, Id, _width, _height, _gutter, _groupMin);
         _targets.Clear();
         foreach (var group in _index.Groups.Values)
         {

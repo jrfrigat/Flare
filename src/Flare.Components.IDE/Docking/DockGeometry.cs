@@ -8,6 +8,7 @@ internal sealed class DockGeometry
 {
     internal const int Gutter = 12;
     internal const int Header = 32;
+    internal const int GroupMin = 96;
 
     // The header grows with the text: the base spacing step is rem-based, so a text-only zoom
     // enlarges the header and the pane top together.
@@ -20,36 +21,38 @@ internal sealed class DockGeometry
     internal List<Entry> Entries { get; } = [];
     internal string Style { get; private set; } = "";
 
-    internal static DockGeometry Build(DockNode root, Func<string, string> id, double width, double height)
+    internal static DockGeometry Build(DockNode root, Func<string, string> id, double width, double height,
+        int gutter, int groupMin)
     {
         var layout = new DockGeometry();
         var size = new Dictionary<string, (int Width, int Height)>(StringComparer.Ordinal);
-        Measure(root, size);
+        Measure(root, size, gutter, groupMin);
         var min = size[root.Key];
         var css = new StringBuilder($"min-inline-size:{min.Width}px;min-block-size:{min.Height}px;");
         layout.Add(root, id, size, css, "0px", "0px", "100%", "100%",
-            Math.Max(width, min.Width), Math.Max(height, min.Height));
+            Math.Max(width, min.Width), Math.Max(height, min.Height), gutter);
         layout.Style = css.ToString();
         return layout;
     }
 
-    private static (int Width, int Height) Measure(DockNode node, Dictionary<string, (int Width, int Height)> sizes)
+    private static (int Width, int Height) Measure(DockNode node, Dictionary<string, (int Width, int Height)> sizes,
+        int gutter, int groupMin)
     {
-        var result = (Width: 96, Height: 96);
+        var result = (Width: groupMin, Height: groupMin);
         if (node is DockSplit split)
         {
-            var first = Measure(split.First, sizes);
-            var next = Measure(split.Second, sizes);
+            var first = Measure(split.First, sizes, gutter, groupMin);
+            var next = Measure(split.Second, sizes, gutter, groupMin);
             result = split.Axis == DockAxis.Horizontal
-                ? (first.Width + Gutter + next.Width, Math.Max(first.Height, next.Height))
-                : (Math.Max(first.Width, next.Width), first.Height + Gutter + next.Height);
+                ? (first.Width + gutter + next.Width, Math.Max(first.Height, next.Height))
+                : (Math.Max(first.Width, next.Width), first.Height + gutter + next.Height);
         }
         sizes.Add(node.Key, result);
         return result;
     }
 
     private void Add(DockNode node, Func<string, string> id, Dictionary<string, (int Width, int Height)> sizes,
-        StringBuilder css, string x, string y, string w, string h, double width, double height)
+        StringBuilder css, string x, string y, string w, string h, double width, double height, int gutter)
     {
         var key = id(node.Key);
         x = Variable(css, key, "x", x);
@@ -69,29 +72,29 @@ internal sealed class DockGeometry
         var horizontal = split.Axis == DockAxis.Horizontal;
         var start = sizes[split.First.Key];
         var end = sizes[split.Second.Key];
-        var available = (horizontal ? width : height) - Gutter;
+        var available = (horizontal ? width : height) - gutter;
         var min = (double)(horizontal ? start.Width : start.Height);
         var max = Math.Max(min, available - (horizontal ? end.Width : end.Height));
         var firstSize = Math.Clamp(available * split.Fraction, min, max);
         var axis = horizontal ? w : h;
         var farMin = horizontal ? end.Width : end.Height;
-        var preferred = $"calc(({axis} - {Gutter}px) * {CssNumber(split.Fraction)})";
-        var first = $"var({Preview(key)}, clamp({CssNumber(min)}px, {preferred}, calc({axis} - {Gutter + farMin}px)))";
+        var preferred = $"calc(({axis} - {gutter}px) * {CssNumber(split.Fraction)})";
+        var first = $"var({Preview(key)}, clamp({CssNumber(min)}px, {preferred}, calc({axis} - {gutter + farMin}px)))";
         first = Variable(css, key, "first", first);
-        var next = $"calc({axis} - {first} - {Gutter}px)";
+        var next = $"calc({axis} - {first} - {gutter}px)";
         if (horizontal)
         {
-            Add(split.First, id, sizes, css, x, y, first, h, firstSize, height);
-            Entries.Add(new(key, Position($"calc({x} + {first})", y, $"{Gutter}px", h), Split: split,
+            Add(split.First, id, sizes, css, x, y, first, h, firstSize, height, gutter);
+            Entries.Add(new(key, Position($"calc({x} + {first})", y, $"{gutter}px", h), Split: split,
                 Size: firstSize, Min: min, Max: max, Available: available));
-            Add(split.Second, id, sizes, css, $"calc({x} + {first} + {Gutter}px)", y, next, h, available - firstSize, height);
+            Add(split.Second, id, sizes, css, $"calc({x} + {first} + {gutter}px)", y, next, h, available - firstSize, height, gutter);
         }
         else
         {
-            Add(split.First, id, sizes, css, x, y, w, first, width, firstSize);
-            Entries.Add(new(key, Position(x, $"calc({y} + {first})", w, $"{Gutter}px"), Split: split,
+            Add(split.First, id, sizes, css, x, y, w, first, width, firstSize, gutter);
+            Entries.Add(new(key, Position(x, $"calc({y} + {first})", w, $"{gutter}px"), Split: split,
                 Size: firstSize, Min: min, Max: max, Available: available));
-            Add(split.Second, id, sizes, css, x, $"calc({y} + {first} + {Gutter}px)", w, next, width, available - firstSize);
+            Add(split.Second, id, sizes, css, x, $"calc({y} + {first} + {gutter}px)", w, next, width, available - firstSize, gutter);
         }
     }
 

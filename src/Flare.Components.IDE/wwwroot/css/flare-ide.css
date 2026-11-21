@@ -1549,11 +1549,11 @@ button.flare-editor-breadcrumb-bar__segment-button {
 /* Dynamic docking. The panels remain keyed siblings in this canvas. */
 .flare-dock {
     block-size: 100%;
-    min-block-size: 12rem;
+    min-block-size: var(--flare-dock-min-block-size, var(--flare-spacing-32, 12rem));
     overflow: auto;
     position: relative;
-    background: var(--flare-color-surface);
-    color: var(--flare-color-on-surface);
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    color: var(--flare-ide-on-surface, var(--flare-color-on-surface));
 }
 
 .flare-dock__canvas {
@@ -1574,8 +1574,8 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-dock__header {
     display: flex;
     min-inline-size: 0;
-    background: var(--flare-color-surface-variant);
-    color: var(--flare-color-on-surface-variant);
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
     z-index: 1;
 }
 
@@ -1599,7 +1599,7 @@ button.flare-editor-breadcrumb-bar__segment-button {
     color: inherit;
     background: transparent;
     font: inherit;
-    padding-inline: var(--flare-spacing-2);
+    padding-inline: var(--flare-ide-spacing-2, var(--flare-spacing-2));
 }
 
 .flare-dock__tab {
@@ -1607,7 +1607,12 @@ button.flare-editor-breadcrumb-bar__segment-button {
     align-items: center;
     gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
     white-space: nowrap;
-    border-block-end: 2px solid transparent;
+    color: var(--flare-tabs-inactive-color, var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant)));
+    border-block-end: var(--flare-tabs-indicator-thickness, var(--flare-border-width-emphasis)) solid transparent;
+}
+
+.flare-dock__tab:hover {
+    color: var(--flare-tabs-inactive-hover-color, var(--flare-tabs-inactive-color, var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant))));
 }
 
 /* The grip is the only place a tab starts a drag, so the rest of the tab keeps the browser's
@@ -1624,19 +1629,22 @@ button.flare-editor-breadcrumb-bar__segment-button {
     color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
 }
 .flare-dock__tab[aria-selected="true"] {
-    color: var(--flare-color-primary);
+    color: var(--flare-tabs-active-color, var(--flare-ide-primary, var(--flare-color-primary)));
     border-block-end-color: currentColor;
 }
 
 .flare-dock__tab:focus-visible,
 .flare-dock__control:focus-visible,
 .flare-dock__actions button:focus-visible {
-    outline: 2px solid var(--flare-color-primary);
-    outline-offset: -2px;
+    outline: var(--flare-border-width-emphasis) solid var(--flare-ide-primary, var(--flare-color-primary));
+    outline-offset: calc(-1 * var(--flare-border-width-emphasis));
 }
 
-.flare-dock__control { flex: none; min-inline-size: 2rem; }
-.flare-dock__pane { overflow: auto; background: var(--flare-color-surface); }
+.flare-dock__control { flex: none; min-inline-size: var(--flare-spacing-8, 2rem); }
+.flare-dock__pane {
+    overflow: auto;
+    background: var(--flare-ide-editor-bg, var(--flare-ide-surface, var(--flare-color-surface)));
+}
 .flare-dock__pane[hidden] { display: none; }
 
 .flare-dock__splitter > .flare-splitter {
@@ -1651,14 +1659,16 @@ button.flare-editor-breadcrumb-bar__segment-button {
     inset-inline-end: 0;
     display: grid;
     min-inline-size: max-content;
-    max-block-size: 14rem;
+    max-block-size: var(--flare-dock-actions-max-size, var(--flare-spacing-32, 14rem));
     overflow: auto;
-    background: var(--flare-color-surface);
-    color: var(--flare-color-on-surface);
-    border: var(--flare-border-outline);
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    color: var(--flare-ide-on-surface, var(--flare-color-on-surface));
+    border: var(--flare-ide-border-width, var(--flare-border-width))
+        var(--flare-ide-border-style, var(--flare-border-style))
+        var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
-.flare-dock__actions button { padding-block: var(--flare-spacing-2); text-align: start; }
+.flare-dock__actions button { padding-block: var(--flare-ide-spacing-2, var(--flare-spacing-2)); text-align: start; }
 
 .flare-dock__targets { pointer-events: none; z-index: 2; }
 .flare-dock__target { position: absolute; pointer-events: none; }
