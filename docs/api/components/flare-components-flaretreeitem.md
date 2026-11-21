@@ -14,6 +14,7 @@
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown beside the label - any provider (a bare string is a Material Symbols name). |
 | `ItemData` | `object?` | `` | Parameter |  | Optional data object associated with this item for drag-and-drop events. |
 | `Label` | `string?` | `` | Parameter |  | Text label displayed for this tree item. |
+| `LabelContent` | `RenderFragment?` | `` | Parameter |  | Non-interactive content rendered inside the item's label span (flare-tree-item__label) in place of the visible Label text. Label remains the accessible name of the item - the row carries it as aria-label while this slot is set - and stays the default visible text when the slot is null. The host owns any controls inside the slot, including stopping their clicks from reaching the row. |
 | `Level` | `int` | `1` | Cascading |  | Current nesting depth of this item; propagated automatically via CascadingValue. Level 1 is the top-most level (root items inside FlareTreeView). |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the item row is clicked. |
 | `OnContextMenu` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback raised when this row is right-clicked. It fires for the row only - a child row raises its own - and does not select, expand or raise OnClick. When PreventContextMenuDefault is true the browser's own menu is suppressed. |

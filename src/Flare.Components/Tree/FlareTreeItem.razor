@@ -6,6 +6,7 @@
    drop, dragend - is a per-dragover interop round trip that had to be coalesced to stay usable, four
    fields of drag state, three drop-indicator classes, and the reason none of this worked on a phone. *@
 <li class="@BuildCssClass(_draggableClass)" role="treeitem"
+    aria-label="@(LabelContent is not null ? Label : null)"
     aria-expanded="@(HasChildren ? _expanded.ToString().ToLowerInvariant() : null)"
     aria-selected="@Selected.ToString().ToLowerInvariant()"
     aria-level="@Level"
@@ -42,7 +43,16 @@
         {
             <FlareIconView Value="Icon" Class="@Css.Classes.Tree.ItemIcon" />
         }
-        <span class="@Css.Classes.TreeView.Label">@Label</span>
+        <span class="@Css.Classes.TreeView.Label">
+            @if (LabelContent is not null)
+            {
+                @LabelContent
+            }
+            else
+            {
+                @Label
+            }
+        </span>
         @TrailingContent
         @if (Draggable)
         {
@@ -79,6 +89,12 @@
     [Parameter] public RenderFragment? TrailingContent { get; set; }
     /// <summary>Text label displayed for this tree item.</summary>
     [Parameter] public string? Label { get; set; }
+    /// <summary>Non-interactive content rendered inside the item's label span
+    /// (<c>flare-tree-item__label</c>) in place of the visible <see cref="Label"/> text. <see cref="Label"/>
+    /// remains the accessible name of the item - the row carries it as <c>aria-label</c> while this slot is
+    /// set - and stays the default visible text when the slot is null. The host owns any controls inside the
+    /// slot, including stopping their clicks from reaching the row.</summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
     /// <summary>Icon shown beside the label - any provider (a bare string is a Material Symbols name).</summary>
     [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Whether this item is currently selected.</summary>
