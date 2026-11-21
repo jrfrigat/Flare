@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using System.Reflection;
+using Flare.Components;
 using Flare.Components.IDE;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -98,6 +99,92 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.Contains("invalid", cut.Find("[role=status]").TextContent, StringComparison.OrdinalIgnoreCase);
         cut.Render(p => p.Add(x => x.Layout, new DockGroup("first", ["missing"])));
         Assert.Same(before, cut.FindComponents<Probe>().Single().Instance);
+    }
+
+    [Fact]
+    public async Task DropsATabBeforeATabInAnotherGroup()
+    {
+        DockLayoutChange? change = null;
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a", "b"], "a"), new DockGroup("last", ["c"], "c"));
+        var cut = RenderWorkspace(layout, requested => change = requested);
+        var context = cut.FindComponent<FlareDragContext<string>>();
+
+        var source = cut.FindAll("[data-flare-drag]")
+            .Single(x => x.QuerySelector("button[aria-label=A]") is not null)
+            .GetAttribute("data-flare-drag");
+        var header = FindHeader(cut, "C");
+        var row = header.QuerySelector("[data-flare-drop]")!.GetAttribute("data-flare-drop");
+        var over = header.QuerySelectorAll("[data-flare-drag]")
+            .Single(x => x.QuerySelector("button[aria-label=C]") is not null)
+            .GetAttribute("data-flare-drag");
+
+        await cut.InvokeAsync(() => context.Instance.OnDragStartAsync(source!));
+        await cut.InvokeAsync(() => context.Instance.OnDropAsync(source!, row!, 0, "before", over));
+
+        Assert.Equal(DockAction.Move, change!.Action);
+        var proposed = Assert.IsType<DockSplit>(change.Proposed);
+        Assert.Equal(new[] { "a", "c" }, Assert.IsType<DockGroup>(proposed.Second).Items.ToArray());
+    }
+
+    [Fact]
+    public async Task DropsATabOntoTheStartZoneOfAnotherGroup()
+    {
+        DockLayoutChange? change = null;
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a", "b"], "a"), new DockGroup("last", ["c"], "c"));
+        var cut = RenderWorkspace(layout, requested => change = requested);
+        var context = cut.FindComponent<FlareDragContext<string>>();
+
+        var source = cut.FindAll("[data-flare-drag]")
+            .Single(x => x.QuerySelector("button[aria-label=A]") is not null)
+            .GetAttribute("data-flare-drag");
+        var header = FindHeader(cut, "C");
+        const string marker = "-group-";
+        var headerId = header.Id!;
+        var suffix = headerId[(headerId.IndexOf(marker, StringComparison.Ordinal) + marker.Length)..];
+        var zone = cut.FindAll("[data-flare-drop]")
+            .Single(x => x.GetAttribute("data-flare-drop")!.EndsWith($"-{suffix}-start", StringComparison.Ordinal))
+            .GetAttribute("data-flare-drop");
+
+        await cut.InvokeAsync(() => context.Instance.OnDragStartAsync(source!));
+        await cut.InvokeAsync(() => context.Instance.OnDropAsync(source!, zone!, -1, "into", null));
+
+        Assert.Equal(DockAction.Split, change!.Action);
+        var proposed = Assert.IsType<DockSplit>(change.Proposed);
+        var target = Assert.IsType<DockSplit>(proposed.Second);
+        Assert.Equal(new[] { "a" }, Assert.IsType<DockGroup>(target.First).Items.ToArray());
+        Assert.Equal(new[] { "c" }, Assert.IsType<DockGroup>(target.Second).Items.ToArray());
+    }
+
+    [Fact]
+    public async Task DeleteClosesTheFocusedTab()
+    {
+        DockLayoutChange? change = null;
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b"], "a"), requested => change = requested);
+
+        await cut.Find("button[role=tab][aria-label=B]")
+            .TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "Delete" });
+
+        Assert.Equal(DockAction.Close, change!.Action);
+        Assert.Equal("b", change.ItemKey);
+        Assert.Equal(new[] { "a" }, Assert.IsType<DockGroup>(change.Proposed).Items.ToArray());
+    }
+
+    [Fact]
+    public async Task ArrowKeysMoveFocusBetweenTabs()
+    {
+        var module = JSInterop.SetupModule("./_content/Flare.Components.IDE/js/flare-dock.js");
+        module.SetupVoid("register");
+        module.SetupVoid("focusTab");
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b", "c"], "a"), _ => { });
+        var tabA = cut.Find("button[role=tab][aria-label=A]");
+        var tabB = cut.Find("button[role=tab][aria-label=B]");
+
+        await tabA.TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "ArrowRight" });
+
+        cut.WaitForAssertion(() => Assert.Contains(module.Invocations,
+            invocation => invocation.Identifier == "focusTab" && (string?)invocation.Arguments[1] == tabB.Id));
     }
 
     [Fact]
