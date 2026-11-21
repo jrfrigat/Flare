@@ -3,14 +3,33 @@ using System.Collections.Immutable;
 namespace Flare.Components.IDE;
 
 /// <summary>A workspace layout node with a key unique within the workspace.</summary>
-/// <param name="Key">The stable identity of the node.</param>
-public abstract record DockNode(string Key);
+public abstract record DockNode
+{
+    private protected DockNode(string key) => Key = key;
+
+    /// <summary>The stable identity of the node.</summary>
+    public string Key { get; }
+}
 
 /// <summary>A group of docked tabs with its own selection.</summary>
-/// <param name="Key">The stable identity of the group.</param>
-/// <param name="Items">Catalog keys in display order.</param>
-/// <param name="ActiveKey">The selected item, or null for no selection.</param>
-public sealed record DockGroup(string Key, ImmutableArray<string> Items, string? ActiveKey = null) : DockNode(Key);
+public sealed record DockGroup : DockNode
+{
+    /// <summary>Creates a group with its selection.</summary>
+    /// <param name="key">The stable identity of the group.</param>
+    /// <param name="items">Catalog keys in display order.</param>
+    /// <param name="activeKey">The selected item, or null for no selection.</param>
+    public DockGroup(string key, ImmutableArray<string> items, string? activeKey = null) : base(key)
+    {
+        Items = items;
+        ActiveKey = activeKey;
+    }
+
+    /// <summary>Catalog keys in display order.</summary>
+    public ImmutableArray<string> Items { get; init; }
+
+    /// <summary>The selected item, or null for no selection.</summary>
+    public string? ActiveKey { get; init; }
+}
 
 /// <summary>The axis on which a split distributes space.</summary>
 public enum DockAxis
@@ -23,12 +42,34 @@ public enum DockAxis
 }
 
 /// <summary>Two branches separated by a resizable divider.</summary>
-/// <param name="Key">The stable identity of the split.</param>
-/// <param name="Axis">The axis of the split.</param>
-/// <param name="First">The branch at the logical start.</param>
-/// <param name="Second">The branch at the logical end.</param>
-/// <param name="Fraction">The preferred fraction of available space assigned to the first branch.</param>
-public sealed record DockSplit(string Key, DockAxis Axis, DockNode First, DockNode Second, double Fraction = 0.5) : DockNode(Key);
+public sealed record DockSplit : DockNode
+{
+    /// <summary>Creates a split with its branches and preferred fraction.</summary>
+    /// <param name="key">The stable identity of the split.</param>
+    /// <param name="axis">The axis of the split.</param>
+    /// <param name="first">The branch at the logical start.</param>
+    /// <param name="second">The branch at the logical end.</param>
+    /// <param name="fraction">The preferred fraction of available space assigned to the first branch.</param>
+    public DockSplit(string key, DockAxis axis, DockNode first, DockNode second, double fraction = 0.5) : base(key)
+    {
+        Axis = axis;
+        First = first;
+        Second = second;
+        Fraction = fraction;
+    }
+
+    /// <summary>The axis of the split.</summary>
+    public DockAxis Axis { get; init; }
+
+    /// <summary>The branch at the logical start.</summary>
+    public DockNode First { get; init; }
+
+    /// <summary>The branch at the logical end.</summary>
+    public DockNode Second { get; init; }
+
+    /// <summary>The preferred fraction of available space assigned to the first branch.</summary>
+    public double Fraction { get; init; }
+}
 
 /// <summary>A presentation entry whose key can appear in a dock group.</summary>
 /// <param name="Key">A stable, non-empty key unique within the workspace catalog.</param>
