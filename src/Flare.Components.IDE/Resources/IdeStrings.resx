@@ -52,6 +52,8 @@
   <data name="Dock_Previous" xml:space="preserve"><value>Move tab earlier</value></data>
   <data name="Dock_Next" xml:space="preserve"><value>Move tab later</value></data>
   <data name="Dock_MoveTo" xml:space="preserve"><value>Move to {0}</value></data>
+  <data name="Dock_MoveBefore" xml:space="preserve"><value>Move before {0}</value></data>
+  <data name="Dock_MoveAfter" xml:space="preserve"><value>Move after {0}</value></data>
   <data name="Dock_SplitAcross" xml:space="preserve"><value>Split beside {0}</value></data>
   <data name="Dock_SplitBefore" xml:space="preserve"><value>Split before {0}</value></data>
   <data name="Dock_SplitAbove" xml:space="preserve"><value>Split above {0}</value></data>

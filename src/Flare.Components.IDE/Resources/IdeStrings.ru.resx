@@ -52,6 +52,8 @@
   <data name="Dock_Previous" xml:space="preserve"><value>Переместить вкладку раньше</value></data>
   <data name="Dock_Next" xml:space="preserve"><value>Переместить вкладку позже</value></data>
   <data name="Dock_MoveTo" xml:space="preserve"><value>Переместить в группу {0}</value></data>
+  <data name="Dock_MoveBefore" xml:space="preserve"><value>Переместить перед вкладкой {0}</value></data>
+  <data name="Dock_MoveAfter" xml:space="preserve"><value>Переместить после вкладки {0}</value></data>
   <data name="Dock_SplitAcross" xml:space="preserve"><value>Разделить рядом с группой {0}</value></data>
   <data name="Dock_SplitBefore" xml:space="preserve"><value>Разделить перед группой {0}</value></data>
   <data name="Dock_SplitAbove" xml:space="preserve"><value>Разделить над группой {0}</value></data>

@@ -101,6 +101,25 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     [Fact]
+    public void MovesATabBeforeASpecificTabInAnotherGroup()
+    {
+        DockLayoutChange? change = null;
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a", "b"], "a"), new DockGroup("last", ["c"], "c"));
+        var cut = RenderWorkspace(layout, requested => change = requested);
+
+        FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!.Click();
+        cut.FindAll(".flare-dock__actions button").Single(x => x.TextContent.Trim() == "Move before C").Click();
+
+        Assert.Equal(DockAction.Move, change!.Action);
+        Assert.Equal("last", change.TargetKey);
+        var proposed = Assert.IsType<DockSplit>(change.Proposed);
+        var last = Assert.IsType<DockGroup>(proposed.Second);
+        Assert.Equal(new[] { "a", "c" }, last.Items.ToArray());
+        Assert.Equal("a", last.ActiveKey);
+    }
+
+    [Fact]
     public void TheActionsMenuIsLinkedToItsButtonAndClosesOnEscape()
     {
         var cut = RenderWorkspace(new DockGroup("first", ["a", "b"], "a"), _ => { });

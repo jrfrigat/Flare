@@ -93,6 +93,15 @@
                                             <button type="button" @onclick="() => MoveAsync(active, target, target.Items.Length)">
                                                 @string.Format(Text("Dock_MoveTo"), TabListLabel(target))
                                             </button>
+                                            @foreach (var targetKey in target.Items)
+                                            {
+                                                <button type="button" @onclick="() => MoveAsync(active, target, target.Items.IndexOf(targetKey))">
+                                                    @string.Format(Text("Dock_MoveBefore"), _catalog[targetKey].Title)
+                                                </button>
+                                                <button type="button" @onclick="() => MoveAsync(active, target, target.Items.IndexOf(targetKey) + 1)">
+                                                    @string.Format(Text("Dock_MoveAfter"), _catalog[targetKey].Title)
+                                                </button>
+                                            }
                                         }
                                         @if (target.Items.Length > (target.Key == group.Key ? 1 : 0) &&
                                              MayRequest(DockAction.Split, active, target.Key))
