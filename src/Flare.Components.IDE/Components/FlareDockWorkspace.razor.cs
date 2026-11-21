@@ -96,8 +96,6 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
             if (!_index.Groups.ContainsKey(key) && !_index.Splits.ContainsKey(key) && !_index.Owners.ContainsKey(key))
                 _ids.Remove(key);
         _status = null;
-        _gutter = Math.Max(1, (int)Math.Round(ReadTokenNum("--flare-dock-gutter", DockGeometry.Gutter)));
-        _groupMin = Math.Max(1, (int)Math.Round(ReadTokenNum("--flare-dock-group-min", DockGeometry.GroupMin)));
         if (_openActions is { } open && !_index.Groups.ContainsKey(open))
         {
             _openActions = null;
@@ -133,6 +131,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private string DragId(string key) => $"{_canvasId}-drag-{Id(key)}";
     private string ZoneId(string key, string zone) => $"{_canvasId}-{Id(key)}-{zone}";
     private string ActionsId(string key) => $"{_canvasId}-actions-{Id(key)}";
+    private string ActionsToggleId(string key) => $"{_canvasId}-actions-toggle-{Id(key)}";
     private string Text(string key) => Localizer<IdeStrings>()[key].Value;
     private string TabListLabel(DockGroup group) => GroupLabel?.Invoke(group) ??
         (group.Items.Length > 0 ? _catalog[group.Items[0]].Title : Text("Dock_Empty"));
@@ -298,11 +297,14 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         }
     }
 
-    private Task UpdateViewportAsync(double width, double height, bool rtl) => InvokeAsync(() =>
+    private Task UpdateViewportAsync(double width, double height, bool rtl, double gutter, double groupMin) => InvokeAsync(() =>
     {
+        var nextGutter = Math.Max(1, (int)Math.Round(gutter));
+        var nextGroupMin = Math.Max(1, (int)Math.Round(groupMin));
         if (_disposed || !double.IsFinite(width) || !double.IsFinite(height) ||
-            _width == width && _height == height && _rtl == rtl) return;
-        (_width, _height, _rtl) = (width, height, rtl);
+            _width == width && _height == height && _rtl == rtl &&
+            _gutter == nextGutter && _groupMin == nextGroupMin) return;
+        (_width, _height, _rtl, _gutter, _groupMin) = (width, height, rtl, nextGutter, nextGroupMin);
         Rebuild();
         StateHasChanged();
     });
@@ -346,7 +348,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         if (_focusActionsTrigger is { } trigger)
         {
             _focusActionsTrigger = null;
-            await CallJsAsync("focusElement", _canvas, ActionsId(trigger));
+            await CallJsAsync("focusElement", _canvas, ActionsToggleId(trigger));
         }
     }
 
@@ -377,8 +379,8 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private sealed class ViewportObserver(FlareDockWorkspace owner)
     {
         [JSInvokable]
-        public Task UpdateDockViewport(double width, double height, bool rtl) =>
-            owner.UpdateViewportAsync(width, height, rtl);
+        public Task UpdateDockViewport(double width, double height, bool rtl, double gutter, double groupMin) =>
+            owner.UpdateViewportAsync(width, height, rtl, gutter, groupMin);
 
         [JSInvokable]
         public Task CloseDockActions() => owner.CloseActionsAsync();

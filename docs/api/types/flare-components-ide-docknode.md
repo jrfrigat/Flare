@@ -4,7 +4,7 @@
 
 `Flare.Components.IDE.DockNode`
 
-A workspace layout node with a key unique within the workspace.
+A workspace layout node with a key unique within the workspace. The workspace understands DockGroup and DockSplit; another derived type is not part of the layout model and makes the whole layout invalid.
 
 ## Properties
 

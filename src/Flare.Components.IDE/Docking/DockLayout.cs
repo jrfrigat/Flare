@@ -2,7 +2,11 @@ using System.Collections.Immutable;
 
 namespace Flare.Components.IDE;
 
-/// <summary>A workspace layout node with a key unique within the workspace.</summary>
+/// <summary>
+/// A workspace layout node with a key unique within the workspace. The workspace understands
+/// <see cref="DockGroup"/> and <see cref="DockSplit"/>; another derived type is not part of the layout
+/// model and makes the whole layout invalid.
+/// </summary>
 public abstract record DockNode
 {
     private protected DockNode(string key) => Key = key;

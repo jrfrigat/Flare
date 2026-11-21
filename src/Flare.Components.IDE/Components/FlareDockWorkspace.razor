@@ -48,8 +48,9 @@
                                                 aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
                                                 tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"
                                                 @onkeydown="args => TabKeyAsync(args, group, tabKey)">
-                                            <span class="@DockCss.Grip" data-flare-drag-handle aria-hidden="true"
-                                                  @onclick="() => { }" @onclick:stopPropagation="true">&#x22EE;</span>
+                                            <span @onclick="() => { }" @onclick:stopPropagation="true">
+                                                <FlareDragHandle Class="@DockCss.Grip">&#x22EE;</FlareDragHandle>
+                                            </span>
                                             @if (TabTemplate is { } template)
                                             {
                                                 @template(tab)
@@ -66,6 +67,7 @@
                         @if (group.ActiveKey is { } active)
                         {
                             <button type="button" class="@DockCss.Control" aria-label="@Text("Dock_Actions")"
+                                    id="@ActionsToggleId(group.Key)"
                                     aria-expanded="@(_openActions == group.Key ? "true" : "false")"
                                     aria-controls="@ActionsId(group.Key)" data-flare-dock-actions-toggle
                                     @onclick="() => ToggleActions(group.Key)">&#x22EF;</button>

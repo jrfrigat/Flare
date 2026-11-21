@@ -1591,6 +1591,14 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-dock__tabs { overflow: auto hidden; scrollbar-width: thin; }
 .flare-dock__tab-wrap { flex: 0 0 auto; display: flex; }
 
+/* The label is the part a host may constrain; it shrinks and ellipsizes instead of pushing the
+   actions out of the group. */
+.flare-dock__label {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .flare-dock__tab,
 .flare-dock__control,
 .flare-dock__actions button {

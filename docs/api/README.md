@@ -247,7 +247,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`DockGroup`](types/flare-components-ide-dockgroup.md) — A group of docked tabs with its own selection.
 - [`DockItem`](types/flare-components-ide-dockitem.md) — A presentation entry whose key can appear in a dock group.
 - [`DockLayoutChange`](types/flare-components-ide-docklayoutchange.md) — A workspace transition that the application can accept or reject.
-- [`DockNode`](types/flare-components-ide-docknode.md) — A workspace layout node with a key unique within the workspace.
+- [`DockNode`](types/flare-components-ide-docknode.md) — A workspace layout node with a key unique within the workspace. The workspace understands DockGroup and DockSplit; another derived type is not part of the layout model and makes the whole layout invalid.
 - [`DockSplit`](types/flare-components-ide-docksplit.md) — Two branches separated by a resizable divider.
 - [`FlareTableColumn`](types/flare-components-flaretablecolumn.md) — One column of a typed FlareTable when the table is described by Columns instead of raw table markup. A column renders its header once and its Field or Cell for every item.
 

@@ -1,28 +1,55 @@
 const workspaces = new WeakMap();
 
+// Layout lengths are resolved by the browser, not by C#: the tokens may be var() aliases or rem, and
+// only the cascade knows their pixels. Two probes read the effective gutter and group minimum.
+function measureTokens(canvas) {
+    const gutter = document.createElement('div');
+    gutter.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;block-size:0;' +
+        'inline-size:var(--flare-dock-gutter, var(--flare-splitter-gutter-size, 12px));';
+    const groupMin = document.createElement('div');
+    groupMin.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;inline-size:0;' +
+        'block-size:var(--flare-dock-group-min, 96px);';
+    canvas.append(gutter, groupMin);
+    const width = gutter.getBoundingClientRect().width;
+    const height = groupMin.getBoundingClientRect().height;
+    gutter.remove();
+    groupMin.remove();
+    return { gutter: width > 0 ? width : 12, groupMin: height > 0 ? height : 96 };
+}
+
 export function register(canvas, callback) {
     unregister(canvas);
     if (!canvas || !callback) return;
     const state = { resize: null, keyboard: null, focus: null, direction: [], outside: null };
+    let last = null;
     const report = () => {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
         const rtl = getComputedStyle(canvas).direction === 'rtl';
-        callback.invokeMethodAsync('UpdateDockViewport', canvas.clientWidth, canvas.clientHeight, rtl).catch(() => {});
+        const tokens = measureTokens(canvas);
+        const gutter = Math.max(1, Math.round(tokens.gutter));
+        const groupMin = Math.max(1, Math.round(tokens.groupMin));
+        if (last && last.width === width && last.height === height && last.rtl === rtl &&
+            last.gutter === gutter && last.groupMin === groupMin) return;
+        last = { width, height, rtl, gutter, groupMin };
+        callback.invokeMethodAsync('UpdateDockViewport', width, height, rtl, gutter, groupMin).catch(() => {});
     };
     state.resize = new ResizeObserver(report);
     state.resize.observe(canvas);
-    // A direction change does not resize the canvas, so the ResizeObserver never sees it. Watch the
-    // elements that can carry dir/class/style, including the document, for a live theme or locale flip.
+    // A direction change does not resize the canvas, so the ResizeObserver never sees it. Watch every
+    // ancestor that can carry dir/class/style, including the document, for a live theme or locale flip.
+    // The canvas itself is watched for dir/class only: its style carries the splitter preview, and a
+    // pointer move must not turn into an interop call.
     if (typeof MutationObserver !== 'undefined') {
-        const watch = element => {
+        const watch = (element, filter) => {
             if (!element) return;
             const observer = new MutationObserver(report);
-            observer.observe(element, { attributes: true, attributeFilter: ['dir', 'class', 'style'] });
+            observer.observe(element, { attributes: true, attributeFilter: filter });
             state.direction.push(observer);
         };
-        watch(canvas);
-        watch(canvas.parentElement);
-        watch(document.body);
-        watch(document.documentElement);
+        watch(canvas, ['dir', 'class']);
+        for (let element = canvas.parentElement; element; element = element.parentElement)
+            watch(element, ['dir', 'class', 'style']);
     }
     state.keyboard = event => {
         if (event.defaultPrevented || !event.target.closest?.('[data-flare-dock-tabs] [role="tab"]')) return;

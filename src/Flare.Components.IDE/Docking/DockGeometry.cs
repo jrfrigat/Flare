@@ -1,19 +1,16 @@
 using System.Globalization;
 using System.Text;
-using Flare.Css;
 
 namespace Flare.Components.IDE;
 
 internal sealed class DockGeometry
 {
     internal const int Gutter = 12;
-    internal const int Header = 32;
     internal const int GroupMin = 96;
 
-    // The header grows with the text: the base spacing step is rem-based, so a text-only zoom
-    // enlarges the header and the pane top together.
-    internal static readonly string HeaderHeight =
-        $"var(--flare-dock-header-height, var({Css.Tokens.Spacing.S8}, {Header}px))";
+    // The header grows with the text. em follows the font of the dock itself, so a larger tab label
+    // enlarges the strip and the pane top together even when the root font-size does not change.
+    internal static readonly string HeaderHeight = "var(--flare-dock-header-height, 2.5em)";
 
     internal sealed record Entry(string Id, string Style, DockGroup? Group = null, DockSplit? Split = null,
         string? Item = null, double Size = 0, double Min = 0, double Max = 0, double Available = 0);

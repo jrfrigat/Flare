@@ -86,6 +86,7 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         var tabs = cut.FindAll("button[role=tab]");
         Assert.Equal(2, tabs.Count);
         Assert.All(tabs, tab => Assert.NotNull(tab.QuerySelector($"[data-{Css.Classes.Drag.Handle}]")));
+        Assert.All(tabs, tab => Assert.NotNull(tab.QuerySelector($".{Css.Classes.Drag.Handle}")));
     }
 
     [Fact]
@@ -228,6 +229,36 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
 
         menu.KeyDown(Key.Escape);
         Assert.Empty(cut.FindAll("[data-flare-dock-actions]"));
+    }
+
+    [Fact]
+    public void EscapeReturnsFocusToTheActionsButton()
+    {
+        var module = JSInterop.SetupModule("./_content/Flare.Components.IDE/js/flare-dock.js");
+        module.SetupVoid("register");
+        module.SetupVoid("focusElement");
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b"], "a"), _ => { });
+        var toggle = FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!;
+        var toggleId = toggle.Id;
+        toggle.Click();
+
+        cut.Find("[data-flare-dock-actions]").KeyDown(Key.Escape);
+
+        cut.WaitForAssertion(() => Assert.Contains(module.Invocations,
+            invocation => invocation.Identifier == "focusElement" && (string?)invocation.Arguments[1] == toggleId));
+    }
+
+    [Fact]
+    public void RejectsANodeTypeDerivedOutsideTheLayoutModel()
+    {
+        var cut = RenderWorkspace(new CustomNode(new DockGroup("first", ["a"], "a")), _ => { });
+
+        Assert.Contains("invalid", cut.Find("[role=status]").TextContent, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private sealed record CustomNode : DockNode
+    {
+        public CustomNode(DockNode original) : base(original) { }
     }
 
     [Fact]
