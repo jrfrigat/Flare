@@ -1678,22 +1678,75 @@ button.flare-editor-breadcrumb-bar__segment-button {
 
 .flare-dock__actions button { padding-block: var(--flare-ide-spacing-2, var(--flare-spacing-2)); text-align: start; }
 
+/* Docking targets. Hit testing still uses the same five regions; the visual is a single restrained
+   highlight of the region under the pointer rather than a grid of candidate rectangles. */
 .flare-dock__targets { pointer-events: none; z-index: 2; }
-.flare-dock__target { position: absolute; pointer-events: none; }
-.flare-dock__target.flare-drop-zone--candidate { pointer-events: auto; }
+.flare-dock__target {
+    --_dock-target-accent: var(--flare-ide-primary, var(--flare-color-primary));
+    --_dock-target-fill: color-mix(in srgb, var(--_dock-target-accent) 14%, transparent);
+    --_dock-target-line: color-mix(in srgb, var(--_dock-target-accent) 55%, transparent);
+    position: absolute;
+    pointer-events: none;
+}
+.flare-dock__target.flare-drop-zone--candidate { outline: none; pointer-events: auto; }
+.flare-dock__target.flare-drop-zone--over {
+    background: var(--_dock-target-fill);
+    outline: var(--flare-border-width) solid var(--_dock-target-line);
+    outline-offset: calc(-1 * var(--flare-border-width));
+    border-radius: var(--flare-shape-small);
+}
 .flare-dock__target[data-flare-dock-zone="into"] { inset: 20%; }
 
+/* The centre means "into the group": a small plus marks it without a word. */
+.flare-dock__target[data-flare-dock-zone="into"].flare-drop-zone--over::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+    inline-size: var(--flare-spacing-4);
+    block-size: var(--flare-spacing-4);
+    background:
+        linear-gradient(var(--_dock-target-line), var(--_dock-target-line)) center / 100% var(--flare-border-width-emphasis) no-repeat,
+        linear-gradient(var(--_dock-target-line), var(--_dock-target-line)) center / var(--flare-border-width-emphasis) 100% no-repeat;
+}
+
+/* An edge means "split here": a line on the inner boundary says which edge will move. */
 .flare-dock__target[data-flare-dock-zone="start"],
 .flare-dock__target[data-flare-dock-zone="end"] { inset-block: 0; inline-size: 20%; }
 
 .flare-dock__target[data-flare-dock-zone="start"] { inset-inline-start: 0; }
 .flare-dock__target[data-flare-dock-zone="end"] { inset-inline-end: 0; }
 
+.flare-dock__target[data-flare-dock-zone="start"].flare-drop-zone--over::after,
+.flare-dock__target[data-flare-dock-zone="end"].flare-drop-zone--over::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inline-size: var(--flare-border-width-emphasis);
+    background: var(--_dock-target-line);
+}
+
+.flare-dock__target[data-flare-dock-zone="start"].flare-drop-zone--over::after { inset-inline-end: 0; }
+.flare-dock__target[data-flare-dock-zone="end"].flare-drop-zone--over::after { inset-inline-start: 0; }
+
 .flare-dock__target[data-flare-dock-zone="top"],
 .flare-dock__target[data-flare-dock-zone="bottom"] { inset-inline: 20%; block-size: 20%; }
 
 .flare-dock__target[data-flare-dock-zone="top"] { inset-block-start: 0; }
 .flare-dock__target[data-flare-dock-zone="bottom"] { inset-block-end: 0; }
+
+.flare-dock__target[data-flare-dock-zone="top"].flare-drop-zone--over::after,
+.flare-dock__target[data-flare-dock-zone="bottom"].flare-drop-zone--over::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    block-size: var(--flare-border-width-emphasis);
+    background: var(--_dock-target-line);
+}
+
+.flare-dock__target[data-flare-dock-zone="top"].flare-drop-zone--over::after { inset-block-end: 0; }
+.flare-dock__target[data-flare-dock-zone="bottom"].flare-drop-zone--over::after { inset-block-start: 0; }
 
 .flare-dock__status {
     position: absolute;
