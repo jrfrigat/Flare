@@ -139,6 +139,11 @@ string[] supportingTypeNames =
 [
     "Flare.Components.FlareTableColumn`1",
     "Flare.Components.DataGridColumn`1",
+    "Flare.Components.IDE.DockNode",
+    "Flare.Components.IDE.DockGroup",
+    "Flare.Components.IDE.DockSplit",
+    "Flare.Components.IDE.DockItem",
+    "Flare.Components.IDE.DockLayoutChange",
 ];
 
 var allTypes = assemblies

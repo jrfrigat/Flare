@@ -21,6 +21,13 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
+## Related types
+
+- [`DockGroup`](../types/flare-components-ide-dockgroup.md) — A group of docked tabs with its own selection.
+- [`DockItem`](../types/flare-components-ide-dockitem.md) — A presentation entry whose key can appear in a dock group.
+- [`DockLayoutChange`](../types/flare-components-ide-docklayoutchange.md) — A workspace transition that the application can accept or reject.
+- [`DockNode`](../types/flare-components-ide-docknode.md) — A workspace layout node with a key unique within the workspace.
+
 ## Methods
 
 This component exposes no documented public methods.
