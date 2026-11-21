@@ -272,8 +272,11 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         {
             _openActions = null;
             _focusMenu = false;
-            _focusKey = action == DockAction.Resize ? null : item;
-            _focusGroup = action == DockAction.Resize ? null : target;
+            // Activating a tab leaves the focus on the tab itself; only actions that can move or
+            // dispose the focused pane pay for the capture and restore round trip.
+            var restoresFocus = action is not DockAction.Resize and not DockAction.Activate;
+            _focusKey = restoresFocus ? item : null;
+            _focusGroup = restoresFocus ? target : null;
             if (_focusKey is not null)
             {
                 await CallJsAsync("captureFocus", _canvas);
