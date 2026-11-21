@@ -138,8 +138,8 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private bool MayRequest(DockAction action, string? key, string target) =>
         OnChangeRequested.HasDelegate && (CanRequest?.Invoke(action, key, target) ?? true);
     private static string BodyStyle(string id) =>
-        $"inset-inline-start:var(--flare-dock-{id}-x);inset-block-start:calc(var(--flare-dock-{id}-y) + {DockGeometry.Header}px);" +
-        $"inline-size:var(--flare-dock-{id}-w);block-size:calc(var(--flare-dock-{id}-h) - {DockGeometry.Header}px);";
+        $"inset-inline-start:var(--flare-dock-{id}-x);inset-block-start:calc(var(--flare-dock-{id}-y) + {DockGeometry.HeaderHeight});" +
+        $"inline-size:var(--flare-dock-{id}-w);block-size:calc(var(--flare-dock-{id}-h) - {DockGeometry.HeaderHeight});";
 
     private void ToggleActions(string group)
     {

@@ -101,6 +101,15 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     [Fact]
+    public void TheHeaderAndPaneShareTheTextScaledHeightVariable()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { });
+
+        Assert.Contains("--flare-dock-header-height", cut.Find(".flare-dock__header").GetAttribute("style"));
+        Assert.Contains("--flare-dock-header-height", cut.Find(".flare-dock__pane").GetAttribute("style"));
+    }
+
+    [Fact]
     public void MovesATabBeforeASpecificTabInAnotherGroup()
     {
         DockLayoutChange? change = null;

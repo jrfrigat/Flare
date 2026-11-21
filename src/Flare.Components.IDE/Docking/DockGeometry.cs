@@ -1,12 +1,18 @@
 using System.Globalization;
 using System.Text;
+using Flare.Css;
 
 namespace Flare.Components.IDE;
 
 internal sealed class DockGeometry
 {
     internal const int Gutter = 12;
-    internal const int Header = 36;
+    internal const int Header = 32;
+
+    // The header grows with the text: the base spacing step is rem-based, so a text-only zoom
+    // enlarges the header and the pane top together.
+    internal static readonly string HeaderHeight =
+        $"var(--flare-dock-header-height, var({Css.Tokens.Spacing.S8}, {Header}px))";
 
     internal sealed record Entry(string Id, string Style, DockGroup? Group = null, DockSplit? Split = null,
         string? Item = null, double Size = 0, double Min = 0, double Max = 0, double Available = 0);
@@ -52,8 +58,8 @@ internal sealed class DockGeometry
         h = Variable(css, key, "h", h);
         if (node is DockGroup group)
         {
-            Entries.Add(new(key, Position(x, y, w, $"{Header}px"), Group: group));
-            var body = Position(x, $"calc({y} + {Header}px)", w, $"calc({h} - {Header}px)");
+            Entries.Add(new(key, Position(x, y, w, HeaderHeight), Group: group));
+            var body = Position(x, $"calc({y} + {HeaderHeight})", w, $"calc({h} - {HeaderHeight})");
             foreach (var item in group.Items)
                 Entries.Add(new(key, body, Group: group, Item: item));
             return;
