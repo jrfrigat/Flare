@@ -98,17 +98,36 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.Same(before, cut.FindComponents<Probe>().Single().Instance);
     }
 
-    private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange> onChange) =>
-        Render<FlareDockWorkspace>(p => p
-            .Add(x => x.Layout, layout)
-            .Add(x => x.Items, Catalog)
-            .Add(x => x.OnChangeRequested, EventCallback.Factory.Create(this, onChange))
-            .Add(x => x.ContentTemplate, (RenderFragment<DockItem>)(item => builder =>
-            {
-                builder.OpenComponent<Probe>(0);
-                builder.AddAttribute(1, nameof(Probe.ItemKey), item.Key);
-                builder.CloseComponent();
-            })));
+    [Fact]
+    public void OmitsTheResizeHandleWhenResizeCannotBeRequested()
+    {
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a"], "a"), new DockGroup("last", ["b"], "b"));
+
+        var denied = RenderWorkspace(layout, _ => { }, (action, _, _) => action != DockAction.Resize);
+        Assert.Empty(denied.FindAll("[role=separator]"));
+
+        var readOnly = RenderWorkspace(layout, null);
+        Assert.Empty(readOnly.FindAll("[role=separator]"));
+    }
+
+    private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange>? onChange,
+        Func<DockAction, string?, string, bool>? canRequest = null) =>
+        Render<FlareDockWorkspace>(p =>
+        {
+            p.Add(x => x.Layout, layout)
+                .Add(x => x.Items, Catalog)
+                .Add(x => x.ContentTemplate, (RenderFragment<DockItem>)(item => builder =>
+                {
+                    builder.OpenComponent<Probe>(0);
+                    builder.AddAttribute(1, nameof(Probe.ItemKey), item.Key);
+                    builder.CloseComponent();
+                }));
+            if (onChange is not null)
+                p.Add(x => x.OnChangeRequested, EventCallback.Factory.Create(this, onChange));
+            if (canRequest is not null)
+                p.Add(x => x.CanRequest, canRequest);
+        });
 
     private static AngleSharp.Dom.IElement FindHeader(IRenderedComponent<FlareDockWorkspace> cut, string label) =>
         cut.FindAll(".flare-dock__header").Single(x => x.QuerySelector($"[role=tablist][aria-label={label}]") is not null);

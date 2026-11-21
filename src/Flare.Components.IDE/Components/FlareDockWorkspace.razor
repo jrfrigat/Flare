@@ -10,12 +10,15 @@
                 if (entry.Split is { } split)
                 {
                     <div @key="entry.Id" class="@DockCss.Splitter" style="@entry.Style">
-                        <FlareSplitter Orientation="@(split.Axis == DockAxis.Horizontal
-                                ? FlareSplitter.SplitterOrientation.Horizontal : FlareSplitter.SplitterOrientation.Vertical)"
-                            Size="@($"{DockGeometry.Gutter}px")" Value="@entry.Size"
-                            MinSize="@Pixels(entry.Min)" MaxSize="@Pixels(entry.Max)"
-                            ValueScope="@($"#{_canvasId}")" ValueVariable="@DockGeometry.Preview(entry.Id)"
-                            OnSizeChanged="@(value => ResizeAsync(entry, value))" />
+                        @if (MayRequest(DockAction.Resize, null, split.Key))
+                        {
+                            <FlareSplitter Orientation="@(split.Axis == DockAxis.Horizontal
+                                    ? FlareSplitter.SplitterOrientation.Horizontal : FlareSplitter.SplitterOrientation.Vertical)"
+                                Size="@($"{DockGeometry.Gutter}px")" Value="@entry.Size"
+                                MinSize="@Pixels(entry.Min)" MaxSize="@Pixels(entry.Max)"
+                                ValueScope="@($"#{_canvasId}")" ValueVariable="@DockGeometry.Preview(entry.Id)"
+                                OnSizeChanged="@(value => ResizeAsync(entry, value))" />
+                        }
                     </div>
                 }
                 else if (entry.Item is { } key && entry.Group is { } owner && _catalog.TryGetValue(key, out var item))
