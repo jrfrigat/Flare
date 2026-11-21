@@ -67,10 +67,13 @@
                         {
                             <button type="button" class="@DockCss.Control" aria-label="@Text("Dock_Actions")"
                                     aria-expanded="@(_openActions == group.Key ? "true" : "false")"
+                                    aria-controls="@ActionsId(group.Key)" data-flare-dock-actions-toggle
                                     @onclick="() => ToggleActions(group.Key)">&#x22EF;</button>
                             @if (_openActions == group.Key)
                             {
-                                <div class="@DockCss.Actions" role="group" aria-label="@Text("Dock_Actions")">
+                                <div class="@DockCss.Actions" role="group" aria-label="@Text("Dock_Actions")"
+                                     id="@ActionsId(group.Key)" data-flare-dock-actions
+                                     @onkeydown="ActionsKeyAsync">
                                     @foreach (var target in _index.Groups.Values)
                                     {
                                         @if (target.Key == group.Key)

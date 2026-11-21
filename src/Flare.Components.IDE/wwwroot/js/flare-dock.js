@@ -3,7 +3,7 @@ const workspaces = new WeakMap();
 export function register(canvas, callback) {
     unregister(canvas);
     if (!canvas || !callback) return;
-    const state = { resize: null, keyboard: null, focus: null, direction: [] };
+    const state = { resize: null, keyboard: null, focus: null, direction: [], outside: null };
     const report = () => {
         const rtl = getComputedStyle(canvas).direction === 'rtl';
         callback.invokeMethodAsync('UpdateDockViewport', canvas.clientWidth, canvas.clientHeight, rtl).catch(() => {});
@@ -29,6 +29,15 @@ export function register(canvas, callback) {
         if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) event.preventDefault();
     };
     canvas.addEventListener('keydown', state.keyboard);
+    // A pointer elsewhere dismisses the tab actions without another round trip to the trigger.
+    state.outside = event => {
+        if (!canvas.querySelector('[data-flare-dock-actions]')) return;
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (target.closest('[data-flare-dock-actions], [data-flare-dock-actions-toggle]')) return;
+        callback.invokeMethodAsync('CloseDockActions').catch(() => {});
+    };
+    document.addEventListener('pointerdown', state.outside, true);
     workspaces.set(canvas, state);
 }
 
@@ -37,6 +46,7 @@ export function unregister(canvas) {
     if (!state) return;
     state.resize.disconnect();
     for (const observer of state.direction) observer.disconnect();
+    document.removeEventListener('pointerdown', state.outside, true);
     canvas.removeEventListener('keydown', state.keyboard);
     workspaces.delete(canvas);
 }
@@ -51,6 +61,16 @@ export function focusTab(canvas, id) {
     for (const entry of tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]'))
         entry.tabIndex = entry === tab ? 0 : -1;
     tab.focus();
+}
+
+export function focusActions(canvas) {
+    const first = canvas?.querySelector('[data-flare-dock-actions] button');
+    if (first) first.focus();
+}
+
+export function focusElement(canvas, id) {
+    const element = document.getElementById(id);
+    if (element && canvas?.contains(element)) element.focus();
 }
 
 export function captureFocus(canvas) {

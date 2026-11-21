@@ -51,6 +51,8 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private double _height;
     private int _nextId;
     private string? _openActions;
+    private bool _focusMenu;
+    private string? _focusActionsTrigger;
     private string? _status;
     private string? _clearPreview;
     private string? _focusKey;
@@ -92,7 +94,11 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
             if (!_index.Groups.ContainsKey(key) && !_index.Splits.ContainsKey(key) && !_index.Owners.ContainsKey(key))
                 _ids.Remove(key);
         _status = null;
-        if (_openActions is { } open && !_index.Groups.ContainsKey(open)) _openActions = null;
+        if (_openActions is { } open && !_index.Groups.ContainsKey(open))
+        {
+            _openActions = null;
+            _focusMenu = false;
+        }
         Rebuild();
     }
 
@@ -122,6 +128,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private string HeaderId(string key) => $"{_canvasId}-group-{Id(key)}";
     private string DragId(string key) => $"{_canvasId}-drag-{Id(key)}";
     private string ZoneId(string key, string zone) => $"{_canvasId}-{Id(key)}-{zone}";
+    private string ActionsId(string key) => $"{_canvasId}-actions-{Id(key)}";
     private string Text(string key) => Localizer<IdeStrings>()[key].Value;
     private string TabListLabel(DockGroup group) => GroupLabel?.Invoke(group) ??
         (group.Items.Length > 0 ? _catalog[group.Items[0]].Title : Text("Dock_Empty"));
@@ -134,7 +141,33 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         $"inset-inline-start:var(--flare-dock-{id}-x);inset-block-start:calc(var(--flare-dock-{id}-y) + {DockGeometry.Header}px);" +
         $"inline-size:var(--flare-dock-{id}-w);block-size:calc(var(--flare-dock-{id}-h) - {DockGeometry.Header}px);";
 
-    private void ToggleActions(string group) => _openActions = _openActions == group ? null : group;
+    private void ToggleActions(string group)
+    {
+        if (_openActions == group)
+        {
+            _openActions = null;
+            _focusMenu = false;
+            return;
+        }
+        _openActions = group;
+        _focusMenu = true;
+    }
+
+    private void ActionsKeyAsync(KeyboardEventArgs args)
+    {
+        if (args.Key != "Escape" || _openActions is not { } open) return;
+        _openActions = null;
+        _focusMenu = false;
+        _focusActionsTrigger = open;
+    }
+
+    private Task CloseActionsAsync() => InvokeAsync(() =>
+    {
+        if (_disposed || _openActions is null) return;
+        _openActions = null;
+        _focusMenu = false;
+        StateHasChanged();
+    });
 
     private Task ActivateAsync(DockGroup group, string key) =>
         ProposeAsync(DockAction.Activate, key, group.Key, DockLayoutOperations.Activate(_accepted, group, key));
@@ -238,6 +271,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         try
         {
             _openActions = null;
+            _focusMenu = false;
             _focusKey = action == DockAction.Resize ? null : item;
             _focusGroup = action == DockAction.Resize ? null : target;
             if (_focusKey is not null)
@@ -297,6 +331,16 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
                 group is null ? null : HeaderId(group.Key);
             await CallJsAsync("restoreFocus", _canvas, fallback);
         }
+        if (_focusMenu && _openActions is not null)
+        {
+            _focusMenu = false;
+            await CallJsAsync("focusActions", _canvas);
+        }
+        if (_focusActionsTrigger is { } trigger)
+        {
+            _focusActionsTrigger = null;
+            await CallJsAsync("focusElement", _canvas, ActionsId(trigger));
+        }
     }
 
     private async ValueTask CallJsAsync(string method, params object?[] arguments)
@@ -328,5 +372,8 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         [JSInvokable]
         public Task UpdateDockViewport(double width, double height, bool rtl) =>
             owner.UpdateViewportAsync(width, height, rtl);
+
+        [JSInvokable]
+        public Task CloseDockActions() => owner.CloseActionsAsync();
     }
 }

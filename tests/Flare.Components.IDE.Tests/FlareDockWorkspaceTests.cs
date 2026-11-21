@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.Web;
 using System.Reflection;
 using Flare.Components.IDE;
 using Microsoft.AspNetCore.Components;
@@ -97,6 +98,20 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.Contains("invalid", cut.Find("[role=status]").TextContent, StringComparison.OrdinalIgnoreCase);
         cut.Render(p => p.Add(x => x.Layout, new DockGroup("first", ["missing"])));
         Assert.Same(before, cut.FindComponents<Probe>().Single().Instance);
+    }
+
+    [Fact]
+    public void TheActionsMenuIsLinkedToItsButtonAndClosesOnEscape()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b"], "a"), _ => { });
+        var toggle = FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!;
+        toggle.Click();
+
+        var menu = cut.Find("[data-flare-dock-actions]");
+        Assert.Equal(toggle.GetAttribute("aria-controls"), menu.Id);
+
+        menu.KeyDown(Key.Escape);
+        Assert.Empty(cut.FindAll("[data-flare-dock-actions]"));
     }
 
     [Fact]
