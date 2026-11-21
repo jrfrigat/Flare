@@ -249,6 +249,71 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     [Fact]
+    public void RendersOnlyTheRequestedBodyZones()
+    {
+        var group = new DockGroup("first", ["a"], "a");
+
+        var configured = RenderWorkspace(group, _ => { }, dropZones: DockDropZones.Start | DockDropZones.End);
+        Assert.Equal(new[] { "end", "start" },
+            configured.FindAll("[data-flare-dock-zone]")
+                .Select(zone => zone.GetAttribute("data-flare-dock-zone")!)
+                .OrderBy(zone => zone, StringComparer.Ordinal));
+
+        var none = RenderWorkspace(group, _ => { }, dropZones: DockDropZones.None);
+        Assert.Empty(none.FindAll("[data-flare-dock-zone]"));
+
+        var all = RenderWorkspace(group, _ => { });
+        Assert.Equal(5, all.FindAll("[data-flare-dock-zone]").Count);
+    }
+
+    [Fact]
+    public void TheActionsMenuFollowsTheEnabledZones()
+    {
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a", "b"], "a"), new DockGroup("last", ["c"], "c"));
+        var cut = RenderWorkspace(layout, _ => { },
+            dropZones: DockDropZones.Start | DockDropZones.End);
+
+        FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!.Click();
+        var items = cut.FindAll(".flare-dock__actions button").Select(button => button.TextContent.Trim()).ToArray();
+
+        Assert.Contains("Split before C", items);
+        Assert.Contains("Split beside C", items);
+        Assert.DoesNotContain("Split above C", items);
+        Assert.DoesNotContain("Split below C", items);
+        Assert.DoesNotContain("Move to C", items);
+        Assert.Contains("Move before C", items);
+        Assert.Contains("Move after C", items);
+    }
+
+    [Fact]
+    public void TheCenterZoneControlsMoveToButNotRowMoves()
+    {
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a", "b"], "a"), new DockGroup("last", ["c"], "c"));
+        var cut = RenderWorkspace(layout, _ => { }, dropZones: DockDropZones.Into);
+
+        FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!.Click();
+        var items = cut.FindAll(".flare-dock__actions button").Select(button => button.TextContent.Trim()).ToArray();
+
+        Assert.Contains("Move to C", items);
+        Assert.Contains("Move before C", items);
+        Assert.Contains("Move after C", items);
+        Assert.DoesNotContain(items, item => item.StartsWith("Split ", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void NoneKeepsTheTabRowAndNoBodyZones()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b"], "a"), _ => { },
+            dropZones: DockDropZones.None);
+
+        Assert.Single(cut.FindAll("[data-flare-dock-tabs]"));
+        Assert.Empty(cut.FindAll("[data-flare-dock-zone]"));
+        Assert.NotEmpty(cut.FindAll("[data-flare-drop]"));
+    }
+
+    [Fact]
     public void RejectsANodeTypeDerivedOutsideTheLayoutModel()
     {
         var cut = RenderWorkspace(new CustomNode(new DockGroup("first", ["a"], "a")), _ => { });
@@ -296,11 +361,13 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange>? onChange,
-        Func<DockAction, string?, string, bool>? canRequest = null) =>
+        Func<DockAction, string?, string, bool>? canRequest = null,
+        DockDropZones dropZones = DockDropZones.All) =>
         Render<FlareDockWorkspace>(p =>
         {
             p.Add(x => x.Layout, layout)
                 .Add(x => x.Items, Catalog)
+                .Add(x => x.DropZones, dropZones)
                 .Add(x => x.ContentTemplate, (RenderFragment<DockItem>)(item => builder =>
                 {
                     builder.OpenComponent<Probe>(0);

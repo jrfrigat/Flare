@@ -14849,5 +14849,15 @@ namespace Flare.Gallery.Resources {
         public static string DockDemo_Total { get { return ResourceManager.GetString("DockDemo_Total", resourceCulture); } }
         /// <summary>Empty group</summary>
         public static string DockDemo_Empty { get { return ResourceManager.GetString("DockDemo_Empty", resourceCulture); } }
+        /// <summary>Drop targets</summary>
+        public static string DockDemo_DropTargets { get { return ResourceManager.GetString("DockDemo_DropTargets", resourceCulture); } }
+        /// <summary>All regions</summary>
+        public static string DockDemo_ZonesAll { get { return ResourceManager.GetString("DockDemo_ZonesAll", resourceCulture); } }
+        /// <summary>Center and inline edges</summary>
+        public static string DockDemo_ZonesHorizontal { get { return ResourceManager.GetString("DockDemo_ZonesHorizontal", resourceCulture); } }
+        /// <summary>Edges only</summary>
+        public static string DockDemo_ZonesEdges { get { return ResourceManager.GetString("DockDemo_ZonesEdges", resourceCulture); } }
+        /// <summary>Tab row only</summary>
+        public static string DockDemo_ZonesNone { get { return ResourceManager.GetString("DockDemo_ZonesNone", resourceCulture); } }
     }
 }

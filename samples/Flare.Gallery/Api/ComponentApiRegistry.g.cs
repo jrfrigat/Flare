@@ -2842,6 +2842,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"CanRequest", @"Func<DockAction, string?, string, bool>?", null, @"Declares which operations the application currently offers. Actual approval belongs to the callback.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"ContentTemplate", @"RenderFragment<DockItem>?", null, @"Renders content for a mounted item. Keep the type of the root component stable across moves.", null, false, false, true, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"DropZones", @"DockDropZones", @"DockDropZones.All", @"Which body regions the workspace offers as drop targets. The tab row stays available for reordering.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"GroupLabel", @"Func<DockGroup, string>?", null, @"Provides a localized accessible label for a group.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<DockItem>", null, @"Presentation entries for the keys placed in the workspace.", null, false, false, true, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"Layout", @"DockNode", null, @"The accepted topology, supplied by the application each time it changes.", null, false, false, true, @"FlareDockWorkspace"),
@@ -10164,6 +10165,27 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Vertical", @"1", @"Place branches above and below one another."),
             },
             System.Array.Empty<string>());
+
+        e[@"DockDropZones"] = new ApiEnumInfo(
+            @"DockDropZones",
+            @"Flare.Components.IDE.DockDropZones",
+            @"Flare.Components.IDE",
+            @"Body regions a dock group offers as drop targets. The tab row is a separate reorder surface.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No body region; tabs can still be reordered and activated."),
+                new ApiEnumMember(@"Into", @"1", @"The center of the group: move the item into the group."),
+                new ApiEnumMember(@"Start", @"2", @"The inline-start edge: split before the group."),
+                new ApiEnumMember(@"End", @"4", @"The inline-end edge: split after the group."),
+                new ApiEnumMember(@"Top", @"8", @"The block-start edge: split above the group."),
+                new ApiEnumMember(@"Bottom", @"16", @"The block-end edge: split below the group."),
+                new ApiEnumMember(@"All", @"31", @"All five body regions."),
+            },
+            new string[]
+            {
+                @"FlareDockWorkspace",
+            });
 
         e[@"DrawerAnchor"] = new ApiEnumInfo(
             @"DrawerAnchor",

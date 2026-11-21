@@ -37,6 +37,9 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// <summary>Declares which operations the application currently offers. Actual approval belongs to the callback.</summary>
     [Parameter] public Func<DockAction, string?, string, bool>? CanRequest { get; set; }
 
+    /// <summary>Which body regions the workspace offers as drop targets. The tab row stays available for reordering.</summary>
+    [Parameter] public DockDropZones DropZones { get; set; } = DockDropZones.All;
+
     protected override string ComponentCssClass => DockCss.Root;
 
     private readonly string _canvasId = $"dock-{Guid.NewGuid():N}";
@@ -112,7 +115,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         {
             var row = ZoneId(group.Key, "row");
             _targets.Add(row, (group.Key, "row"));
-            foreach (var zone in BodyZones)
+            foreach (var zone in BodyZones.Where(AllowsZone))
                 _targets.Add(ZoneId(group.Key, zone), (group.Key, zone));
         }
     }
@@ -137,6 +140,16 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
         (group.Items.Length > 0 ? _catalog[group.Items[0]].Title : Text("Dock_Empty"));
     private static string TabIndex(DockGroup group, string key) =>
         key == (group.ActiveKey ?? group.Items[0]) ? "0" : "-1";
+    private bool HasZone(DockDropZones zones) => (DropZones & zones) != 0;
+    private bool AllowsZone(string zone) => HasZone(zone switch
+    {
+        "into" => DockDropZones.Into,
+        "start" => DockDropZones.Start,
+        "end" => DockDropZones.End,
+        "top" => DockDropZones.Top,
+        "bottom" => DockDropZones.Bottom,
+        _ => DockDropZones.None
+    });
     private static string Pixels(double size) => $"{DockGeometry.CssNumber(size)}px";
     private bool MayRequest(DockAction action, string? key, string target) =>
         OnChangeRequested.HasDelegate && (CanRequest?.Invoke(action, key, target) ?? true);

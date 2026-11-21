@@ -311,6 +311,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.DividerTextAlign`](enums/flare-components-dividertextalign.md) — Controls alignment of the text label inside a FlareDivider.
 - [`Flare.Components.IDE.DockAction`](enums/flare-components-ide-dockaction.md) — The kind of change proposed by the workspace.
 - [`Flare.Components.IDE.DockAxis`](enums/flare-components-ide-dockaxis.md) — The axis on which a split distributes space.
+- [`Flare.Components.IDE.DockDropZones`](enums/flare-components-ide-dockdropzones.md) — Body regions a dock group offers as drop targets. The tab row is a separate reorder surface.
 - [`Flare.Components.DrawerAnchor`](enums/flare-components-draweranchor.md) — Screen edge a FlareDrawer is anchored to.
 - [`Flare.Components.DrawerVariant`](enums/flare-components-drawervariant.md) — Display variant for FlareDrawer.
 - [`Flare.Components.DropEdge`](enums/flare-components-dropedge.md) — Where a drop landed relative to the item under the pointer.

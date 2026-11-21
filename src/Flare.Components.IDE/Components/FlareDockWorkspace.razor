@@ -92,9 +92,12 @@
                                         }
                                         else if (MayRequest(DockAction.Move, active, target.Key))
                                         {
-                                            <button type="button" @onclick="() => MoveAsync(active, target, target.Items.Length)">
-                                                @string.Format(Text("Dock_MoveTo"), TabListLabel(target))
-                                            </button>
+                                            @if (HasZone(DockDropZones.Into))
+                                            {
+                                                <button type="button" @onclick="() => MoveAsync(active, target, target.Items.Length)">
+                                                    @string.Format(Text("Dock_MoveTo"), TabListLabel(target))
+                                                </button>
+                                            }
                                             @foreach (var targetKey in target.Items)
                                             {
                                                 <button type="button" @onclick="() => MoveAsync(active, target, target.Items.IndexOf(targetKey))">
@@ -108,18 +111,30 @@
                                         @if (target.Items.Length > (target.Key == group.Key ? 1 : 0) &&
                                              MayRequest(DockAction.Split, active, target.Key))
                                         {
-                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Horizontal, true)">
-                                                @string.Format(Text("Dock_SplitBefore"), TabListLabel(target))
-                                            </button>
-                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Horizontal, false)">
-                                                @string.Format(Text("Dock_SplitAcross"), TabListLabel(target))
-                                            </button>
-                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Vertical, true)">
-                                                @string.Format(Text("Dock_SplitAbove"), TabListLabel(target))
-                                            </button>
-                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Vertical, false)">
-                                                @string.Format(Text("Dock_SplitBelow"), TabListLabel(target))
-                                            </button>
+                                            @if (HasZone(DockDropZones.Start))
+                                            {
+                                                <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Horizontal, true)">
+                                                    @string.Format(Text("Dock_SplitBefore"), TabListLabel(target))
+                                                </button>
+                                            }
+                                            @if (HasZone(DockDropZones.End))
+                                            {
+                                                <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Horizontal, false)">
+                                                    @string.Format(Text("Dock_SplitAcross"), TabListLabel(target))
+                                                </button>
+                                            }
+                                            @if (HasZone(DockDropZones.Top))
+                                            {
+                                                <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Vertical, true)">
+                                                    @string.Format(Text("Dock_SplitAbove"), TabListLabel(target))
+                                                </button>
+                                            }
+                                            @if (HasZone(DockDropZones.Bottom))
+                                            {
+                                                <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Vertical, false)">
+                                                    @string.Format(Text("Dock_SplitBelow"), TabListLabel(target))
+                                                </button>
+                                            }
                                         }
                                     }
                                 </div>
@@ -139,7 +154,7 @@
                 var group = entry.Group!;
                 var targetsId = ZoneId(group.Key, "targets");
                 <div @key="targetsId" class="@DockCss.Targets" style="@BodyStyle(entry.Id)" aria-hidden="true">
-                    @foreach (var zone in BodyZones)
+                    @foreach (var zone in BodyZones.Where(AllowsZone))
                     {
                         <FlareDropZone @key="zone" Target="@ZoneId(group.Key, zone)" Class="@DockCss.Target"
                                        data-flare-dock-zone="@zone" />

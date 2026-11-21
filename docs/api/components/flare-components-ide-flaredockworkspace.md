@@ -12,6 +12,7 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 | --- | --- | --- | --- | --- | --- |
 | `CanRequest` | `Func<DockAction, string?, string, bool>?` | `` | Parameter |  | Declares which operations the application currently offers. Actual approval belongs to the callback. |
 | `ContentTemplate` | `RenderFragment<DockItem>?` | `` | Parameter | Yes | Renders content for a mounted item. Keep the type of the root component stable across moves. |
+| `DropZones` | `DockDropZones` | `DockDropZones.All` | Parameter |  | Which body regions the workspace offers as drop targets. The tab row stays available for reordering. |
 | `GroupLabel` | `Func<DockGroup, string>?` | `` | Parameter |  | Provides a localized accessible label for a group. |
 | `Items` | `IReadOnlyList<DockItem>` | `` | Parameter | Yes | Presentation entries for the keys placed in the workspace. |
 | `Layout` | `DockNode` | `` | Parameter | Yes | The accepted topology, supplied by the application each time it changes. |

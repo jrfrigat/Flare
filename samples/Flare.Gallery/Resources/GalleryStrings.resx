@@ -5037,4 +5037,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DockDemo_Quarter" xml:space="preserve"><value>Quarter</value></data>
   <data name="DockDemo_Total" xml:space="preserve"><value>Total</value></data>
   <data name="DockDemo_Empty" xml:space="preserve"><value>Empty group</value></data>
+  <data name="DockDemo_DropTargets" xml:space="preserve"><value>Drop targets</value></data>
+  <data name="DockDemo_ZonesAll" xml:space="preserve"><value>All regions</value></data>
+  <data name="DockDemo_ZonesHorizontal" xml:space="preserve"><value>Center and inline edges</value></data>
+  <data name="DockDemo_ZonesEdges" xml:space="preserve"><value>Edges only</value></data>
+  <data name="DockDemo_ZonesNone" xml:space="preserve"><value>Tab row only</value></data>
 </root>
