@@ -63,6 +63,17 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     [Fact]
+    public void SplittersLeaveDirectionToTheSharedSplitter()
+    {
+        var layout = new DockSplit("split", DockAxis.Horizontal,
+            new DockGroup("first", ["a"], "a"), new DockGroup("last", ["b"], "b"));
+        var cut = RenderWorkspace(layout, _ => { });
+
+        var splitter = Assert.Single(cut.FindComponents<FlareSplitter>());
+        Assert.False(splitter.Instance.Reverse);
+    }
+
+    [Fact]
     public void RejectsDuplicateOrMissingKeysAndKeepsTheAcceptedLayout()
     {
         var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { });
