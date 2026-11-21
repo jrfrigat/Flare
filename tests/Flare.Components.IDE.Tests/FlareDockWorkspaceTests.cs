@@ -1,3 +1,4 @@
+using System.Reflection;
 using Flare.Components.IDE;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -96,6 +97,17 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.Contains("invalid", cut.Find("[role=status]").TextContent, StringComparison.OrdinalIgnoreCase);
         cut.Render(p => p.Add(x => x.Layout, new DockGroup("first", ["missing"])));
         Assert.Same(before, cut.FindComponents<Probe>().Single().Instance);
+    }
+
+    [Fact]
+    public void RemovingAnItemThatIsNotInTheGroupKeepsIt()
+    {
+        var remove = typeof(FlareDockWorkspace).Assembly
+            .GetType("Flare.Components.IDE.DockLayoutOperations")!
+            .GetMethod("Remove", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var group = new DockGroup("g", ["a"]);
+
+        Assert.Same(group, remove.Invoke(null, [group, "missing"]));
     }
 
     [Fact]

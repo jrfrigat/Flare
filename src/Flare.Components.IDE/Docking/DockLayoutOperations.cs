@@ -87,6 +87,7 @@ internal static class DockLayoutOperations
     private static DockGroup Remove(DockGroup group, string item)
     {
         var position = group.Items.IndexOf(item);
+        if (position < 0) return group;
         var items = group.Items.RemoveAt(position);
         var selected = group.ActiveKey != item ? group.ActiveKey :
             items.IsEmpty ? null : items[Math.Min(position, items.Length - 1)];
