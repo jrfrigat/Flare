@@ -88,6 +88,7 @@ This component exposes no documented public methods.
 - `FlareDialogCloseGuard`
 - `FlareDialogProvider`
 - `FlareDivider`
+- `FlareDockWorkspace`
 - `FlareDocumentTab`
 - `FlareDocumentTabs`
 - `FlareDragContext`

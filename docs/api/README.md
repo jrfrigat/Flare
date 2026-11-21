@@ -75,6 +75,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDialogCloseGuard`](components/flare-components-flaredialogcloseguard.md) — Confirms closing a dialog with unsaved changes. Place inside a dialog, and inside its EditForm to use EditContext.IsModified automatically. After saving, clear HasUnsavedChanges or call EditContext.MarkAsUnmodified before closing. Requires a FlareDialogProvider for the default prompt.
 - [`FlareDialogProvider`](components/flare-components-flaredialogprovider.md)
 - [`FlareDivider`](components/flare-components-flaredivider.md)
+- [`FlareDockWorkspace`](components/flare-components-ide-flaredockworkspace.md) — Renders and coordinates dynamic tab groups and nested splits within one Blazor renderer.
 - [`FlareDocumentTab`](components/flare-components-ide-flaredocumenttab.md)
 - [`FlareDocumentTabs`](components/flare-components-ide-flaredocumenttabs.md) — Displays document tabs with optional controlled selection, ordering and retained panels.
 - [`FlareDragContext`](components/flare-components-flaredragcontext.md)
@@ -303,6 +304,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Abstractions.DialogSize`](enums/flare-abstractions-dialogsize.md) — Maximum-width size presets for a Flare dialog (FlareDialog / a component dialog).
 - [`Flare.Components.DividerInset`](enums/flare-components-dividerinset.md) — Inset style of a FlareDivider.
 - [`Flare.Components.DividerTextAlign`](enums/flare-components-dividertextalign.md) — Controls alignment of the text label inside a FlareDivider.
+- [`Flare.Components.IDE.DockAction`](enums/flare-components-ide-dockaction.md) — The kind of change proposed by the workspace.
+- [`Flare.Components.IDE.DockAxis`](enums/flare-components-ide-dockaxis.md) — The axis on which a split distributes space.
 - [`Flare.Components.DrawerAnchor`](enums/flare-components-draweranchor.md) — Screen edge a FlareDrawer is anchored to.
 - [`Flare.Components.DrawerVariant`](enums/flare-components-drawervariant.md) — Display variant for FlareDrawer.
 - [`Flare.Components.DropEdge`](enums/flare-components-dropedge.md) — Where a drop landed relative to the item under the pointer.

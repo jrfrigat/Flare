@@ -1,0 +1,132 @@
+@namespace Flare.Components.IDE
+@inherits FlareLocalizedComponentBase
+
+<FlareDragContext TPayload="string" OnDrop="HandleDropAsync" OnDragStart="BeginDrag"
+                  OnDragEnd="EndDrag" CanDrop="AllowsDrop" KeyboardReorder="false">
+    <div class="@BuildCssClass()" style="@Style" tabindex="-1" @attributes="AdditionalAttributes">
+        <div class="@DockCss.Canvas" id="@_canvasId" @ref="_canvas" style="@_geometry.Style">
+            @foreach (var entry in _geometry.Entries)
+            {
+                if (entry.Split is { } split)
+                {
+                    <div @key="entry.Id" class="@DockCss.Splitter" style="@entry.Style">
+                        <FlareSplitter Orientation="@(split.Axis == DockAxis.Horizontal
+                                ? FlareSplitter.SplitterOrientation.Horizontal : FlareSplitter.SplitterOrientation.Vertical)"
+                            Size="@($"{DockGeometry.Gutter}px")" Value="@entry.Size" Reverse="@(_rtl && split.Axis == DockAxis.Horizontal)"
+                            MinSize="@Pixels(entry.Min)" MaxSize="@Pixels(entry.Max)"
+                            ValueScope="@($"#{_canvasId}")" ValueVariable="@DockGeometry.Preview(entry.Id)"
+                            OnSizeChanged="@(value => ResizeAsync(entry, value))" />
+                    </div>
+                }
+                else if (entry.Item is { } key && entry.Group is { } owner && _catalog.TryGetValue(key, out var item))
+                {
+                    <section @key="PanelId(key)" id="@PanelId(key)" role="tabpanel" tabindex="0"
+                             aria-labelledby="@TabId(key)" hidden="@(owner.ActiveKey != key)"
+                             class="@DockCss.Pane" style="@entry.Style" data-flare-dock-pane>
+                        @if (owner.ActiveKey == key || item.KeepAlive && _activated.Contains(key))
+                        {
+                            @ContentTemplate?.Invoke(item)
+                        }
+                    </section>
+                }
+                else if (entry.Group is { } group)
+                {
+                    <header @key="entry.Id" id="@HeaderId(group.Key)" class="@DockCss.Header"
+                            style="@entry.Style" tabindex="-1">
+                        <FlareDropZone Target="@ZoneId(group.Key, "row")" Placement="DropPlacement.Between"
+                                       Class="@DockCss.TabZone">
+                            <div role="tablist" aria-label="@TabListLabel(group)" class="@DockCss.Tabs" data-flare-dock-tabs>
+                                @foreach (var tabKey in group.Items)
+                                {
+                                    var tab = _catalog[tabKey];
+                                    <FlareDraggable @key="tabKey" Id="@DragId(tabKey)" Payload="@tabKey" Class="@DockCss.TabWrap">
+                                        <button type="button" class="@DockCss.Tab" role="tab" id="@TabId(tabKey)"
+                                                aria-label="@tab.Title" aria-controls="@PanelId(tabKey)"
+                                                aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
+                                                tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"
+                                                @onkeydown="args => TabKeyAsync(args, group, tabKey)">
+                                            @if (TabTemplate is { } template)
+                                            {
+                                                @template(tab)
+                                            }
+                                            else
+                                            {
+                                                @tab.Title
+                                            }
+                                        </button>
+                                    </FlareDraggable>
+                                }
+                            </div>
+                        </FlareDropZone>
+                        @if (group.ActiveKey is { } active)
+                        {
+                            <button type="button" class="@DockCss.Control" aria-label="@Text("Dock_Actions")"
+                                    aria-expanded="@(_openActions == group.Key ? "true" : "false")"
+                                    @onclick="() => ToggleActions(group.Key)">&#x22EF;</button>
+                            @if (_openActions == group.Key)
+                            {
+                                <div class="@DockCss.Actions" role="group" aria-label="@Text("Dock_Actions")">
+                                    @foreach (var target in _index.Groups.Values)
+                                    {
+                                        @if (target.Key == group.Key)
+                                        {
+                                            var i = group.Items.IndexOf(active);
+                                            @if (i > 0 && MayRequest(DockAction.Move, active, target.Key))
+                                            {
+                                                <button type="button" @onclick="() => MoveAsync(active, target, i - 1)">@Text("Dock_Previous")</button>
+                                            }
+                                            @if (i < group.Items.Length - 1 && MayRequest(DockAction.Move, active, target.Key))
+                                            {
+                                                <button type="button" @onclick="() => MoveAsync(active, target, i + 1)">@Text("Dock_Next")</button>
+                                            }
+                                        }
+                                        else if (MayRequest(DockAction.Move, active, target.Key))
+                                        {
+                                            <button type="button" @onclick="() => MoveAsync(active, target, target.Items.Length)">
+                                                @string.Format(Text("Dock_MoveTo"), TabListLabel(target))
+                                            </button>
+                                        }
+                                        @if (target.Items.Length > (target.Key == group.Key ? 1 : 0) &&
+                                             MayRequest(DockAction.Split, active, target.Key))
+                                        {
+                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Horizontal, true)">
+                                                @string.Format(Text("Dock_SplitBefore"), TabListLabel(target))
+                                            </button>
+                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Horizontal, false)">
+                                                @string.Format(Text("Dock_SplitAcross"), TabListLabel(target))
+                                            </button>
+                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Vertical, true)">
+                                                @string.Format(Text("Dock_SplitAbove"), TabListLabel(target))
+                                            </button>
+                                            <button type="button" @onclick="() => SplitAsync(active, target, DockAxis.Vertical, false)">
+                                                @string.Format(Text("Dock_SplitBelow"), TabListLabel(target))
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            }
+                            @if (_catalog[active].CanClose && MayRequest(DockAction.Close, active, group.Key))
+                            {
+                                <button type="button" class="@DockCss.Control"
+                                        aria-label="@string.Format(Text("Dock_CloseTab"), _catalog[active].Title)"
+                                        @onclick="() => CloseAsync(group, active)">&#x00D7;</button>
+                            }
+                        }
+                    </header>
+                }
+            }
+            @foreach (var entry in _geometry.Entries.Where(item => item.Group is not null && item.Item is null))
+            {
+                var group = entry.Group!;
+                var targetsId = ZoneId(group.Key, "targets");
+                <div @key="targetsId" class="@DockCss.Targets" style="@BodyStyle(entry.Id)" aria-hidden="true">
+                    @foreach (var zone in BodyZones)
+                    {
+                        <FlareDropZone @key="zone" Target="@ZoneId(group.Key, zone)" Class="@($"{DockCss.Target} {DockCss.Target}--{zone}")" />
+                    }
+                </div>
+            }
+            <span role="status" class="@DockCss.Status">@_status</span>
+        </div>
+    </div>
+</FlareDragContext>

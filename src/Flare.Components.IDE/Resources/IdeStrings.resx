@@ -48,4 +48,15 @@
   <data name="Shortcut_Reserved" xml:space="preserve"><value>This shortcut is reserved.</value></data>
   <data name="Shortcut_Conflict" xml:space="preserve"><value>This shortcut is already assigned.</value></data>
   <data name="Shortcut_Invalid" xml:space="preserve"><value>Use a function key or a combination with Ctrl, Meta or Alt.</value></data>
+  <data name="Dock_Actions" xml:space="preserve"><value>Tab actions</value></data>
+  <data name="Dock_Previous" xml:space="preserve"><value>Move tab earlier</value></data>
+  <data name="Dock_Next" xml:space="preserve"><value>Move tab later</value></data>
+  <data name="Dock_MoveTo" xml:space="preserve"><value>Move to {0}</value></data>
+  <data name="Dock_SplitAcross" xml:space="preserve"><value>Split beside {0}</value></data>
+  <data name="Dock_SplitBefore" xml:space="preserve"><value>Split before {0}</value></data>
+  <data name="Dock_SplitAbove" xml:space="preserve"><value>Split above {0}</value></data>
+  <data name="Dock_SplitBelow" xml:space="preserve"><value>Split below {0}</value></data>
+  <data name="Dock_CloseTab" xml:space="preserve"><value>Close {0}</value></data>
+  <data name="Dock_Invalid" xml:space="preserve"><value>The workspace layout is invalid.</value></data>
+  <data name="Dock_Empty" xml:space="preserve"><value>Empty tab group</value></data>
 </root>

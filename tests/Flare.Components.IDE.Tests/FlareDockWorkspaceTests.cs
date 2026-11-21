@@ -1,0 +1,101 @@
+using Flare.Components.IDE;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+
+namespace Flare.Components.Tests;
+
+public sealed class FlareDockWorkspaceTests : FlareTestContext
+{
+    private static readonly DockItem[] Catalog = [new("a", "A", true), new("b", "B"), new("c", "C")];
+
+    [Fact]
+    public void SplittingAndCollapsingPreservesTheSameActivePane()
+    {
+        var original = new DockSplit("split", DockAxis.Vertical,
+            new DockGroup("first", ["a", "b"], "a"), new DockGroup("last", ["c"], "c"));
+        DockLayoutChange? change = null;
+        var cut = RenderWorkspace(original, requested => change = requested);
+        var before = cut.FindComponents<Probe>().Single(x => x.Instance.ItemKey == "a").Instance;
+
+        FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!.Click();
+        cut.FindAll(".flare-dock__actions button").Single(x => x.TextContent.Trim() == "Split beside A").Click();
+        Assert.Equal(DockAction.Split, change!.Action);
+        Assert.Same(original, change.Previous);
+        var proposed = Assert.IsType<DockSplit>(change.Proposed);
+        var nested = Assert.IsType<DockSplit>(proposed.First);
+        Assert.Equal(DockAxis.Horizontal, nested.Axis);
+        Assert.Same(original.Second, proposed.Second);
+        Assert.Single(cut.FindAll("[role=separator]"));
+
+        cut.Render(p => p.Add(x => x.Layout, proposed));
+        Assert.Equal(2, cut.FindAll("[role=separator]").Count);
+        Assert.Same(before, cut.FindComponents<Probe>().Single(x => x.Instance.ItemKey == "a").Instance);
+
+        FindHeader(cut, "A").QuerySelector("button[aria-expanded]")!.Click();
+        cut.FindAll(".flare-dock__actions button").Single(x => x.TextContent.Trim() == "Move to C").Click();
+        Assert.Equal(DockAction.Move, change.Action);
+        cut.Render(p => p.Add(x => x.Layout, change.Proposed));
+        Assert.Single(cut.FindAll("[role=separator]"));
+        Assert.Same(before, cut.FindComponents<Probe>().Single(x => x.Instance.ItemKey == "a").Instance);
+    }
+
+    [Fact]
+    public void RetainsOnlyVisitedItemsAndDisposesAfterAcceptedClose()
+    {
+        var group = new DockGroup("first", ["a", "b"], "a");
+        DockLayoutChange? change = null;
+        var cut = RenderWorkspace(group, requested => change = requested);
+        var before = cut.FindComponents<Probe>().Single().Instance;
+        cut.Find("button[role=tab][aria-label=B]").Click();
+        cut.Render(p => p.Add(x => x.Layout, change!.Proposed));
+        Assert.Equal(2, cut.FindComponents<Probe>().Count);
+        Assert.Single(cut.FindAll("[role=tabpanel][hidden]"));
+        Assert.False(before.Disposed);
+
+        cut.Find("button[role=tab][aria-label=A]").Click();
+        var selectA = change!.Proposed;
+        cut.Render(p => p.Add(x => x.Layout, selectA));
+        cut.Find("button[aria-label='Close A']").Click();
+        Assert.False(before.Disposed);
+        cut.Render(p => p.Add(x => x.Layout, change.Proposed));
+        Assert.True(before.Disposed);
+        Assert.Equal("B", cut.Find("button[aria-selected=true]").TextContent.Trim());
+    }
+
+    [Fact]
+    public void RejectsDuplicateOrMissingKeysAndKeepsTheAcceptedLayout()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { });
+        var before = cut.FindComponents<Probe>().Single().Instance;
+        cut.Render(p => p.Add(x => x.Layout,
+            new DockSplit("split", DockAxis.Horizontal,
+                new DockGroup("first", ["a"], "a"), new DockGroup("last", ["a"], "a"))));
+        Assert.Single(cut.FindAll("[role=tab]"));
+        Assert.Contains("invalid", cut.Find("[role=status]").TextContent, StringComparison.OrdinalIgnoreCase);
+        cut.Render(p => p.Add(x => x.Layout, new DockGroup("first", ["missing"])));
+        Assert.Same(before, cut.FindComponents<Probe>().Single().Instance);
+    }
+
+    private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange> onChange) =>
+        Render<FlareDockWorkspace>(p => p
+            .Add(x => x.Layout, layout)
+            .Add(x => x.Items, Catalog)
+            .Add(x => x.OnChangeRequested, EventCallback.Factory.Create(this, onChange))
+            .Add(x => x.ContentTemplate, (RenderFragment<DockItem>)(item => builder =>
+            {
+                builder.OpenComponent<Probe>(0);
+                builder.AddAttribute(1, nameof(Probe.ItemKey), item.Key);
+                builder.CloseComponent();
+            })));
+
+    private static AngleSharp.Dom.IElement FindHeader(IRenderedComponent<FlareDockWorkspace> cut, string label) =>
+        cut.FindAll(".flare-dock__header").Single(x => x.QuerySelector($"[role=tablist][aria-label={label}]") is not null);
+
+    public sealed class Probe : ComponentBase, IDisposable
+    {
+        [Parameter] public string ItemKey { get; set; } = "";
+        public bool Disposed { get; private set; }
+        protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddContent(0, ItemKey);
+        public void Dispose() => Disposed = true;
+    }
+}

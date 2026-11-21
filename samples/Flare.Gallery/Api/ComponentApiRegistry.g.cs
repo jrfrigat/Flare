@@ -1871,6 +1871,7 @@ public static class ComponentApiRegistry
                 @"FlareDialogCloseGuard",
                 @"FlareDialogProvider",
                 @"FlareDivider",
+                @"FlareDockWorkspace",
                 @"FlareDocumentTab",
                 @"FlareDocumentTabs",
                 @"FlareDragContext",
@@ -2824,6 +2825,36 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareDockWorkspace"] = new ApiComponentInfo(
+            @"FlareDockWorkspace",
+            @"Flare.Components.IDE.FlareDockWorkspace",
+            @"Flare.Components.IDE",
+            @"Renders and coordinates dynamic tab groups and nested splits within one Blazor renderer.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"CanRequest", @"Func<DockAction, string?, string, bool>?", null, @"Declares which operations the application currently offers. Actual approval belongs to the callback.", null, false, false, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"ContentTemplate", @"RenderFragment<DockItem>?", null, @"Renders content for a mounted item. Keep the type of the root component stable across moves.", null, false, false, true, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"GroupLabel", @"Func<DockGroup, string>?", null, @"Provides a localized accessible label for a group.", null, false, false, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"Items", @"IReadOnlyList<DockItem>", null, @"Presentation entries for the keys placed in the workspace.", null, false, false, true, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"Layout", @"DockNode", null, @"The accepted topology, supplied by the application each time it changes.", null, false, false, true, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"OnChangeRequested", @"EventCallback<DockLayoutChange>", null, @"Receives a proposed transition. Apply Proposed to Layout to accept it. After asynchronous approval, check that Previous is still current before applying the proposal.", null, false, true, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"TabTemplate", @"RenderFragment<DockItem>?", null, @"Optionally renders the non-interactive contents of a tab.", null, false, false, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -10101,6 +10132,38 @@ public static class ComponentApiRegistry
             {
                 @"FlareDivider",
             });
+
+        e[@"DockAction"] = new ApiEnumInfo(
+            @"DockAction",
+            @"Flare.Components.IDE.DockAction",
+            @"Flare.Components.IDE",
+            @"The kind of change proposed by the workspace.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Activate", @"0", @"Select an item in its group."),
+                new ApiEnumMember(@"Close", @"1", @"Remove the item from the layout."),
+                new ApiEnumMember(@"Move", @"2", @"Move the item within its group or into another group."),
+                new ApiEnumMember(@"Split", @"3", @"Create a new group beside a group and move an item into it."),
+                new ApiEnumMember(@"Resize", @"4", @"Change the fraction of space assigned to the first branch."),
+            },
+            new string[]
+            {
+                @"FlareDockWorkspace",
+            });
+
+        e[@"DockAxis"] = new ApiEnumInfo(
+            @"DockAxis",
+            @"Flare.Components.IDE.DockAxis",
+            @"Flare.Components.IDE",
+            @"The axis on which a split distributes space.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Horizontal", @"0", @"Place branches side by side."),
+                new ApiEnumMember(@"Vertical", @"1", @"Place branches above and below one another."),
+            },
+            System.Array.Empty<string>());
 
         e[@"DrawerAnchor"] = new ApiEnumInfo(
             @"DrawerAnchor",
