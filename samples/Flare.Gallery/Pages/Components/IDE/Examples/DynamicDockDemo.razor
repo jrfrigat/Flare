@@ -10,16 +10,16 @@
                 case "data":
                     <FlareDataGrid Items="Rows" PageSize="8">
                         <Columns>
-                            <FlareColumn Title="@Label("DockDemo_Quarter")" Field="@(row => row.Quarter)" />
-                            <FlareColumn Title="@Label("DockDemo_Total")" Field="@(row => row.Total)" Sortable="true" />
+                            <FlareColumn Title="@GalleryStrings.DockDemo_Quarter" Field="@(row => row.Quarter)" />
+                            <FlareColumn Title="@GalleryStrings.DockDemo_Total" Field="@(row => row.Total)" Sortable="true" />
                         </Columns>
                     </FlareDataGrid>
                     break;
                 case "chart":
-                    <FlareChart Type="ChartType.Bar" Title="@Label("DockDemo_Chart")" Data="Chart" />
+                    <FlareChart Type="ChartType.Bar" Title="@GalleryStrings.DockDemo_Chart" Data="Chart" />
                     break;
                 case "draft":
-                    <DockDraftDemo Label="@Label("DockDemo_DraftLabel")" />
+                    <DockDraftDemo Label="@GalleryStrings.DockDemo_DraftLabel" />
                     break;
             }
         </ContentTemplate>
@@ -36,9 +36,9 @@
 
     private IReadOnlyList<DockItem> Items =>
     [
-        new("data", Label("DockDemo_Data")),
-        new("chart", Label("DockDemo_Chart")),
-        new("draft", Label("DockDemo_Draft"), KeepAlive: true)
+        new("data", GalleryStrings.DockDemo_Data),
+        new("chart", GalleryStrings.DockDemo_Chart),
+        new("draft", GalleryStrings.DockDemo_Draft, KeepAlive: true)
     ];
 
     private void Apply(DockLayoutChange change)
@@ -48,9 +48,7 @@
     }
 
     private string DescribeGroup(DockGroup group) =>
-        group.Items.Length > 0 ? Items.First(item => item.Key == group.Items[0]).Title : Label("DockDemo_Empty");
-
-    private static string Label(string name) => GalleryStrings.ResourceManager.GetString(name, GalleryStrings.Culture) ?? name;
+        group.Items.Length > 0 ? Items.First(item => item.Key == group.Items[0]).Title : GalleryStrings.DockDemo_Empty;
 
     private sealed record ReportRow(string Quarter, int Total);
 }

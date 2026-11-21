@@ -14831,5 +14831,23 @@ namespace Flare.Gallery.Resources {
         public static string Ide_Caption_Close { get { return ResourceManager.GetString("Ide_Caption_Close", resourceCulture); } }
         /// <summary>Close (disabled)</summary>
         public static string Ide_Caption_CloseDisabled { get { return ResourceManager.GetString("Ide_Caption_CloseDisabled", resourceCulture); } }
+        /// <summary>Dynamic docking</summary>
+        public static string DockDemo_Title { get { return ResourceManager.GetString("DockDemo_Title", resourceCulture); } }
+        /// <summary>Move the table, chart, or draft between groups. Drop a tab at the edge or use its actions to split the workspace.</summary>
+        public static string DockDemo_Description { get { return ResourceManager.GetString("DockDemo_Description", resourceCulture); } }
+        /// <summary>Table</summary>
+        public static string DockDemo_Data { get { return ResourceManager.GetString("DockDemo_Data", resourceCulture); } }
+        /// <summary>Chart</summary>
+        public static string DockDemo_Chart { get { return ResourceManager.GetString("DockDemo_Chart", resourceCulture); } }
+        /// <summary>Draft</summary>
+        public static string DockDemo_Draft { get { return ResourceManager.GetString("DockDemo_Draft", resourceCulture); } }
+        /// <summary>Draft notes</summary>
+        public static string DockDemo_DraftLabel { get { return ResourceManager.GetString("DockDemo_DraftLabel", resourceCulture); } }
+        /// <summary>Quarter</summary>
+        public static string DockDemo_Quarter { get { return ResourceManager.GetString("DockDemo_Quarter", resourceCulture); } }
+        /// <summary>Total</summary>
+        public static string DockDemo_Total { get { return ResourceManager.GetString("DockDemo_Total", resourceCulture); } }
+        /// <summary>Empty group</summary>
+        public static string DockDemo_Empty { get { return ResourceManager.GetString("DockDemo_Empty", resourceCulture); } }
     }
 }
