@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System.Reflection;
 using Flare.Components;
 using Flare.Components.IDE;
+using Flare.Css;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -84,7 +85,7 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
 
         var tabs = cut.FindAll("button[role=tab]");
         Assert.Equal(2, tabs.Count);
-        Assert.All(tabs, tab => Assert.NotNull(tab.QuerySelector("[data-flare-drag-handle]")));
+        Assert.All(tabs, tab => Assert.NotNull(tab.QuerySelector($"[data-{Css.Classes.Drag.Handle}]")));
     }
 
     [Fact]
