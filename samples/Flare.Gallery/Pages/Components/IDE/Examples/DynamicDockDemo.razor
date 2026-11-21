@@ -48,7 +48,7 @@
     }
 
     private string DescribeGroup(DockGroup group) =>
-        group.ActiveKey is { } key ? Items.First(item => item.Key == key).Title : Label("DockDemo_Empty");
+        group.Items.Length > 0 ? Items.First(item => item.Key == group.Items[0]).Title : Label("DockDemo_Empty");
 
     private static string Label(string name) => GalleryStrings.ResourceManager.GetString(name, GalleryStrings.Culture) ?? name;
 

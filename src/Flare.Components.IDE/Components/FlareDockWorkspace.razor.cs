@@ -124,7 +124,7 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private string ZoneId(string key, string zone) => $"{_canvasId}-{Id(key)}-{zone}";
     private string Text(string key) => Localizer<IdeStrings>()[key].Value;
     private string TabListLabel(DockGroup group) => GroupLabel?.Invoke(group) ??
-        (group.ActiveKey is { } key ? _catalog[key].Title : Text("Dock_Empty"));
+        (group.Items.Length > 0 ? _catalog[group.Items[0]].Title : Text("Dock_Empty"));
     private static string TabIndex(DockGroup group, string key) =>
         key == (group.ActiveKey ?? group.Items[0]) ? "0" : "-1";
     private static string Pixels(double size) => $"{DockGeometry.CssNumber(size)}px";

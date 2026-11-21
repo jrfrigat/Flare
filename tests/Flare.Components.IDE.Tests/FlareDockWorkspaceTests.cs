@@ -99,6 +99,16 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     [Fact]
+    public void NamesAGroupByItsFirstTabAndNotByTheSelection()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b"]), _ => { });
+        Assert.Equal("A", cut.Find("[role=tablist]").GetAttribute("aria-label"));
+
+        cut.Render(p => p.Add(x => x.Layout, new DockGroup("first", ["a", "b"], "b")));
+        Assert.Equal("A", cut.Find("[role=tablist]").GetAttribute("aria-label"));
+    }
+
+    [Fact]
     public void OmitsTheResizeHandleWhenResizeCannotBeRequested()
     {
         var layout = new DockSplit("split", DockAxis.Horizontal,
