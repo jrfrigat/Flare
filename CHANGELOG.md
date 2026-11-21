@@ -3,11 +3,25 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.60.0] - 2026-11-20
 
 ### Added
 
-- Document tabs accept custom title markup through HeaderContent. FlareIdeLayout exposes the same option for built-in dock tabs through DocumentHeaderContent. Title still labels the tab for accessibility. Wrap existing FlareDocumentTab panel markup in ChildContent to select the panel slot explicitly.
+- `FlareDocumentTab` accepts custom title markup through `HeaderContent`; `Title` remains the accessible name and the overflow-menu label. `FlareIdeLayout` offers the same option for its built-in dock tabs through `DocumentHeaderContent`.
+
+### Changed
+
+- Document tabs keep their close button visible instead of revealing it on hover. Side dock tabs still reveal theirs when the pointer or focus is on the tab.
+
+### Breaking changes
+
+- Wrap existing `FlareDocumentTab` panel markup in `<ChildContent>`: the tab now has a second render fragment for the header, so bare child content no longer selects the panel slot.
+
+## [0.59.1] - 2026-11-18
+
+### Fixed
+
+- A document dropped on a Center dock header supplied through `CenterDockHeader` docks into the Center region.
 
 ## [0.59.0] - 2026-11-18
 
