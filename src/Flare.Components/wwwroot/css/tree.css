@@ -97,6 +97,9 @@
 
 .flare-tree-item__label { flex: 1; }
 
+/* The trailing slot forwards its children to the row's flex layout; it is a keyboard boundary, not a box. */
+.flare-tree-item__trailing { display: contents; }
+
 .flare-tree-item:focus-visible {
     outline: 2px solid var(--flare-color-primary);
     outline-offset: -2px;

@@ -55,6 +55,43 @@ public class FlareTreeItemLabelContentTests : FlareTestContext
     }
 
     [Fact]
+    public void ExplicitAriaLabel_OverridesTheComponentName()
+    {
+        var cut = Render<FlareTreeItem>(p => p
+            .Add(x => x.Label, "Database")
+            .Add(x => x.LabelContent, Markup("<span>DB</span>"))
+            .Add(x => x.AdditionalAttributes, new Dictionary<string, object>
+            {
+                ["aria-label"] = "Connection: Database"
+            }));
+
+        Assert.Equal("Connection: Database", cut.Find("li").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void LabelContent_WithNullLabel_HasNoAutomaticName()
+    {
+        var cut = Render<FlareTreeItem>(p => p
+            .Add(x => x.LabelContent, Markup("<span>Database</span>")));
+
+        Assert.Null(cut.Find("li").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void ExplicitDescription_PassesThrough()
+    {
+        var cut = Render<FlareTreeItem>(p => p
+            .Add(x => x.Label, "Database")
+            .Add(x => x.LabelContent, Markup("<span>DB</span>"))
+            .Add(x => x.AdditionalAttributes, new Dictionary<string, object>
+            {
+                ["aria-describedby"] = "category-database"
+            }));
+
+        Assert.Equal("category-database", cut.Find("li").GetAttribute("aria-describedby"));
+    }
+
+    [Fact]
     public void LabelContent_AndTrailingContent_KeepTheRowOrder()
     {
         var cut = Render<FlareTreeItem>(p => p

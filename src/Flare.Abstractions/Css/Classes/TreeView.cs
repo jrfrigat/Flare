@@ -15,6 +15,8 @@ public static class TreeView
     public const string TogglePlaceholder = "flare-tree-item__toggle-placeholder";
     /// <summary>The <c>flare-tree-item__label</c> CSS class.</summary>
     public const string Label = "flare-tree-item__label";
+    /// <summary>The <c>flare-tree-item__trailing</c> CSS class.</summary>
+    public const string Trailing = "flare-tree-item__trailing";
     /// <summary>The <c>flare-tree-item__children</c> CSS class.</summary>
     public const string Children = "flare-tree-item__children";
     /// <summary>The <c>flare-vtree</c> CSS class.</summary>

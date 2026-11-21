@@ -21,12 +21,15 @@ public class FlareTreeItemTrailingContentTests : FlareTestContext
             .Add(x => x.TrailingContent, Markup("<span id=\"status\">Connected</span>")));
 
         var row = cut.Find($".{Css.Classes.Tree.ItemRow}");
-        Assert.NotNull(row.QuerySelector("#status"));
+        var wrapper = row.QuerySelector($".{Css.Classes.TreeView.Trailing}");
+        Assert.NotNull(wrapper);
+        Assert.NotNull(wrapper!.QuerySelector("#status"));
 
-        var children = row.Children.ToList();
-        var labelIndex = children.FindIndex(e => e.ClassList.Contains(Css.Classes.TreeView.Label));
-        var statusIndex = children.FindIndex(e => e.Id == "status");
-        Assert.True(statusIndex > labelIndex, "The slot must follow the label, not replace or precede it.");
+        var label = row.QuerySelector($".{Css.Classes.TreeView.Label}")!;
+        var status = row.QuerySelector("#status")!;
+        var all = row.QuerySelectorAll("*").ToList();
+        Assert.True(all.IndexOf(status) > all.IndexOf(label),
+            "The slot must follow the label, not replace or precede it.");
     }
 
     [Fact]
@@ -39,12 +42,44 @@ public class FlareTreeItemTrailingContentTests : FlareTestContext
                 .Add(i => i.TrailingContent, Markup("<span id=\"status\">Connected</span>"))));
 
         var row = cut.Find($".{Css.Classes.Tree.ItemRow}");
+        var wrapper = row.QuerySelector($".{Css.Classes.TreeView.Trailing}");
+        Assert.NotNull(wrapper?.QuerySelector("#status"));
+
         var children = row.Children.ToList();
-        var statusIndex = children.FindIndex(e => e.Id == "status");
+        var wrapperIndex = children.IndexOf(wrapper!);
         var handleIndex = children.FindIndex(e => e.ClassList.Contains(Css.Classes.TreeView.DragHandle));
 
-        Assert.True(statusIndex >= 0, "The slot renders inside the draggable row.");
-        Assert.True(handleIndex > statusIndex, "The drag handle stays the last row item, after the slot.");
+        Assert.True(wrapperIndex >= 0, "The slot renders inside the draggable row.");
+        Assert.True(handleIndex > wrapperIndex, "The drag handle stays the last row item, after the slot.");
+    }
+
+    [Fact]
+    public async Task TrailingControl_KeydownEnter_DoesNotSelectOrExpandTheRow()
+    {
+        var selectedChanges = 0;
+        var expandedChanges = 0;
+
+        var cut = Render<FlareTreeItem>(p => p
+            .Add(x => x.Label, "Documents")
+            .Add(x => x.SelectedChanged, EventCallback.Factory.Create<bool>(this, _ => selectedChanges++))
+            .Add(x => x.ExpandedChanged, EventCallback.Factory.Create<bool>(this, _ => expandedChanges++))
+            .Add(x => x.ChildContent, (RenderFragment)(child => child.AddMarkupContent(0, "<li>Child</li>")))
+            .Add(x => x.TrailingContent, (RenderFragment)(builder =>
+            {
+                builder.OpenElement(0, "button");
+                builder.AddAttribute(1, "id", "disconnect");
+                builder.AddAttribute(2, "type", "button");
+                builder.AddAttribute(3, "onkeydown",
+                    EventCallback.Factory.Create<KeyboardEventArgs>(this, () => { }));
+                builder.AddContent(4, "Disconnect");
+                builder.CloseElement();
+            })));
+
+        await cut.Find("#disconnect").TriggerEventAsync("onkeydown", new KeyboardEventArgs { Key = "Enter" });
+
+        Assert.Equal(0, selectedChanges);
+        Assert.Equal(0, expandedChanges);
+        Assert.Empty(cut.FindAll($".{Css.Classes.TreeView.Children}"));
     }
 
     [Fact]

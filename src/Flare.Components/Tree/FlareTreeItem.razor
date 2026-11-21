@@ -53,7 +53,11 @@
                 @Label
             }
         </span>
-        @TrailingContent
+        @if (TrailingContent is not null)
+        {
+            <span class="@Css.Classes.TreeView.Trailing"
+                  @onkeydown="() => { }" @onkeydown:stopPropagation="true">@TrailingContent</span>
+        }
         @if (Draggable)
         {
             <FlareIconView Value="FlareIcons.DragIndicator" Class="@Css.Classes.TreeView.DragHandle" />
@@ -82,18 +86,22 @@
     /// <summary>Child tree items nested under this item.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Content rendered inside the row after the label and before the drag handle, for per-row
-    /// actions or a status indicator. The host owns click propagation for its controls: a click inside the
-    /// slot bubbles to the row and selects or expands the item unless the control stops it with
-    /// <c>onclick:stopPropagation</c>. The slot adds no tab order or accessible name of its own, so controls
-    /// stay focusable and keep the labels the host gives them.</summary>
+    /// actions or a status indicator. Put controls here rather than in <see cref="LabelContent"/>: the
+    /// slot stops keydown (Enter, Space and arrows) from its controls reaching the row, so a focused
+    /// button does not select or expand the item. The host still stops click propagation for controls
+    /// that must not select the row with <c>onclick:stopPropagation</c>.</summary>
     [Parameter] public RenderFragment? TrailingContent { get; set; }
-    /// <summary>Text label displayed for this tree item.</summary>
+    /// <summary>Text label displayed for this tree item. It is also the accessible name of the row; with
+    /// <see cref="LabelContent"/> set it stays the name while the visible label comes from the slot.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Non-interactive content rendered inside the item's label span
-    /// (<c>flare-tree-item__label</c>) in place of the visible <see cref="Label"/> text. <see cref="Label"/>
-    /// remains the accessible name of the item - the row carries it as <c>aria-label</c> while this slot is
-    /// set - and stays the default visible text when the slot is null. The host owns any controls inside the
-    /// slot, including stopping their clicks from reaching the row.</summary>
+    /// (<c>flare-tree-item__label</c>) in place of the visible <see cref="Label"/> text. Use it for a
+    /// mark, badge or counter that belongs to the label; controls belong in <see cref="TrailingContent"/>.
+    /// <see cref="Label"/> remains the accessible name of the item - the row carries it as
+    /// <c>aria-label</c> while this slot is set - and stays the default visible text when the slot is null.
+    /// When <see cref="Label"/> is null the component sets no automatic accessible name; the host supplies
+    /// <c>aria-label</c> and may add <c>aria-describedby</c>/<c>aria-description</c> for meaningful details
+    /// through <c>AdditionalAttributes</c>. Explicit host ARIA attributes win over the component's.</summary>
     [Parameter] public RenderFragment? LabelContent { get; set; }
     /// <summary>Icon shown beside the label - any provider (a bare string is a Material Symbols name).</summary>
     [Parameter] public FlareIcon? Icon { get; set; }
