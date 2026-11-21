@@ -59,7 +59,7 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.False(before.Disposed);
         cut.Render(p => p.Add(x => x.Layout, change.Proposed));
         Assert.True(before.Disposed);
-        Assert.Equal("B", cut.Find("button[aria-selected=true]").TextContent.Trim());
+        Assert.Equal("B", cut.Find("button[aria-selected=true]").GetAttribute("aria-label"));
     }
 
     [Fact]
@@ -71,6 +71,17 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
 
         var splitter = Assert.Single(cut.FindComponents<FlareSplitter>());
         Assert.False(splitter.Instance.Reverse);
+    }
+
+    [Fact]
+    public void TabsExposeAPointerDragHandle()
+    {
+        var group = new DockGroup("first", ["a", "b"], "a");
+        var cut = RenderWorkspace(group, _ => { });
+
+        var tabs = cut.FindAll("button[role=tab]");
+        Assert.Equal(2, tabs.Count);
+        Assert.All(tabs, tab => Assert.NotNull(tab.QuerySelector("[data-flare-drag-handle]")));
     }
 
     [Fact]

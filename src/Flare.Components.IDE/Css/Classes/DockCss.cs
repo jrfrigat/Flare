@@ -10,7 +10,9 @@ internal static class DockCss
     internal const string TabZone = "flare-dock__tab-zone";
     internal const string Tabs = "flare-dock__tabs";
     internal const string TabWrap = "flare-dock__tab-wrap";
+    internal const string Grip = "flare-dock__grip";
     internal const string Tab = "flare-dock__tab";
+    internal const string Label = "flare-dock__label";
     internal const string Control = "flare-dock__control";
     internal const string Actions = "flare-dock__actions";
     internal const string Targets = "flare-dock__targets";

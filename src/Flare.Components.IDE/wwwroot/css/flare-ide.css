@@ -1602,7 +1602,27 @@ button.flare-editor-breadcrumb-bar__segment-button {
     padding-inline: var(--flare-spacing-2);
 }
 
-.flare-dock__tab { white-space: nowrap; border-block-end: 2px solid transparent; }
+.flare-dock__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    white-space: nowrap;
+    border-block-end: 2px solid transparent;
+}
+
+/* The grip is the only place a tab starts a drag, so the rest of the tab keeps the browser's
+   horizontal panning on a touch screen. */
+.flare-dock__grip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    font-size: 1em;
+    line-height: 1;
+    cursor: grab;
+    touch-action: none;
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
+}
 .flare-dock__tab[aria-selected="true"] {
     color: var(--flare-color-primary);
     border-block-end-color: currentColor;

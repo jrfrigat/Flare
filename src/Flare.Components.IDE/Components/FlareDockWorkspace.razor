@@ -45,13 +45,15 @@
                                                 aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
                                                 tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"
                                                 @onkeydown="args => TabKeyAsync(args, group, tabKey)">
+                                            <span class="@DockCss.Grip" data-flare-drag-handle aria-hidden="true"
+                                                  @onclick="() => { }" @onclick:stopPropagation="true">&#x22EE;</span>
                                             @if (TabTemplate is { } template)
                                             {
                                                 @template(tab)
                                             }
                                             else
                                             {
-                                                @tab.Title
+                                                <span class="@DockCss.Label">@tab.Title</span>
                                             }
                                         </button>
                                     </FlareDraggable>
