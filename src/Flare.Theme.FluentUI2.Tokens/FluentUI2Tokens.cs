@@ -567,8 +567,13 @@ public class FluentUI2Tokens
         ScrollDisabledOpacity = "1",
         TabHeight = "auto",
         TabMinWidth = "0",
-        // Medium tab: spacingHorizontalMNudge = 10px inline; the block padding comes from spacing-6 = 12px.
+        // Medium tab: spacingHorizontalMNudge = 10px inline, spacingHorizontalSNudge = 6px between the
+        // icon and the label, and 12px above and below the label from the vertical ramp.
         TabPaddingInline = "10px",
+        LabelGap = Var(Css.Tokens.Spacing.S3),
+        TabPaddingBlock = Var(Css.Tokens.Spacing.S6),
+        // A vertical tab tightens to 6px above and below its label.
+        VerticalTabPaddingBlock = Var(Css.Tokens.Spacing.S3),
         // Insets the primary/selected indicator 12px from the tab edges, as the medium spec states.
         PrimaryIndicatorInset = "12px",
         // Flare's own part sizes, which no Fluent table states.

@@ -12,7 +12,6 @@
     }
 
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab {
-        gap: 6px;
         border-bottom: none;
         margin-bottom: 0;
         border-radius: 4px;
@@ -90,7 +89,6 @@
     }
 
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__tab {
-        padding-block: 6px;
         border-right: none;
     }
 

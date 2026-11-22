@@ -27,6 +27,9 @@ public sealed class TabsThemeSpecTests(BrowserFixture fixture) : IClassFixture<B
         await Expect(active).ToHaveCSSAsync("color", "rgb(36, 36, 36)");
         await Expect(active).ToHaveCSSAsync("height", "44px");
         await Expect(active).ToHaveCSSAsync("padding-left", "10px");
+        await Expect(active).ToHaveCSSAsync("padding-top", "12px");
+        await Expect(active).ToHaveCSSAsync("padding-bottom", "12px");
+        await Expect(active).ToHaveCSSAsync("gap", "6px");
         await Expect(inactive).ToHaveCSSAsync("font-weight", "400");
         await Expect(inactive).ToHaveCSSAsync("color", "rgb(66, 66, 66)");
         await Expect(light.Locator($".{Css.Classes.Tabs.BarWrap}")).ToHaveCSSAsync("border-bottom-width", "0px");
@@ -70,6 +73,23 @@ public sealed class TabsThemeSpecTests(BrowserFixture fixture) : IClassFixture<B
         await Expect(inactive).ToHaveCSSAsync("color", "rgb(214, 214, 214)");
         Assert.Equal("rgb(71, 158, 245)", await active.EvaluateAsync<string>(
             "el => getComputedStyle(el, '::after').backgroundColor"));
+    }
+
+    // The gap and block padding are optional TabsTokens roles: a theme that states nothing keeps the
+    // shared spacing steps, so only Fluent's own values may move.
+    [Fact]
+    public async Task DefaultsKeepTheSharedSpacingSteps()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/tabs-theme-spec");
+
+        var active = page.Locator("#tabs-md3 [role=tab][aria-selected=true]");
+        await Expect(active).ToBeVisibleAsync();
+
+        await Expect(active).ToHaveCSSAsync("gap", "8px");
+        await Expect(active).ToHaveCSSAsync("padding-top", "12px");
+        await Expect(active).ToHaveCSSAsync("padding-bottom", "12px");
     }
 
     // Any Flare theme runs with any palette: the Fluent indicator is a compound brand paint, so the

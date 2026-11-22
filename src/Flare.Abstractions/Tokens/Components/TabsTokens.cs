@@ -19,6 +19,9 @@ public sealed record TabsTokens
     [CssVar(Tabs.LabelSpacing)] public string LabelSpacing { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Spacing);
     /// <summary>Label weight.</summary>
     [CssVar(Tabs.LabelWeight)] public string LabelWeight { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Weight);
+
+    /// <summary>Gap between a tab's leading icon and its label.</summary>
+    [CssVar(Tabs.LabelGap)] public string LabelGap { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Scroll shadow opacity.</summary>
     [CssVar(Tabs.ScrollShadowOpacity)] public required string ScrollShadowOpacity { get; init; }
     /// <summary>Active-indicator thickness.</summary>
@@ -85,6 +88,13 @@ public sealed record TabsTokens
 
     /// <summary>Padding either side of a tab's content.</summary>
     [CssVar(Tabs.TabPaddingInline)] public string TabPaddingInline { get; init; } = Var(Css.Tokens.Spacing.S8);
+
+    /// <summary>Block padding above and below a tab's content.</summary>
+    [CssVar(Tabs.TabPaddingBlock)] public string TabPaddingBlock { get; init; } = Var(Css.Tokens.Spacing.S6);
+
+    /// <summary>Block padding of a tab in a vertical strip. Defaults to <see cref="TabPaddingBlock"/>;
+    /// a vertical strip usually has less block padding because its density is not driven by a bar height.</summary>
+    [CssVar(Tabs.VerticalTabPaddingBlock)] public string VerticalTabPaddingBlock { get; init; } = Var(Tabs.TabPaddingBlock);
 
     /// <summary>Glyph size of a tab's leading icon. The icon is the caller's own fragment, so the size
     /// reaches it through the shared icon property rather than a class on the icon.</summary>

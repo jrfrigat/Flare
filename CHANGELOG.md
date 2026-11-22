@@ -15,6 +15,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- `TabsTokens` gains the tab label gap and block padding (`LabelGap`, `TabPaddingBlock`, `VerticalTabPaddingBlock`), so a theme tunes them with tokens instead of overriding core CSS. FluentUI2 states its 6px gap and its 12px/6px block padding through them.
 - Dock and tool-window tab strips render the shared `FlareTabs` item contract (`flare-tabs--bar-only`, `flare-tabs--tool`). Their visual values come from `--flare-tabs-*`, and `TabsTokens` gains the compact tool-tab roles, so a theme styles them with the same contract as every other tab.
 
 ### Fixed

@@ -152,13 +152,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--flare-spacing-4);
+  gap: var(--flare-tabs-label-gap);
   /* The strip's own geometry, named by the theme: Material 2 sets a 48dp tab with a 90dp minimum,
      Material 3 lets the label and its padding decide. A theme that wants the latter parks the height
      at `auto` and the minimum at 0. */
   min-block-size: var(--flare-tabs-tab-height);
   min-inline-size: var(--flare-tabs-tab-min-width);
-  padding: var(--flare-spacing-6) var(--flare-tabs-tab-padding-inline);
+  padding: var(--flare-tabs-tab-padding-block) var(--flare-tabs-tab-padding-inline);
   border: none;
   /* Active-indicator height 3dp; inactive label = on-surface */
   border-bottom: var(--flare-tabs-indicator-thickness) solid transparent;
@@ -406,6 +406,7 @@
 
 .flare-tabs--vertical .flare-tabs__tab {
   justify-content: flex-start;
+  padding-block: var(--flare-tabs-tab-vertical-padding-block);
   border-bottom: none;
   border-right: var(--flare-tabs-indicator-thickness) solid transparent;
   margin-bottom: 0;

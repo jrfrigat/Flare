@@ -15,6 +15,8 @@ public static class Tabs
     public const string LabelSpacing = "--flare-tabs-label-spacing";
     /// <summary>CSS custom-property name for the label weight token.</summary>
     public const string LabelWeight = "--flare-tabs-label-weight";
+    /// <summary>CSS custom-property name for the gap between a tab's icon and its label.</summary>
+    public const string LabelGap = "--flare-tabs-label-gap";
     /// <summary>CSS custom-property name for the scroll shadow opacity token.</summary>
     public const string ScrollShadowOpacity = "--flare-tabs-scroll-shadow-opacity";
     /// <summary>CSS custom-property name for the indicator thickness token.</summary>
@@ -55,6 +57,10 @@ public static class Tabs
     public const string TabMinWidth = "--flare-tabs-tab-min-width";
     /// <summary>CSS custom-property name for the tab inline padding token.</summary>
     public const string TabPaddingInline = "--flare-tabs-tab-padding-inline";
+    /// <summary>CSS custom-property name for the tab block padding token.</summary>
+    public const string TabPaddingBlock = "--flare-tabs-tab-padding-block";
+    /// <summary>CSS custom-property name for the block padding of a vertical tab.</summary>
+    public const string VerticalTabPaddingBlock = "--flare-tabs-tab-vertical-padding-block";
     /// <summary>CSS custom-property name for the glyph size of a tab's leading icon.</summary>
     public const string IconSize = "--flare-tabs-icon-size";
     /// <summary>CSS custom-property name for the scroll-arrow glyph size.</summary>
