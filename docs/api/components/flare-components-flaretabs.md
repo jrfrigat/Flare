@@ -55,7 +55,7 @@ Returns: `Task`.
 ### `OnTabsOverflowChanged(int start, int visible)`
 
 Receives the visible window of a collapsible tab bar: the first visible index and how many tabs fit. Tabs outside the window are folded into the overflow menu.
-Returns: `void`.
+Returns: `Task`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |

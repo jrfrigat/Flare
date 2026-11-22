@@ -7690,7 +7690,7 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"key", @"string", @"The pressed arrow key."),
                         new ApiMethodParameter(@"rtl", @"bool", @"Whether the tab bar resolves to right-to-left in the browser."),
                     }),
-                new ApiMethodInfo(@"OnTabsOverflowChanged", @"OnTabsOverflowChanged(int start, int visible)", @"void", null, @"Receives the visible window of a collapsible tab bar: the first visible index and how many tabs fit. Tabs outside the window are folded into the overflow menu.",
+                new ApiMethodInfo(@"OnTabsOverflowChanged", @"OnTabsOverflowChanged(int start, int visible)", @"Task", null, @"Receives the visible window of a collapsible tab bar: the first visible index and how many tabs fit. Tabs outside the window are folded into the overflow menu.",
                     new ApiMethodParameter[]
                     {
                         new ApiMethodParameter(@"start", @"int", @"Zero-based index of the first visible tab."),
