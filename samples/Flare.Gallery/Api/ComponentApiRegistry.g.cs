@@ -7760,6 +7760,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered in the tab panel when active.", null, false, false, false, @"FlareTab"),
                 new ApiParameterInfo(@"Closeable", @"bool", @"false", @"Shows a close button on the tab.", null, false, false, false, @"FlareTab"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents the tab from being selected.", null, false, false, false, @"FlareTab"),
+                new ApiParameterInfo(@"Key", @"string?", null, @"Stable identity of the tab used by TabOrder and reordering. Must be unique within the tab set; when null the tab's generated id is used.", null, false, false, false, @"FlareTab"),
                 new ApiParameterInfo(@"Label", @"string", @"""""", @"Tab button label shown in the tab bar.", null, false, false, false, @"FlareTab"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered before the tab label.", null, false, false, false, @"FlareTab"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Invoked when the tab button is clicked, before activation. Fires even for the active tab.", null, false, true, false, @"FlareTab"),
@@ -7859,6 +7860,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnPreviewInteraction", @"EventCallback<TabInteractionEventArgs>", null, @"Invoked before a tab is activated or closed. Set Cancel in the handler to veto the interaction (e.g. block switching away from a tab with unsaved changes). Async handlers are awaited before the interaction proceeds.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, @"Callback fired with the label of a closed tab.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Placement", @"TabsPlacement", @"TabsPlacement.Top", @"Side the tab bar is placed on (Top/Bottom/Left/Right). Left/Right render a vertical bar. Default Top.", null, false, false, false, @"FlareTabs"),
+                new ApiParameterInfo(@"Reorderable", @"bool", @"false", @"Enables dragging a tab to a new position and pressing Alt+ArrowLeft/Right while it is focused. The active tab stays selected and keyboard focus follows the moved tab.", null, false, false, false, @"FlareTabs"),
+                new ApiParameterInfo(@"TabOrder", @"IReadOnlyList<string>?", null, @"Controlled order of tab keys (see Key). Unlisted tabs follow in declaration order. Null keeps the order inside the component.", null, false, false, false, @"FlareTabs"),
+                new ApiParameterInfo(@"TabOrderChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Invoked with the new key order after a drag or an Alt+Arrow reorder.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Type scale applied to the tab labels. Null (default) keeps the theme's label scale.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Variant", @"TabsVariant", @"TabsVariant.Default", @"Visual variant of the tab bar (theme-independent). Default keeps the active theme's style.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -7873,6 +7877,12 @@ public static class ComponentApiRegistry
                     {
                         new ApiMethodParameter(@"key", @"string", @"The navigation key whose native scroll behavior was prevented."),
                         new ApiMethodParameter(@"rtl", @"bool", @"Whether the tablist resolves to right-to-left in the browser."),
+                    }),
+                new ApiMethodInfo(@"OnTabReorder", @"OnTabReorder(string key, bool rtl)", @"Task", null, @"Moves the active tab one position for an orientation-aware Alt+Arrow.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"The pressed arrow key."),
+                        new ApiMethodParameter(@"rtl", @"bool", @"Whether the tab bar resolves to right-to-left in the browser."),
                     }),
                 new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"void", null, null,
                     new ApiMethodParameter[]

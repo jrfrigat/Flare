@@ -8,6 +8,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Added
 
 - `FlareDockWorkspace` brings dynamic tab groups, nested splits, and state-preserving moves to `Flare.Components.IDE`. Applications control which layout changes to accept.
+- `FlareTabs` tabs can be reordered by dragging or with Alt+Arrow. `FlareTab` gains `Key`; `FlareTabs` gains `Reorderable`, `TabOrder` and `TabOrderChanged`.
 
 ## [0.60.0] - 2026-11-20
 

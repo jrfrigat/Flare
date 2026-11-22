@@ -10541,6 +10541,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Tabs_CloseableTabs", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag or Alt+Arrow to reorder.
+        /// </summary>
+        public static string Tabs_Reorder {
+            get {
+                return ResourceManager.GetString("Tabs_Reorder", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Controlled &amp; guarded.

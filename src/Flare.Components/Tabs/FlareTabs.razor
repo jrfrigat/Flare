@@ -20,6 +20,7 @@
     }
     <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef"
          data-flare-keyboard-fallback="@(_jsKeyboardRegistered ? null : "true")"
+         data-flare-tab-reorder="@(Reorderable ? "true" : null)"
          @onkeydown="OnFallbackKeyDown">
         @foreach (var tab in _tabs)
         {
@@ -32,10 +33,14 @@
                     aria-selected="@(isActive ? "true" : "false")"
                     aria-controls="@tab.PanelId"
                     aria-label="@tab.Label"
+                    aria-keyshortcuts="@(Reorderable ? "Alt+ArrowLeft Alt+ArrowRight" : null)"
                     data-closeable="@(tab.Closeable ? "true" : null)"
                     title="@tab.Tooltip"
                     tabindex="@(isActive ? 0 : -1)"
                     disabled="@tab.Disabled"
+                    draggable="@(Reorderable ? "true" : null)"
+                    @ondragstart="@(() => BeginDrag(tab))" @ondragend="EndDrag"
+                    @ondragover:preventDefault="@Reorderable" @ondrop="@(() => DropAsync(tab))"
                     @onclick="@(() => OnTabClick(tab))">
                 @if (tab.LeadingIcon is not null)
                 {
@@ -121,11 +126,25 @@
     /// </summary>
     [Parameter] public bool Lazy { get; set; }
 
+    /// <summary>Enables dragging a tab to a new position and pressing Alt+ArrowLeft/Right while it is
+    /// focused. The active tab stays selected and keyboard focus follows the moved tab.</summary>
+    [Parameter] public bool Reorderable { get; set; }
+
+    /// <summary>Controlled order of tab keys (see <see cref="FlareTab.Key"/>). Unlisted tabs follow in
+    /// declaration order. Null keeps the order inside the component.</summary>
+    [Parameter] public IReadOnlyList<string>? TabOrder { get; set; }
+
+    /// <summary>Invoked with the new key order after a drag or an Alt+Arrow reorder.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<string>> TabOrderChanged { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Tabs.Root;
 
     private readonly List<FlareTab> _tabs = [];
     private FlareTab? _active;
     private int _currentIndex = -1;
+    private FlareTab? _draggedTab;
+    private IReadOnlyList<string>? _internalOrder;
+    private IReadOnlyList<string>? _appliedTabOrder;
     // Last ActiveIndex value seen from the parent; lets OnParametersSet tell a parent-driven change
     // apart from the user's own clicks (which advance _currentIndex but not ActiveIndex).
     private int _lastBoundIndex;
@@ -284,6 +303,7 @@
     protected override void OnParametersSet()
     {
         _rootStyle = BuildRootStyle();
+        ApplyExternalOrder();
         if (ActiveIndex != _lastBoundIndex || _active is null || _active.Disabled)
         {
             _lastBoundIndex = ActiveIndex;
@@ -310,6 +330,9 @@
 
     private void OnHeaderChanged()
     {
+        ApplyExternalOrder();
+        ApplyOrder();
+        if (_active is not null) _currentIndex = _tabs.IndexOf(_active);
         if (_active?.Disabled == true || (_active is null && _tabs.Any(t => !t.Disabled)))
         {
             SetActiveByIndex();
@@ -324,6 +347,7 @@
     {
         if (_tabs.Contains(tab)) return;
         _tabs.Add(tab);
+        ApplyOrder();
         // Honor the bound ActiveIndex as tabs arrive: select when nothing is active yet, or when the
         // tab that just registered is the bound target (which may only now have become reachable).
         if (_active is null || _tabs.IndexOf(tab) == ActiveIndex)
@@ -338,6 +362,7 @@
         var oldIndex = _tabs.IndexOf(tab);
         var wasActive = _active == tab;
         _tabs.Remove(tab);
+        ApplyOrder();
         if (_active == tab)
         {
             _active = null;
@@ -424,6 +449,11 @@
     private async Task OnFallbackKeyDown(KeyboardEventArgs e)
     {
         if (_jsKeyboardRegistered) return;
+        if (Reorderable && e.AltKey && e.Key is "ArrowLeft" or "ArrowRight")
+        {
+            await OnTabReorder(e.Key, ThemeService?.IsRtl == true);
+            return;
+        }
         // No module means no computed-direction read: the resolved theme RTL state is the best truth
         // available, and the module path overrides it with what the browser actually lays out.
         if (e.Key is "Home" or "End" or "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Delete")
@@ -484,5 +514,71 @@
             _focusPending = target;
             StateHasChanged();
         }
+    }
+
+    private void ApplyExternalOrder()
+    {
+        if (TabOrder is null)
+        {
+            _appliedTabOrder = null;
+            return;
+        }
+        if (_appliedTabOrder is not null && TabOrder.SequenceEqual(_appliedTabOrder)) return;
+        _appliedTabOrder = TabOrder.ToArray();
+        ApplyOrder();
+    }
+
+    private void ApplyOrder()
+    {
+        var order = TabOrder ?? _internalOrder;
+        if (order is null || order.Count == 0) return;
+        var ordered = TabOrdering.Apply(_tabs, order, tab => tab.EffectiveKey).ToList();
+        if (ordered.Count == _tabs.Count && ordered.SequenceEqual(_tabs)) return;
+        _tabs.Clear();
+        _tabs.AddRange(ordered);
+        if (_active is not null) _currentIndex = _tabs.IndexOf(_active);
+    }
+
+    private void BeginDrag(FlareTab tab)
+    {
+        if (Reorderable) _draggedTab = tab;
+    }
+
+    private void EndDrag() => _draggedTab = null;
+
+    private Task DropAsync(FlareTab target)
+    {
+        var source = _draggedTab;
+        EndDrag();
+        return source is null ? Task.CompletedTask : MoveTabAsync(source, _tabs.IndexOf(target));
+    }
+
+    private async Task MoveTabAsync(FlareTab tab, int destination)
+    {
+        if (!Reorderable) return;
+        var order = TabOrdering.Move(_tabs, tab, destination, item => item.EffectiveKey);
+        if (order is null) return;
+        if (TabOrder is null)
+        {
+            _internalOrder = order;
+            ApplyOrder();
+        }
+        _focusPending = tab;
+        if (_active is not null) _currentIndex = _tabs.IndexOf(_active);
+        if (TabOrderChanged.HasDelegate) await TabOrderChanged.InvokeAsync(order);
+        StateHasChanged();
+    }
+
+    /// <summary>Moves the active tab one position for an orientation-aware Alt+Arrow.</summary>
+    /// <param name="key">The pressed arrow key.</param>
+    /// <param name="rtl">Whether the tab bar resolves to right-to-left in the browser.</param>
+    [JSInvokable]
+    public async Task OnTabReorder(string key, bool rtl)
+    {
+        if (!Reorderable || key is not ("ArrowLeft" or "ArrowRight") || _active is not { } tab) return;
+        var index = _tabs.IndexOf(tab);
+        if (index < 0) return;
+        var step = (key == "ArrowRight") != rtl ? 1 : -1;
+        await MoveTabAsync(tab, index + step);
     }
 }

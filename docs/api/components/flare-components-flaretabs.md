@@ -18,6 +18,9 @@
 | `OnPreviewInteraction` | `EventCallback<TabInteractionEventArgs>` | `` | Callback |  | Invoked before a tab is activated or closed. Set Cancel in the handler to veto the interaction (e.g. block switching away from a tab with unsaved changes). Async handlers are awaited before the interaction proceeds. |
 | `OnTabClose` | `EventCallback<string>` | `` | Callback |  | Callback fired with the label of a closed tab. |
 | `Placement` | `TabsPlacement` | `TabsPlacement.Top` | Parameter |  | Side the tab bar is placed on (Top/Bottom/Left/Right). Left/Right render a vertical bar. Default Top. |
+| `Reorderable` | `bool` | `false` | Parameter |  | Enables dragging a tab to a new position and pressing Alt+ArrowLeft/Right while it is focused. The active tab stays selected and keyboard focus follows the moved tab. |
+| `TabOrder` | `IReadOnlyList<string>?` | `` | Parameter |  | Controlled order of tab keys (see Key). Unlisted tabs follow in declaration order. Null keeps the order inside the component. |
+| `TabOrderChanged` | `EventCallback<IReadOnlyList<string>>` | `` | Callback |  | Invoked with the new key order after a drag or an Alt+Arrow reorder. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Type scale applied to the tab labels. Null (default) keeps the theme's label scale. |
 | `Variant` | `TabsVariant` | `TabsVariant.Default` | Parameter |  | Visual variant of the tab bar (theme-independent). Default keeps the active theme's style. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
@@ -36,6 +39,16 @@ Returns: `Task`.
 | --- | --- | --- |
 | `key` | `string` | The navigation key whose native scroll behavior was prevented. |
 | `rtl` | `bool` | Whether the tablist resolves to right-to-left in the browser. |
+
+### `OnTabReorder(string key, bool rtl)`
+
+Moves the active tab one position for an orientation-aware Alt+Arrow.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | The pressed arrow key. |
+| `rtl` | `bool` | Whether the tab bar resolves to right-to-left in the browser. |
 
 ### `OnTabScrollState(bool overflowing, bool atStart, bool atEnd)`
 

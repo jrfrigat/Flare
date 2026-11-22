@@ -2581,6 +2581,9 @@
   <data name="Tabs_CloseableTabs" xml:space="preserve">
     <value>Закрываемые вкладки</value>
   </data>
+  <data name="Tabs_Reorder" xml:space="preserve">
+    <value>Перетаскивание или Alt+стрелки</value>
+  </data>
   <data name="Tabs_Vertical" xml:space="preserve">
     <value>Вертикальные, иконки и отключение</value>
   </data>

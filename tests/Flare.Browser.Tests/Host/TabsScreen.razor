@@ -2,10 +2,10 @@
 
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
     <main>
-        <FlareTabs @bind-ActiveIndex="_active">
-            <FlareTab Label="One" />
-            <FlareTab Label="Two" />
-            <FlareTab Label="Three" />
+        <FlareTabs @bind-ActiveIndex="_active" Reorderable="true">
+            <FlareTab Key="one" Label="One" />
+            <FlareTab Key="two" Label="Two" />
+            <FlareTab Key="three" Label="Three" />
         </FlareTabs>
         <output id="active">@_active</output>
     </main>

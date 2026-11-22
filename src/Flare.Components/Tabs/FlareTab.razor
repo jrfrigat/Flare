@@ -16,6 +16,9 @@
 
 @code {
     [CascadingParameter] private FlareTabsContext? TabsContext { get; set; }
+    /// <summary>Stable identity of the tab used by <see cref="FlareTabs.TabOrder"/> and reordering.
+    /// Must be unique within the tab set; when null the tab's generated id is used.</summary>
+    [Parameter] public string? Key { get; set; }
     /// <summary>Tab button label shown in the tab bar.</summary>
     [Parameter] public string Label { get; set; } = "";
     /// <summary>Content rendered in the tab panel when active.</summary>
@@ -41,6 +44,8 @@
     internal string TabId { get; } = $"tab-{Guid.NewGuid():N}";
     /// <summary>Stable GUID-based ID for the tab panel element.</summary>
     internal string PanelId { get; } = $"panel-{Guid.NewGuid():N}";
+    /// <summary>The key the tab is identified by in the order, falling back to the generated id.</summary>
+    internal string EffectiveKey => string.IsNullOrEmpty(Key) ? TabId : Key;
 
     protected override string ComponentCssClass => Css.Classes.Tabs.Tab;
 
@@ -51,11 +56,11 @@
     // this tab receives its new parameters, so a changed label or badge would stay one render behind
     // unless the tab says so. The icon is compared by presence only: a fragment written in markup is a
     // new delegate on every render, and comparing it would re-render the bar every time.
-    private (string Label, string? Badge, bool Dot, FlareColor BadgeColor, bool Disabled, bool Closeable,
+    private (string? Key, string Label, string? Badge, bool Dot, FlareColor BadgeColor, bool Disabled, bool Closeable,
         string? Tooltip, bool HasIcon) _header;
 
-    private (string, string?, bool, FlareColor, bool, bool, string?, bool) CurrentHeader =>
-        (Label, Badge, BadgeDot, BadgeColor, Disabled, Closeable, Tooltip, LeadingIcon is not null);
+    private (string?, string, string?, bool, FlareColor, bool, bool, string?, bool) CurrentHeader =>
+        (Key, Label, Badge, BadgeDot, BadgeColor, Disabled, Closeable, Tooltip, LeadingIcon is not null);
 
     protected override void OnInitialized()
     {

@@ -1,0 +1,27 @@
+@* Drag a tab, or focus it and press Alt+ArrowLeft/Right. The active tab stays selected and the
+   order is reported through TabOrderChanged. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareTabs Reorderable="true" TabOrderChanged="OnOrder">
+        @foreach (var tab in _tabs)
+        {
+            <FlareTab @key="tab.Key" Key="@tab.Key" Label="@tab.Label">
+                <FlareText Typo="TypographyScale.BodyMedium">Content for <FlareText Element="strong" Inherit>@tab.Label</FlareText>.</FlareText>
+            </FlareTab>
+        }
+    </FlareTabs>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">Order: @string.Join(", ", _order)</FlareText>
+</FlareStack>
+
+@code {
+    private readonly List<(string Key, string Label)> _tabs =
+    [
+        ("overview", "Overview"),
+        ("activity", "Activity"),
+        ("settings", "Settings"),
+        ("reports", "Reports"),
+    ];
+
+    private IReadOnlyList<string> _order = ["overview", "activity", "settings", "reports"];
+
+    private void OnOrder(IReadOnlyList<string> order) => _order = order;
+}

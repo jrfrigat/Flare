@@ -14,6 +14,7 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content rendered in the tab panel when active. |
 | `Closeable` | `bool` | `false` | Parameter |  | Shows a close button on the tab. |
 | `Disabled` | `bool` | `false` | Parameter |  | Prevents the tab from being selected. |
+| `Key` | `string?` | `` | Parameter |  | Stable identity of the tab used by TabOrder and reordering. Must be unique within the tab set; when null the tab's generated id is used. |
 | `Label` | `string` | `""` | Parameter |  | Tab button label shown in the tab bar. |
 | `LeadingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered before the tab label. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Invoked when the tab button is clicked, before activation. Fires even for the active tab. |
