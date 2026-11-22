@@ -71,4 +71,32 @@ public sealed class TabsThemeSpecTests(BrowserFixture fixture) : IClassFixture<B
         Assert.Equal("rgb(71, 158, 245)", await active.EvaluateAsync<string>(
             "el => getComputedStyle(el, '::after').backgroundColor"));
     }
+
+    // Any Flare theme runs with any palette: the Fluent indicator is a compound brand paint, so the
+    // Excel palette must move it away from the Blue one through the base primary role.
+    [Fact]
+    public async Task IndicatorFollowsTheSelectedPalette()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/tabs-theme-spec");
+
+        var excel = page.Locator("#tabs-excel");
+        var active = excel.Locator("[role=tab][aria-selected=true]");
+        await Expect(active).ToBeVisibleAsync();
+        // The scope applies its palette class after the first paint; wait for it before measuring.
+        await page.WaitForFunctionAsync(
+            "() => document.querySelector('#tabs-excel')?.closest('.flare-palette-fluent-excel') !== null");
+
+        var indicator = await active.EvaluateAsync<string>(
+            "el => getComputedStyle(el, '::after').backgroundColor");
+        var primary = await page.EvaluateAsync<string>(
+            "css => { const root = document.querySelector('#tabs-excel');" +
+            " const probe = document.createElement('span'); probe.style.color = css;" +
+            " root.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; }",
+            $"var({Css.Tokens.Color.Primary})");
+
+        Assert.Equal(primary, indicator);
+        Assert.NotEqual("rgb(15, 108, 189)", indicator);
+    }
 }

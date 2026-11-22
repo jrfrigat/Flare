@@ -555,11 +555,11 @@ public class FluentUI2Tokens
         // Fluent has no nested-tab level of its own, so the subordinate strip is expressed the way
         // this language expresses subordination anyway: a thinner rail and a neutral active label.
         SecondaryIndicatorThickness = "2px",
-        InactiveColor = "var(--flare-fluent-tab-fg)",
-        InactiveHoverColor = "var(--flare-fluent-tab-fg-hover)",
+        InactiveColor = "var(--flare-fluent-tab-fg, var(--flare-color-on-surface-variant))",
+        InactiveHoverColor = "var(--flare-fluent-tab-fg-hover, var(--flare-color-on-surface))",
         // The selected label is foreground1 (#FFFFFF in dark, not the Flare dark on-surface #F0F0F0);
         // the brand belongs to the icon and the indicator, which use the base primary role.
-        ActiveColor = "var(--flare-fluent-tab-selected-fg)",
+        ActiveColor = "var(--flare-fluent-tab-selected-fg, var(--flare-color-on-surface))",
         // Fluent v9 draws no divider under the whole strip.
         DividerColor = "transparent",
         TrackBg = "transparent",
@@ -948,13 +948,11 @@ public class FluentUI2Tokens
         // Neutral stroke hover/pressed (colorNeutralStroke1Hover/Pressed) - subtle border darken.
         [FluentCssVars.StrokeHover] = "#C7C7C7",
         [FluentCssVars.StrokePressed] = "#B3B3B3",
-        // Fluent tabs (react-tabs v9): only the roles with no Flare base equivalent live here.
-        // The selected label, icon and indicator use the primary/on-surface base roles.
+        // Fluent tabs (react-tabs v9): only the palette-independent neutral roles live here.
+        // The brand indicator follows --flare-color-primary, so every palette keeps its own colour.
         [FluentCssVars.TabFg] = "#424242",
         [FluentCssVars.TabFgHover] = "#242424",
         [FluentCssVars.TabSelectedFg] = "#242424",
-        [FluentCssVars.TabIndicatorHover] = "#115EA3",
-        [FluentCssVars.TabIndicatorPressed] = "#0F548C",
         [FluentCssVars.Shadow4] = "0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14)",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
@@ -1701,12 +1699,10 @@ public class FluentUI2Tokens
             // Fluent dark neutral stroke hover/pressed.
             [FluentCssVars.StrokeHover] = "#757575",
             [FluentCssVars.StrokePressed] = "#6B6B6B",
-            // Fluent dark tabs.
+            // Fluent dark tabs (palette-independent neutrals only).
             [FluentCssVars.TabFg] = "#D6D6D6",
             [FluentCssVars.TabFgHover] = "#FFFFFF",
             [FluentCssVars.TabSelectedFg] = "#FFFFFF",
-            [FluentCssVars.TabIndicatorHover] = "#62ABF5",
-            [FluentCssVars.TabIndicatorPressed] = "#2886DE",
             [FluentCssVars.Shadow4] = "0 0 2px rgba(0,0,0,0.24), 0 2px 4px rgba(0,0,0,0.28)",
         };
         return dict;

@@ -60,11 +60,12 @@
     }
 
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active:hover::after {
-        background: var(--flare-fluent-tab-indicator-hover);
+        /* Palette-aware hover: darkens in light mode, lightens in dark mode. */
+        background: color-mix(in srgb, var(--flare-color-primary) 88%, var(--flare-color-on-surface));
     }
 
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active:active::after {
-        background: var(--flare-fluent-tab-indicator-pressed);
+        background: color-mix(in srgb, var(--flare-color-primary) 82%, black);
     }
 
     /* body1Strong on the selected label and the brand on its icon. */
@@ -80,7 +81,7 @@
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab:focus-visible {
         outline: var(--flare-fluent-stroke-width-thick) solid var(--flare-fluent-focus-stroke-color);
         outline-offset: calc(-1 * var(--flare-fluent-stroke-width-thick));
-        box-shadow: var(--flare-fluent-shadow-4);
+        box-shadow: var(--flare-fluent-shadow-4, var(--flare-elevation-2));
     }
 
     /* Vertical tabs: no selected fill, the indicator moves to the inline edge. */

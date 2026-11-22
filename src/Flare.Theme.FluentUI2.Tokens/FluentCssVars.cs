@@ -38,10 +38,6 @@ public static class FluentCssVars
     public const string TabFgHover = "--flare-fluent-tab-fg-hover";
     /// <summary>Selected tab label color (colorNeutralForeground1).</summary>
     public const string TabSelectedFg = "--flare-fluent-tab-selected-fg";
-    /// <summary>Selected tab indicator on hover (colorCompoundBrandStrokeHover).</summary>
-    public const string TabIndicatorHover = "--flare-fluent-tab-indicator-hover";
-    /// <summary>Selected tab indicator on press (colorCompoundBrandStrokePressed).</summary>
-    public const string TabIndicatorPressed = "--flare-fluent-tab-indicator-pressed";
     /// <summary>Fluent shadow4, used by the tab focus indicator.</summary>
     public const string Shadow4 = "--flare-fluent-shadow-4";
 }
