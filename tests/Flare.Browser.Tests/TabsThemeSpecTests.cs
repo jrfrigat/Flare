@@ -119,4 +119,36 @@ public sealed class TabsThemeSpecTests(BrowserFixture fixture) : IClassFixture<B
         Assert.Equal(primary, indicator);
         Assert.NotEqual("rgb(15, 108, 189)", indicator);
     }
+
+    // A hover is the preview of the selection: the pending line and the selected indicator must sit on
+    // the same edge of a vertical tab, and the edge must face the panel (end edge for a left bar, start
+    // edge for a right one).
+    [Theory]
+    [InlineData("tabs-vertical-left", "right")]
+    [InlineData("tabs-vertical-right", "left")]
+    public async Task VerticalTabsPaintHoverAndSelectionOnTheSameEdge(string scopeId, string edge)
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/tabs-theme-spec");
+
+        var scope = page.Locator($"#{scopeId}");
+        var active = scope.Locator("[role=tab][aria-selected=true]");
+        var inactive = scope.Locator("[role=tab][aria-selected=false]").First;
+        await Expect(active).ToBeVisibleAsync();
+
+        static string Edge(string left, string right) => left == "0px" ? "left" : right == "0px" ? "right" : "none";
+
+        var selectedEdge = Edge(
+            await active.EvaluateAsync<string>("el => getComputedStyle(el, '::after').left"),
+            await active.EvaluateAsync<string>("el => getComputedStyle(el, '::after').right"));
+
+        await inactive.HoverAsync();
+        var hoverEdge = Edge(
+            await inactive.EvaluateAsync<string>("el => getComputedStyle(el, '::before').left"),
+            await inactive.EvaluateAsync<string>("el => getComputedStyle(el, '::before').right"));
+
+        Assert.Equal(edge, selectedEdge);
+        Assert.Equal(selectedEdge, hoverEdge);
+    }
 }

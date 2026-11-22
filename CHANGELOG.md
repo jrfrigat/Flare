@@ -33,6 +33,7 @@ All notable changes to Flare are documented here. This project adheres to
 - The dock tab strip takes its height from the theme's tab height, as FlareTabs does. The browser measures each group header and the panes follow it; the dock no longer owns a header height or a compact tab override, so a theme with taller tabs is not cut down. A tab bar never becomes a vertical scroll container.
 - The editor breadcrumb row height comes from the components it hosts and the theme's typography, not from a fixed 22px.
 - `FlarePopover` and the ColorPicker close on a click anywhere outside the panel again. Outside dismissal is a document-level pointerdown instead of a full-screen backdrop, so a popover inside a FlareLazy demo, a container query box or a transformed ancestor no longer keeps the rest of the page from dismissing it.
+- FluentUI2 vertical tabs paint the hover line and the selected indicator on the same edge: the pending line sat on the physical left whatever the placement, while the selection followed the inline end, so hovering a left-placed tab hinted at the opposite side.
 
 ### Breaking changes
 

@@ -105,7 +105,10 @@
     }
 
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__tab::before {
-        inset: 8px auto 8px 0;
+        /* The pending line previews the selection, so it sits on the same inline edge as ::after -
+           logical insets keep them together in RTL too. */
+        inset-block: 8px;
+        inset-inline: auto 0;
         inline-size: var(--flare-fluent-stroke-width-thick);
         block-size: auto;
     }
@@ -123,6 +126,6 @@
     }
 
     .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical.flare-tabs--right .flare-tabs__tab::before {
-        inset: 8px 0 8px auto;
+        inset-inline: 0 auto;
     }
 }
