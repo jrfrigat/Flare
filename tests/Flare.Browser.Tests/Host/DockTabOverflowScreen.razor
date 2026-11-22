@@ -1,0 +1,24 @@
+@page "/dock-tab-overflow"
+@using Flare.Abstractions.Tokens
+@using Flare.Components.IDE
+
+@* A deliberately narrow dock group: the tab strip must overflow, show FlareScroller's arrows rather
+   than a browser scrollbar, and keep the drag grips. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
+        <div style="width:260px;height:200px">
+            <FlareDockWorkspace id="dock-overflow" Layout="_layout" Items="_items">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>
+
+@code {
+    private static readonly DockGroup _layout = new("root", ["a", "b", "c", "d", "e", "f", "g", "h"], "a");
+    private static readonly DockItem[] _items =
+    [
+        new("a", "Alpha"), new("b", "Beta"), new("c", "Gamma"), new("d", "Delta"),
+        new("e", "Epsilon"), new("f", "Zeta"), new("g", "Eta"), new("h", "Theta"),
+    ];
+}

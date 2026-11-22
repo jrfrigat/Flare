@@ -1,0 +1,108 @@
+@namespace Flare.Components
+@inherits FlareLocalizedComponentBase
+@implements IAsyncDisposable
+@inject Flare.Components.Services.IUiJsService Ui
+
+@* A horizontal overflow strip for any content: tabs, buttons, chips. It owns the arrows, the shared
+   scroller registration and the edge state; ChildContent is the row that scrolls, and the header slots
+   sit outside it. *@
+<div class="@BuildCssClass()" @ref="_rootRef" data-flare-scroller>
+    @if (HeaderStart is not null)
+    {
+        <div class="@Css.Classes.Tabs.HeaderStart">@HeaderStart</div>
+    }
+    <div class="@Css.Classes.Tabs.Strip">
+        @if (_showArrows)
+        {
+            <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollPrev"
+                    disabled="@_atStart" aria-label="@(CoreText["Tabs_ScrollBack"])"
+                    tabindex="-1" @onclick="ScrollPrev">
+                <FlareIconView Value="FlareIcons.ChevronLeft" />
+            </button>
+        }
+        <div class="@Css.Classes.Scroller.Content" data-flare-scroller-bar>@ChildContent</div>
+        @if (_showArrows)
+        {
+            <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollNext"
+                    disabled="@_atEnd" aria-label="@(CoreText["Tabs_ScrollForward"])"
+                    tabindex="-1" @onclick="ScrollNext">
+                <FlareIconView Value="FlareIcons.ChevronRight" />
+            </button>
+        }
+    </div>
+    @if (HeaderEnd is not null)
+    {
+        <div class="@Css.Classes.Tabs.HeaderEnd">@HeaderEnd</div>
+    }
+</div>
+
+@code {
+    /// <summary>The row of content that scrolls - tab items, buttons, chips or any other inline content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Content rendered before the strip, at the start of the header row.</summary>
+    [Parameter] public RenderFragment? HeaderStart { get; set; }
+    /// <summary>Content rendered after the strip, at the end of the header row.</summary>
+    [Parameter] public RenderFragment? HeaderEnd { get; set; }
+    /// <summary>A vertical strip has no arrows; the content keeps its own scrolling.</summary>
+    [Parameter] public bool Vertical { get; set; }
+    /// <summary>Hides the overflow arrows. The strip still measures its overflow and scrolls exactly as
+    /// before (wheel, keys, reveal), so a caller can supply its own navigation without changing behaviour.</summary>
+    [Parameter] public bool HideArrows { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Scroller.BarWrap;
+
+    private ElementReference _rootRef;
+    private DotNetObjectReference<FlareScroller>? _dotNetRef;
+    private bool _overflowing;
+    private bool _atStart = true;
+    private bool _atEnd;
+    private bool _showArrows => !HideArrows && _overflowing && !Vertical;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || Vertical)
+        {
+            return;
+        }
+
+        _dotNetRef = DotNetObjectReference.Create(this);
+        try
+        {
+            await Ui.RegisterTabScrollerAsync(_rootRef, _dotNetRef);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+    }
+
+    /// <summary>Receives the overflow and edge state from the shared scroller module.</summary>
+    /// <param name="overflowing">Whether the content is wider than its viewport.</param>
+    /// <param name="atStart">Whether the content is at its start edge.</param>
+    /// <param name="atEnd">Whether the content is at its end edge.</param>
+    [JSInvokable]
+    public void OnTabScrollState(bool overflowing, bool atStart, bool atEnd)
+    {
+        _overflowing = overflowing;
+        _atStart = atStart;
+        _atEnd = atEnd;
+        StateHasChanged();
+    }
+
+    private async Task ScrollPrev() => await Ui.ScrollTabsAsync(_rootRef, -1);
+
+    private async Task ScrollNext() => await Ui.ScrollTabsAsync(_rootRef, 1);
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await Ui.RemoveTabScrollerAsync(_rootRef);
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (InvalidOperationException) { }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

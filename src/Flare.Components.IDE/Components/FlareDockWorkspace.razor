@@ -37,9 +37,10 @@
                     <header @key="entry.Id" id="@HeaderId(group.Key)" data-flare-dock-header="@entry.Id"
                             class="@DockCss.Header @Css.Classes.Tabs.Root @Css.Classes.Tabs.BarOnly"
                             style="@entry.Style" tabindex="-1">
-                        <div class="@Css.Classes.Tabs.BarWrap">
+                        <FlareScroller Class="@Css.Classes.Tabs.BarWrap">
+                        <ChildContent>
                         <FlareDropZone Target="@ZoneId(group.Key, "row")" Placement="DropPlacement.Between"
-                                       Class="@($"{DockCss.TabZone} {Css.Classes.Tabs.Strip}")">
+                                       Class="@DockCss.TabZone">
                             <div role="tablist" aria-label="@TabListLabel(group)" class="@DockCss.Tabs @Css.Classes.Tabs.Bar" data-flare-dock-tabs>
                                 @foreach (var tabKey in group.Items)
                                 {
@@ -86,7 +87,8 @@
                                 }
                             </div>
                         </FlareDropZone>
-                        <div class="@Css.Classes.Tabs.HeaderEnd">
+                        </ChildContent>
+                        <HeaderEnd>
                         @if (group.ActiveKey is { } active)
                         {
                             <button type="button" class="@DockCss.Control" aria-label="@Text("Dock_Actions")"
@@ -169,8 +171,8 @@
                                         @onclick="() => CloseAsync(group, active)">&#x00D7;</button>
                             }
                         }
-                        </div>
-                        </div>
+                        </HeaderEnd>
+                        </FlareScroller>
                     </header>
                 }
             }

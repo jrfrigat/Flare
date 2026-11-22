@@ -180,6 +180,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareSchedulerTimeline`](components/flare-components-flareschedulertimeline.md) — Virtual resource projection composed from the existing Gantt timeline.
 - [`FlareSchedulerToolbar`](components/flare-components-flareschedulertoolbar.md) — Optional standard navigation and event commands, composable anywhere in a scheduling scope.
 - [`FlareScrollTop`](components/flare-components-flarescrolltop.md)
+- [`FlareScroller`](components/flare-components-flarescroller.md)
 - [`FlareSection`](components/flare-components-flaresection.md)
 - [`FlareSelect`](components/flare-components-flareselect.md) — Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned "no value" row, so a filter select expresses "all" without a sentinel value.
 - [`FlareShortcutEditor`](components/flare-components-ide-flareshortcuteditor.md) — Captures and validates a shortcut assignment without executing the associated command.

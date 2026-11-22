@@ -155,11 +155,22 @@ function revealTab(bar, tab) {
     if (horizontal || vertical) bar.scrollBy({ left: horizontal, top: vertical, behavior: 'auto' });
 }
 
+// The caller may hand the bar itself or a wrapper around it (the shared FlareTabScroller passes its
+// root so the C# side needs no second element reference), so both forms resolve to the bar.
+function tabBarOf(root) {
+    if (!root) return null;
+    if (root.matches?.('[role="tablist"]')) return root;
+    // Tabs scroll their tablist; any other content scrolls the strip's own content row. A caller that
+    // passes the bar directly (the legacy signature, and the JS tests) has neither, so it is its own bar.
+    return root.querySelector?.('[role="tablist"]') ?? root.querySelector?.('[data-flare-scroller-bar]') ?? root;
+}
+
 // The bar reports three booleans, so the only scroll events worth crossing interop for are the ones
 // that flip one of them - a drag from one end to the other has two interesting frames out of a
 // hundred. Coalescing to a frame bounds the work per gesture; comparing against the last state
 // removes the rest.
-export function registerTabScroller(bar, dotNetRef) {
+export function registerTabScroller(root, dotNetRef) {
+    const bar = tabBarOf(root);
     if (!bar) return;
     let last = null, frame = 0;
     function update() {
@@ -217,7 +228,8 @@ export function registerTabScroller(bar, dotNetRef) {
     update();
 }
 
-export function scrollTabs(bar, dir) {
+export function scrollTabs(root, dir) {
+    const bar = tabBarOf(root);
     if (!bar) return;
     const sign = getComputedStyle(bar).direction === 'rtl' ? -1 : 1;
     bar.scrollBy({ left: sign * dir * bar.clientWidth * 0.8, behavior: tabScrollBehavior() });
@@ -239,8 +251,9 @@ export function revealActiveLinkTab(bar) {
     if (Math.abs(delta) > 1) bar.scrollBy({ left: delta, behavior: tabScrollBehavior() });
 }
 
-export function removeTabScroller(bar) {
-    _tabScrollers.drop(bar);
+export function removeTabScroller(root) {
+    const bar = tabBarOf(root);
+    if (bar) _tabScrollers.drop(bar);
 }
 
 // A button group that runs out of room folds its trailing segments into an overflow menu. Only the

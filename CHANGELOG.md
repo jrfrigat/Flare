@@ -15,6 +15,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- `FlareScroller` is the shared horizontal overflow strip: `FlareTabs` and the dock's tab header use it, so both show the same arrows instead of a browser scrollbar. It accepts any content (tabs, buttons, chips) and a `HideArrows` switch that removes the arrows while keeping the scrolling.
 - The ColorPicker panel is a `FlarePopover`: placement, backdrop, outside-click and Escape come from the shared popover, and the picker's own panel chrome and dismiss code are gone. `colorpicker.css` keeps only colour-specific rules (canvas, hue/alpha tracks, checkerboard), and the eye-dropper is a Text button. `FlarePopover` gains `AriaLabel` for popovers whose anchor is the caller's own button.
 - The ColorPicker trigger is the shared `FlareButton`: the color circle is its leading icon and the formatted value its label. New `Variant` (default Outlined) and `Size` parameters let it match the buttons around it, and the trigger's hand-built surface, hover and focus styles are gone.
 - `ButtonTokens` gains the Text variant's content colour (`TextContent`), so a theme whose toolbar and menu commands are neutral chrome names their text colour instead of taking the accent. VisualStudio uses it beside a neutral default Filled container.

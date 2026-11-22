@@ -50,16 +50,6 @@ Returns: `Task`.
 | `key` | `string` | The pressed arrow key. |
 | `rtl` | `bool` | Whether the tab bar resolves to right-to-left in the browser. |
 
-### `OnTabScrollState(bool overflowing, bool atStart, bool atEnd)`
-
-Returns: `void`.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `overflowing` | `bool` | — |
-| `atStart` | `bool` | — |
-| `atEnd` | `bool` | — |
-
 
 ## Inheritance
 

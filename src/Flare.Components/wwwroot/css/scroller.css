@@ -1,0 +1,27 @@
+/* FlareScroller - a generic horizontal overflow strip. The tab strip's own classes supply the item
+   layout and the arrow look; these rules carry only what a generic content row needs and the scroll
+   surface for content that is not a tablist. */
+
+.flare-scroller__bar-wrap {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.flare-scroller__content {
+  display: flex;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+/* Ordinary content keeps its natural width so the row overflows and the strip can scroll it. A
+   tablist is the exception: it is the scroll container itself and must keep flexing inside the strip. */
+.flare-scroller__content:not(:has([role="tablist"])) > * {
+  flex: 0 0 auto;
+}
+
+.flare-scroller__content::-webkit-scrollbar { display: none; }

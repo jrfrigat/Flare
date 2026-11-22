@@ -851,7 +851,6 @@ button.flare-editor-breadcrumb-bar__segment-button {
     min-inline-size: 0;
 }
 
-.flare-dock__tabs { scrollbar-width: thin; }
 .flare-dock__tab-wrap { flex: 0 0 auto; display: flex; }
 .flare-dock__tab-actions { display: flex; align-items: center; flex: none; }
 

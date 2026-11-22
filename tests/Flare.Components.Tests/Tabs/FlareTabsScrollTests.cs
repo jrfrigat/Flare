@@ -19,7 +19,7 @@ public class FlareTabsScrollTests : FlareTestContext
     [Fact]
     public void OnTabScrollState_ShowsArrowsWhenOverflowing()
     {
-        var cut = Render<FlareTabs>();
+        var cut = Render<FlareScroller>();
         cut.InvokeAsync(() => cut.Instance.OnTabScrollState(overflowing: true, atStart: true, atEnd: false));
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tabs.Scroll}"));
         Assert.NotNull(cut.Find($".{Css.Classes.Tabs.ScrollPrev}").GetAttribute("disabled")); // atStart

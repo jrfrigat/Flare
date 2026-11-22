@@ -1,0 +1,33 @@
+@page "/scroller"
+@using Flare.Abstractions.Tokens
+
+@* FlareScroller with ordinary buttons and with tabs, plus a HideArrows case. A narrow width is the
+   whole point: the strip must overflow so the arrows (or their absence) are observable. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
+        <div id="scroller-buttons" style="width:260px">
+            <FlareScroller>
+                @for (var i = 0; i < 8; i++)
+                {
+                    <FlareButton Size="FlareSize.Sm">Item @i</FlareButton>
+                }
+            </FlareScroller>
+        </div>
+        <div id="scroller-hidden" style="width:260px">
+            <FlareScroller HideArrows="true">
+                @for (var i = 0; i < 8; i++)
+                {
+                    <FlareButton Size="FlareSize.Sm">Item @i</FlareButton>
+                }
+            </FlareScroller>
+        </div>
+        <div id="scroller-tabs" style="width:260px">
+            <FlareTabs>
+                @for (var i = 0; i < 8; i++)
+                {
+                    <FlareTab Label="@($"Tab {i}")"><ChildContent><span>Panel @i</span></ChildContent></FlareTab>
+                }
+            </FlareTabs>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>

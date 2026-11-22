@@ -191,6 +191,7 @@ This component exposes no documented public methods.
 - `FlareSchedulerTimeline`
 - `FlareSchedulerToolbar`
 - `FlareScrollTop`
+- `FlareScroller`
 - `FlareSection`
 - `FlareSelect`
 - `FlareShortcutEditor`

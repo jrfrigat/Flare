@@ -1974,6 +1974,7 @@ public static class ComponentApiRegistry
                 @"FlareSchedulerTimeline",
                 @"FlareSchedulerToolbar",
                 @"FlareScrollTop",
+                @"FlareScroller",
                 @"FlareSection",
                 @"FlareSelect",
                 @"FlareShortcutEditor",
@@ -6744,6 +6745,43 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareScroller"] = new ApiComponentInfo(
+            @"FlareScroller",
+            @"Flare.Components.FlareScroller",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The row of content that scrolls - tab items, buttons, chips or any other inline content.", null, false, false, false, @"FlareScroller"),
+                new ApiParameterInfo(@"HeaderEnd", @"RenderFragment?", null, @"Content rendered after the strip, at the end of the header row.", null, false, false, false, @"FlareScroller"),
+                new ApiParameterInfo(@"HeaderStart", @"RenderFragment?", null, @"Content rendered before the strip, at the start of the header row.", null, false, false, false, @"FlareScroller"),
+                new ApiParameterInfo(@"HideArrows", @"bool", @"false", @"Hides the overflow arrows. The strip still measures its overflow and scrolls exactly as before (wheel, keys, reveal), so a caller can supply its own navigation without changing behaviour.", null, false, false, false, @"FlareScroller"),
+                new ApiParameterInfo(@"Vertical", @"bool", @"false", @"A vertical strip has no arrows; the content keeps its own scrolling.", null, false, false, false, @"FlareScroller"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"void", null, @"Receives the overflow and edge state from the shared scroller module.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"overflowing", @"bool", @"Whether the content is wider than its viewport."),
+                        new ApiMethodParameter(@"atStart", @"bool", @"Whether the content is at its start edge."),
+                        new ApiMethodParameter(@"atEnd", @"bool", @"Whether the content is at its end edge."),
+                    }),
+            },
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareSection"] = new ApiComponentInfo(
             @"FlareSection",
             @"Flare.Components.FlareSection",
@@ -7647,13 +7685,6 @@ public static class ComponentApiRegistry
                     {
                         new ApiMethodParameter(@"key", @"string", @"The pressed arrow key."),
                         new ApiMethodParameter(@"rtl", @"bool", @"Whether the tab bar resolves to right-to-left in the browser."),
-                    }),
-                new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"void", null, null,
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"overflowing", @"bool", null),
-                        new ApiMethodParameter(@"atStart", @"bool", null),
-                        new ApiMethodParameter(@"atEnd", @"bool", null),
                     }),
             },
             new string[]
