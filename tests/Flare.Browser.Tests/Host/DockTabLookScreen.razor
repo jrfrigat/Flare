@@ -1,0 +1,27 @@
+@page "/dock-tab-look"
+@using Flare.Abstractions.Tokens
+@using Flare.Components.IDE
+
+@* The dock tab must wear the same FlareTabs item language as a plain tab strip: the theme styles
+   both through the shared classes, and the dock adds only structure. The reference strip beside it
+   is the same theme's FlareTabs. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="visualstudio" Palette="vs-blue" Mode="ThemeMode.Dark">
+        <div style="width:520px;height:180px">
+            <FlareDockWorkspace id="dock-vs" Layout="_layout" Items="_items">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+        <div id="tabs-vs" style="width:420px;margin-top:12px">
+            <FlareTabs>
+                <FlareTab Label="Alpha"><ChildContent><span>Alpha</span></ChildContent></FlareTab>
+                <FlareTab Label="Beta"><ChildContent><span>Beta</span></ChildContent></FlareTab>
+            </FlareTabs>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>
+
+@code {
+    private static readonly DockGroup _layout = new("root", ["alpha", "beta"], "alpha");
+    private static readonly DockItem[] _items = [new("alpha", "Alpha"), new("beta", "Beta")];
+}
