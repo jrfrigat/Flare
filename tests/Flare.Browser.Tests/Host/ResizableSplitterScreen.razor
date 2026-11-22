@@ -13,7 +13,8 @@
 
         <div id="splitter-row" style="display:flex;width:600px;height:40px">
             <div id="pane-a" style="flex:0 0 300px"></div>
-            <FlareSplitter Value="_value" MinSize="100px" MaxSize="500px" OnSizeChanged="OnSplit" />
+            <FlareSplitter Value="_value" DefaultValue="200" MinSize="100px" MaxSize="500px"
+                           KeyboardLargeStep="40" OnSizeChanged="OnSplit" />
             <div id="pane-b" style="flex:0 0 300px"></div>
         </div>
         <span id="split-size">@_split</span>
