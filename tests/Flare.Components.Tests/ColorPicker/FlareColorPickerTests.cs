@@ -17,6 +17,32 @@ public class FlareColorPickerTests : FlareTestContext
     }
 
     [Fact]
+    public void Trigger_IsTheSharedFlareButton()
+    {
+        var cut = Render<FlareColorPicker>(p => p.Add(x => x.Value, "#ff0000"));
+        var trigger = cut.Find($".{Css.Classes.Colorpicker.Trigger}");
+
+        Assert.Equal("BUTTON", trigger.TagName);
+        Assert.Contains(Css.Classes.Button.Root, trigger.ClassList);
+        Assert.Contains(Css.Classes.Button.Outlined, trigger.ClassList);
+        Assert.Equal("dialog", trigger.GetAttribute("aria-haspopup"));
+        Assert.Equal("false", trigger.GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void Size_And_Variant_ReachTheTriggerButton()
+    {
+        var cut = Render<FlareColorPicker>(p => p
+            .Add(x => x.Value, "#ff0000")
+            .Add(x => x.Size, FlareSize.Sm)
+            .Add(x => x.Variant, ButtonVariant.Text));
+        var trigger = cut.Find($".{Css.Classes.Colorpicker.Trigger}");
+
+        Assert.Contains(Css.Classes.Button.SizeSm, trigger.ClassList);
+        Assert.Contains(Css.Classes.Button.Text, trigger.ClassList);
+    }
+
+    [Fact]
     public void Inline_RendersInlinePanel()
     {
         var cut = Render<FlareColorPicker>(p => p

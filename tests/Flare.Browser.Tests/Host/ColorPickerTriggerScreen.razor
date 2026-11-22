@@ -1,0 +1,27 @@
+@page "/colorpicker-trigger"
+@using Flare.Abstractions.Tokens
+
+@* The ColorPicker trigger is a FlareButton: each row puts a picker beside a plain button of the same
+   Variant and Size, so the browser test can compare their boxes and computed styles. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
+        <div id="cp-grid">
+            <div class="cp-row" data-size="sm" style="display:flex;gap:12px;align-items:center;margin:6px 0">
+                <FlareColorPicker id="cp-sm" Value="#1188ee" Size="FlareSize.Sm" />
+                <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm">Reference</FlareButton>
+            </div>
+            <div class="cp-row" data-size="md" style="display:flex;gap:12px;align-items:center;margin:6px 0">
+                <FlareColorPicker id="cp-md" Value="#1188ee" Size="FlareSize.Md" />
+                <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Md">Reference</FlareButton>
+            </div>
+            <div class="cp-row" data-size="xl" style="display:flex;gap:12px;align-items:center;margin:6px 0">
+                <FlareColorPicker id="cp-xl" Value="#1188ee" Size="FlareSize.Xl" />
+                <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Xl">Reference</FlareButton>
+            </div>
+            <div class="cp-row" data-size="text" style="display:flex;gap:12px;align-items:center;margin:6px 0">
+                <FlareColorPicker id="cp-text" Value="#1188ee" Variant="ButtonVariant.Text" />
+                <FlareButton Variant="ButtonVariant.Text">Reference</FlareButton>
+            </div>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>

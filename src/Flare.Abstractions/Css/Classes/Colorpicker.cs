@@ -51,8 +51,11 @@ public static class Colorpicker
     public const string SliderRow = "flare-colorpicker__slider-row";
     /// <summary>The <c>flare-colorpicker__sliders</c> CSS class.</summary>
     public const string Sliders = "flare-colorpicker__sliders";
-    /// <summary>The <c>flare-colorpicker__trigger</c> CSS class.</summary>
+    /// <summary>The <c>flare-colorpicker__trigger</c> CSS class - the shared FlareButton that opens the panel.</summary>
     public const string Trigger = "flare-colorpicker__trigger";
+    /// <summary>The <c>flare-colorpicker__trigger-wrap</c> CSS class - the layout-only span around the
+    /// trigger that the popover anchors to.</summary>
+    public const string TriggerWrap = "flare-colorpicker__trigger-wrap";
     /// <summary>The <c>flare-colorpicker__trigger-label</c> CSS class.</summary>
     public const string TriggerLabel = "flare-colorpicker__trigger-label";
     /// <summary>The <c>flare-colorpicker__trigger-swatch</c> CSS class.</summary>

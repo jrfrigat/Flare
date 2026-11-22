@@ -26,6 +26,7 @@ The one size scale every Flare control uses (Xs..Xl; Md is the default unless a 
 - `FlareCheckbox`
 - `FlareChip`
 - `FlareClipboard`
+- `FlareColorPicker`
 - `FlareCombobox`
 - `FlareDataGridFilterPresets`
 - `FlareDataGridPager`

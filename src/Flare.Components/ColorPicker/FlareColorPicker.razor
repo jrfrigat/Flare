@@ -21,18 +21,25 @@ else
         {
             <label class="@Css.Classes.Colorpicker.Label" for="@_triggerId">@Label</label>
         }
-        <button type="button"
-                id="@_triggerId"
-                @ref="_triggerEl"
-                class="@Css.Classes.Colorpicker.Trigger"
-                style="@_safeTriggerCssVar"
-                disabled="@Disabled"
-                @onclick="TogglePanel"
-                aria-haspopup="dialog"
-                aria-expanded="@_open.ToString().ToLowerInvariant()">
-            <span class="@Css.Classes.Colorpicker.TriggerSwatch" style="@_safeSwatchStyle"></span>
-            <span class="@Css.Classes.Colorpicker.TriggerLabel">@_currentFormatted</span>
-        </button>
+        @* The trigger is the shared button; this wrapper only gives the popover an anchor element,
+           because FlareButton does not expose its DOM ref. *@
+        <span class="@Css.Classes.Colorpicker.TriggerWrap" @ref="_triggerEl">
+            <FlareButton Class="@Css.Classes.Colorpicker.Trigger"
+                         Variant="@Variant"
+                         Size="@Size"
+                         Disabled="@Disabled"
+                         OnClick="TogglePanel"
+                         id="@_triggerId"
+                         aria-haspopup="dialog"
+                         aria-expanded="@_open.ToString().ToLowerInvariant()">
+                <LeadingIcon>
+                    <span class="@Css.Classes.Colorpicker.TriggerSwatch" style="@_safeSwatchStyle"></span>
+                </LeadingIcon>
+                <ChildContent>
+                    <span class="@Css.Classes.Colorpicker.TriggerLabel">@_currentFormatted</span>
+                </ChildContent>
+            </FlareButton>
+        </span>
         @if (_open)
         {
             <div class="@Css.Classes.Colorpicker.Panel" @ref="_panelEl" role="dialog" aria-label="@(CoreText["ColorPicker_Label"])">
@@ -62,6 +69,12 @@ else
     [Parameter] public bool ShowEyeDropper { get; set; }
     /// <summary>Output format for the color value emitted by <see cref="ValueChanged"/>. Defaults to <see cref="ColorFormat.Hex"/>.</summary>
     [Parameter] public ColorFormat Format { get; set; } = ColorFormat.Hex;
+    /// <summary>Button variant of the trigger. The default <see cref="ButtonVariant.Outlined"/> keeps the
+    /// control-like frame next to form fields; use <see cref="ButtonVariant.Text"/> for a quiet toolbar
+    /// trigger or another variant to match the surrounding commands.</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outlined;
+    /// <summary>Size of the trigger button, on the shared Xs..Xl scale.</summary>
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
 
     [CascadingParameter] private EditContext? EditContext { get; set; }
 
@@ -75,7 +88,6 @@ else
     private string _safeCurrentHex => _isCurrentHexSafe ? _currentHex : string.Empty;
 
     private string _safeSwatchStyle => _isCurrentHexSafe ? $"background:{_currentHex}" : string.Empty;
-    private string _safeTriggerCssVar => _isCurrentHexSafe ? $"--_cp-trigger-color:{_currentHex}" : string.Empty;
 
     private static string _safePresetStyle(string preset) =>
         HexColor.IsValid(preset) ? $"background:{preset}" : string.Empty;

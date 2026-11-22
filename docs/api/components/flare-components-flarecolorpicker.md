@@ -15,8 +15,10 @@
 | `Label` | `string?` | `` | Parameter |  | Label text displayed above the trigger button (non-inline mode). |
 | `Presets` | `IEnumerable<string>?` | `` | Parameter |  | Preset color swatches shown at the bottom of the picker. |
 | `ShowEyeDropper` | `bool` | `false` | Parameter |  | Shows an eyedropper button to sample a color from the screen (Chrome/Edge only). |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size of the trigger button, on the shared Xs..Xl scale. |
 | `Value` | `string?` | `` | Parameter |  | Selected color as a hex string (#RRGGBB or #RRGGBBAA). |
 | `ValueChanged` | `EventCallback<string>` | `` | Callback |  | Callback invoked when the selected color changes. |
+| `Variant` | `ButtonVariant` | `ButtonVariant.Outlined` | Parameter |  | Button variant of the trigger. The default Outlined keeps the control-like frame next to form fields; use Text for a quiet toolbar trigger or another variant to match the surrounding commands. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

@@ -21,6 +21,7 @@ Visual style of a FlareButton.
 - `FlareButton`
 - `FlareButtonGroup`
 - `FlareClipboard`
+- `FlareColorPicker`
 - `FlareFileUploadButton`
 - `FlareIconButton`
 - `FlareSplitButton`
