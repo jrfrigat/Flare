@@ -54,6 +54,9 @@
   flex: 1 1 auto;
   min-inline-size: 0;
   overflow-x: auto;
+  /* A tab strip scrolls along its own axis only. With overflow-x:auto alone the other axis computes
+     to auto too, so a tab taller than its container turned the strip into a vertical scroller. */
+  overflow-y: hidden;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }

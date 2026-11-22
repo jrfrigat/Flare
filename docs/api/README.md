@@ -81,7 +81,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDraggable`](components/flare-components-flaredraggable.md)
 - [`FlareDrawer`](components/flare-components-flaredrawer.md)
 - [`FlareDropZone`](components/flare-components-flaredropzone.md)
-- [`FlareEditorBreadcrumbBar`](components/flare-components-ide-flareeditorbreadcrumbbar.md) — The editor breadcrumb/toolbar row shown under the document tabs: a themed 22px strip with a leading breadcrumb slot and a trailing action area. The host supplies the segments and commands; the row owns only the chrome. Use FlareEditorBreadcrumbSegment items for the breadcrumb path, and any Flare controls for the actions.
+- [`FlareEditorBreadcrumbBar`](components/flare-components-ide-flareeditorbreadcrumbbar.md) — The editor breadcrumb/toolbar row shown under the document tabs: a theme-sized strip with a leading breadcrumb slot and a trailing action area. The host supplies the segments and commands; the row owns only the chrome. Use FlareEditorBreadcrumbSegment items for the breadcrumb path, and any Flare controls for the actions.
 - [`FlareEditorBreadcrumbSegment`](components/flare-components-ide-flareeditorbreadcrumbsegment.md) — One segment of a FlareEditorBreadcrumbBar: an optional 16px icon, a label and, when MenuContent is set, a chevron and a dropdown fed by the host. The segment never decides what the menu contains; a namespace, a type and its members are host data.
 - [`FlareEmptyState`](components/flare-components-flareemptystate.md)
 - [`FlareField`](components/flare-components-flarefield.md)

@@ -8,9 +8,9 @@ internal sealed class DockGeometry
     internal const int Gutter = 12;
     internal const int GroupMin = 96;
 
-    // The header grows with the text. em follows the font of the dock itself, so a larger tab label
-    // enlarges the strip and the pane top together even when the root font-size does not change.
-    internal static readonly string HeaderHeight = "var(--flare-dock-header-height, 2.5em)";
+    // The header follows the theme's spacing grid; the token lets a host or a denser theme take it
+    // back without editing the package.
+    internal static readonly string HeaderHeight = "var(--flare-dock-header-height, var(--flare-spacing-16))";
 
     internal sealed record Entry(string Id, string Style, DockGroup? Group = null, DockSplit? Split = null,
         string? Item = null, double Size = 0, double Min = 0, double Max = 0, double Available = 0);

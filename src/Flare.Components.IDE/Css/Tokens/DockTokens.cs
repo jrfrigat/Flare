@@ -6,8 +6,9 @@ namespace Flare.Components.IDE;
 /// <summary>Optional dock overrides. Defaults follow the base theme; map with <c>CssVarMap.FlattenTokens</c>.</summary>
 public sealed record DockTokens
 {
-    /// <summary>Design override for <c>--flare-dock-header-height</c>. The <c>em</c> default follows the dock text size.</summary>
-    [CssVar(DockTokenNames.HeaderHeight)] public string HeaderHeight { get; init; } = "2.5em";
+    /// <summary>Design override for <c>--flare-dock-header-height</c>. Defaults to a base spacing step,
+    /// so the strip follows the theme's grid rather than a fixed em value.</summary>
+    [CssVar(DockTokenNames.HeaderHeight)] public string HeaderHeight { get; init; } = Var(Css.Tokens.Spacing.S16);
 
     /// <summary>Design override for <c>--flare-dock-min-block-size</c>.</summary>
     [CssVar(DockTokenNames.MinBlockSize)] public string MinBlockSize { get; init; } = Var(Css.Tokens.Spacing.S32);

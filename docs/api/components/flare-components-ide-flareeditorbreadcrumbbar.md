@@ -4,7 +4,7 @@
 
 `Flare.Components.IDE.FlareEditorBreadcrumbBar`
 
-The editor breadcrumb/toolbar row shown under the document tabs: a themed 22px strip with a leading breadcrumb slot and a trailing action area. The host supplies the segments and commands; the row owns only the chrome. Use FlareEditorBreadcrumbSegment items for the breadcrumb path, and any Flare controls for the actions.
+The editor breadcrumb/toolbar row shown under the document tabs: a theme-sized strip with a leading breadcrumb slot and a trailing action area. The host supplies the segments and commands; the row owns only the chrome. Use FlareEditorBreadcrumbSegment items for the breadcrumb path, and any Flare controls for the actions.
 
 ## Parameters
 

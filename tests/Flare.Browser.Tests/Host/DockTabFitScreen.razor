@@ -1,0 +1,30 @@
+@page "/dock-tab-fit"
+@using Flare.Abstractions.Tokens
+@using Flare.Components.IDE
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="width:640px;height:240px">
+        <FlareDockWorkspace id="dock-md3" Layout="_layout" Items="_items">
+            <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+        </FlareDockWorkspace>
+    </div>
+    <FlareThemeScope Theme="fluent2" Mode="ThemeMode.Dark">
+        <div id="dock-fui-frame" style="width:640px;height:240px">
+            <FlareDockWorkspace id="dock-fui" Layout="_layout" Items="_items">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+    </FlareThemeScope>
+    <FlareThemeScope Theme="md3-expressive" Mode="ThemeMode.Dark">
+        <div id="dock-md3e-frame" style="width:640px;height:240px">
+            <FlareDockWorkspace id="dock-md3e" Layout="_layout" Items="_items">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>
+
+@code {
+    private static readonly DockGroup _layout = new("root", ["alpha", "beta"], "alpha");
+    private static readonly DockItem[] _items = [new("alpha", "Alpha"), new("beta", "Beta")];
+}

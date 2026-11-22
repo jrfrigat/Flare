@@ -17,6 +17,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 - Dock and tool-window tab strips render the shared `FlareTabs` item contract (`flare-tabs--bar-only`, `flare-tabs--tool`). Their visual values come from `--flare-tabs-*`, and `TabsTokens` gains the compact tool-tab roles, so a theme styles them with the same contract as every other tab.
 
+### Fixed
+
+- The dock tab strip no longer grows a vertical scrollbar when a theme gives its tabs a taller minimum. Dock tabs fill the header height, the header height follows the spacing grid instead of a fixed `2.5em`, and a tab bar never becomes a vertical scroll container.
+- The editor breadcrumb row height follows its content and the theme's typography instead of a fixed 22px; `--flare-ide-breadcrumb-bar-height` stays an optional override.
+
 ### Breaking changes
 
 - `FlareLinkTabs`, `FlareLinkTab` and `LinkTabsVariant` are removed. For route links styled as tabs, use `FlareNavLink` with the `flare-tabs__tab` classes in your own bar, or `FlareTabs` when the tabs own panels.

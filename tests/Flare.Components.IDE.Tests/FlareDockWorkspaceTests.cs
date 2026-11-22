@@ -421,6 +421,12 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll(".flare-dock__target"));
     }
 
+    [Fact]
+    public void DockHeaderHeight_DefaultsToABaseSpacingToken()
+    {
+        Assert.Equal($"var({Css.Tokens.Spacing.S16})", new DockTokens().HeaderHeight);
+    }
+
     private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange>? onChange,
         Func<DockAction, string?, string, bool>? canRequest = null,
         DockDropZones dropZones = DockDropZones.All,
