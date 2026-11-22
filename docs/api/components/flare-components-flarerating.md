@@ -15,7 +15,7 @@
 | `Label` | `string?` | `` | Parameter |  | Accessible label for the rating group. |
 | `Max` | `int` | `5` | Parameter |  | Total number of stars to display. |
 | `ReadOnly` | `bool` | `false` | Parameter |  | Prevents changing the rating when true. |
-| `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Star size (Xs..Xl). Medium is the default 1.5rem glyph. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Star size (Xs..Xl). Medium is the default 1.5rem glyph. |
 | `StarTemplate` | `RenderFragment<bool>?` | `` | Parameter |  | Custom template for each star icon. Receives true when the star is filled. |
 | `Value` | `double` | `0` | Parameter |  | Currently selected star rating. Supports fractional values (e.g. 2.5) when AllowHalf is true. |
 | `ValueChanged` | `EventCallback<double>` | `` | Callback |  | Callback invoked when the rating changes. |

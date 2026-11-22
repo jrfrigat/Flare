@@ -17,7 +17,7 @@
 | `Label` | `string?` | `` | Parameter |  | Label text displayed next to the switch. Ignored when ChildContent is set. |
 | `LabelPlacement` | `LabelPlacement` | `LabelPlacement.End` | Parameter |  | Label position relative to the switch (End = after, Start = before). Default End. |
 | `SelectedIcon` | `RenderFragment?` | `` | Parameter |  | Icon shown on the handle when the switch is ON (e.g. a check mark). |
-| `Size` | `SwitchSize` | `SwitchSize.Md` | Parameter |  | Switch size (Xs..Xl) on the shared scale; Md is the default. Each theme decides what a step measures. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Switch size (Xs..Xl) on the shared scale; Md is the default. Each theme decides what a step measures. |
 | `UnselectedIcon` | `RenderFragment?` | `` | Parameter |  | Icon shown on the handle when the switch is OFF. Optional; when omitted the off handle is plain. |
 | `Value` | `bool` | `false` | Parameter |  | Whether the switch is on. |
 | `ValueChanged` | `EventCallback<bool>` | `` | Callback |  | Callback invoked when the toggle state changes. |

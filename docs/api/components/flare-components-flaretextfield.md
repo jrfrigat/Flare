@@ -51,7 +51,7 @@ A single-line text field. Convenience over FlareField for the common string case
 | `ReadOnly` | `bool` | `false` | Parameter |  | Makes the field read-only (value shown but not editable). Not every field renders it. Inherited from `FlareFieldBase`. |
 | `Required` | `bool` | `false` | Parameter |  | Marks the field as required (visual indicator + native required where applicable). Inherited from `FlareFieldBase`. |
 | `ShowCharacterCount` | `bool` | `false` | Parameter |  | Shows a character counter in the supporting-text row. Renders the current length, and "current/MaxLength" when MaxLength is set. Inherited from `FlareField`. |
-| `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl). Md (the default) is the standard field height. Inherited from `FlareFieldBase`. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Control size (Xs..Xl). Md (the default) is the standard field height. Inherited from `FlareFieldBase`. |
 | `Spellcheck` | `bool?` | `` | Parameter |  | The HTML spellcheck attribute; null (default) leaves the browser default. Inherited from `FlareField`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `TrailingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered inside the trailing edge of the input. Inherited from `FlareField`. |

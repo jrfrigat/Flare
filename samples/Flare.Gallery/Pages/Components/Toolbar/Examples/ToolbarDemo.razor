@@ -9,23 +9,23 @@
     <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
         <FlareToolbar Dense="_dense">
             <ChildContent>
-                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
+                <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Xs" OnClick="@(() => Set("Start"))">
                     <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
                     <ChildContent>Start</ChildContent>
                 </FlareButton>
                 <FlareRibbonSeparator />
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
                     <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" />
                 </FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
                     <FlareIconView Value="@MaterialDesign3Icons.Regular.BugReport" />
                 </FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
                     <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
                 </FlareButton>
                 <FlareRibbonSeparator />
                 <FlareStack Width="180px">
-                    <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" />
+                    <FlareField TValue="string" Size="FlareSize.Sm" Placeholder="Search (Ctrl+,)" />
                 </FlareStack>
             </ChildContent>
             <TrailingContent>

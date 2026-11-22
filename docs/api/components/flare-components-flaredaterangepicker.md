@@ -34,7 +34,7 @@ Selects a date range using two fields or an inline calendar.
 | `ReadOnly` | `bool` | `false` | Parameter |  | Shows the range without letting it change: the fields stay focusable but read-only, and the calendar can be browsed while day clicks and presets are ignored. |
 | `ShowPresets` | `bool` | `false` | Parameter |  | Shows a row of quick-range preset chips (Today, Last 7 days, This month, ...). |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |
-| `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl) for the input fields (Fields mode). |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Control size (Xs..Xl) for the input fields (Fields mode). |
 | `StartDate` | `DateOnly?` | `` | Parameter |  | Start date of the selected range. |
 | `StartDateChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | Callback invoked when the start date changes. A range picked in the calendar is published in two steps: the first day sets the start and clears the end, the second sets both ends; a form sees the range as unfinished while only the start is set. |
 | `StartFor` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | Model field of the start date inside an EditForm: the start field (or the calendar) reports changes to the edit context and shows its validation message. |

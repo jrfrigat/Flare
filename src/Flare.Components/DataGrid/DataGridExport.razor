@@ -9,7 +9,7 @@
     {
         @* Split button: the first exporter is the primary action; the rest open in the dropdown. *@
         var primary = Exporters[0];
-        <FlareSplitButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm"
+        <FlareSplitButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm"
                           OnClick="@(_ => ExportAsync(primary))"
                           MenuAriaLabel="@CoreText["DataGrid_MoreExports"]">
             <ChildContent>
@@ -33,7 +33,7 @@
         @foreach (var exporter in Exporters)
         {
             var exp = exporter;
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+            <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                          OnClick="@(() => ExportAsync(exp))"
                          AriaLabel="@exp.Label">
                 <LeadingIcon>

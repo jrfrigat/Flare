@@ -25,7 +25,7 @@
 | `LabelFor` | `string?` | `` | Parameter |  | The native control id for a label's for. When absent, renders a span caption; non-native controls reference its LabelId through aria-labelledby. |
 | `LabelId` | `string?` | `` | Parameter |  | The label element id (for aria-labelledby from a div trigger). |
 | `ReadOnly` | `bool` | `false` | Parameter |  | Read-only state; forwarded by fields to their control (the frame draws no read-only chrome). |
-| `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl), emitted as the shared size modifier class. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Control size (Xs..Xl), emitted as the shared size modifier class. |
 | `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare), emitted as the shared variant modifier class. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

@@ -1,8 +1,16 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Unified size scale for Flare components. Use this for new components.
-/// Existing components may have their own size enums for backward compatibility.
+/// The one size scale every Flare control uses (Xs..Xl; Md is the default unless a component says
+/// otherwise). A step names the same height for every full-scale family - button, input, select,
+/// avatar, chip, pagination, switch and track - so a row that mixes them never jumps.
+///
+/// The height itself is theme-owned: Md and larger meet the WCAG 2.5.8 target minimum of 24x24 CSS px
+/// in every built-in theme. Xs is the smallest target a theme's design system defines rather than an
+/// invented step below it; where the result is below 24px the spacing exception applies, so use Sm or
+/// larger where the minimum has to hold. The 44x44 (iOS) and 48x48 (Android) targets are platform
+/// guidance for touch, not a web requirement: use Lg or larger where a finger is the primary input.
+/// Components whose value set is not this scale keep their own enum (FabSize, CardSize, DialogSize).
 /// </summary>
 public enum FlareSize
 {

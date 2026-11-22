@@ -28,7 +28,7 @@
         DataGridChange.Page | DataGridChange.Filter | DataGridChange.Data | DataGridChange.Columns;
 
     /// <summary>Visual size of the pagination control.</summary>
-    [Parameter] public PaginationSize Size { get; set; } = PaginationSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
 
     /// <summary>Page-size choices offered in the rows-per-page dropdown. When null (the default), the
     /// grid's <see cref="FlareDataGrid{TItem}.RowsPerPageOptions"/> are used; set this to control the

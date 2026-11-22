@@ -10,7 +10,7 @@ namespace Flare.Abstractions.Tokens.Components;
 /// are CSS lengths resolved by the browser; enlarging the diameter does not scale the other lengths.
 /// A unitless circular gap value is accepted as pixels for compatibility.
 ///
-/// The size ramps carry one member per step of the <c>TrackSize</c> scale. <c>FlareMeter</c> reads the
+/// The size ramps carry one member per step of the <c>FlareSize</c> scale. <c>FlareMeter</c> reads the
 /// linear ramp too, so a meter and a linear progress bar at the same size share one track geometry by
 /// construction rather than by two themes agreeing.
 /// </summary>

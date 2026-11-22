@@ -5,7 +5,7 @@
         <FlareText Typo="TypographyScale.LabelLarge">Режим фильтра:</FlareText>
         <FlareSelect TValue="DataGridFilterMode" @bind-Value="_filterMode"
                      Items="@(new[] { DataGridFilterMode.Simple, DataGridFilterMode.Menu })"
-                     Size="FieldSize.Sm" />
+                     Size="FlareSize.Sm" />
         <FlareSwitch @bind-Value="_showBuilder" Label="Расширенный фильтр" />
     </FlareStack>
 

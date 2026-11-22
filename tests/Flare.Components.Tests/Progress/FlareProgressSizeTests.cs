@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components.Tests;
 
-// FlareProgress sizing: one TrackSize step drives the linear thickness AND the circular diameter, and every
+// FlareProgress sizing: one FlareSize step drives the linear thickness AND the circular diameter, and every
 // value behind it belongs to the theme. The component's only job is to say WHICH step is in play.
 public class FlareProgressSizeTests : FlareTestContext
 {
     [Theory]
-    [InlineData(TrackSize.Xs, Css.Classes.Progress.SizeXs)]
-    [InlineData(TrackSize.Sm, Css.Classes.Progress.SizeSm)]
-    [InlineData(TrackSize.Md, Css.Classes.Progress.SizeMd)]
-    [InlineData(TrackSize.Lg, Css.Classes.Progress.SizeLg)]
-    [InlineData(TrackSize.Xl, Css.Classes.Progress.SizeXl)]
-    public void Size_AppliesSizeClass_OnLinear(TrackSize size, string expected)
+    [InlineData(FlareSize.Xs, Css.Classes.Progress.SizeXs)]
+    [InlineData(FlareSize.Sm, Css.Classes.Progress.SizeSm)]
+    [InlineData(FlareSize.Md, Css.Classes.Progress.SizeMd)]
+    [InlineData(FlareSize.Lg, Css.Classes.Progress.SizeLg)]
+    [InlineData(FlareSize.Xl, Css.Classes.Progress.SizeXl)]
+    public void Size_AppliesSizeClass_OnLinear(FlareSize size, string expected)
     {
         var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, size));
 
@@ -25,9 +25,9 @@ public class FlareProgressSizeTests : FlareTestContext
 
     // The same step has to reach the circular variant too, or one Size would mean two different things.
     [Theory]
-    [InlineData(TrackSize.Xs, Css.Classes.Progress.SizeXs)]
-    [InlineData(TrackSize.Xl, Css.Classes.Progress.SizeXl)]
-    public void Size_AppliesSizeClass_OnCircular(TrackSize size, string expected)
+    [InlineData(FlareSize.Xs, Css.Classes.Progress.SizeXs)]
+    [InlineData(FlareSize.Xl, Css.Classes.Progress.SizeXl)]
+    public void Size_AppliesSizeClass_OnCircular(FlareSize size, string expected)
     {
         var cut = Render<FlareProgressCircular>(p => p
             .Add(x => x.Value, 50d)
@@ -53,7 +53,7 @@ public class FlareProgressSizeTests : FlareTestContext
     {
         var cut = Render<FlareProgressCircular>(p => p
             .Add(x => x.Value, 50d)
-            .Add(x => x.Size, TrackSize.Xl));
+            .Add(x => x.Size, FlareSize.Xl));
 
         var style = cut.Find($".{Css.Classes.Progress.Root}").GetAttribute("style") ?? "";
         Assert.DoesNotContain("width:", style);
@@ -65,7 +65,7 @@ public class FlareProgressSizeTests : FlareTestContext
     [Fact]
     public void Linear_WritesNoInlineHeight()
     {
-        var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, TrackSize.Xl));
+        var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, FlareSize.Xl));
 
         var style = cut.Find($".{Css.Classes.Progress.Root}").GetAttribute("style") ?? "";
         Assert.DoesNotContain("--flare-progress-linear-height", style);

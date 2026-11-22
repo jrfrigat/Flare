@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Avatar items to render in the group. |
 | `Max` | `int` | `5` | Parameter |  | Maximum number of avatars to display before showing an overflow badge. |
-| `Size` | `AvatarSize` | `AvatarSize.Md` | Parameter |  | Size shared by the overflow badge (child avatars set their own size). |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size shared by the overflow badge (child avatars set their own size). |
 | `Spacing` | `string?` | `` | Parameter |  | Negative margin applied between avatars, e.g. "-0.75rem". Null uses the theme's value (the --flare-avatar-group-spacing token); an explicit value wins over the theme. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

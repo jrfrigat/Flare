@@ -31,6 +31,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Breaking changes
 
+- `ButtonSize`, `FieldSize`, `AvatarSize`, `ChipSize`, `PaginationSize`, `SwitchSize` and `TrackSize` are replaced by `FlareSize`. Existing `ButtonSize.Xs`-style constants still resolve to the same values, but every component `Size` parameter is now typed `FlareSize`. `FabSize`, `CardSize`, `DialogSize` and `RibbonSizeMode` keep their own types because their value sets are different.
 - `FlareLinkTabs`, `FlareLinkTab` and `LinkTabsVariant` are removed. For route links styled as tabs, use `FlareNavLink` with the `flare-tabs__tab` classes in your own bar, or `FlareTabs` when the tabs own panels.
 - `FlareSheetTabs` is removed. Compose a sheet strip from `FlareToggleGroup` with `FlareToggleButton` items and an add button, or from `FlareTabs` when the sheet switcher owns panels.
 - `FlareIdeLayout` and its document-region API (`IdeDocument`, `IdeDocumentRegion`, `IdeDocumentMove`, `IdeDocumentSelection`, `IdeDocumentMounting`, `IdePanelMode`, `IdeToolRailMode`) are removed. Use `FlareDockWorkspace` for a dockable workspace and place `FlareToolPanel`/`FlareToolPanelGroup` directly in the page; the layout-owned auto-hide rails, flyouts and bottom tool-window header are gone.

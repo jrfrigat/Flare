@@ -4,7 +4,7 @@
 <FlareTooltip Content="@Tooltip" Placement="@Placement.Bottom">
     @if (IsLarge)
     {
-        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Lg"
+        <FlareButton Variant="@ButtonVariant.Text" Size="@FlareSize.Lg"
                      Disabled="@Disabled" OnClick="@OnClick"
                      AriaLabel="@Tooltip"
                      class="@($"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}")">
@@ -20,7 +20,7 @@
     }
     else
     {
-        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Sm"
+        <FlareButton Variant="@ButtonVariant.Text" Size="@FlareSize.Sm"
                      Disabled="@Disabled" OnClick="@OnClick"
                      AriaLabel="@Tooltip"
                      class="@Css.Classes.Ide.Ribbon.Button">

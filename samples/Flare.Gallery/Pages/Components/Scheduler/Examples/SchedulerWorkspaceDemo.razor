@@ -29,9 +29,9 @@
                     <FlareSchedulerSurface TItem="Booking" Context="schedule" EventTemplate="EventBody">
                         <Header Context="navigation">
                             <FlareStack Row Wrap Padding="FlareSpacing.Medium" Align="FlareAlignItems.Center">
-                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="() => navigation.Commands.NavigateAsync(-1)" AriaLabel="@GalleryStrings.Scheduler_Previous"><FlareIconView Value="FlareIcons.ChevronLeft" /></FlareButton>
-                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="navigation.Commands.TodayAsync">@GalleryStrings.Scheduler_Today</FlareButton>
-                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="() => navigation.Commands.NavigateAsync(1)" AriaLabel="@GalleryStrings.Scheduler_Next"><FlareIconView Value="FlareIcons.ChevronRight" /></FlareButton>
+                                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="() => navigation.Commands.NavigateAsync(-1)" AriaLabel="@GalleryStrings.Scheduler_Previous"><FlareIconView Value="FlareIcons.ChevronLeft" /></FlareButton>
+                                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="navigation.Commands.TodayAsync">@GalleryStrings.Scheduler_Today</FlareButton>
+                                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="() => navigation.Commands.NavigateAsync(1)" AriaLabel="@GalleryStrings.Scheduler_Next"><FlareIconView Value="FlareIcons.ChevronRight" /></FlareButton>
                                 <FlareText Typo="TypographyScale.TitleMedium">@navigation.Caption</FlareText>
                                 <FlareSelect TValue="SchedulerView" Label="@GalleryStrings.Scheduler_View" Items="_views"
                                              ItemLabel="ViewLabel" Value="navigation.View" ValueChanged="navigation.Commands.ShowViewAsync" />

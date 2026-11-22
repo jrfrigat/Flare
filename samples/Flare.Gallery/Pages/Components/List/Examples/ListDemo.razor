@@ -3,16 +3,16 @@
 <FlareList TItem="object">
     <FlareListItem Primary="Alice Johnson" Secondary="Senior Engineer"
                    OnClick="@(() => Snackbar.Show("Alice clicked"))">
-        <Leading><FlareAvatar Text="Alice Johnson" Size="AvatarSize.Sm" /></Leading>
+        <Leading><FlareAvatar Text="Alice Johnson" Size="FlareSize.Sm" /></Leading>
         <Trailing><FlareIconView Value="@MaterialDesign3Icons.Regular.ChevronRight" /></Trailing>
     </FlareListItem>
     <FlareListItem Primary="Bob Smith" Secondary="Designer"
                    OnClick="@(() => Snackbar.Show("Bob clicked"))">
-        <Leading><FlareAvatar Text="Bob Smith" Size="AvatarSize.Sm" /></Leading>
+        <Leading><FlareAvatar Text="Bob Smith" Size="FlareSize.Sm" /></Leading>
         <Trailing><FlareIconView Value="@MaterialDesign3Icons.Regular.ChevronRight" /></Trailing>
     </FlareListItem>
     <FlareListItem Primary="Carol Williams" Secondary="Manager" Selected="true">
-        <Leading><FlareAvatar Text="Carol Williams" Size="AvatarSize.Sm" /></Leading>
+        <Leading><FlareAvatar Text="Carol Williams" Size="FlareSize.Sm" /></Leading>
         <Trailing><FlareChip Label="Selected" /></Trailing>
     </FlareListItem>
     <FlareListItem Primary="src/Flare.Components/List/FlareListItem.razor" Mono="true"

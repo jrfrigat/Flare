@@ -12630,7 +12630,7 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Size="FieldSize.Sm".
+        ///   Ищет локализованную строку, похожую на Size="FlareSize.Sm".
         /// </summary>
         public static string MobileShells_Compact {
             get {

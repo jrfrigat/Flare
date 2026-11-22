@@ -1,17 +1,19 @@
 namespace Flare.Components;
 
-/// <summary>Size of <c>FlarePagination</c> controls. Medium is the default and matches the
-/// Xs..Xl scale used across Flare components (e.g. <c>FlareButton</c>, form fields).</summary>
-public enum PaginationSize
+/// <summary>
+/// Source-compatible alias for <see cref="FlareSize"/>: <c>PaginationSize.Xs</c> resolves to the same
+/// value, so existing markup keeps compiling. New code uses <see cref="FlareSize"/> directly.
+/// </summary>
+public static class PaginationSize
 {
-    /// <summary>Extra small.</summary>
-    Xs,
-    /// <summary>Small (compact).</summary>
-    Sm,
-    /// <summary>Medium - default control size.</summary>
-    Md,
-    /// <summary>Large.</summary>
-    Lg,
-    /// <summary>Extra large.</summary>
-    Xl,
+    /// <summary>Extra small - <see cref="FlareSize.Xs"/>.</summary>
+    public const FlareSize Xs = FlareSize.Xs;
+    /// <summary>Small - <see cref="FlareSize.Sm"/>.</summary>
+    public const FlareSize Sm = FlareSize.Sm;
+    /// <summary>Medium - <see cref="FlareSize.Md"/>.</summary>
+    public const FlareSize Md = FlareSize.Md;
+    /// <summary>Large - <see cref="FlareSize.Lg"/>.</summary>
+    public const FlareSize Lg = FlareSize.Lg;
+    /// <summary>Extra large - <see cref="FlareSize.Xl"/>.</summary>
+    public const FlareSize Xl = FlareSize.Xl;
 }

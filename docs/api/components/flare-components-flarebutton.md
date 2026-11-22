@@ -24,7 +24,7 @@
 | `Rel` | `string?` | `` | Parameter |  | The link's rel attribute (link button only). When left null and Target is _blank, Flare defaults it to noopener noreferrer to prevent reverse tabnabbing. |
 | `Selected` | `bool` | `false` | Parameter |  | Marks the button as selected - the on state of a toggle - which a theme may answer with a paint, a shape, or both. Set by FlareToggleButton; usually left alone on a plain button. |
 | `Shape` | `ButtonShape` | `ButtonShape.Default` | Parameter |  | Corner shape of the button. Default keeps the theme's native shape; Rounded, Circular and Square force a rounded rectangle, pill, or sharp corners. |
-| `Size` | `ButtonSize` | `ButtonSize.Md` | Parameter |  | Size of the button. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size of the button. |
 | `Target` | `string?` | `` | Parameter |  | Target for the link button (e.g. "_blank"). Only used with Href. |
 | `Tooltip` | `string?` | `` | Parameter |  | Hint shown on hover (native title). For a styled bubble, wrap the button in a FlareTooltip instead. |
 | `TrailingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered after the button label. |

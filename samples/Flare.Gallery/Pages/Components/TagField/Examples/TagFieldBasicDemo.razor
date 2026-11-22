@@ -2,7 +2,7 @@
     <FlareTagField @bind-Values="_tags" Label="Technologies" Placeholder="Type and press Enter…" HelperText="Press Enter or comma to add a tag" />
     <FlareTagField @bind-Values="_limited" Label="Skills (max 4)" Placeholder="Add up to 4 skills…" MaxTags="4" />
     <FlareTagField Values="@_readonly" Label="Readonly" ReadOnly="true" />
-    <FlareTagField @bind-Values="_sized" Label="Small (Xs..Xl grid)" Size="FieldSize.Sm" Placeholder="Compact tags…" />
+    <FlareTagField @bind-Values="_sized" Label="Small (Xs..Xl grid)" Size="FlareSize.Sm" Placeholder="Compact tags…" />
 </FlareStack>
 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     Technologies: @string.Join(", ", _tags) | Skills: @string.Join(", ", _limited)

@@ -15,7 +15,7 @@
     /// <summary>The named filter presets to offer. Each preset's <c>Filter</c> is an advanced filter tree.</summary>
     [Parameter] public IReadOnlyList<DataGridFilterPreset>? Presets { get; set; }
     /// <summary>Field size of the select.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Sm;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Sm;
 
     private string _selected = "";
     private string _noFilter => CoreText["DataGrid_NoFilter"];

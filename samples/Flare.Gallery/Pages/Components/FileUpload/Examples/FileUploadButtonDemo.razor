@@ -4,14 +4,14 @@
 <FlareStack MaxWidth="32rem">
     <FlareStack Row Wrap="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareFileUploadButton Variant="ButtonVariant.Outlined"
-                               Size="ButtonSize.Sm"
+                               Size="FlareSize.Sm"
                                Accept=".json"
                                Text="@GalleryStrings.FuDemo_Import"
                                OnFilesChanged="HandleImport">
             <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Publish" /></LeadingIcon>
         </FlareFileUploadButton>
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm">@GalleryStrings.FuDemo_Export</FlareButton>
-        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">@GalleryStrings.FuDemo_NewEndpoint</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm">@GalleryStrings.FuDemo_Export</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm">@GalleryStrings.FuDemo_NewEndpoint</FlareButton>
     </FlareStack>
     @if (_name is not null)
     {

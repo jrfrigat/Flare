@@ -19,7 +19,7 @@
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">@GalleryStrings.Progress_Thick</FlareText>
-        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="50" Size="TrackSize.Xl" />
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="50" Size="FlareSize.Xl" />
     </FlareStack>
     <FlareStack Row="true" Align="FlareAlignItems.Start">
         <FlareButton OnClick="@(() => _value = _value == 70 ? 25 : 70)" data-testid="progress-linear-update">@GalleryStrings.Progress_UpdateValue</FlareButton>

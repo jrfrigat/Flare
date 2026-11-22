@@ -34,7 +34,7 @@
                        that scale, and a second one here would be two answers to one question. *@
                     @* A queued file has no progress to report; null keeps the bar indeterminate. *@
                     <FlareProgressLinear Class="@Css.Classes.FileUpload.Progress"
-                                   Size="TrackSize.Xs"
+                                   Size="FlareSize.Xs"
                                    Value="@(item.State == FlareUploadState.Queued ? null : item.Progress * 100)" />
                 }
                 else if (item.State == FlareUploadState.Failed)
@@ -50,7 +50,7 @@
                     @if (AllowCancel && item.IsActive)
                     {
                         <FlareIconButton Icon="FlareIcons.Close"
-                                         Size="ButtonSize.Sm"
+                                         Size="FlareSize.Sm"
                                          Variant="ButtonVariant.Text"
                                          AriaLabel="@CoreText["FileUpload_Cancel"]"
                                          OnClick="@(() => OnCancel.InvokeAsync(item.Id))" />
@@ -58,7 +58,7 @@
                     @if (AllowRetry && item.State is FlareUploadState.Failed or FlareUploadState.Cancelled)
                     {
                         <FlareIconButton Icon="FlareIcons.Refresh"
-                                         Size="ButtonSize.Sm"
+                                         Size="FlareSize.Sm"
                                          Variant="ButtonVariant.Text"
                                          AriaLabel="@CoreText["FileUpload_Retry"]"
                                          OnClick="@(() => OnRetry.InvokeAsync(item.Id))" />
@@ -66,7 +66,7 @@
                     @if (AllowRemove)
                     {
                         <FlareIconButton Icon="FlareIcons.Delete"
-                                         Size="ButtonSize.Sm"
+                                         Size="FlareSize.Sm"
                                          Variant="ButtonVariant.Text"
                                          AriaLabel="@CoreText["FileUpload_Remove"]"
                                          OnClick="@(() => OnRemove.InvokeAsync(item.Id))" />

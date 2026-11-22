@@ -14,7 +14,7 @@
 | `Dot` | `bool` | `false` | Parameter |  | Shows a small dot indicator instead of a count. |
 | `Max` | `int` | `99` | Parameter |  | Maximum count shown before displaying "N+" notation. |
 | `Origin` | `BadgeOrigin` | `BadgeOrigin.TopRight` | Parameter |  | Corner position of the badge indicator relative to its anchor. |
-| `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Indicator size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what a step measures. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Indicator size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what a step measures. |
 | `Standalone` | `bool` | `false` | Parameter |  | Renders the badge as an inline pill instead of a corner indicator. Enabled automatically when there is no ChildContent anchor. |
 | `Text` | `string?` | `` | Parameter |  | Arbitrary text label shown on the indicator. Overrides Count when set. |
 | `Visible` | `bool` | `true` | Parameter |  | Controls visibility of the badge indicator. |

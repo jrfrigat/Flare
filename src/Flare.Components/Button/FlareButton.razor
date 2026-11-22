@@ -87,7 +87,7 @@ else
     /// <summary>Visual style variant of the button.</summary>
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Filled;
     /// <summary>Size of the button.</summary>
-    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>
     /// Overrides the label's typography with a type-scale value (font family/size/weight/line-height).
     /// When <c>null</c> (default) the label uses the per-<see cref="Size"/> button label typography.
@@ -163,7 +163,7 @@ else
         ?? (string.Equals(Target, "_blank", StringComparison.OrdinalIgnoreCase) ? "noopener noreferrer" : null);
 
     private ButtonVariant _effectiveVariant => GroupContext?.Variant ?? Variant;
-    private ButtonSize _effectiveSize => GroupContext?.Size ?? Size;
+    private FlareSize _effectiveSize => GroupContext?.Size ?? Size;
     private FlareColor _effectiveColor => GroupContext?.Color ?? Color;
 
     // Shared with FlareFileUploadButton, which cannot nest a FlareButton (a <button> inside its <label for>

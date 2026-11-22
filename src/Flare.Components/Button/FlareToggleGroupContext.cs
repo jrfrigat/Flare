@@ -12,7 +12,7 @@ public sealed record FlareToggleGroupContext(
     IReadOnlySet<object?> SelectedValues,
     bool MultiSelect,
     Func<object?, Task> Toggle,
-    ButtonSize? Size = null,
+    FlareSize? Size = null,
     FlareColor? Color = null,
     bool Disabled = false,
     bool CheckMark = false

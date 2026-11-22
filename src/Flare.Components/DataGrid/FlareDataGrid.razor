@@ -52,10 +52,10 @@
                     <span class="@Css.Classes.DataGrid.BatchCount">
                         @_batchEditingItems.Count @(CoreText["DataGrid_RowsLabel"])
                     </span>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="CancelBatchAsync">
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="CancelBatchAsync">
                         @CoreText["DataGrid_Cancel"]
                     </FlareButton>
-                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="SaveBatchAsync">
+                    <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm" OnClick="SaveBatchAsync">
                         @CoreText["DataGrid_Save"]
                     </FlareButton>
                 </div>
@@ -75,7 +75,7 @@
             <div class="@Css.Classes.DataGrid.Loading">
                 @if (LoadingIndicator == DataGridLoadingIndicator.Spinner)
                 {
-                    <FlareProgressCircular Size="TrackSize.Sm" />
+                    <FlareProgressCircular Size="FlareSize.Sm" />
                 }
                 <span class="@Css.Classes.DataGrid.LoadingText">@(LoadingText ?? CoreText["DataGrid_Loading"])</span>
             </div>
@@ -392,7 +392,7 @@
                             var moreColSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
                             <tr class="@Css.Classes.DataGrid.PlaceholderRow">
                                 <td colspan="@(moreColSpan == 0 ? 1 : moreColSpan)" class="@Css.Classes.DataGrid.InfiniteMore">
-                                    <FlareProgressCircular Size="TrackSize.Xs" />
+                                    <FlareProgressCircular Size="FlareSize.Xs" />
                                     <span>@(LoadingText ?? CoreText["DataGrid_Loading"])</span>
                                 </td>
                             </tr>
@@ -585,7 +585,7 @@
     @<text>
         @if (ctx.Type == ColumnFilterType.Select)
         {
-            <FlareMultiSelect TValue="string" Size="FieldSize.Sm"
+            <FlareMultiSelect TValue="string" Size="FlareSize.Sm"
                               Items="@(ctx.Options ?? DistinctValues(ctx.Key))"
                               Values="@SelectedFilterValues(ctx.Key)"
                               ValuesChanged="@(v => OnSelectFilterChanged(ctx.Key, v))"
@@ -594,20 +594,20 @@
         }
         else if (ctx.Type == ColumnFilterType.Number)
         {
-            <FlareField TValue="string" Type="number" Immediate="true" Size="FieldSize.Sm"
+            <FlareField TValue="string" Type="number" Immediate="true" Size="FlareSize.Sm"
                         Placeholder="@(FilterPlaceholder ?? CoreText["DataGrid_FilterPlaceholder"])"
                         Value="@TypedFilterValue(ctx.Key)"
                         ValueChanged="@(v => OnTypedFilterChanged(ctx.Key, FilterOperator.Equals, v))" />
         }
         else if (ctx.Type == ColumnFilterType.Date)
         {
-            <FlareField TValue="string" Type="date" Immediate="true" Size="FieldSize.Sm"
+            <FlareField TValue="string" Type="date" Immediate="true" Size="FlareSize.Sm"
                         Value="@TypedFilterValue(ctx.Key)"
                         ValueChanged="@(v => OnTypedFilterChanged(ctx.Key, FilterOperator.Equals, v))" />
         }
         else
         {
-            <FlareField TValue="string" Type="text" Immediate="true" Size="FieldSize.Sm"
+            <FlareField TValue="string" Type="text" Immediate="true" Size="FlareSize.Sm"
                         Placeholder="@(FilterPlaceholder ?? CoreText["DataGrid_FilterPlaceholder"])"
                         Value="@TextFilterValue(ctx.Key)"
                         ValueChanged="@(v => OnFilterInput(ctx.Key, v ?? string.Empty))" />
@@ -693,7 +693,7 @@
                     <span class="@Css.Classes.DataGrid.FilterMenuLabel">@col.Title</span>
                     @* Excel-style value checklist: search + (Select all) + the distinct values. *@
                     <div class="@Css.Classes.DataGrid.FilterMenuField">
-                        <FlareField TValue="string" Type="search" Size="FieldSize.Sm" Immediate="true"
+                        <FlareField TValue="string" Type="search" Size="FlareSize.Sm" Immediate="true"
                                     Placeholder="@CoreText["DataGrid_Search"]"
                                     Value="@_filterMenuSearch"
                                     ValueChanged="@(v => _filterMenuSearch = v ?? "")" />
@@ -712,21 +712,21 @@
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuDivider"></div>
                     <div class="@Css.Classes.DataGrid.FilterMenuField">
-                        <FlareSelect TValue="string" Size="FieldSize.Sm"
+                        <FlareSelect TValue="string" Size="FlareSize.Sm"
                                      Items="@_menuFilterOperators"
                                      Value="@_filterMenuOperator"
                                      ValueChanged="@(v => _filterMenuOperator = v ?? "contains")" />
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuField">
-                        <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
+                        <FlareField TValue="string" Size="FlareSize.Sm" Immediate="true"
                                     Placeholder="@CoreText["DataGrid_FilterValue"]"
                                     Value="@_filterMenuValue"
                                     ValueChanged="@(v => _filterMenuValue = v ?? "")" />
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuActions">
-                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm"
                                      OnClick="@(() => ClearFilterMenu(col.Key))">@CoreText["DataGrid_ClearFilter"]</FlareButton>
-                        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm"
+                        <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm"
                                      OnClick="@(() => ApplyFilterMenu(col.Key))">@CoreText["DataGrid_ApplyFilters"]</FlareButton>
                     </div>
                 </FlarePopup>

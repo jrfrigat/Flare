@@ -19,7 +19,7 @@
 | `OnIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered when the button is selected. Falls back to OffIcon when unset, which is what a toggle that signals its state with colour and shape alone wants. |
 | `OnLabel` | `RenderFragment?` | `` | Parameter |  | Label rendered while the button is selected, replacing ChildContent. A toggle whose two states are different verbs - Follow and Following, Mute and Unmute - says so in the label as readily as in the icon, and leaving this null keeps one label across both states. |
 | `Shape` | `ButtonShape` | `ButtonShape.Default` | Parameter |  | Corner shape. Default keeps the theme's own, and selection then travels to the theme's selected corner; an explicitly square button travels the other way, to a capsule, which is Material's "round to square, or square to round". |
-| `Size` | `ButtonSize` | `ButtonSize.Md` | Parameter |  | Size of the toggle button. Overridden by the parent FlareToggleGroup.Size when that is set. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size of the toggle button. Overridden by the parent FlareToggleGroup.Size when that is set. |
 | `Toggled` | `bool` | `false` | Parameter |  | Whether the button is currently in the selected state. |
 | `ToggledChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the selected state changes. |
 | `TrailingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered after the label, in both states. |

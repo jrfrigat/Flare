@@ -50,12 +50,12 @@ public class FlareFileUploadButtonTests : FlareTestContext
     }
 
     [Theory]
-    [InlineData(ButtonSize.Xs, Css.Classes.Button.SizeXs)]
-    [InlineData(ButtonSize.Sm, Css.Classes.Button.SizeSm)]
-    [InlineData(ButtonSize.Md, Css.Classes.Button.SizeMd)]
-    [InlineData(ButtonSize.Lg, Css.Classes.Button.SizeLg)]
-    [InlineData(ButtonSize.Xl, Css.Classes.Button.SizeXl)]
-    public void SizeMapsToTheButtonFamilysClass(ButtonSize size, string expected)
+    [InlineData(FlareSize.Xs, Css.Classes.Button.SizeXs)]
+    [InlineData(FlareSize.Sm, Css.Classes.Button.SizeSm)]
+    [InlineData(FlareSize.Md, Css.Classes.Button.SizeMd)]
+    [InlineData(FlareSize.Lg, Css.Classes.Button.SizeLg)]
+    [InlineData(FlareSize.Xl, Css.Classes.Button.SizeXl)]
+    public void SizeMapsToTheButtonFamilysClass(FlareSize size, string expected)
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.Size, size));
 
@@ -66,8 +66,8 @@ public class FlareFileUploadButtonTests : FlareTestContext
     public void SizeClassMatchesFlareButtonsForTheSameSize()
     {
         // The point of the shared ButtonCssClasses map: same input, same class, both components.
-        var upload = Render<FlareFileUploadButton>(p => p.Add(x => x.Size, ButtonSize.Sm));
-        var button = Render<FlareButton>(p => p.Add(x => x.Size, ButtonSize.Sm));
+        var upload = Render<FlareFileUploadButton>(p => p.Add(x => x.Size, FlareSize.Sm));
+        var button = Render<FlareButton>(p => p.Add(x => x.Size, FlareSize.Sm));
 
         var uploadSize = upload.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}").ClassList.Single(c => c.StartsWith("flare-btn--") && c.Contains("sm"));
         var buttonSize = button.Find($"button.{Css.Classes.Button.Root}").ClassList.Single(c => c.StartsWith("flare-btn--") && c.Contains("sm"));

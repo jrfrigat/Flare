@@ -8,14 +8,14 @@
         <FlarePropertyGrid Title="button1 (FlareButton)">
         <FlarePropertyGridItem Name="(Name)" Value="button1" />
         <FlarePropertyGridItem Name="Text">
-            <FlareField TValue="string" Size="FieldSize.Sm" @bind-Value="_text" />
+            <FlareField TValue="string" Size="FlareSize.Sm" @bind-Value="_text" />
         </FlarePropertyGridItem>
         <FlarePropertyGridItem Name="Variant">
-            <FlareSelect TValue="ButtonVariant" Size="FieldSize.Sm"
+            <FlareSelect TValue="ButtonVariant" Size="FlareSize.Sm"
                          Items="_variants" @bind-Value="_variant" />
         </FlarePropertyGridItem>
         <FlarePropertyGridItem Name="Width">
-            <FlareNumericField TValue="int" Size="FieldSize.Sm" Suffix="px" Min="72" Max="320" Step="8"
+            <FlareNumericField TValue="int" Size="FlareSize.Sm" Suffix="px" Min="72" Max="320" Step="8"
                                @bind-Value="_width" />
         </FlarePropertyGridItem>
         <FlarePropertyGridItem Name="Disabled">

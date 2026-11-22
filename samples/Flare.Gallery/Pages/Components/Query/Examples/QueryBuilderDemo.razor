@@ -14,7 +14,7 @@
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareText Element="span" Inherit>@GalleryStrings.Query_Target</FlareText>
         <FlareStack Width="12rem">
-            <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
+            <FlareSelect TValue="string" Size="FlareSize.Xs" Items="Targets" ItemLabel="TargetLabel"
                          Value="@_target" ValueChanged="@(value => _target = value ?? string.Empty)" />
         </FlareStack>
     </FlareStack>

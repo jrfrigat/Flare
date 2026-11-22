@@ -182,10 +182,10 @@
             if (!AutoGrow || MaxLines <= 0) return null;
             var token = Size switch
             {
-                FieldSize.Xs => Css.Tokens.InputField.PaddingXs,
-                FieldSize.Sm => Css.Tokens.InputField.PaddingSm,
-                FieldSize.Lg => Css.Tokens.InputField.PaddingLg,
-                FieldSize.Xl => Css.Tokens.InputField.PaddingXl,
+                FlareSize.Xs => Css.Tokens.InputField.PaddingXs,
+                FlareSize.Sm => Css.Tokens.InputField.PaddingSm,
+                FlareSize.Lg => Css.Tokens.InputField.PaddingLg,
+                FlareSize.Xl => Css.Tokens.InputField.PaddingXl,
                 _ => Css.Tokens.InputField.PaddingMd,
             };
             var padding = BlockPaddingSum(ReadTokenRaw(token));

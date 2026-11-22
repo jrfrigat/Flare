@@ -15,7 +15,7 @@ Page navigation for a FlareDataGrid, placed wherever the layout wants it rather 
 | `RowsPerPageOptions` | `IReadOnlyList<int>?` | `` | Parameter |  | Page-size choices offered in the rows-per-page dropdown. When null (the default), the grid's RowsPerPageOptions are used; set this to control the options from the pager instead. A single option (or none) hides the dropdown. |
 | `ShowFirstLast` | `bool` | `false` | Parameter |  | Shows first/last jump buttons in addition to prev/next. |
 | `SiblingCount` | `int` | `2` | Parameter |  | How many page buttons to show on each side of the current page (passed to the pagination control). |
-| `Size` | `PaginationSize` | `PaginationSize.Md` | Parameter |  | Visual size of the pagination control. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Visual size of the pagination control. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Context` | `DataGridContext<TItem>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |

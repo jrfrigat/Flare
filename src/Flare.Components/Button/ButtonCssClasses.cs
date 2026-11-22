@@ -23,14 +23,14 @@ public static class ButtonCssClasses
         _ => Css.Classes.Button.Filled,
     };
 
-    /// <summary>Class for a <see cref="ButtonSize"/>. Unknown values fall back to medium.</summary>
-    public static string Size(ButtonSize size) => size switch
+    /// <summary>Class for a <see cref="FlareSize"/>. Unknown values fall back to medium.</summary>
+    public static string Size(FlareSize size) => size switch
     {
-        ButtonSize.Xs => Css.Classes.Button.SizeXs,
-        ButtonSize.Sm => Css.Classes.Button.SizeSm,
-        ButtonSize.Md => Css.Classes.Button.SizeMd,
-        ButtonSize.Lg => Css.Classes.Button.SizeLg,
-        ButtonSize.Xl => Css.Classes.Button.SizeXl,
+        FlareSize.Xs => Css.Classes.Button.SizeXs,
+        FlareSize.Sm => Css.Classes.Button.SizeSm,
+        FlareSize.Md => Css.Classes.Button.SizeMd,
+        FlareSize.Lg => Css.Classes.Button.SizeLg,
+        FlareSize.Xl => Css.Classes.Button.SizeXl,
         _ => Css.Classes.Button.SizeMd,
     };
 

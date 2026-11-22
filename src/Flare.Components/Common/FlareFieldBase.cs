@@ -49,8 +49,8 @@ public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
     /// <see cref="InputVariant.Default"/> (the default) keeps the theme's own field style.</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
 
-    /// <summary>Control size (Xs..Xl). <see cref="FieldSize.Md"/> (the default) is the standard field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Control size (Xs..Xl). <see cref="FlareSize.Md"/> (the default) is the standard field height.</summary>
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
 
     /// <summary>Optional typography scale for the field's text. Overrides the size-derived font;
     /// null (the default) keeps the size default.</summary>

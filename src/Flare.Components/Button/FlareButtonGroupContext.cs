@@ -6,7 +6,7 @@ namespace Flare.Components;
 /// the button keeps its own parameter value.
 /// </summary>
 public sealed record FlareButtonGroupContext(
-    ButtonSize? Size,
+    FlareSize? Size,
     ButtonVariant? Variant,
     FlareColor? Color
 );

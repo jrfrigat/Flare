@@ -6,11 +6,11 @@
             <FlareText Typo="TypographyScale.TitleMedium" PaddingInlineStart="FlareSpacing.Custom" PaddingInlineStartValue="0.5rem" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">Project</FlareText>
         </HeaderStart>
         <HeaderEnd>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => Snackbar.Show("Refresh"))">
+            <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="@(() => Snackbar.Show("Refresh"))">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Refresh" /></LeadingIcon>
                 <ChildContent>Refresh</ChildContent>
             </FlareButton>
-            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="@(() => Snackbar.Show("New"))">
+            <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm" OnClick="@(() => Snackbar.Show("New"))">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></LeadingIcon>
                 <ChildContent>New</ChildContent>
             </FlareButton>

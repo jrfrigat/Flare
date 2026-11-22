@@ -31,7 +31,7 @@ public class RadioGroupContextTests : FlareTestContext
     {
         var cut = Render<FlareRadioGroup<string>>(p => p.Add(x => x.ChildContent, TwoRadios()));
 
-        cut.Render(p => p.Add(x => x.Size, FieldSize.Lg));
+        cut.Render(p => p.Add(x => x.Size, FlareSize.Lg));
 
         Assert.All(cut.FindAll($"label.{Css.Classes.Radio.Root}"),
             label => Assert.Contains(Css.Classes.Radio.SizeLg, label.ClassName ?? string.Empty));

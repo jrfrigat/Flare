@@ -172,7 +172,7 @@
     /// </summary>
     [Parameter] public double? Init { get; set; }
     /// <summary>Size variant (XSmall-XLarge). Controls track thickness and handle height.</summary>
-    [Parameter] public TrackSize Size { get; set; } = TrackSize.Xs;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Xs;
 
     /// <summary>Length of the slider along its axis, as a CSS length. A horizontal slider fills its
     /// container by default; set this when it should take a fixed width. A vertical slider's length is
@@ -273,10 +273,10 @@
 
     private string _sizeClass => Size switch
     {
-        TrackSize.Sm  => Css.Classes.Slider.SizeSm,
-        TrackSize.Md => Css.Classes.Slider.SizeMd,
-        TrackSize.Lg  => Css.Classes.Slider.SizeLg,
-        TrackSize.Xl => Css.Classes.Slider.SizeXl,
+        FlareSize.Sm  => Css.Classes.Slider.SizeSm,
+        FlareSize.Md => Css.Classes.Slider.SizeMd,
+        FlareSize.Lg  => Css.Classes.Slider.SizeLg,
+        FlareSize.Xl => Css.Classes.Slider.SizeXl,
         _                 => Css.Classes.Slider.SizeXs,
     };
 

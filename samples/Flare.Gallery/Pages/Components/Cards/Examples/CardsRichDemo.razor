@@ -19,8 +19,8 @@
                    Selected="_anatomySelected"
                    OnSelectionChange="@(v => _anatomySelected = v)">
             <FlareCardHeader Title="Alice Johnson" Subtitle="Senior Engineer · Berlin">
-                <AvatarContent><FlareAvatar Text="Alice Johnson" Size="AvatarSize.Md" /></AvatarContent>
-                <ActionContent><FlareButton LeadingIcon="@_more" Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="More" /></ActionContent>
+                <AvatarContent><FlareAvatar Text="Alice Johnson" Size="FlareSize.Md" /></AvatarContent>
+                <ActionContent><FlareButton LeadingIcon="@_more" Variant="ButtonVariant.Text" Size="FlareSize.Sm" AriaLabel="More" /></ActionContent>
             </FlareCardHeader>
             <FlareCardContent>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
@@ -28,8 +28,8 @@
                 </FlareText>
             </FlareCardContent>
             <FlareCardActions Align="CardActionsAlign.End">
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">View profile</FlareButton>
-                <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm">Message</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm">View profile</FlareButton>
+                <FlareButton Variant="ButtonVariant.Tonal" Size="FlareSize.Sm">Message</FlareButton>
             </FlareCardActions>
         </FlareCard>
     </FlareCol>

@@ -3,7 +3,7 @@
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <FlareSelect TValue="string" Label="@Text["Diagnostic_Severity"]" Items="Filters" ItemLabel="FilterLabel"
-                 Value="@_filter" ValueChanged="SetFilter" Size="FieldSize.Sm" />
+                 Value="@_filter" ValueChanged="SetFilter" Size="FlareSize.Sm" />
     <FlareDataGrid TItem="IdeDiagnostic" Items="@_visible" Virtual="true" Height="@Height"
                    RowKey="@(static entry => entry.Key)" TableAriaLabel="@Text["Diagnostic_List"]">
         <Columns>
@@ -16,7 +16,7 @@
             <FlareColumn TItem="IdeDiagnostic" Id="column" Title="@Text["Diagnostic_Column"]" Field="@(entry => entry.Column)" />
             <FlareColumn TItem="IdeDiagnostic" Id="message" Title="@Text["Diagnostic_Message"]">
                 <Template Context="entry">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm"
                                  aria-pressed="@(entry.Key == (SelectedKey ?? _selection) ? "true" : "false")"
                                  OnClick="@(() => SelectAsync(entry))">
                         @if (MessageContent is not null)

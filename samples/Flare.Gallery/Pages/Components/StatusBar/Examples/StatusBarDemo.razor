@@ -23,10 +23,10 @@
     </FlarePaper>
 
     <FlareStack Row Gap="FlareSpacing.Small" Wrap>
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="MoveCursor">Move cursor</FlareButton>
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="@(() => _message = "Build succeeded")">Report build</FlareButton>
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="ToggleEncoding">Toggle encoding</FlareButton>
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="@(() => _branch = _branch == "main" ? "feature/ide" : "main")">Switch branch</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm" OnClick="MoveCursor">Move cursor</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm" OnClick="@(() => _message = "Build succeeded")">Report build</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm" OnClick="ToggleEncoding">Toggle encoding</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm" OnClick="@(() => _branch = _branch == "main" ? "feature/ide" : "main")">Switch branch</FlareButton>
     </FlareStack>
 </FlareStack>
 

@@ -87,7 +87,7 @@ public class FlareButtonIconOnlyTests : FlareTestContext
     public void RendersSmallSize()
     {
         var cut = Render<FlareButton>(p => p
-            .Add(x => x.Size, ButtonSize.Sm)
+            .Add(x => x.Size, FlareSize.Sm)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "small"));
 
@@ -98,7 +98,7 @@ public class FlareButtonIconOnlyTests : FlareTestContext
     public void RendersLargeSize()
     {
         var cut = Render<FlareButton>(p => p
-            .Add(x => x.Size, ButtonSize.Lg)
+            .Add(x => x.Size, FlareSize.Lg)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "large"));
 

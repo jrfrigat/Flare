@@ -35,7 +35,7 @@
     /// <summary>Visual style variant applied to both the main and trigger buttons.</summary>
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Filled;
     /// <summary>Size applied to both buttons.</summary>
-    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Semantic color applied to both buttons.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Disables the whole split button.</summary>
@@ -117,11 +117,11 @@
     // Size mapping for the split-button CSS isolation
     private string _sizeClass => Size switch
     {
-        ButtonSize.Xs => Css.Classes.SplitButton.SizeXs,
-        ButtonSize.Sm => Css.Classes.SplitButton.SizeSm,
-        ButtonSize.Md => Css.Classes.SplitButton.SizeMd,
-        ButtonSize.Lg => Css.Classes.SplitButton.SizeLg,
-        ButtonSize.Xl => Css.Classes.SplitButton.SizeXl,
+        FlareSize.Xs => Css.Classes.SplitButton.SizeXs,
+        FlareSize.Sm => Css.Classes.SplitButton.SizeSm,
+        FlareSize.Md => Css.Classes.SplitButton.SizeMd,
+        FlareSize.Lg => Css.Classes.SplitButton.SizeLg,
+        FlareSize.Xl => Css.Classes.SplitButton.SizeXl,
         _ => Css.Classes.SplitButton.SizeMd,
     };
 

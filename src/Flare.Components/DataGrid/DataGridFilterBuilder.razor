@@ -5,7 +5,7 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@Css.Classes.DataGrid.FilterBuilder" @ref="_wrapRef">
-    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle"
+    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="Toggle"
                  Color="@(_advancedCount > 0 ? FlareColor.Primary : FlareColor.Default)">
         <LeadingIcon><FlareIconView Value="FlareIcons.FilterAlt" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
         <ChildContent>
@@ -25,8 +25,8 @@
             </div>
             <div class="@Css.Classes.DataGrid.FilterBuilderActions">
                 <span class="@Css.Classes.DataGrid.Spacer"></span>
-                <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Clear">@CoreText["DataGrid_ClearFilters"]</FlareButton>
-                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Apply">@CoreText["DataGrid_ApplyFilters"]</FlareButton>
+                <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm" OnClick="Clear">@CoreText["DataGrid_ClearFilters"]</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm" OnClick="Apply">@CoreText["DataGrid_ApplyFilters"]</FlareButton>
             </div>
         </div>
         <div data-flare-backdrop class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
@@ -170,17 +170,17 @@
                             @onclick="@(() => { ctx.Node.Or = !ctx.Node.Or; StateHasChanged(); })">
                         @(ctx.Node.Or ? CoreText["DataGrid_Or"] : CoreText["DataGrid_And"])
                     </button>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddCondition(ctx.Node); StateHasChanged(); })">
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="@(() => { AddCondition(ctx.Node); StateHasChanged(); })">
                         <LeadingIcon><FlareIconView Value="FlareIcons.Add" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
                         <ChildContent>@CoreText["DataGrid_AddCondition"]</ChildContent>
                     </FlareButton>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddGroup(ctx.Node); StateHasChanged(); })">
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="@(() => { AddGroup(ctx.Node); StateHasChanged(); })">
                         <LeadingIcon><FlareIconView Value="FlareIcons.CreateNewFolder" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
                         <ChildContent>@CoreText["DataGrid_AddGroup"]</ChildContent>
                     </FlareButton>
                     @if (ctx.Parent is not null)
                     {
-                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                                      OnClick="@(() => { RemoveGroup(ctx.Parent!, ctx.Node); StateHasChanged(); })"
                                      AriaLabel="@CoreText["DataGrid_RemoveGroup"]">
                             <FlareIconView Value="FlareIcons.Close" Class="@Css.Classes.DataGrid.CloseIcon" />
@@ -193,11 +193,11 @@
                         var c = cond;
                         <div class="@Css.Classes.DataGrid.FilterBuilderRow">
                             <div class="@Css.Classes.DataGrid.FilterBuilderField">
-                                <FlareSelect TValue="string" Size="FieldSize.Xs" Items="_columnKeys" ItemLabel="ColumnLabel"
+                                <FlareSelect TValue="string" Size="FlareSize.Xs" Items="_columnKeys" ItemLabel="ColumnLabel"
                                              Value="@c.Key" ValueChanged="@(v => { c.Key = v ?? string.Empty; StateHasChanged(); })" />
                             </div>
                             <div class="@Css.Classes.DataGrid.FilterBuilderOp">
-                                <FlareSelect TValue="FilterOperator" Size="FieldSize.Xs"
+                                <FlareSelect TValue="FilterOperator" Size="FlareSize.Xs"
                                              Items="Enum.GetValues<FilterOperator>().ToList()"
                                              ItemLabel="OperatorLabel" Value="@c.Operator"
                                              ValueChanged="@(v => { c.Operator = v; StateHasChanged(); })" />
@@ -205,12 +205,12 @@
                             @if (!OpHasNoValue(c.Operator))
                             {
                                 <div class="@Css.Classes.DataGrid.FilterBuilderValue">
-                                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true"
+                                    <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true"
                                                 Placeholder="@CoreText["DataGrid_FilterValue"]" Value="@c.Value"
                                                 ValueChanged="@(v => { c.Value = v; StateHasChanged(); })" />
                                 </div>
                             }
-                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                            <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                                          OnClick="@(() => { RemoveCondition(ctx.Node, c); StateHasChanged(); })"
                                          AriaLabel="@CoreText["DataGrid_RemoveCondition"]">
                                 <FlareIconView Value="FlareIcons.Close" Class="@Css.Classes.DataGrid.CloseIcon" />

@@ -16,15 +16,15 @@
             <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Source</h3>
             <div class="@Css.Classes.QueryBuilder.Row">
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
-                    <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Sources" ItemLabel="SourceLabel"
+                    <FlareSelect TValue="string" Size="FlareSize.Xs" Items="Sources" ItemLabel="SourceLabel"
                                  Value="@RootToken" ValueChanged="SetRoot" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
-                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Alias"
+                    <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Alias"
                                 Value="@_draft.RootAlias"
                                 ValueChanged="@(value => { _draft.RootAlias = value ?? string.Empty; Rebuild(); })" />
                 </div>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddJoin">
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="AddJoin">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
                     <ChildContent>@EffectiveLabels.AddJoin</ChildContent>
                 </FlareButton>
@@ -35,26 +35,26 @@
                 var row = join;
                 <div class="@Css.Classes.QueryBuilder.Row">
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
-                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="EntityKeys" ItemLabel="EntityLabel"
+                        <FlareSelect TValue="string" Size="FlareSize.Xs" Items="EntityKeys" ItemLabel="EntityLabel"
                                      Value="@row.Entity"
                                      ValueChanged="@(value => SetJoinEntity(row, value))" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
-                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Alias"
+                        <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Alias"
                                     Value="@row.Alias"
                                     ValueChanged="@(value => { row.Alias = value ?? string.Empty; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellRelation">
-                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="RelationsFor(row)" ItemLabel="RelationLabel"
+                        <FlareSelect TValue="string" Size="FlareSize.Xs" Items="RelationsFor(row)" ItemLabel="RelationLabel"
                                      Value="@row.Relation"
                                      ValueChanged="@(value => { row.Relation = value; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
-                        <FlareSelect TValue="QueryJoinKind" Size="FieldSize.Xs" Items="JoinKinds"
+                        <FlareSelect TValue="QueryJoinKind" Size="FlareSize.Xs" Items="JoinKinds"
                                      Value="@row.Kind"
                                      ValueChanged="@(value => { row.Kind = value; Rebuild(); })" />
                     </div>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                                  OnClick="@(() => { _draft.Joins.Remove(row); Rebuild(); })" AriaLabel="@EffectiveLabels.Remove">
                         <FlareIconView Value="FlareIcons.Close" />
                     </FlareButton>
@@ -65,7 +65,7 @@
         <section class="@Css.Classes.QueryBuilder.Section">
             <div class="@Css.Classes.QueryBuilder.SectionHead">
                 <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Columns</h3>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddColumn">
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="AddColumn">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
                     <ChildContent>@EffectiveLabels.AddColumn</ChildContent>
                 </FlareButton>
@@ -76,11 +76,11 @@
                 var row = column;
                 <div class="@Css.Classes.QueryBuilder.Row">
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
-                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="ValueTargets" ItemLabel="ValueTargetLabel"
+                        <FlareSelect TValue="string" Size="FlareSize.Xs" Items="ValueTargets" ItemLabel="ValueTargetLabel"
                                      Value="@ColumnToken(row)" ValueChanged="@(value => SetColumn(row, value))" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
-                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="AggregatesFor(row)" ItemLabel="AggregateLabel"
+                        <FlareSelect TValue="string" Size="FlareSize.Xs" Items="AggregatesFor(row)" ItemLabel="AggregateLabel"
                                      Value="@(row.Aggregate?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetAggregate(row, value))" />
                     </div>
@@ -89,26 +89,26 @@
                        Rendering it only sometimes moved everything to its right, so two rows of the
                        same designer put their output names in different places. *@
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
-                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Periods" ItemLabel="PeriodLabel"
+                        <FlareSelect TValue="string" Size="FlareSize.Xs" Items="Periods" ItemLabel="PeriodLabel"
                                      Disabled="@(row.Aggregate is not null || !IsTimestampColumn(row))"
                                      Value="@(row.Truncate?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetPeriod(row, value))" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
-                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.OutputName"
+                        <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.OutputName"
                                     Value="@row.OutputAlias"
                                     ValueChanged="@(value => { row.OutputAlias = value; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
-                        <FlareCheckbox Size="FieldSize.Xs" Label="@EffectiveLabels.Group" Value="@row.Group"
+                        <FlareCheckbox Size="FlareSize.Xs" Label="@EffectiveLabels.Group" Value="@row.Group"
                                        ValueChanged="@((bool value) => { row.Group = value; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
-                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="SortOptions" ItemLabel="SortLabel"
+                        <FlareSelect TValue="string" Size="FlareSize.Xs" Items="SortOptions" ItemLabel="SortLabel"
                                      Value="@(row.Sort?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetSort(row, value))" />
                     </div>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                                  OnClick="@(() => { _draft.Columns.Remove(row); Rebuild(); })" AriaLabel="@EffectiveLabels.Remove">
                         <FlareIconView Value="FlareIcons.Close" />
                     </FlareButton>
@@ -144,22 +144,22 @@
             <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Options</h3>
             <div class="@Css.Classes.QueryBuilder.Row">
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
-                    <FlareCheckbox Size="FieldSize.Xs" Label="@EffectiveLabels.Distinct" Value="@_draft.Distinct"
+                    <FlareCheckbox Size="FlareSize.Xs" Label="@EffectiveLabels.Distinct" Value="@_draft.Distinct"
                                    ValueChanged="@((bool value) => { _draft.Distinct = value; Rebuild(); })" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Limit"
+                    <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Limit"
                                 Value="@(_draft.Limit?.ToString(Culture))"
                                 ValueChanged="@(value => { _draft.Limit = ParseCount(value); Rebuild(); })" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Offset"
+                    <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Offset"
                                 Value="@(_draft.Offset?.ToString(Culture))"
                                 ValueChanged="@(value => { _draft.Offset = ParseCount(value); Rebuild(); })" />
                 </div>
                 @if (ShowSubmit)
                 {
-                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Submit"
+                    <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm" OnClick="Submit"
                                  Disabled="@(!_validation.IsValid)">
                         @EffectiveLabels.Submit
                     </FlareButton>

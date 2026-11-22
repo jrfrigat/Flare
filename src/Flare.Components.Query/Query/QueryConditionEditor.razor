@@ -9,17 +9,17 @@
         <button type="button" class="@Css.Classes.QueryBuilder.Connector" @onclick="ToggleConnector">
             @(Group.Or ? OrLabel : AndLabel)
         </button>
-        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddCondition">
+        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="AddCondition">
             <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
             <ChildContent>@AddConditionLabel</ChildContent>
         </FlareButton>
-        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddGroup">
+        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="AddGroup">
             <LeadingIcon><FlareIconView Value="FlareIcons.CreateNewFolder" /></LeadingIcon>
             <ChildContent>@AddGroupLabel</ChildContent>
         </FlareButton>
         @if (Parent is not null)
         {
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="RemoveSelf" AriaLabel="@RemoveLabel">
+            <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" OnClick="RemoveSelf" AriaLabel="@RemoveLabel">
                 <FlareIconView Value="FlareIcons.Close" />
             </FlareButton>
         }
@@ -31,12 +31,12 @@
             var row = condition;
             <div class="@Css.Classes.QueryBuilder.Row">
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
-                    <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
+                    <FlareSelect TValue="string" Size="FlareSize.Xs" Items="Targets" ItemLabel="TargetLabel"
                                  Value="@TargetOf(row)"
                                  ValueChanged="@(value => SetTarget(row, value))" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
-                    <FlareSelect TValue="QueryOperator" Size="FieldSize.Xs" Items="OperatorsFor(row)"
+                    <FlareSelect TValue="QueryOperator" Size="FlareSize.Xs" Items="OperatorsFor(row)"
                                  ItemLabel="OperatorLabel" Value="@row.Operator"
                                  ValueChanged="@(value => { row.Operator = value; Changed(); })" />
                 </div>
@@ -44,7 +44,7 @@
                 @if (QueryDefaults.TakesValueList(row.Operator))
                 {
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValuesHint"
+                        <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@ValuesHint"
                                     Value="@row.Values"
                                     ValueChanged="@(value => { row.Values = value; Changed(); })" />
                     </div>
@@ -54,19 +54,19 @@
                     @if (IsTimestamp(row))
                     {
                         <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellRelative">
-                            <FlareCheckbox Size="FieldSize.Xs" Label="@RelativeLabel" Value="@row.Relative"
+                            <FlareCheckbox Size="FlareSize.Xs" Label="@RelativeLabel" Value="@row.Relative"
                                            ValueChanged="@((bool value) => { row.Relative = value; Changed(); })" />
                         </div>
                     }
                     @if (row.Relative)
                     {
                         <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                            <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true"
+                            <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true"
                                         Value="@row.RelativeAmount.ToString(Culture)"
                                         ValueChanged="@(value => SetAmount(row, value))" />
                         </div>
                         <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellUnit">
-                            <FlareSelect TValue="QueryTimeUnit" Size="FieldSize.Xs" Items="Units"
+                            <FlareSelect TValue="QueryTimeUnit" Size="FlareSize.Xs" Items="Units"
                                          Value="@row.RelativeUnit"
                                          ValueChanged="@(value => { row.RelativeUnit = value; Changed(); })" />
                         </div>
@@ -74,14 +74,14 @@
                     else
                     {
                         <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                            <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValueHint"
+                            <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@ValueHint"
                                         Value="@row.Value"
                                         ValueChanged="@(value => { row.Value = value; Changed(); })" />
                         </div>
                         @if (QueryDefaults.TakesTwoValues(row.Operator))
                         {
                             <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                                <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValueHint"
+                                <FlareField TValue="string" Size="FlareSize.Xs" Immediate="true" Placeholder="@ValueHint"
                                             Value="@row.Value2"
                                             ValueChanged="@(value => { row.Value2 = value; Changed(); })" />
                             </div>
@@ -89,7 +89,7 @@
                     }
                 }
 
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                              OnClick="@(() => RemoveCondition(row))" AriaLabel="@RemoveLabel">
                     <FlareIconView Value="FlareIcons.Close" />
                 </FlareButton>

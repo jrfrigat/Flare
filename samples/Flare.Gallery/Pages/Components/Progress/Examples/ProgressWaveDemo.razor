@@ -14,7 +14,7 @@
         </FlareStack>
         <FlareStack Gap="FlareSpacing.None">
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">@GalleryStrings.Progress_Thick</FlareText>
-            <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Class="@Flare.Css.Classes.Md3e.Progress.Wavy" Value="@_value" Size="TrackSize.Xl" />
+            <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Class="@Flare.Css.Classes.Md3e.Progress.Wavy" Value="@_value" Size="FlareSize.Xl" />
         </FlareStack>
         <FlareStack Gap="FlareSpacing.Small" Width="8rem">
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_NarrowWave</FlareText>
@@ -50,8 +50,8 @@
 @code {
     private double _value = 70;
 
-    private readonly TrackSize[] _steps =
+    private readonly FlareSize[] _steps =
     [
-        TrackSize.Xs, TrackSize.Sm, TrackSize.Md, TrackSize.Lg, TrackSize.Xl,
+        FlareSize.Xs, FlareSize.Sm, FlareSize.Md, FlareSize.Lg, FlareSize.Xl,
     ];
 }

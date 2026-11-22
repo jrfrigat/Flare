@@ -20,8 +20,8 @@
 </FlareThemeProvider>
 
 @code {
-    private static readonly FieldSize[] _sizes =
-        [FieldSize.Xs, FieldSize.Sm, FieldSize.Md, FieldSize.Lg, FieldSize.Xl];
+    private static readonly FlareSize[] _sizes =
+        [FlareSize.Xs, FlareSize.Sm, FlareSize.Md, FlareSize.Lg, FlareSize.Xl];
 
     private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
     private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");

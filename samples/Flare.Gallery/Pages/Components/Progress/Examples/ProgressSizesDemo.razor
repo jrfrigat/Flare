@@ -1,4 +1,4 @@
-@* Size is one step on the shared TrackSize scale - the same one FlareSlider and FlareMeter use. A single
+@* Size is one step on the shared FlareSize scale - the same one FlareSlider and FlareMeter use. A single
    step drives BOTH variants: the circular diameter (and its stroke) and the linear track thickness. The
    steps are labels, not measurements: the theme owns what each is worth, so switching the theme rescales
    these. Md is the default, and the ramp runs both ways from it - a progress indicator wants room to go
@@ -41,12 +41,12 @@
 
 @code {
     private double _value = 65;
-    private readonly (TrackSize Size, string Label)[] _steps =
+    private readonly (FlareSize Size, string Label)[] _steps =
     [
-        (TrackSize.Xs, "Xs"),
-        (TrackSize.Sm, "Sm"),
-        (TrackSize.Md, "Md"),
-        (TrackSize.Lg, "Lg"),
-        (TrackSize.Xl, "Xl"),
+        (FlareSize.Xs, "Xs"),
+        (FlareSize.Sm, "Sm"),
+        (FlareSize.Md, "Md"),
+        (FlareSize.Lg, "Lg"),
+        (FlareSize.Xl, "Xl"),
     ];
 }

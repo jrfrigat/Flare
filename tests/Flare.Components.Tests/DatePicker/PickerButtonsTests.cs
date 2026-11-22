@@ -22,7 +22,7 @@ public class PickerButtonsTests : FlareTestContext
     [Fact]
     public void IconButton_HasTheClassesOfAnIconOnlyFlareButton()
     {
-        var reference = Render<FlareButton>(p => p.Add(x => x.Variant, ButtonVariant.Text).Add(x => x.Size, ButtonSize.Sm)
+        var reference = Render<FlareButton>(p => p.Add(x => x.Variant, ButtonVariant.Text).Add(x => x.Size, FlareSize.Sm)
             .Add(x => x.AriaLabel, "Next").Add(x => x.LeadingIcon, (RenderFragment)(b => b.AddContent(0, "i"))));
         var cut = Render<Host>();
 
@@ -39,7 +39,7 @@ public class PickerButtonsTests : FlareTestContext
     [Fact]
     public void TextButton_HasTheClassesOfATextFlareButton()
     {
-        var reference = Render<FlareButton>(p => p.Add(x => x.Variant, ButtonVariant.Text).Add(x => x.Size, ButtonSize.Sm)
+        var reference = Render<FlareButton>(p => p.Add(x => x.Variant, ButtonVariant.Text).Add(x => x.Size, FlareSize.Sm)
             .AddChildContent("OK"));
         var cut = Render<Host>(p => p.Add(x => x.Text, true));
 

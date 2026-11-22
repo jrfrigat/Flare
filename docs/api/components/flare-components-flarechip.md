@@ -23,7 +23,7 @@
 | `OnClose` | `EventCallback` | `` | Callback |  | Callback raised when the close button is clicked. |
 | `Selected` | `bool` | `false` | Parameter |  | Whether the chip is in a selected/active state. |
 | `SelectedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the selected state toggles. |
-| `Size` | `ChipSize` | `ChipSize.Md` | Parameter |  | Size of the chip. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size of the chip. |
 | `Value` | `string?` | `` | Parameter |  | Value used by FlareChipGroup to identify this chip. |
 | `Variant` | `ChipVariant` | `ChipVariant.Outlined` | Parameter |  | Visual style of the chip: Outlined (default, bordered), Filled (solid surface fill) or Elevated (filled with a shadow). Setting Elevated is equivalent to Elevated and takes precedence over this parameter when true. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

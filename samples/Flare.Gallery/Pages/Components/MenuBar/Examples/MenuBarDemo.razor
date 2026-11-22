@@ -7,7 +7,7 @@
         <FlareMenuBar>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="File menu">
                 <Activator>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" @attributes="context.Attributes">File</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" @attributes="context.Attributes">File</FlareButton>
                 </Activator>
                 <ChildContent>
                     <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NoteAdd" Shortcut="Ctrl+N" OnClick="@(() => Set("File > New"))">New</FlareMenuItem>
@@ -19,7 +19,7 @@
             </FlareMenu>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="Edit menu">
                 <Activator>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" @attributes="context.Attributes">Edit</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" @attributes="context.Attributes">Edit</FlareButton>
                 </Activator>
                 <ChildContent>
                     <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" Shortcut="Ctrl+X" OnClick="@(() => Set("Edit > Cut"))">Cut</FlareMenuItem>
@@ -29,7 +29,7 @@
             </FlareMenu>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="View menu">
                 <Activator>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" @attributes="context.Attributes">View</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" @attributes="context.Attributes">View</FlareButton>
                 </Activator>
                 <ChildContent>
                     <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.AccountTree" OnClick="@(() => Set("View > Solution Explorer"))">Solution Explorer</FlareMenuItem>

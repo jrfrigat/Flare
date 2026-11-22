@@ -9,11 +9,11 @@ namespace Flare.Components.Tests;
 public class FlarePaginationSizeTests : FlareTestContext
 {
     [Theory]
-    [InlineData(PaginationSize.Xs, Css.Classes.Pagination.SizeXs)]
-    [InlineData(PaginationSize.Sm, Css.Classes.Pagination.SizeSm)]
-    [InlineData(PaginationSize.Lg, Css.Classes.Pagination.SizeLg)]
-    [InlineData(PaginationSize.Xl, Css.Classes.Pagination.SizeXl)]
-    public void Size_AppliesModifierClass(PaginationSize size, string expected)
+    [InlineData(FlareSize.Xs, Css.Classes.Pagination.SizeXs)]
+    [InlineData(FlareSize.Sm, Css.Classes.Pagination.SizeSm)]
+    [InlineData(FlareSize.Lg, Css.Classes.Pagination.SizeLg)]
+    [InlineData(FlareSize.Xl, Css.Classes.Pagination.SizeXl)]
+    public void Size_AppliesModifierClass(FlareSize size, string expected)
     {
         var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5)
@@ -28,7 +28,7 @@ public class FlarePaginationSizeTests : FlareTestContext
     {
         var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5)
-            .Add(x => x.Size, PaginationSize.Md));
+            .Add(x => x.Size, FlareSize.Md));
 
         Assert.Contains(Css.Classes.Pagination.SizeMd, cut.Find($".{Css.Classes.Pagination.Root}").ClassName);
     }
@@ -36,12 +36,12 @@ public class FlarePaginationSizeTests : FlareTestContext
     // Exactly one step at a time: the default arm now returns a class, so a stray second one would mean
     // two size rules fighting rather than the last one winning cleanly.
     [Theory]
-    [InlineData(PaginationSize.Xs)]
-    [InlineData(PaginationSize.Sm)]
-    [InlineData(PaginationSize.Md)]
-    [InlineData(PaginationSize.Lg)]
-    [InlineData(PaginationSize.Xl)]
-    public void ExactlyOneSizeModifier(PaginationSize size)
+    [InlineData(FlareSize.Xs)]
+    [InlineData(FlareSize.Sm)]
+    [InlineData(FlareSize.Md)]
+    [InlineData(FlareSize.Lg)]
+    [InlineData(FlareSize.Xl)]
+    public void ExactlyOneSizeModifier(FlareSize size)
     {
         var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5)

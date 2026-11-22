@@ -10,7 +10,7 @@
         <FlareSelect id="metric-combo" TValue="string" Label="Combo" Items="@(new[] { "One", "Two" })" />
         <FlareMultiSelect id="metric-multiselect" TValue="string" Label="Multi combo" Items="@(new[] { "One", "Two" })" />
         <FlareSelect id="metric-search-combo" TValue="string" Label="Searchable combo" Searchable="true" Items="@(new[] { "One", "Two" })" />
-        <FlareButton id="metric-command" Size="ButtonSize.Xs" AriaLabel="Save">
+        <FlareButton id="metric-command" Size="FlareSize.Xs" AriaLabel="Save">
             <LeadingIcon><FlareIconView Value="@FlareIcons.Save" /></LeadingIcon>
         </FlareButton>
         <div id="metric-scroller" style="inline-size: 120px; block-size: 60px; overflow-y: scroll;">
@@ -76,7 +76,7 @@
         <div id="metric-menu">
             <FlareMenu AriaLabel="File">
                 <Activator Context="menu">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm"
                                  @attributes="menu.Attributes">File</FlareButton>
                 </Activator>
                 <ChildContent>

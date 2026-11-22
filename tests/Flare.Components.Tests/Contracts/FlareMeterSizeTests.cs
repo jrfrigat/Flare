@@ -18,12 +18,12 @@ public class FlareMeterSizeTests : FlareTestContext
     };
 
     [Theory]
-    [InlineData(TrackSize.Xs, Css.Classes.Meter.SizeXs)]
-    [InlineData(TrackSize.Sm, Css.Classes.Meter.SizeSm)]
-    [InlineData(TrackSize.Md, Css.Classes.Meter.SizeMd)]
-    [InlineData(TrackSize.Lg, Css.Classes.Meter.SizeLg)]
-    [InlineData(TrackSize.Xl, Css.Classes.Meter.SizeXl)]
-    public void Size_AppliesSizeClass(TrackSize size, string expected)
+    [InlineData(FlareSize.Xs, Css.Classes.Meter.SizeXs)]
+    [InlineData(FlareSize.Sm, Css.Classes.Meter.SizeSm)]
+    [InlineData(FlareSize.Md, Css.Classes.Meter.SizeMd)]
+    [InlineData(FlareSize.Lg, Css.Classes.Meter.SizeLg)]
+    [InlineData(FlareSize.Xl, Css.Classes.Meter.SizeXl)]
+    public void Size_AppliesSizeClass(FlareSize size, string expected)
     {
         var cut = Render<FlareMeter>(p => p.Add(x => x.Size, size).Add(x => x.ChildContent, OneSegment));
 

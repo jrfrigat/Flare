@@ -21,7 +21,7 @@
 | `OnClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback invoked when the primary action button is clicked. |
 | `Placement` | `MenuAnchor` | `MenuAnchor.BottomRight` | Parameter |  | Corner of the trigger the dropdown menu aligns to. Defaults to BottomRight. |
 | `Rel` | `string?` | `` | Parameter |  | The primary link's rel (link mode); null + Target_blank defaults to noopener noreferrer. |
-| `Size` | `ButtonSize` | `ButtonSize.Md` | Parameter |  | Size applied to both buttons. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size applied to both buttons. |
 | `Target` | `string?` | `` | Parameter |  | Target for the primary link (e.g. "_blank"). Only used with Href. |
 | `Variant` | `ButtonVariant` | `ButtonVariant.Filled` | Parameter |  | Visual style variant applied to both the main and trigger buttons. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

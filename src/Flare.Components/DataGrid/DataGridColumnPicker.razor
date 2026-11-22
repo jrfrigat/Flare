@@ -5,7 +5,7 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@Css.Classes.DataGrid.ColumnPickerWrap" @ref="_wrapRef">
-    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@CoreText["DataGrid_ToggleColumns"]">
+    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="Toggle" AriaLabel="@CoreText["DataGrid_ToggleColumns"]">
         <LeadingIcon><FlareIconView Value="FlareIcons.ViewColumn" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
         <ChildContent>@(Label ?? CoreText["DataGrid_ColumnsLabel"])</ChildContent>
     </FlareButton>

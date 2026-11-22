@@ -52,7 +52,7 @@
     /// <summary>Avatar content rendered at the leading edge (takes precedence over <see cref="LeadingIcon"/>).</summary>
     [Parameter] public RenderFragment? AvatarContent { get; set; }
     /// <summary>Size of the chip.</summary>
-    [Parameter] public ChipSize Size { get; set; } = ChipSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Whether the chip is in a selected/active state.</summary>
     [Parameter] public bool Selected { get; set; }
     /// <summary>Callback raised when the selected state toggles.</summary>
@@ -140,10 +140,10 @@
     private string? _chipStyle => Color.StyleMainOn() is { } t ? t + Style : Style;
     private string _sizeClass => Size switch
     {
-        ChipSize.Xs => Css.Classes.Chip.SizeXs,
-        ChipSize.Sm => Css.Classes.Chip.SizeSm,
-        ChipSize.Lg => Css.Classes.Chip.SizeLg,
-        ChipSize.Xl => Css.Classes.Chip.SizeXl,
+        FlareSize.Xs => Css.Classes.Chip.SizeXs,
+        FlareSize.Sm => Css.Classes.Chip.SizeSm,
+        FlareSize.Lg => Css.Classes.Chip.SizeLg,
+        FlareSize.Xl => Css.Classes.Chip.SizeXl,
         _           => Css.Classes.Chip.SizeMd,   // Md is the default and now names itself
     };
 

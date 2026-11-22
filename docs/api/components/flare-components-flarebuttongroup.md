@@ -15,7 +15,7 @@
 | `Connected` | `bool` | `false` | Parameter |  | Switches the group from the standard model to the connected one. The two differ in how a press travels: a standard group's segments respond to each other, so pressing one changes its width and its neighbours give up the space; a connected group's segments are independent, and a press changes only the shape of the button pressed. Connected is the model for a row of related options that can be selected - it is what replaces the older segmented button - and it is usually paired with FullWidth, since a connected group is meant to span its surface and widen its buttons to fill it. Default false (standard). |
 | `FullWidth` | `bool` | `false` | Parameter |  | When true, the group stretches to fill the full width of its container. |
 | `OverflowLabel` | `string?` | `` | Parameter |  | Accessible label for the overflow button. Defaults to Flare's localized "More actions". |
-| `Size` | `ButtonSize?` | `` | Parameter |  | Size applied to all buttons in the group. Null keeps each button's own Size. |
+| `Size` | `FlareSize?` | `` | Parameter |  | Size applied to all buttons in the group. Null keeps each button's own Size. |
 | `Variant` | `ButtonVariant?` | `` | Parameter |  | Visual style variant applied to all buttons in the group. Null keeps each button's own Variant. |
 | `Vertical` | `bool` | `false` | Parameter |  | Layout vertical direction of the group. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

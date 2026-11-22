@@ -15,7 +15,7 @@ public class FlareToggleGroupCascadeTests : FlareTestContext
     public void GroupSize_CascadesToButtons()
     {
         var cut = Render<FlareToggleGroup<string>>(p => p
-            .Add(x => x.Size, ButtonSize.Lg)
+            .Add(x => x.Size, FlareSize.Lg)
             .AddChildContent<FlareToggleButton>(b => b
                 .Add(x => x.Value, (object?)"a")
                 .AddChildContent("A")));

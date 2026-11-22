@@ -5,12 +5,12 @@
    and the cell/formula editor. Built on base FlareField so it themes with everything else. *@
 <div class="@Css.Classes.Ide.FormulaBar.Root" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Ide.FormulaBar.NameBox">
-        <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
+        <FlareField TValue="string" Size="FlareSize.Sm" Immediate="true"
                     Value="@CellRef" ValueChanged="OnCellRefChanged" AriaLabel="@EffectiveNameBoxLabel" />
     </div>
     <span class="@Css.Classes.Ide.FormulaBar.Fx" aria-hidden="true">fx</span>
     <div class="@Css.Classes.Ide.FormulaBar.Input">
-        <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
+        <FlareField TValue="string" Size="FlareSize.Sm" Immediate="true"
                     Value="@Value" ValueChanged="OnValueChanged"
                     Placeholder="@Placeholder" AriaLabel="@EffectiveFormulaLabel" />
     </div>

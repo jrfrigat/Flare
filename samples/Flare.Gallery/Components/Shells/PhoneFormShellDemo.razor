@@ -1,13 +1,13 @@
 @* A form at phone width, which is the viewport the density complaint was filed against. The left frame
-   is the default field size, the right one is Size="FieldSize.Sm" - the parameter that turned out to be
+   is the default field size, the right one is Size="FlareSize.Sm" - the parameter that turned out to be
    the answer, rather than a spacing scope. The submit row is pinned to the bottom of the frame so it
    stays reachable above a keyboard. *@
 <FlareStack Row Wrap Gap="FlareSpacing.Large">
-    @foreach (var size in new[] { FieldSize.Md, FieldSize.Sm })
+    @foreach (var size in new[] { FlareSize.Md, FlareSize.Sm })
     {
         <FlareStack Gap="FlareSpacing.XSmall">
             <FlareText Typo="TypographyScale.LabelLarge">
-                @(size == FieldSize.Md ? GalleryStrings.MobileShells_Comfortable : GalleryStrings.MobileShells_Compact)
+                @(size == FlareSize.Md ? GalleryStrings.MobileShells_Comfortable : GalleryStrings.MobileShells_Compact)
             </FlareText>
 
             <FlareCard Variant="CardVariant.Outlined"

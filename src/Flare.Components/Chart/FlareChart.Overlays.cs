@@ -24,7 +24,7 @@ public partial class FlareChart
             builder.AddAttribute(4, nameof(FlareButton.OnClick), EventCallback.Factory.Create<MouseEventArgs>(this, () => ToggleSeries(idx)));
             builder.AddAttribute(5, nameof(FlareButton.Variant), ButtonVariant.Text);
             builder.AddAttribute(6, nameof(FlareButton.AriaPressed), !IsHidden(idx));
-            builder.AddAttribute(7, nameof(FlareButton.Size), ButtonSize.Xs);
+            builder.AddAttribute(7, nameof(FlareButton.Size), FlareSize.Xs);
             builder.AddAttribute(8, nameof(FlareButton.LeadingIcon), (RenderFragment)(icon =>
             {
                 icon.OpenElement(0, "span");

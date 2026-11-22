@@ -1,25 +1,20 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Size of a FlareButton on the shared Xs..Xl scale (Md is the default). The height is theme-owned:
-/// Md and larger meet the WCAG 2.5.8 target minimum of 24x24 CSS px in every built-in theme. Xs is
-/// the smallest target a theme's design system defines rather than an invented step below it - a
-/// theme whose primary control is 24px maps Xs there, and a compact desktop theme whose toolbar
-/// spec stops at 22px maps Xs to that height; where the result is below 24px the spacing exception
-/// applies, so use Sm or larger where the minimum has to hold. The 44x44 (iOS) and 48x48
-/// (Android) targets are platform guidance for touch, not a web requirement: use Lg or larger where a
-/// finger is the primary input. An icon-only button has no visible label, so it must carry <c>AriaLabel</c>.
+/// Source-compatible alias for <see cref="FlareSize"/>: <c>ButtonSize.Xs</c> resolves to the same
+/// value, so existing markup keeps compiling. New code uses <see cref="FlareSize"/> directly; the
+/// button size semantics live there.
 /// </summary>
-public enum ButtonSize
+public static class ButtonSize
 {
-    /// <summary>Extra small</summary>
-    Xs,
-    /// <summary>Small</summary>
-    Sm,
-    /// <summary>Medium</summary>
-    Md,
-    /// <summary>Large</summary>
-    Lg,
-    /// <summary>Extra large</summary>
-    Xl,
+    /// <summary>Extra small - <see cref="FlareSize.Xs"/>.</summary>
+    public const FlareSize Xs = FlareSize.Xs;
+    /// <summary>Small - <see cref="FlareSize.Sm"/>.</summary>
+    public const FlareSize Sm = FlareSize.Sm;
+    /// <summary>Medium - <see cref="FlareSize.Md"/>.</summary>
+    public const FlareSize Md = FlareSize.Md;
+    /// <summary>Large - <see cref="FlareSize.Lg"/>.</summary>
+    public const FlareSize Lg = FlareSize.Lg;
+    /// <summary>Extra large - <see cref="FlareSize.Xl"/>.</summary>
+    public const FlareSize Xl = FlareSize.Xl;
 }

@@ -31,15 +31,17 @@ public class FieldHeightRampTests
 
     [Theory]
     [MemberData(nameof(Themes))]
-    public void Height_ramp_grows_from_xs_to_xl(string theme, InputTokens input)
+    public void Height_ramp_never_shrinks_from_xs_to_xl(string theme, InputTokens input)
     {
         var previous = (Name: string.Empty, Rem: double.NegativeInfinity);
         foreach (var (name, value) in Steps(input))
         {
             var rem = Rem(value);
+            // Equal steps are legitimate: the one size grid gives Xs and Sm the same height in FluentUI2
+            // because its button ramp does. A step must never be SHORTER than the one before it.
             Assert.True(
-                rem > previous.Rem,
-                $"{theme}: field height {name} is {rem}rem, which is not more than {previous.Name} at " +
+                rem >= previous.Rem,
+                $"{theme}: field height {name} is {rem}rem, which is shorter than {previous.Name} at " +
                 $"{previous.Rem}rem. Nothing in the stylesheet relates the five steps, so an out-of-order " +
                 "ramp renders a larger size as a shorter field.");
             previous = (name, rem);

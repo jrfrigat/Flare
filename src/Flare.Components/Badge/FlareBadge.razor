@@ -42,16 +42,16 @@
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Indicator size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what
     /// a step measures.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
 
     protected override string ComponentCssClass => Css.Classes.Badge.Root;
 
     private string _sizeClass => Size switch
     {
-        FieldSize.Xs => Css.Classes.Badge.SizeXs,
-        FieldSize.Sm => Css.Classes.Badge.SizeSm,
-        FieldSize.Lg => Css.Classes.Badge.SizeLg,
-        FieldSize.Xl => Css.Classes.Badge.SizeXl,
+        FlareSize.Xs => Css.Classes.Badge.SizeXs,
+        FlareSize.Sm => Css.Classes.Badge.SizeSm,
+        FlareSize.Lg => Css.Classes.Badge.SizeLg,
+        FlareSize.Xl => Css.Classes.Badge.SizeXl,
         _ => Css.Classes.Badge.SizeMd,   // Md is the default and now names itself
     };
 

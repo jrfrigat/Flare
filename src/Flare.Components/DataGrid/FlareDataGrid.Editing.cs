@@ -155,7 +155,7 @@ public partial class FlareDataGrid<TItem>
                 builder.AddAttribute(1, "Items", DistinctValues(col.Key).ToList());
                 builder.AddAttribute(2, "Value", current);
                 builder.AddAttribute(3, "ValueChanged", EventCallback.Factory.Create<string?>(this, val => _editValues[key] = val ?? string.Empty));
-                builder.AddAttribute(4, "Size", FieldSize.Xs);
+                builder.AddAttribute(4, "Size", FlareSize.Xs);
                 builder.CloseComponent();
                 break;
             case ColumnDataType.Number: BuildEditInput(builder, key, "number"); break;
@@ -174,7 +174,7 @@ public partial class FlareDataGrid<TItem>
         builder.AddAttribute(2, "ValueChanged", EventCallback.Factory.Create<string?>(
             this, val => _editValues[key] = val ?? string.Empty));
         builder.AddAttribute(3, "Immediate", true);
-        builder.AddAttribute(4, "Size", FieldSize.Xs);
+        builder.AddAttribute(4, "Size", FlareSize.Xs);
         builder.AddAttribute(5, "Type", inputType);
         builder.CloseComponent();
     }
@@ -184,7 +184,7 @@ public partial class FlareDataGrid<TItem>
     {
         builder.OpenComponent<FlareButton>(seq);
         builder.AddAttribute(seq + 1, "Variant", ButtonVariant.Text);
-        builder.AddAttribute(seq + 2, "Size", ButtonSize.Xs);
+        builder.AddAttribute(seq + 2, "Size", FlareSize.Xs);
         builder.AddAttribute(seq + 3, "AriaLabel", ariaLabel);
         builder.AddAttribute(seq + 4, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, async _ => await onClick()));
         builder.AddAttribute(seq + 5, "ChildContent", (RenderFragment)(b =>

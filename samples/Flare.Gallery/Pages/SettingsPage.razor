@@ -70,7 +70,7 @@
                                 {
                                     var id = p.Id;
                                     var swatch = ThemeService.IsDark ? p.Dark.Primary : p.Light.Primary;
-                                    <FlareButton Size="ButtonSize.Sm"
+                                    <FlareButton Size="FlareSize.Sm"
                                                  Variant="@(ThemeService.CurrentPalette.Id == id ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                                                  OnClick="@(() => SetPaletteAsync(id))">
                                         <LeadingIcon>

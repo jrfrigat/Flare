@@ -11,7 +11,7 @@
         </div>
         @if (Compact)
         {
-            <FlareIconButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+            <FlareIconButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
                              Icon="FlareIcons.Close"
                              Tooltip="@Text["Shortcut_Clear"]"
                              AriaLabel="@Text["Shortcut_Clear"]"
@@ -20,11 +20,11 @@
         }
         else
         {
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value is null)"
+            <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" Disabled="@(Disabled || Value is null)"
                          OnClick="@(() => SetValueAsync(null))">@Text["Shortcut_Clear"]</FlareButton>
             @if (ShowReset)
             {
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" Disabled="@(Disabled || Value == DefaultValue)"
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" Disabled="@(Disabled || Value == DefaultValue)"
                              OnClick="@ResetAsync">@Text["Shortcut_Reset"]</FlareButton>
             }
         }

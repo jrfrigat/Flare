@@ -25,7 +25,7 @@ public class FlareAvatarTests : FlareTestContext
     public void SizeSmall_HasSmallClass()
     {
         var cut = Render<FlareAvatar>(p => p
-            .Add(x => x.Size, AvatarSize.Sm));
+            .Add(x => x.Size, FlareSize.Sm));
 
         Assert.Contains(Css.Classes.Avatar.SizeSm, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
@@ -34,7 +34,7 @@ public class FlareAvatarTests : FlareTestContext
     public void SizeLarge_HasLargeClass()
     {
         var cut = Render<FlareAvatar>(p => p
-            .Add(x => x.Size, AvatarSize.Lg));
+            .Add(x => x.Size, FlareSize.Lg));
 
         Assert.Contains(Css.Classes.Avatar.SizeLg, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }

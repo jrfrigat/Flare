@@ -116,15 +116,15 @@
                     }
                     if (item.IsCurrent)
                     {
-                        <FlareChip Label="@item.Name" Size="ChipSize.Sm" Color="FlareColor.Primary" Selected="true" />
+                        <FlareChip Label="@item.Name" Size="FlareSize.Sm" Color="FlareColor.Primary" Selected="true" />
                     }
                     else if (ComponentApiRegistry.IsDocumented(item.Name))
                     {
-                        <FlareChip Label="@item.Name" Size="ChipSize.Sm" OnClick="@(() => GoTo(item.Name))" />
+                        <FlareChip Label="@item.Name" Size="FlareSize.Sm" OnClick="@(() => GoTo(item.Name))" />
                     }
                     else
                     {
-                        <FlareChip Label="@item.Name" Size="ChipSize.Sm" />
+                        <FlareChip Label="@item.Name" Size="FlareSize.Sm" />
                     }
                 }
             </FlareStack>
@@ -137,7 +137,7 @@
                 <FlareStack Row Wrap="true" Gap="FlareSpacing.XSmall">
                     @foreach (var child in _info.DerivedBy)
                     {
-                        <FlareChip Label="@child" Size="ChipSize.Sm" OnClick="@(() => GoTo(child))" />
+                        <FlareChip Label="@child" Size="FlareSize.Sm" OnClick="@(() => GoTo(child))" />
                     }
                 </FlareStack>
             </FlareStack>
@@ -174,7 +174,7 @@ else if (_enum is not null)
                 <FlareStack Row Wrap="true" Gap="FlareSpacing.XSmall">
                     @foreach (var user in _enum.UsedBy)
                     {
-                        <FlareChip Label="@user" Size="ChipSize.Sm" OnClick="@(() => GoTo(user))" />
+                        <FlareChip Label="@user" Size="FlareSize.Sm" OnClick="@(() => GoTo(user))" />
                     }
                 </FlareStack>
             </FlareStack>

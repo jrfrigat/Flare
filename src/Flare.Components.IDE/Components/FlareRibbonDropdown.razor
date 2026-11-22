@@ -7,7 +7,7 @@
 <FlareTooltip Content="@Tooltip" Placement="@Placement.Bottom">
     <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="@Tooltip">
         <Activator>
-            <FlareButton Variant="@ButtonVariant.Text" Size="@(IsLarge ? ButtonSize.Lg : ButtonSize.Sm)"
+            <FlareButton Variant="@ButtonVariant.Text" Size="@(IsLarge ? FlareSize.Lg : FlareSize.Sm)"
                          Disabled="@Disabled" AriaLabel="@Tooltip"
                          @attributes="context.Attributes"
                          class="@(IsLarge ? $"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}" : Css.Classes.Ide.Ribbon.Button)">

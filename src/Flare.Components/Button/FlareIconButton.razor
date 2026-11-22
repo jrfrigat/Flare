@@ -46,7 +46,7 @@
     /// <summary>Visual style variant. Defaults to <see cref="ButtonVariant.Text"/> (a standard, chrome-less icon button).</summary>
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Text;
     /// <summary>Size of the button.</summary>
-    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Color of the button. Role -> shared class; custom -> inline tokens. Default keeps the theme default.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Optional foreground color for the filled variant when <see cref="Color"/> is a custom color.</summary>

@@ -9,10 +9,10 @@
         <FlareDataGridQuickFilter TItem="Person" Context="_ctx"
                                   Placeholder="@GalleryStrings.DataGrid_ExternalSearch" />
         <DataGridColumnPicker TItem="Person" Context="_ctx" />
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="ShowTopScores">
+        <FlareButton Variant="ButtonVariant.Outlined" Size="FlareSize.Sm" OnClick="ShowTopScores">
             @GalleryStrings.DataGrid_ExternalTopScores
         </FlareButton>
-        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _ctx.ResetAsync())">
+        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="@(() => _ctx.ResetAsync())">
             @GalleryStrings.DataGrid_ExternalReset
         </FlareButton>
     </FlareStack>
@@ -29,7 +29,7 @@
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center"
                 Justify="FlareJustifyContent.SpaceBetween">
         <DataGridStateBadge TItem="Person" Context="_ctx" />
-        <FlareDataGridPager TItem="Person" Context="_ctx" Size="PaginationSize.Sm" />
+        <FlareDataGridPager TItem="Person" Context="_ctx" Size="FlareSize.Sm" />
     </FlareStack>
 </FlareStack>
 

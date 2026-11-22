@@ -8,7 +8,7 @@
         <ChildContent>
             <FlareStack Gap="FlareSpacing.Small" Padding="FlareSpacing.Custom" PaddingValue="1rem" MinWidth="16rem">
                 <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
-                    <FlareAvatar Text="Alice Johnson" Size="AvatarSize.Lg" />
+                    <FlareAvatar Text="Alice Johnson" Size="FlareSize.Lg" />
                     <FlareStack Gap="FlareSpacing.None">
                         <FlareText Typo="TypographyScale.TitleSmall">Alice Johnson</FlareText>
                         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Popover_UserRole</FlareText>
@@ -48,8 +48,8 @@
                 <FlareText Typo="TypographyScale.TitleSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">@GalleryStrings.Popover_ConfirmTitle</FlareText>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">@GalleryStrings.Popover_ConfirmBody</FlareText>
                 <FlareStack Gap="FlareSpacing.XSmall" Justify="FlareJustifyContent.End">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _popConfirm = false)">@GalleryStrings.Popover_Cancel</FlareButton>
-                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm"
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="@(() => _popConfirm = false)">@GalleryStrings.Popover_Cancel</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm"
                                  OnClick="@(() => { _popConfirm = false; Snackbar.Show(GalleryStrings.Popover_Deleted, SnackbarSeverity.Error); })">
                         @GalleryStrings.Popover_Delete
                     </FlareButton>

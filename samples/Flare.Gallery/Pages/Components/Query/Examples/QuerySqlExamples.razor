@@ -9,7 +9,7 @@
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareText Element="span" Inherit>@GalleryStrings.Query_Dialect</FlareText>
         <FlareStack Width="12rem">
-            <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Dialects"
+            <FlareSelect TValue="string" Size="FlareSize.Xs" Items="Dialects"
                          Value="@_dialect" ValueChanged="@(value => _dialect = value ?? "SQL Server")" />
         </FlareStack>
     </FlareStack>

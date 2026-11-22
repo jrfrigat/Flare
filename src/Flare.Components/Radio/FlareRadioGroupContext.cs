@@ -5,5 +5,5 @@ internal sealed record FlareRadioGroupContext(
     bool GroupDisabled,
     Func<object?, Task> Select,
     string GroupName,
-    FieldSize GroupSize,
+    FlareSize GroupSize,
     string? ErrorId);

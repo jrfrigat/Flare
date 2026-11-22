@@ -7,7 +7,7 @@
 
     @* A player seek bar out of the plain slider: the buffered band is a zone, the wheel seeks, and
        the handle stays out of the way until you reach for it. *@
-    <FlareSlider @bind-Value="_played" Min="0" Max="100" Size="TrackSize.Xs"
+    <FlareSlider @bind-Value="_played" Min="0" Max="100" Size="FlareSize.Xs"
                  HandleOnHover MouseWheel AriaLabel="@GalleryStrings.Slider_Scrubber">
         <Zones>
             <FlareZone Start="0" End="@_buffered" Color="FlareColor.OnSurfaceVariant" />

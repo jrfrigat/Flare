@@ -21,7 +21,7 @@ public sealed class FlareProgressGeometryTests : FlareTestContext
         Assert.Single(module.Invocations["observe"]);
 
         // Re-rendering keeps the one observer rather than stacking another on every update.
-        ring.Render(p => p.Add(x => x.Value, 75d).Add(x => x.Size, TrackSize.Xl));
+        ring.Render(p => p.Add(x => x.Value, 75d).Add(x => x.Size, FlareSize.Xl));
         Assert.Single(module.Invocations["observe"]);
         Assert.Equal("75", ring.Find("svg").GetAttribute("data-value"));
     }

@@ -57,7 +57,7 @@
     /// capsule, which is Material's "round to square, or square to round".</summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
     /// <summary>Size of the toggle button. Overridden by the parent <c>FlareToggleGroup.Size</c> when that is set.</summary>
-    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Color tinting the selected state. Role -> shared color class; custom -> inline tokens.
     /// Overridden by the parent <c>FlareToggleGroup.Color</c> when that is set.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
@@ -146,7 +146,7 @@
     // A segmented FlareToggleGroup overrides its items' size and colour; a FlareButtonGroup's cascade is
     // read by the FlareButton below and is not resolved twice here, so the two group kinds cannot end up
     // disagreeing about which one wins.
-    private ButtonSize _effectiveSize => Group?.Size ?? Size;
+    private FlareSize _effectiveSize => Group?.Size ?? Size;
     private FlareColor _effectiveColor => Group?.Color ?? Color;
     private bool _effectiveDisabled => Disabled || (Group?.Disabled ?? false);
 

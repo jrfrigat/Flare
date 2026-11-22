@@ -14,9 +14,9 @@
     </FlareStack>
 
     <FlareStack Row Wrap Gap="FlareSpacing.Small">
-        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+        <FlareButton Size="FlareSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="@(() => _used = Math.Max(0, _used - 10))">Free up</FlareButton>
-        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+        <FlareButton Size="FlareSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="@(() => _used = Math.Min(100, _used + 10))">Fill up</FlareButton>
     </FlareStack>
 </FlareStack>

@@ -7,7 +7,7 @@
             @foreach (var p in _placements)
             {
                 <FlareButton Variant="@(p == _placement ? ButtonVariant.Filled : ButtonVariant.Outlined)"
-                             Size="ButtonSize.Sm" OnClick="@(() => _placement = p)">@p</FlareButton>
+                             Size="FlareSize.Sm" OnClick="@(() => _placement = p)">@p</FlareButton>
             }
         </FlareStack>
     </FlareStack>
@@ -17,7 +17,7 @@
             @foreach (var r in _rotations)
             {
                 <FlareButton Variant="@(r == _rotation ? ButtonVariant.Filled : ButtonVariant.Outlined)"
-                             Size="ButtonSize.Sm" OnClick="@(() => _rotation = r)">@_rotLabel(r)</FlareButton>
+                             Size="FlareSize.Sm" OnClick="@(() => _rotation = r)">@_rotLabel(r)</FlareButton>
             }
         </FlareStack>
     </FlareStack>

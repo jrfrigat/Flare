@@ -66,7 +66,7 @@ public class FlareButtonGroupTests : FlareTestContext
         // GREW the neighbours it was supposed to shrink.
         var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Variant, ButtonVariant.Outlined)
-            .Add(x => x.Size, ButtonSize.Lg)
+            .Add(x => x.Size, FlareSize.Lg)
             .Add(x => x.Toggled, true)
             .AddChildContent("Bold"));
 
@@ -224,7 +224,7 @@ public class FlareButtonGroupTests : FlareTestContext
     public void CascadesSizeAndVariantToChildButtons()
     {
         var cut = Render<FlareButtonGroup>(p => p
-            .Add(x => x.Size, ButtonSize.Lg)
+            .Add(x => x.Size, FlareSize.Lg)
             .Add(x => x.Variant, ButtonVariant.Tonal)
             .AddChildContent(b =>
             {

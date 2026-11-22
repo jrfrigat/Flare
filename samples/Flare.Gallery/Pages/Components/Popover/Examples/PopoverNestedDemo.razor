@@ -11,7 +11,7 @@
             <FlareText Typo="TypographyScale.BodySmall">@GalleryStrings.Popover_NestedBody</FlareText>
             <FlarePopover @bind-Open="_options" Placement="Placement.RightStart" Arrow="true">
                 <AnchorContent>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _options = !_options)">@GalleryStrings.Popover_NestedOptions</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" OnClick="@(() => _options = !_options)">@GalleryStrings.Popover_NestedOptions</FlareButton>
                 </AnchorContent>
                 <ChildContent>
                     <FlareText Typo="TypographyScale.BodySmall" Padding="FlareSpacing.Custom" PaddingValue="0.75rem 1rem" MaxWidth="14rem">

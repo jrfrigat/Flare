@@ -71,7 +71,7 @@
     /// <summary>Semantic color applied to the filled stars.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Star size (Xs..Xl). Medium is the default 1.5rem glyph.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Custom template for each star icon. Receives true when the star is filled.</summary>
     [Parameter] public RenderFragment<bool>? StarTemplate { get; set; }
 
@@ -90,10 +90,10 @@
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string _sizeClass => Size switch
     {
-        FieldSize.Xs => Css.Classes.Rating.SizeXs,
-        FieldSize.Sm => Css.Classes.Rating.SizeSm,
-        FieldSize.Lg => Css.Classes.Rating.SizeLg,
-        FieldSize.Xl => Css.Classes.Rating.SizeXl,
+        FlareSize.Xs => Css.Classes.Rating.SizeXs,
+        FlareSize.Sm => Css.Classes.Rating.SizeSm,
+        FlareSize.Lg => Css.Classes.Rating.SizeLg,
+        FlareSize.Xl => Css.Classes.Rating.SizeXl,
         _ => Css.Classes.Rating.SizeMd,   // Md is the default and now names itself
     };
     private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;

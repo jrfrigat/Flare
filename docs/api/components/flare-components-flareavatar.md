@@ -14,7 +14,7 @@
 | `FallbackIcon` | `FlareIcon` | `` | Parameter |  | Icon shown when the avatar has no image and no text - any provider. Defaults to the built-in person icon. Ignored when FallbackContent is set. |
 | `Group` | `FlareAvatarGroup?` | `` | Cascading |  | Parent avatar group that manages max-visible and overflow counting. |
 | `Shape` | `AvatarShape` | `AvatarShape.Circle` | Parameter |  | Shape of the avatar: Circle, Square, or Rounded. |
-| `Size` | `AvatarSize` | `AvatarSize.Md` | Parameter |  | Size variant controlling the avatar dimensions. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size variant controlling the avatar dimensions. |
 | `Src` | `string?` | `` | Parameter |  | URL of the image displayed as the avatar. |
 | `Text` | `string?` | `` | Parameter |  | Name or initials text used when no image is provided. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

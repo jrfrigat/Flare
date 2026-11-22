@@ -1,18 +1,19 @@
 namespace Flare.Components;
 
-/// <summary>Size of <c>FlareSwitch</c> on the shared Xs..Xl scale; medium is the default. The steps are
-/// labels, not measurements - each theme maps them onto its own track and thumb tokens, and they differ:
-/// one theme's medium switch is not another's.</summary>
-public enum SwitchSize
+/// <summary>
+/// Source-compatible alias for <see cref="FlareSize"/>: <c>SwitchSize.Xs</c> resolves to the same
+/// value, so existing markup keeps compiling. New code uses <see cref="FlareSize"/> directly.
+/// </summary>
+public static class SwitchSize
 {
-    /// <summary>Extra small.</summary>
-    Xs,
-    /// <summary>Small (compact) switch.</summary>
-    Sm,
-    /// <summary>Medium - the default.</summary>
-    Md,
-    /// <summary>Large.</summary>
-    Lg,
-    /// <summary>Extra large.</summary>
-    Xl,
+    /// <summary>Extra small - <see cref="FlareSize.Xs"/>.</summary>
+    public const FlareSize Xs = FlareSize.Xs;
+    /// <summary>Small - <see cref="FlareSize.Sm"/>.</summary>
+    public const FlareSize Sm = FlareSize.Sm;
+    /// <summary>Medium - <see cref="FlareSize.Md"/>.</summary>
+    public const FlareSize Md = FlareSize.Md;
+    /// <summary>Large - <see cref="FlareSize.Lg"/>.</summary>
+    public const FlareSize Lg = FlareSize.Lg;
+    /// <summary>Extra large - <see cref="FlareSize.Xl"/>.</summary>
+    public const FlareSize Xl = FlareSize.Xl;
 }

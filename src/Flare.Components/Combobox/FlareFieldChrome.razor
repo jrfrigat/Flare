@@ -52,7 +52,7 @@
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
 
     /// <summary>Control size (Xs..Xl), emitted as the shared size modifier class.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
 
     /// <summary>Invalid/error state; emits the shared <c>flare-input--error</c> modifier.</summary>
     [Parameter] public bool Invalid { get; set; }
@@ -132,10 +132,10 @@
 
     private string? SizeClass() => Size switch
     {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        FlareSize.Xs => Css.Classes.Input.SizeXs,
+        FlareSize.Sm => Css.Classes.Input.SizeSm,
+        FlareSize.Lg => Css.Classes.Input.SizeLg,
+        FlareSize.Xl => Css.Classes.Input.SizeXl,
         _ => Css.Classes.Input.SizeMd,   // Md is the default and now names itself
     };
 

@@ -5,7 +5,7 @@
    content; the back arrow raises OpenChanged(false). The overlay fills the nearest positioned box. *@
 <FlareCard Variant="CardVariant.Outlined" Height="340px" Padding="FlareSpacing.None">
     <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Padding="FlareSpacing.Small">
-        <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="@(() => _open = true)">
+        <FlareButton Variant="ButtonVariant.Tonal" Size="FlareSize.Sm" OnClick="@(() => _open = true)">
             <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FolderOpen" /></LeadingIcon>
             <ChildContent>File</ChildContent>
         </FlareButton>

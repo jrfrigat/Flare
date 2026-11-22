@@ -18,7 +18,7 @@
 | `LoadingText` | `RenderFragment?` | `` | Parameter |  | Label shown while Loading. Null keeps the normal label. |
 | `OnColor` | `string?` | `` | Parameter |  | Optional foreground color for the filled variant when Color is a custom color. |
 | `Shape` | `ButtonShape` | `ButtonShape.Default` | Parameter |  | Corner shape of the button. |
-| `Size` | `ButtonSize` | `ButtonSize.Md` | Parameter |  | Size scale, exactly as on FlareButton - so an upload button lines up with the buttons beside it in a toolbar. Default medium. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size scale, exactly as on FlareButton - so an upload button lines up with the buttons beside it in a toolbar. Default medium. |
 | `Text` | `string?` | `` | Parameter |  | Button label. Defaults to the localized "choose file" text; ChildContent overrides it. |
 | `TrailingIcon` | `RenderFragment?` | `` | Parameter |  | Icon after the label. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional label type-scale override, as on FlareButton. Null keeps the size-based typography. |

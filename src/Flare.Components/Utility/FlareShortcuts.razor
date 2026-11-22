@@ -13,7 +13,7 @@
         <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(CoreText["Shortcuts_Title"])" @onclick:stopPropagation="true">
             <div class="@Css.Classes.Shortcuts.HelpHeader">
                 <span class="@Css.Classes.Shortcuts.HelpTitle">@(CoreText["Shortcuts_Title"])</span>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="@(CoreText["Dialog_Close"])" OnClick="ToggleHelp">
+                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Sm" AriaLabel="@(CoreText["Dialog_Close"])" OnClick="ToggleHelp">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Close" /></LeadingIcon>
                 </FlareButton>
             </div>

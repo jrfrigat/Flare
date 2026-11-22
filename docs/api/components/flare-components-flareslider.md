@@ -31,7 +31,7 @@
 | `RangeEndLabel` | `string?` | `` | Parameter |  | Accessible name of the upper range handle; defaults to the localized "maximum". Ignored in single mode. |
 | `RangeStartLabel` | `string?` | `` | Parameter |  | Accessible name of the lower range handle; defaults to the localized "minimum". Ignored in single mode. |
 | `ShowValue` | `bool` | `true` | Parameter |  | Shows the current value (or low-high range) next to the label when true. |
-| `Size` | `TrackSize` | `TrackSize.Xs` | Parameter |  | Size variant (XSmall-XLarge). Controls track thickness and handle height. |
+| `Size` | `FlareSize` | `FlareSize.Xs` | Parameter |  | Size variant (XSmall-XLarge). Controls track thickness and handle height. |
 | `StartIcon` | `FlareIcon?` | `` | Parameter |  | Icon shown before the track - any provider (a bare string is a Material Symbols name). |
 | `Step` | `double` | `1` | Parameter |  | Increment step between slider positions. Defaults to 1; any positive decimal step is allowed. |
 | `Stepper` | `bool` | `false` | Parameter |  | Shows step (stop) indicators along the track at each Step position. |

@@ -51,12 +51,12 @@
 
     private bool _disabled => Disabled || (GroupContext?.GroupDisabled ?? false);
 
-    private string _sizeClass => (GroupContext?.GroupSize ?? FieldSize.Md) switch
+    private string _sizeClass => (GroupContext?.GroupSize ?? FlareSize.Md) switch
     {
-        FieldSize.Xs => Css.Classes.Radio.SizeXs,
-        FieldSize.Sm => Css.Classes.Radio.SizeSm,
-        FieldSize.Lg => Css.Classes.Radio.SizeLg,
-        FieldSize.Xl => Css.Classes.Radio.SizeXl,
+        FlareSize.Xs => Css.Classes.Radio.SizeXs,
+        FlareSize.Sm => Css.Classes.Radio.SizeSm,
+        FlareSize.Lg => Css.Classes.Radio.SizeLg,
+        FlareSize.Xl => Css.Classes.Radio.SizeXl,
         _ => Css.Classes.Radio.SizeMd,   // Md is the default and now names itself
     };
 

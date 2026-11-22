@@ -39,19 +39,19 @@
 
     <!-- Controls -->
     <div class="@Css.Classes.Transfer.Controls">
-        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+        <FlareButton Size="FlareSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToTarget"
                      Disabled="@(_srcSelected.Count == 0)"
                      aria-label="@(CoreText["Transfer_MoveToTarget"].Value)">›</FlareButton>
-        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+        <FlareButton Size="FlareSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveAllToTarget"
                      Disabled="@(_source.Count == 0)"
                      aria-label="@(CoreText["Transfer_MoveAllToTarget"].Value)">»</FlareButton>
-        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+        <FlareButton Size="FlareSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToSource"
                      Disabled="@(_tgtSelected.Count == 0)"
                      aria-label="@(CoreText["Transfer_MoveToSource"].Value)">‹</FlareButton>
-        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+        <FlareButton Size="FlareSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveAllToSource"
                      Disabled="@(_target.Count == 0)"
                      aria-label="@(CoreText["Transfer_MoveAllToSource"].Value)">«</FlareButton>

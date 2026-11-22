@@ -17,11 +17,11 @@ public abstract class FlareProgressBase : FlareComponentBase
     [Parameter] public double? Value { get; set; }
 
     /// <summary>
-    /// Size step on the shared <see cref="TrackSize"/> scale, the same one <see cref="FlareSlider"/>
+    /// Size step on the shared <see cref="FlareSize"/> scale, the same one <see cref="FlareSlider"/>
     /// and <see cref="FlareMeter"/> use. It selects which per-size theme token the CSS reads and
     /// carries no geometry of its own, so the theme owns what each step is worth.
     /// </summary>
-    [Parameter] public TrackSize Size { get; set; } = TrackSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
 
     /// <summary>Semantic color applied to the progress indicator.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
@@ -54,10 +54,10 @@ public abstract class FlareProgressBase : FlareComponentBase
     /// <summary>The size class only selects a theme token; it carries no measurement itself.</summary>
     private protected string SizeClass => Size switch
     {
-        TrackSize.Sm => Css.Classes.Progress.SizeSm,
-        TrackSize.Md => Css.Classes.Progress.SizeMd,
-        TrackSize.Lg => Css.Classes.Progress.SizeLg,
-        TrackSize.Xl => Css.Classes.Progress.SizeXl,
+        FlareSize.Sm => Css.Classes.Progress.SizeSm,
+        FlareSize.Md => Css.Classes.Progress.SizeMd,
+        FlareSize.Lg => Css.Classes.Progress.SizeLg,
+        FlareSize.Xl => Css.Classes.Progress.SizeXl,
         _ => Css.Classes.Progress.SizeXs,
     };
 }

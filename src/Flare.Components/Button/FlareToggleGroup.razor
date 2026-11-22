@@ -40,7 +40,7 @@
     /// <summary>"horizontal" (default) or "vertical".</summary>
     [Parameter] public string Orientation { get; set; } = "horizontal";
     /// <summary>Size cascaded to every child <c>FlareToggleButton</c>. When null (default) each button keeps its own <c>Size</c>.</summary>
-    [Parameter] public ButtonSize? Size { get; set; }
+    [Parameter] public FlareSize? Size { get; set; }
     /// <summary>Color cascaded to every child <c>FlareToggleButton</c> (tints the selected state). When null (default) each button keeps its own <c>Color</c>.</summary>
     [Parameter] public FlareColor? Color { get; set; }
     /// <summary>When true, disables every child <c>FlareToggleButton</c> in the group.</summary>
@@ -99,7 +99,7 @@
     private HashSet<object?> _selected = new();
     private FlareToggleGroupContext _context = null!;
     // Tracks the last cascaded settings so the context is rebuilt when they change (not only on selection change).
-    private (ButtonSize? Size, FlareColor? Color, bool Disabled, bool CheckMark) _lastCascade;
+    private (FlareSize? Size, FlareColor? Color, bool Disabled, bool CheckMark) _lastCascade;
 
     // Closed-generic statics: the answer is fixed by TValue, so it is computed once per instantiation.
     private static readonly bool LacksEmptyValue =

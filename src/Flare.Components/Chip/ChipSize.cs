@@ -1,16 +1,19 @@
 namespace Flare.Components;
 
-/// <summary>Size of <c>FlareChip</c> (shared Xs..Xl scale; Md is the default).</summary>
-public enum ChipSize
+/// <summary>
+/// Source-compatible alias for <see cref="FlareSize"/>: <c>ChipSize.Xs</c> resolves to the same
+/// value, so existing markup keeps compiling. New code uses <see cref="FlareSize"/> directly.
+/// </summary>
+public static class ChipSize
 {
-    /// <summary>Extra small.</summary>
-    Xs,
-    /// <summary>Small (compact).</summary>
-    Sm,
-    /// <summary>Medium - default chip size.</summary>
-    Md,
-    /// <summary>Large.</summary>
-    Lg,
-    /// <summary>Extra large.</summary>
-    Xl,
+    /// <summary>Extra small - <see cref="FlareSize.Xs"/>.</summary>
+    public const FlareSize Xs = FlareSize.Xs;
+    /// <summary>Small - <see cref="FlareSize.Sm"/>.</summary>
+    public const FlareSize Sm = FlareSize.Sm;
+    /// <summary>Medium - <see cref="FlareSize.Md"/>.</summary>
+    public const FlareSize Md = FlareSize.Md;
+    /// <summary>Large - <see cref="FlareSize.Lg"/>.</summary>
+    public const FlareSize Lg = FlareSize.Lg;
+    /// <summary>Extra large - <see cref="FlareSize.Xl"/>.</summary>
+    public const FlareSize Xl = FlareSize.Xl;
 }

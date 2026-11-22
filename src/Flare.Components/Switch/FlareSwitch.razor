@@ -60,7 +60,7 @@
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Switch size (Xs..Xl) on the shared scale; <c>Md</c> is the default. Each theme decides what
     /// a step measures.</summary>
-    [Parameter] public SwitchSize Size { get; set; } = SwitchSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Label position relative to the switch (End = after, Start = before). Default End.</summary>
     [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;
     /// <summary>Icon shown on the handle when the switch is ON (e.g. a check mark).</summary>
@@ -85,10 +85,10 @@
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string _sizeClass => Size switch
     {
-        SwitchSize.Xs => Css.Classes.Switch.SizeXs,
-        SwitchSize.Sm => Css.Classes.Switch.SizeSm,
-        SwitchSize.Lg => Css.Classes.Switch.SizeLg,
-        SwitchSize.Xl => Css.Classes.Switch.SizeXl,
+        FlareSize.Xs => Css.Classes.Switch.SizeXs,
+        FlareSize.Sm => Css.Classes.Switch.SizeSm,
+        FlareSize.Lg => Css.Classes.Switch.SizeLg,
+        FlareSize.Xl => Css.Classes.Switch.SizeXl,
         _             => Css.Classes.Switch.SizeMd,   // Md is the default and now names itself
     };
     private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.Switch.LabelStart : string.Empty;

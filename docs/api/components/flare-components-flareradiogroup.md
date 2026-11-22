@@ -16,7 +16,7 @@
 | `Inline` | `bool` | `false` | Parameter |  | Arranges radio buttons horizontally when true. |
 | `Label` | `string?` | `` | Parameter |  | Legend label shown above the group. |
 | `LabelPlacement` | `LabelPlacement` | `LabelPlacement.End` | Parameter |  | Label position relative to each radio (End = after, Start = before). Default End. |
-| `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl) applied to every radio in the group. Medium is the default. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Control size (Xs..Xl) applied to every radio in the group. Medium is the default. |
 | `Value` | `TValue?` | `` | Parameter |  | Currently selected value in the group. |
 | `ValueChanged` | `EventCallback<TValue?>` | `` | Callback |  | Callback invoked when the selected value changes. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

@@ -96,7 +96,7 @@
     /// <summary>Accessible label for the pagination nav element.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Size of the pagination controls.</summary>
-    [Parameter] public PaginationSize Size { get; set; } = PaginationSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Semantic color applied to the active page button.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Page-size options shown in a rows-per-page selector. When null/empty the selector is hidden.</summary>
@@ -120,10 +120,10 @@
 
     private string _sizeClass => Size switch
     {
-        PaginationSize.Xs => Css.Classes.Pagination.SizeXs,
-        PaginationSize.Sm => Css.Classes.Pagination.SizeSm,
-        PaginationSize.Lg => Css.Classes.Pagination.SizeLg,
-        PaginationSize.Xl => Css.Classes.Pagination.SizeXl,
+        FlareSize.Xs => Css.Classes.Pagination.SizeXs,
+        FlareSize.Sm => Css.Classes.Pagination.SizeSm,
+        FlareSize.Lg => Css.Classes.Pagination.SizeLg,
+        FlareSize.Xl => Css.Classes.Pagination.SizeXl,
         _                 => Css.Classes.Pagination.SizeMd,   // Md is the default and now names itself
     };
 

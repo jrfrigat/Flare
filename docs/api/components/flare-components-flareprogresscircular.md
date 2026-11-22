@@ -15,7 +15,7 @@ The ring is the half of progress that needs measuring: its radius is the box les
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Color` | `FlareColor` | `` | Parameter |  | Semantic color applied to the progress indicator. Inherited from `FlareProgressBase`. |
-| `Size` | `TrackSize` | `TrackSize.Md` | Parameter |  | Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth. Inherited from `FlareProgressBase`. |
+| `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size step on the shared FlareSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth. Inherited from `FlareProgressBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Value` | `double?` | `` | Parameter |  | Percentage value (0-100); null for indeterminate mode. A non-finite value (NaN, positive or negative infinity) is treated as not given, so ARIA and the geometry agree on an indeterminate indicator instead of emitting NaN. Inherited from `FlareProgressBase`. |
 

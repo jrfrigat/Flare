@@ -40,7 +40,7 @@
     /// <summary>Background color of the avatar. Role -> shared class (tonal); custom -> inline tokens. Default = a stable color picked from the text.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Size variant controlling the avatar dimensions.</summary>
-    [Parameter] public AvatarSize Size { get; set; } = AvatarSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Shape of the avatar: Circle, Square, or Rounded.</summary>
     [Parameter] public AvatarShape Shape { get; set; } = AvatarShape.Circle;
     /// <summary>Icon shown when the avatar has no image and no text - any provider. Defaults to the
@@ -95,12 +95,12 @@
 
     // Shared with FlareAvatarGroup, whose overflow bubble is the same circle at the same size. It used
     // to build the name from a suffix, which is a name Flare.CssAudit cannot read.
-    internal static string SizeClass(AvatarSize size) => size switch
+    internal static string SizeClass(FlareSize size) => size switch
     {
-        AvatarSize.Xs => Css.Classes.Avatar.SizeXs,
-        AvatarSize.Sm => Css.Classes.Avatar.SizeSm,
-        AvatarSize.Lg => Css.Classes.Avatar.SizeLg,
-        AvatarSize.Xl => Css.Classes.Avatar.SizeXl,
+        FlareSize.Xs => Css.Classes.Avatar.SizeXs,
+        FlareSize.Sm => Css.Classes.Avatar.SizeSm,
+        FlareSize.Lg => Css.Classes.Avatar.SizeLg,
+        FlareSize.Xl => Css.Classes.Avatar.SizeXl,
         _             => Css.Classes.Avatar.SizeMd
     };
 

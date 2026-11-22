@@ -6,7 +6,7 @@ namespace Flare.Guards.Tests;
 /// The core's public docs may not quote a design system's measurements. This is the same rule
 /// <see cref="TokenDocLiteralTests"/> enforces on the token records, applied where it was still missing: the
 /// components' own <c>[Parameter]</c> and enum docs. A size step is a LABEL - each theme maps it onto its own
-/// tokens - so a doc that pins a number to it is unowned prose, and it drifts. It had: <c>SwitchSize.Md</c>
+/// tokens - so a doc that pins a number to it is unowned prose, and it drifts. It had: <c>FlareSize.Md</c>
 /// was documented as the "52x32dp" switch, which is Material Design 3's value; FluentUI2 draws it 40x20, so
 /// the doc was already wrong for a shipped theme. <c>FabSize</c> promised a "40dp / 56dp / 96dp container"
 /// for a component that has no size token at all - its size comes from padding around the glyph.

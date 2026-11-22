@@ -28,7 +28,7 @@
                     var cell = $"{col}{row}";
                     var selected = cell == _cellRef;
                     <FlareButton Variant="@(selected ? ButtonVariant.Filled : ButtonVariant.Text)"
-                                 Size="ButtonSize.Sm" FullWidth="true"
+                                 Size="FlareSize.Sm" FullWidth="true"
                                  OnClick="@(() => Select(cell))">@_cells.GetValueOrDefault(cell, "")</FlareButton>
                 }
             }

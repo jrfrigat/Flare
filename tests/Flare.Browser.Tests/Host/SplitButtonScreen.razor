@@ -23,8 +23,8 @@
 </FlareThemeProvider>
 
 @code {
-    private static readonly ButtonSize[] _sizes =
-        [ButtonSize.Xs, ButtonSize.Sm, ButtonSize.Md, ButtonSize.Lg, ButtonSize.Xl];
+    private static readonly FlareSize[] _sizes =
+        [FlareSize.Xs, FlareSize.Sm, FlareSize.Md, FlareSize.Lg, FlareSize.Xl];
 
     private Task EnableRtl() => ThemeService.SetRtlAsync(true);
     private Task EnableLtr() => ThemeService.SetRtlAsync(false);

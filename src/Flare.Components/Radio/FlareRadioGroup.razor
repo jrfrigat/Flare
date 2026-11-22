@@ -40,7 +40,7 @@
     /// <summary>Disables all radio buttons in the group.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Control size (Xs..Xl) applied to every radio in the group. Medium is the default.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TValue>>? For { get; set; }
 

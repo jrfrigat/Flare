@@ -6,10 +6,10 @@ using Flare.Theme.MaterialDesign3.Tokens;
 namespace Flare.Core.Tests;
 
 /// <summary>
-/// The Xs..Xl field ramp is five independent padding tokens, one per size, and the block half of each
-/// sets the field height. Nothing in the stylesheet relates them, so a theme can hand out a Large step
-/// shorter than its Medium one - which is exactly what happened while four of the five lived as
-/// literals in core CSS and only Medium came from the theme.
+/// The Xs..Xl field ramp is five independent padding tokens, one per size. The heights are the ramp
+/// (guarded separately); block padding places the step's line box inside that definite height, so it
+/// may shrink when a larger step brings a larger line - but it must never become negative, and the
+/// shorthand must keep both halves readable.
 /// </summary>
 public class FieldSizeRampTests
 {
@@ -21,7 +21,7 @@ public class FieldSizeRampTests
 
     [Theory]
     [MemberData(nameof(Themes))]
-    public void Field_block_padding_grows_from_xs_to_xl(string theme, InputTokens input)
+    public void Field_block_padding_is_never_negative(string theme, InputTokens input)
     {
         var steps = new (string Name, string Value)[]
         {
@@ -32,16 +32,13 @@ public class FieldSizeRampTests
             ("Xl", input.PaddingXl),
         };
 
-        var previous = (Name: string.Empty, Rem: double.NegativeInfinity);
         foreach (var (name, value) in steps)
         {
             var rem = BlockRem(value);
             Assert.True(
-                rem > previous.Rem,
-                $"{theme}: field size {name} has {rem}rem of block padding, which is not more than " +
-                $"{previous.Name} at {previous.Rem}rem. The ramp must grow, or a larger size renders " +
-                "a shorter field.");
-            previous = (name, rem);
+                rem >= 0,
+                $"{theme}: field size {name} has {rem}rem of block padding. Padding cannot be negative " +
+                "and must leave the fixed height for the line box.");
         }
     }
 

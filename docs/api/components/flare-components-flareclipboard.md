@@ -16,7 +16,7 @@
 | `Loading` | `bool` | `false` | Parameter |  | Shows a busy state and blocks copying - for a caller that is still producing Text (fetching the secret, rendering the snippet). |
 | `OnCopied` | `EventCallback` | `` | Callback |  | Raised after the text is copied. |
 | `ShowFeedback` | `bool` | `true` | Parameter |  | Shows the brief copied confirmation (icon/text swap) after copying. Default true. |
-| `Size` | `ButtonSize` | `ButtonSize.Sm` | Parameter |  | Button size of the copy control. Default Sm. |
+| `Size` | `FlareSize` | `FlareSize.Sm` | Parameter |  | Button size of the copy control. Default Sm. |
 | `Text` | `string` | `""` | Parameter | Yes | Text copied to the clipboard when the control is activated. |
 | `Variant` | `ButtonVariant` | `ButtonVariant.Outlined` | Parameter |  | Button variant of the copy control. Default Outlined. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
