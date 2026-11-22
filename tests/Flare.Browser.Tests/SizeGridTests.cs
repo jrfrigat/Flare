@@ -10,15 +10,18 @@ namespace Flare.Browser.Tests;
 /// </summary>
 public sealed class SizeGridTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
-    [Fact]
-    public async Task FluentFieldsMatchButtonsStepForStep()
+    [Theory]
+    [InlineData("fluent2", 24, 24, 32, 40, 48)]
+    [InlineData("md3", 32, 36, 40, 48, 56)]
+    [InlineData("md3e", 32, 40, 56, 96, 136)]
+    public async Task FieldsMatchButtonsStepForStep(string theme, int xs, int sm, int md, int lg, int xl)
     {
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/size-grid");
-        await Expect(page.Locator("#size-grid-fluent2")).ToBeVisibleAsync();
+        await Expect(page.Locator($"#size-grid-{theme}")).ToBeVisibleAsync();
 
-        await AssertGridAsync(page, "fluent2", [24, 24, 32, 40, 48]);
+        await AssertGridAsync(page, theme, [xs, sm, md, lg, xl]);
     }
 
     private static async Task AssertGridAsync(IPage page, string theme, int[] expected)

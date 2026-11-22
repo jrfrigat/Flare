@@ -58,6 +58,10 @@ This package is M3 as specified before the Expressive update, and the difference
 
 - **One button size.** Material's own M3-vs-Expressive table lists a single 40dp button; the XS/M/L/XL
   ramp arrives with Expressive. Flare's `Size` still works here - the steps are simply gentler.
+- **Fields share the button grid.** By Flare decision (2026-11-22) every full-scale control uses one
+  Xs..Xl height ladder: fields are 32/36/40/48/56, exactly the button heights, so a button and a field
+  at the same `Size` match. Material's field spec is one 56dp field, so this is a deliberate Flare
+  deviation rather than a spec value.
 - **No shape morph.** A pressed button does not square off and a selected toggle does not swap shape.
 - **No wavy progress** and no spring motion.
 

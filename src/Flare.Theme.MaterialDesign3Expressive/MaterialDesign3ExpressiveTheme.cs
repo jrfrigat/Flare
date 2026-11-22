@@ -116,6 +116,22 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             FilledUnselectedBg = "var(--flare-color-surface-container)",
             FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
         },
+        // The field family follows the Expressive button ramp step for step (owner decision 2026-11-22):
+        // 32/40/56/96/136. The Material spec defines one 56dp field; the larger steps are Flare's
+        // deliberate alignment with the buttons and are recorded in the README.
+        Input = MaterialDesign3Tokens.Design.Input with
+        {
+            HeightXs = "2rem",    // 32dp
+            HeightSm = "2.5rem",  // 40dp
+            HeightMd = "3.5rem",  // 56dp
+            HeightLg = "6rem",    // 96dp
+            HeightXl = "8.5rem",  // 136dp
+            PaddingXs = "0.4375rem 0.75rem",
+            PaddingSm = "0.5625rem 1rem",
+            PaddingMd = "0.9375rem 1.5rem",
+            PaddingLg = "2.1875rem 3rem",
+            PaddingXl = "3.3125rem 4rem",
+        },
         // Expressive menus: a 16dp panel with rounded items, and group sections drawn as "islands" -
         // each its own rounded, elevated surface on a transparent backing panel, so adjacent sections
         // read as two cards. Baseline M3 is one classic 4dp panel with square items.

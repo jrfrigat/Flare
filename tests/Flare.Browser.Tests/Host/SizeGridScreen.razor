@@ -5,27 +5,37 @@
    theme under test. The rows are read by SizeGridTests through data-size. *@
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
     <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
-        <div id="size-grid-fluent2">
-            <div class="size-row" data-size="xs" style="display:flex;gap:8px;align-items:center;margin:4px 0">
-                <FlareButton Size="ButtonSize.Xs">Button</FlareButton>
-                <FlareSelect TValue="string" Size="FieldSize.Xs" Placeholder="Field" />
-            </div>
-            <div class="size-row" data-size="sm" style="display:flex;gap:8px;align-items:center;margin:4px 0">
-                <FlareButton Size="ButtonSize.Sm">Button</FlareButton>
-                <FlareSelect TValue="string" Size="FieldSize.Sm" Placeholder="Field" />
-            </div>
-            <div class="size-row" data-size="md" style="display:flex;gap:8px;align-items:center;margin:4px 0">
-                <FlareButton Size="ButtonSize.Md">Button</FlareButton>
-                <FlareSelect TValue="string" Size="FieldSize.Md" Placeholder="Field" />
-            </div>
-            <div class="size-row" data-size="lg" style="display:flex;gap:8px;align-items:center;margin:4px 0">
-                <FlareButton Size="ButtonSize.Lg">Button</FlareButton>
-                <FlareSelect TValue="string" Size="FieldSize.Lg" Placeholder="Field" />
-            </div>
-            <div class="size-row" data-size="xl" style="display:flex;gap:8px;align-items:center;margin:4px 0">
-                <FlareButton Size="ButtonSize.Xl">Button</FlareButton>
-                <FlareSelect TValue="string" Size="FieldSize.Xl" Placeholder="Field" />
-            </div>
-        </div>
+        <div id="size-grid-fluent2">@SizeRows</div>
+    </FlareThemeScope>
+    <FlareThemeScope Theme="md3" Mode="ThemeMode.Light">
+        <div id="size-grid-md3">@SizeRows</div>
+    </FlareThemeScope>
+    <FlareThemeScope Theme="md3-expressive" Mode="ThemeMode.Light">
+        <div id="size-grid-md3e">@SizeRows</div>
     </FlareThemeScope>
 </FlareThemeProvider>
+
+@code {
+    private static readonly RenderFragment SizeRows = @<text>
+        <div class="size-row" data-size="xs" style="display:flex;gap:8px;align-items:center;margin:4px 0">
+            <FlareButton Size="ButtonSize.Xs">Button</FlareButton>
+            <FlareSelect TValue="string" Size="FieldSize.Xs" Placeholder="Field" />
+        </div>
+        <div class="size-row" data-size="sm" style="display:flex;gap:8px;align-items:center;margin:4px 0">
+            <FlareButton Size="ButtonSize.Sm">Button</FlareButton>
+            <FlareSelect TValue="string" Size="FieldSize.Sm" Placeholder="Field" />
+        </div>
+        <div class="size-row" data-size="md" style="display:flex;gap:8px;align-items:center;margin:4px 0">
+            <FlareButton Size="ButtonSize.Md">Button</FlareButton>
+            <FlareSelect TValue="string" Size="FieldSize.Md" Placeholder="Field" />
+        </div>
+        <div class="size-row" data-size="lg" style="display:flex;gap:8px;align-items:center;margin:4px 0">
+            <FlareButton Size="ButtonSize.Lg">Button</FlareButton>
+            <FlareSelect TValue="string" Size="FieldSize.Lg" Placeholder="Field" />
+        </div>
+        <div class="size-row" data-size="xl" style="display:flex;gap:8px;align-items:center;margin:4px 0">
+            <FlareButton Size="ButtonSize.Xl">Button</FlareButton>
+            <FlareSelect TValue="string" Size="FieldSize.Xl" Placeholder="Field" />
+        </div>
+    </text>;
+}

@@ -559,21 +559,20 @@ public class MaterialDesign3Tokens
         FocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
-        PaddingXs = "0.1875rem 0.5rem",
-        PaddingSm = "0.375rem 0.625rem",
-        PaddingMd = "1rem 1rem",                      // the M3 56dp field
-        // Large and extra-large are measured up from the 56dp medium, so neither is shorter than medium
-        // under this theme.
-        PaddingLg = "1.25rem 1.125rem",
-        PaddingXl = "1.5rem 1.25rem",
-        // Height ramp. M3 puts the text field AND the select at 56dp, so Md is the spec number and the
-        // rest are measured off the padding ramp above - each step is the tallest control of that size, so
-        // the family converges upward and no control shrinks.
-        HeightXs = "1.875rem", // 30px
-        HeightSm = "2.25rem",  // 36px
-        HeightMd = "3.5rem",   // 56px - the M3 field height
-        HeightLg = "4rem",     // 64px
-        HeightXl = "4.75rem",  // 76px
+        PaddingXs = "0.4375rem 0.5rem",
+        PaddingSm = "0.4375rem 0.625rem",
+        PaddingMd = "0.4375rem 1rem",
+        PaddingLg = "0.6875rem 1.125rem",
+        PaddingXl = "0.8125rem 1.25rem",
+        // Owner decision 2026-11-22: the Xs..Xl steps name one height for every control, so the field
+        // family follows the button ramp step for step (32/36/40/48/56). This departs from the Material
+        // field spec - its baseline field is 56dp - and the README records that as a Flare decision.
+        // Each block padding leaves room for the step's line box inside the fixed height.
+        HeightXs = "2rem",     // 32dp - equal to Button Xs
+        HeightSm = "2.25rem",  // 36dp - equal to Button Sm
+        HeightMd = "2.5rem",   // 40dp - equal to Button Md
+        HeightLg = "3rem",     // 48dp - equal to Button Lg
+        HeightXl = "3.5rem",   // 56dp - equal to Button Xl
         IconSize = "1.5rem",                          // leading/trailing icon 24dp
         FocusBorderColor = "transparent",
         // The default field is filled, so an error is the active indicator alone

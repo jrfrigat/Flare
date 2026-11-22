@@ -70,6 +70,9 @@ shape from the same tokens and simply have no Material counterpart to compare ag
 ## What this theme changes beyond colour
 
 - **The size ramp is the spec's**, 32/40/56/96/136dp for buttons, not a gentler five steps.
+- **Fields follow the same ramp.** The Xs..Xl field heights are the Expressive button heights
+  (32/40/56/96/136), not the single 56dp field of the Material spec; this is a deliberate Flare
+  deviation (2026-11-22) so a button and a field at the same `Size` never jump.
 - **Shape reacts to interaction**: a pressed button squares off, and a selected toggle swaps to the
   opposite shape, both on a spring rather than a linear ease.
 - **The button group trades width on press** - the pressed segment grows and its neighbours give up
