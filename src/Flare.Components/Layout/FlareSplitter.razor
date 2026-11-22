@@ -39,13 +39,6 @@
     {
         <span class="@Css.Classes.Splitter.GutterBar" aria-hidden="true"></span>
     }
-    @if (ShowStepButtons)
-    {
-        <span class="@Css.Classes.Splitter.StepDecrease" data-flare-splitter-step="-1" aria-hidden="true"
-              title="@CoreText["Resize_Decrease"]">-</span>
-        <span class="@Css.Classes.Splitter.StepIncrease" data-flare-splitter-step="1" aria-hidden="true"
-              title="@CoreText["Resize_Increase"]">+</span>
-    }
 </div>
 
 @code {
@@ -78,10 +71,6 @@
 
     /// <summary>Step in pixels for Shift+arrow in value mode. Null uses <see cref="KeyboardStep"/>.</summary>
     [Parameter] public int? KeyboardLargeStep { get; set; }
-
-    /// <summary>Shows pointer controls that decrease and increase the size by one step. Defaults to true.
-    /// Pointer dragging and keyboard resizing are available in either state.</summary>
-    [Parameter] public bool ShowStepButtons { get; set; } = true;
 
     /// <summary>Reverses value-mode drag and arrow direction, for a trailing or bottom region.</summary>
     [Parameter] public bool Reverse { get; set; }

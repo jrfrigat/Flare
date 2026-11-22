@@ -431,7 +431,7 @@ function _flareApplySiblingSize(gutter, prev, next, horiz, newPrev, total, minPx
 
 // One length instead of a split between two neighbours (FlareSplitter.Value): the size lives in a CSS custom
 // property on an ancestor, which every element that depends on it reads. The pointer moves it in the browser;
-// .NET hears the new size once, when the drag, the key or the step is over.
+// .NET hears the new size once, when the drag, the key or a double click is over.
 function registerValueSplitter(gutter, orientation, dotNetRef) {
     let horiz = _flareSplitterHoriz(gutter, orientation);
     _flareSplitterReflect(gutter, horiz);
@@ -471,22 +471,14 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
         else return;
         e.preventDefault();
     };
-    const click = e => {
-        const target = e.target.closest('[data-flare-splitter-step]');
-        if (!target || target.parentElement !== gutter) return;
-        commit(clamp(current() + Number(target.dataset.flareSplitterStep) * step()));
-        e.preventDefault();
-    };
-    const dblclick = e => { if (!e.target.closest('[data-flare-splitter-step]')) reset(); };
+    const dblclick = () => reset();
     gutter.addEventListener('keydown', keyboard);
-    gutter.addEventListener('click', click);
     gutter.addEventListener('dblclick', dblclick);
     gutter.setAttribute('aria-valuenow', String(Math.round(current())));
     gutter.setAttribute('aria-valuemin', String(min()));
     if (max() !== Infinity) gutter.setAttribute('aria-valuemax', String(Math.round(max())));
     let start = 0, last = null;
     const off = startDrag(gutter, {
-        filter: e => !e.target.closest('[data-flare-splitter-step]'),
         onStart() {
             axis();
             start = current();
@@ -503,7 +495,6 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
     _splitters.keep(gutter, _flareWatchAxis(gutter, orientation, () => {
         off();
         gutter.removeEventListener('keydown', keyboard);
-        gutter.removeEventListener('click', click);
         gutter.removeEventListener('dblclick', dblclick);
     }));
 }
@@ -539,16 +530,9 @@ export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, d
         else return;
         e.preventDefault();
     };
-    const click = e => {
-        const target = e.target.closest('[data-flare-splitter-step]');
-        if (!target || target.parentElement !== gutter || !measure()) return;
-        apply(prevSize + Number(target.dataset.flareSplitterStep) * _flareVisualSign(gutter, horiz) * step());
-        e.preventDefault();
-    };
-    gutter.addEventListener('keydown', keyboard); gutter.addEventListener('click', click);
+    gutter.addEventListener('keydown', keyboard);
     if (measure()) _flareSplitterRange(gutter, prevSize, total, _flareParsePx(limit('flareSplitterMin', minSize)), _flareParsePx(limit('flareSplitterMax', maxSize)));
     const off = startDrag(gutter, {
-        filter: e => !e.target.closest('[data-flare-splitter-step]'),
         onStart() {
             prev = gutter.previousElementSibling;
             next = gutter.nextElementSibling;
@@ -568,7 +552,7 @@ export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, d
         onEnd() { document.body.style.cursor = ''; },
     });
     _splitters.keep(gutter, _flareWatchAxis(gutter, orientation, () => {
-        off(); gutter.removeEventListener('keydown', keyboard); gutter.removeEventListener('click', click);
+        off(); gutter.removeEventListener('keydown', keyboard);
     }));
 }
 

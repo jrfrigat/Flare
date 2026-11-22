@@ -33,7 +33,7 @@ public class IdeLayoutResizerTests : FlareTestContext
     }
 
     [Fact]
-    public void DividersHaveNoStepControls()
+    public void DividersAreFocusable()
     {
         var cut = Render<FlareIdeLayout>(p => p
             .Add(x => x.LeftToolPanel, Panel(ToolPanelPosition.Left))
@@ -42,11 +42,7 @@ public class IdeLayoutResizerTests : FlareTestContext
 
         var dividers = cut.FindAll("[role=separator]");
         Assert.Equal(3, dividers.Count);
-        Assert.All(dividers, divider =>
-        {
-            Assert.Equal("0", divider.GetAttribute("tabindex"));
-            Assert.Empty(divider.QuerySelectorAll("[data-flare-splitter-step]"));
-        });
+        Assert.All(dividers, divider => Assert.Equal("0", divider.GetAttribute("tabindex")));
     }
 
     [Fact]

@@ -25,7 +25,6 @@ public sealed class IdeRegionPanelsTests(BrowserFixture fixture) : IClassFixture
         var handle = page.Locator($"#resize .{Css.Classes.Ide.Layout.Resizer}").First;
         await Expect(handle).ToHaveCSSAsync("background-color", surface);
         await Expect(handle.Locator($".{Css.Classes.Splitter.GutterBar}")).ToHaveCSSAsync("background-color", outline);
-        await Expect(handle.Locator("[data-flare-splitter-step]")).ToHaveCountAsync(0);
     }
 
     [Theory]

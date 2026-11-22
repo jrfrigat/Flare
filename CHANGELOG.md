@@ -9,6 +9,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 - `FlareDockWorkspace` brings dynamic tab groups, nested splits, and state-preserving moves to `Flare.Components.IDE`. Applications control which layout changes to accept.
 
+### Breaking changes
+
+- `FlareSplitter` no longer renders the `-`/`+` step controls and drops the `ShowStepButtons` parameter and the `StepDecrease`/`StepIncrease` class constants. Dragging and keyboard resizing on the separator are unchanged.
+
 ## [0.60.0] - 2026-11-20
 
 ### Added
