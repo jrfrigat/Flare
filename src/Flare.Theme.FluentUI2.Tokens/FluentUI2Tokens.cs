@@ -686,16 +686,18 @@ public class FluentUI2Tokens
         FocusBorderBottomColor = "var(--flare-input-border-bottom-color)",
         HoverStateLayer = "none",
         PaddingXs = "0.1875rem 0.5rem",
-        PaddingSm = "0.375rem 0.625rem",
-        PaddingMd = "0.75rem 1rem",
-        PaddingLg = "0.875rem 1.125rem",
-        PaddingXl = "1.125rem 1.25rem",
-        // Height ramp, measured off the padding ramp above: each step is the tallest control of that size, so`r`n        // nothing shrinks.
-        HeightXs = "1.75rem",   // 28px
-        HeightSm = "2.125rem", // 34px
-        HeightMd = "2.875rem", // 46px
-        HeightLg = "3.125rem", // 50px
-        HeightXl = "3.625rem", // 58px
+        PaddingSm = "0.0625rem 0.5rem",
+        PaddingMd = "0.25rem 0.75rem",
+        PaddingLg = "0.5rem 1rem",
+        PaddingXl = "0.75rem 1.25rem",
+        // The v9 control-height grid, shared with the button ramp step for step: small 24, medium 32,
+        // large 40, with Xs/Xl as Flare's extensions of the same ladder. Each block padding leaves room
+        // for that step's line box inside the fixed height.
+        HeightXs = "1.5rem",    // 24px - Flare's dense step, equal to Button Xs
+        HeightSm = "1.5rem",    // 24px - v9 small, equal to Button Sm
+        HeightMd = "2rem",      // 32px - v9 medium, equal to Button Md
+        HeightLg = "2.5rem",    // 40px - v9 large, equal to Button Lg
+        HeightXl = "3rem",      // 48px - Flare's step, equal to Button Xl
         IconSize = "1.25rem",                         // medium input icon 20px
         // Fluent flat disabled: grey field + disabled stroke (was MD3 on-surface opacity mixes).
         DisabledBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
