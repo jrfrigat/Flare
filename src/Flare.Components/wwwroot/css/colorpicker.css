@@ -13,6 +13,12 @@
 }
 
 
+/* The trigger is the shared FlareButton; this class is its public hook and only keeps a long
+   formatted value inside a narrow container - the button still owns every visual. */
+.flare-colorpicker__trigger {
+    max-inline-size: 100%;
+}
+
 /* The trigger is a FlareButton; this wrapper only positions the popover anchor, so it carries no
    surface, border, padding or state of its own. */
 .flare-colorpicker__trigger-wrap {
