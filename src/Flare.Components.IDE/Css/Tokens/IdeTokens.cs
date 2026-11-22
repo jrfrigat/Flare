@@ -139,20 +139,6 @@ public static class Vars
     public const string StatusBarSurface = "--flare-ide-statusbar-surface";
     /// <summary>CSS custom property <c>--flare-ide-statusbar-color</c>.</summary>
     public const string StatusBarColor = "--flare-ide-statusbar-color";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-surface</c>.</summary>
-    public const string SheetTabsSurface = "--flare-ide-sheet-tabs-surface";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-color</c>.</summary>
-    public const string SheetTabsColor = "--flare-ide-sheet-tabs-color";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-active-bg</c>.</summary>
-    public const string SheetTabsActiveBg = "--flare-ide-sheet-tabs-active-bg";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-active-border-color</c>.</summary>
-    public const string SheetTabsActiveBorderColor = "--flare-ide-sheet-tabs-active-border-color";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-active-color</c>.</summary>
-    public const string SheetTabsActiveColor = "--flare-ide-sheet-tabs-active-color";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-underline-color</c>.</summary>
-    public const string SheetTabsUnderlineColor = "--flare-ide-sheet-tabs-underline-color";
-    /// <summary>CSS custom property <c>--flare-ide-sheet-tabs-divider</c>.</summary>
-    public const string SheetTabsDivider = "--flare-ide-sheet-tabs-divider";
     /// <summary>CSS custom property <c>--flare-ide-breadcrumb-surface</c>.</summary>
     public const string BreadcrumbSurface = "--flare-ide-breadcrumb-surface";
     /// <summary>CSS custom property <c>--flare-ide-breadcrumb-color</c>.</summary>

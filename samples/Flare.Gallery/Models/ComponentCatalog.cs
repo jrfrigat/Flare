@@ -220,7 +220,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/property-grid",        "Property Grid",        "Ide_PropertyGrid_Title", ComponentGroup.Ide),
         new ComponentEntry("components/quick-access-toolbar", "Quick Access Toolbar", "Ide_Qat_Title",          ComponentGroup.Ide),
         new ComponentEntry("components/ribbon",               "Ribbon",               "Ide_Ribbon_Title",       ComponentGroup.Ide),
-        new ComponentEntry("components/sheet-tabs",           "Sheet Tabs",           "Ide_SheetTabs_Title",    ComponentGroup.Ide),
         new ComponentEntry("components/status-bar",           "Status Bar",           "Ide_StatusBar_Title",    ComponentGroup.Ide),
         new ComponentEntry("components/tool-panel",           "Tool Panel",           "Ide_ToolPanel_Title",    ComponentGroup.Ide),
         new ComponentEntry("components/toolbar",              "Toolbar",              "Ide_Toolbar_Title",      ComponentGroup.Ide),

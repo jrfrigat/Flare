@@ -129,20 +129,6 @@ public sealed record IdeTokens
     [CssVar(Names.StatusBarSurface)] public string StatusBarSurface { get; init; } = "transparent";
     /// <summary>Design override for <c>--flare-ide-statusbar-color</c>.</summary>
     [CssVar(Names.StatusBarColor)] public string StatusBarColor { get; init; } = "inherit";
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-surface</c>.</summary>
-    [CssVar(Names.SheetTabsSurface)] public string SheetTabsSurface { get; init; } = Var(Css.Tokens.Color.SurfaceVariant);
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-color</c>.</summary>
-    [CssVar(Names.SheetTabsColor)] public string SheetTabsColor { get; init; } = "inherit";
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-active-bg</c>.</summary>
-    [CssVar(Names.SheetTabsActiveBg)] public string SheetTabsActiveBg { get; init; } = Var(Css.Tokens.Color.Surface);
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-active-border-color</c>.</summary>
-    [CssVar(Names.SheetTabsActiveBorderColor)] public string SheetTabsActiveBorderColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-active-color</c>.</summary>
-    [CssVar(Names.SheetTabsActiveColor)] public string SheetTabsActiveColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-underline-color</c>.</summary>
-    [CssVar(Names.SheetTabsUnderlineColor)] public string SheetTabsUnderlineColor { get; init; } = "transparent";
-    /// <summary>Design override for <c>--flare-ide-sheet-tabs-divider</c>.</summary>
-    [CssVar(Names.SheetTabsDivider)] public string SheetTabsDivider { get; init; } = "transparent";
     /// <summary>Design override for <c>--flare-ide-breadcrumb-surface</c>.</summary>
     [CssVar(Names.BreadcrumbSurface)] public string BreadcrumbSurface { get; init; } = Var(Css.Tokens.Color.Surface);
     /// <summary>Design override for <c>--flare-ide-breadcrumb-color</c>.</summary>

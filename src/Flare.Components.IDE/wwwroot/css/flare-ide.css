@@ -702,7 +702,6 @@
 }
 
 .flare-doc-tabs__tab:focus-visible,
-.flare-sheet-tabs__tab:focus-visible,
 .flare-toolpanel-group__tab:focus-visible {
     outline: var(--flare-focus-ring);
     outline-offset: calc(-1 * var(--flare-border-width-emphasis));
@@ -1356,79 +1355,6 @@ button.flare-editor-breadcrumb-bar__segment-button {
     min-width: 0;
 }
 
-/* A sheet-tab strip; every visual value is a public hook so a theme can turn the Excel pills into
-   another design language. The underline is an inset bar of its own height, independent of the
-   selected tab's border, and defaults to zero so the base look is unchanged. */
-.flare-sheet-tabs {
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    min-block-size: var(--flare-ide-sheet-tabs-height, auto);
-    gap: var(--flare-ide-sheet-tabs-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
-    padding: var(--flare-ide-sheet-tabs-padding, var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-3, var(--flare-spacing-3)));
-    overflow-x: auto;
-    background: var(--flare-ide-sheet-tabs-surface, var(--flare-ide-surface-variant, var(--flare-color-surface-variant)));
-    color: var(--flare-ide-sheet-tabs-color, inherit);
-    box-shadow: inset 0 1px 0 var(--flare-ide-sheet-tabs-divider, transparent);
-    scrollbar-width: thin;
-}
-
-.flare-sheet-tabs__tab {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 14px;
-    border: 1px solid transparent;
-    border-bottom: none;
-    background: none;
-    color: inherit;
-    cursor: pointer;
-    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
-    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small)) var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small)) 0 0;
-    box-shadow: inset 0 calc(-1 * var(--flare-ide-sheet-tabs-underline-height, 0px)) 0 0 var(--flare-ide-sheet-tabs-underline-color, transparent);
-    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
-    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
-    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
-    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
-    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
-}
-
-.flare-sheet-tabs__tab:hover {
-    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
-}
-
-.flare-sheet-tabs__tab--active {
-    background: var(--flare-ide-sheet-tabs-active-bg, var(--flare-ide-surface, var(--flare-color-surface)));
-    border-color: var(--flare-ide-sheet-tabs-active-border-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
-    color: var(--flare-ide-sheet-tabs-active-color, var(--flare-ide-primary, var(--flare-color-primary)));
-    font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
-    box-shadow: inset 0 calc(-1 * var(--flare-ide-sheet-tabs-underline-height, var(--flare-border-width-emphasis))) 0 0
-        var(--flare-ide-sheet-tabs-underline-color, var(--flare-ide-primary, var(--flare-color-primary)));
-}
-
-.flare-sheet-tabs__add {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border: none;
-    background: none;
-    color: inherit;
-    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));
-    cursor: pointer;
-}
-
-.flare-sheet-tabs__add:hover {
-    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
-}
-
-.flare-sheet-tabs__add .flare-icon {
-    font-size: 1.1rem;
-}
-
 /* Caption overrides inherit from the host. Resolve base tokens at each use so that a default on
    the button never shadows a variable set on the title bar. The app-region exclusion keeps the
    button clickable inside a CSS drag region. */
@@ -1513,14 +1439,6 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-toolpanel__title {
     text-transform: none;
     letter-spacing: normal;
-}
-
-.flare-sheet-tabs {
-    align-items: stretch;
-}
-
-.flare-sheet-tabs__add {
-    align-self: center;
 }
 
 /* Dynamic docking. The panels remain keyed siblings in this canvas. */

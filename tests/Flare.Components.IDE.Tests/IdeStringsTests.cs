@@ -46,24 +46,4 @@ public class IdeStringsTests : FlareTestContext
             CultureInfo.CurrentUICulture = previous;
         }
     }
-
-    [Fact]
-    public void SheetTabs_DefaultAddLabel_IsLocalized()
-    {
-        var previous = CultureInfo.CurrentUICulture;
-        try
-        {
-            CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
-
-            var cut = Render<FlareSheetTabs>(p => p
-                .Add(x => x.Sheets, new[] { "Sheet1" }));
-
-            Assert.Equal("Добавить лист",
-                cut.Find($".{Css.Classes.Ide.SheetTabs.Add}").GetAttribute("aria-label"));
-        }
-        finally
-        {
-            CultureInfo.CurrentUICulture = previous;
-        }
-    }
 }

@@ -87,10 +87,6 @@ public class IdeSurfacesSmokeTests : FlareTestContext
         Assert.NotEmpty(Render<FlareToolPanel>().FindAll($".{Css.Classes.Ide.ToolPanel.Root}"));
 
     [Fact]
-    public void SheetTabs_RendersItsRoot() =>
-        Assert.NotEmpty(Render<FlareSheetTabs>().FindAll($".{Css.Classes.Ide.SheetTabs.Root}"));
-
-    [Fact]
     public void FormulaBar_RendersItsRoot() =>
         Assert.NotEmpty(Render<FlareFormulaBar>().FindAll($".{Css.Classes.Ide.FormulaBar.Root}"));
 }

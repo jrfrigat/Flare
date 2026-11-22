@@ -912,12 +912,6 @@
   <data name="Ide_FormulaBar_Desc" xml:space="preserve">
     <value>FlareFormulaBar - поле имени, метка fx и редактор формул Excel на основе FlareField.</value>
   </data>
-  <data name="Ide_SheetTabs_Title" xml:space="preserve">
-    <value>Вкладки листов</value>
-  </data>
-  <data name="Ide_SheetTabs_Desc" xml:space="preserve">
-    <value>FlareSheetTabs - полоса вкладок листов Excel с кнопкой добавления.</value>
-  </data>
   <data name="DataGrid_PersistenceTitle" xml:space="preserve">
     <value>Сохранение состояния</value>
   </data>

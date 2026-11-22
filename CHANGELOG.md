@@ -17,6 +17,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Breaking changes
 
 - `FlareLinkTabs`, `FlareLinkTab` and `LinkTabsVariant` are removed. For route links styled as tabs, use `FlareNavLink` with the `flare-tabs__tab` classes in your own bar, or `FlareTabs` when the tabs own panels.
+- `FlareSheetTabs` is removed. Compose a sheet strip from `FlareToggleGroup` with `FlareToggleButton` items and an add button, or from `FlareTabs` when the sheet switcher owns panels.
 
 ## [0.60.0] - 2026-11-20
 

@@ -5707,25 +5707,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Ide_Ribbon_Title", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareSheetTabs - the Excel sheet-tab strip with an add button..
-        /// </summary>
-        public static string Ide_SheetTabs_Desc {
-            get {
-                return ResourceManager.GetString("Ide_SheetTabs_Desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Sheet Tabs.
-        /// </summary>
-        public static string Ide_SheetTabs_Title {
-            get {
-                return ResourceManager.GetString("Ide_SheetTabs_Title", resourceCulture);
-            }
-        }
-        
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareStatusBar - a three-section bar (left / center / right) for status text, icons, and controls..
         /// </summary>
