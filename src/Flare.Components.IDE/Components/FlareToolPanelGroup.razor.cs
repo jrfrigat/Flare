@@ -187,8 +187,8 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     }
 
     private string TabClass(FlareToolPanel panel) => IsActive(panel)
-        ? $"{Css.Classes.Ide.ToolPanelGroup.Tab} {Css.Classes.Ide.ToolPanelGroup.TabActive}"
-        : Css.Classes.Ide.ToolPanelGroup.Tab;
+        ? $"{Css.Classes.Ide.ToolPanelGroup.Tab} {Css.Classes.Ide.ToolPanelGroup.TabActive} {Css.Classes.Tabs.TabButton} {Css.Classes.Tabs.TabActive}"
+        : $"{Css.Classes.Ide.ToolPanelGroup.Tab} {Css.Classes.Tabs.TabButton}";
 
     private string TabLabel(FlareToolPanel panel) => string.IsNullOrWhiteSpace(panel.Title)
         ? IdeText["ToolPanelGroup_Untitled"].Value

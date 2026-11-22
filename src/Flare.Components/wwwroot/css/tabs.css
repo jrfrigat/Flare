@@ -479,3 +479,57 @@
   justify-content: center;
 }
 .flare-tabs--rotated .flare-tabs__label { white-space: nowrap; }
+
+/* ---- Bar-only tab sets (docking and tool strips) ----
+   The same tab contract without panels: the bar wrap fills a row and the header-end zone carries
+   the host's actions. Values come from the shared tab tokens. */
+.flare-tabs--bar-only {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  flex-direction: row;
+  max-inline-size: none;
+}
+
+.flare-tabs--bar-only > .flare-tabs__bar-wrap {
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  min-inline-size: 0;
+}
+
+.flare-tabs--bar-only > .flare-tabs__bar-wrap > .flare-tabs__strip {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* ---- Compact tool-window tabs (FlareToolPanelGroup) ----
+   A shorter tab whose selection is the accent outline, not the bottom indicator. Every value is a
+   --flare-tabs-tool-* token, so a theme changes the tool tab without knowing the IDE package. */
+.flare-tabs--tool .flare-tabs__tab {
+  min-block-size: var(--flare-tabs-tool-height);
+  padding: var(--flare-tabs-tool-padding-block) var(--flare-tabs-tool-padding-inline);
+  border: var(--flare-tabs-tool-border-width) solid transparent;
+  border-bottom: none;
+  border-radius: var(--flare-tabs-tool-radius);
+  margin-bottom: 0;
+  color: var(--flare-tabs-tool-inactive-color);
+  font-family: var(--flare-tabs-tool-label-font);
+  font-size: var(--flare-tabs-tool-label-size);
+  font-weight: var(--flare-tabs-tool-label-weight);
+  line-height: var(--flare-tabs-tool-label-height);
+  letter-spacing: var(--flare-tabs-tool-label-spacing);
+}
+
+.flare-tabs--tool .flare-tabs__tab:hover:not(:disabled):not(.flare-tabs__tab--active) {
+  color: var(--flare-tabs-tool-active-color);
+}
+
+.flare-tabs--tool .flare-tabs__tab--active {
+  background: var(--flare-tabs-tool-active-bg);
+  border-color: var(--flare-tabs-tool-active-border-color);
+  color: var(--flare-tabs-tool-active-color);
+}
+
+/* The tool group draws the header or footer divider itself; the strip inside it does not repeat it. */
+.flare-tabs--tool > .flare-tabs__bar-wrap {
+  border-bottom: none;
+}

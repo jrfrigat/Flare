@@ -49,25 +49,32 @@
 
 @code {
     // One strip rendered in exactly one of the two placements: ids, ARIA, selection and keyboard
-    // behavior are shared, and only its position in the group changes.
-    private RenderFragment TabStrip => @<div class="@TabsClass()" role="tablist" aria-orientation="horizontal"
-             aria-label="@IdeText["ToolPanelGroup_Label"].Value" @ref="_bar"
-             data-flare-keyboard-fallback="@(_keyboardRegistered ? null : "true")"
-             @onkeydown="HandleFallbackKeyDownAsync">
-        @foreach (var panel in Panels)
-        {
-            var active = IsActive(panel);
-            <button @key="panel" type="button" class="@TabClass(panel)" id="@panel.TabId"
-                    role="tab" aria-selected="@(active ? "true" : "false")"
-                    aria-controls="@panel.PanelId" tabindex="@(active ? 0 : -1)"
-                    data-flare-tab-icon="@(panel.Icon is not null ? "true" : null)"
-                    @ref="panel.TabElement" @onclick="@(() => SelectAsync(panel, focus: false))">
-                @if (panel.Icon is not null)
-                {
-                    <FlareIconView Value="panel.Icon" Size="1rem" />
-                }
-                <span class="@Css.Classes.Ide.ToolPanelGroup.TabLabel">@TabLabel(panel)</span>
-            </button>
-        }
+    // behavior are shared, and only its position in the group changes. The item itself is the shared
+    // FlareTabs element with the compact tool presentation; the group adds only the strip placement.
+    private RenderFragment TabStrip => @<div class="@($"{Css.Classes.Tabs.Root} {Css.Classes.Tabs.BarOnly} {Css.Classes.Tabs.Tool}")">
+        <div class="@Css.Classes.Tabs.BarWrap">
+            <div class="@Css.Classes.Tabs.Strip">
+                <div class="@TabsClass()" role="tablist" aria-orientation="horizontal"
+                     aria-label="@IdeText["ToolPanelGroup_Label"].Value" @ref="_bar"
+                     data-flare-keyboard-fallback="@(_keyboardRegistered ? null : "true")"
+                     @onkeydown="HandleFallbackKeyDownAsync">
+                    @foreach (var panel in Panels)
+                    {
+                        var active = IsActive(panel);
+                        <button @key="panel" type="button" class="@TabClass(panel)" id="@panel.TabId"
+                                role="tab" aria-selected="@(active ? "true" : "false")"
+                                aria-controls="@panel.PanelId" tabindex="@(active ? 0 : -1)"
+                                data-flare-tab-icon="@(panel.Icon is not null ? "true" : null)"
+                                @ref="panel.TabElement" @onclick="@(() => SelectAsync(panel, focus: false))">
+                            @if (panel.Icon is not null)
+                            {
+                                <FlareIconView Value="panel.Icon" Size="1rem" />
+                            }
+                            <span class="@($"{Css.Classes.Ide.ToolPanelGroup.TabLabel} {Css.Classes.Tabs.Label}")">@TabLabel(panel)</span>
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
     </div>;
 }

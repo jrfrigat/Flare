@@ -34,16 +34,18 @@
                 }
                 else if (entry.Group is { } group)
                 {
-                    <header @key="entry.Id" id="@HeaderId(group.Key)" class="@DockCss.Header"
+                    <header @key="entry.Id" id="@HeaderId(group.Key)"
+                            class="@DockCss.Header @Css.Classes.Tabs.Root @Css.Classes.Tabs.BarOnly"
                             style="@entry.Style" tabindex="-1">
+                        <div class="@Css.Classes.Tabs.BarWrap">
                         <FlareDropZone Target="@ZoneId(group.Key, "row")" Placement="DropPlacement.Between"
-                                       Class="@DockCss.TabZone">
-                            <div role="tablist" aria-label="@TabListLabel(group)" class="@DockCss.Tabs" data-flare-dock-tabs>
+                                       Class="@($"{DockCss.TabZone} {Css.Classes.Tabs.Strip}")">
+                            <div role="tablist" aria-label="@TabListLabel(group)" class="@DockCss.Tabs @Css.Classes.Tabs.Bar" data-flare-dock-tabs>
                                 @foreach (var tabKey in group.Items)
                                 {
                                     var tab = _catalog[tabKey];
                                     <FlareDraggable @key="tabKey" Id="@DragId(tabKey)" Payload="@tabKey" Class="@DockCss.TabWrap">
-                                        <button type="button" class="@DockCss.Tab" role="tab" id="@TabId(tabKey)"
+                                        <button type="button" class="@DockCss.Tab @Css.Classes.Tabs.TabButton @(group.ActiveKey == tabKey ? Css.Classes.Tabs.TabActive : null)" role="tab" id="@TabId(tabKey)"
                                                 aria-label="@tab.Title" aria-controls="@PanelId(tabKey)"
                                                 aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
                                                 tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"
@@ -57,13 +59,14 @@
                                             }
                                             else
                                             {
-                                                <span class="@DockCss.Label">@tab.Title</span>
+                                                <span class="@DockCss.Label @Css.Classes.Tabs.Label">@tab.Title</span>
                                             }
                                         </button>
                                     </FlareDraggable>
                                 }
                             </div>
                         </FlareDropZone>
+                        <div class="@Css.Classes.Tabs.HeaderEnd">
                         @if (group.ActiveKey is { } active)
                         {
                             <button type="button" class="@DockCss.Control" aria-label="@Text("Dock_Actions")"
@@ -146,6 +149,8 @@
                                         @onclick="() => CloseAsync(group, active)">&#x00D7;</button>
                             }
                         }
+                        </div>
+                        </div>
                     </header>
                 }
             }

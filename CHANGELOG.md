@@ -10,6 +10,10 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareDockWorkspace` brings dynamic tab groups, nested splits, and state-preserving moves to `Flare.Components.IDE`. Applications control which layout changes to accept.
 - `FlareTabs` tabs can be reordered by dragging or with Alt+Arrow. `FlareTab` gains `Key`; `FlareTabs` gains `Reorderable`, `TabOrder` and `TabOrderChanged`.
 
+### Changed
+
+- Dock and tool-window tab strips render the shared `FlareTabs` item contract (`flare-tabs--bar-only`, `flare-tabs--tool`). Their visual values come from `--flare-tabs-*`, and `TabsTokens` gains the compact tool-tab roles, so a theme styles them with the same contract as every other tab.
+
 ## [0.60.0] - 2026-11-20
 
 ### Added

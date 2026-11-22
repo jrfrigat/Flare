@@ -77,4 +77,34 @@ public static class Tabs
     public const string OutlinedActiveBg = "--flare-tabs-outlined-active-bg";
     /// <summary>CSS custom-property name for the accent line inside the active outlined tab.</summary>
     public const string OutlinedIndicatorColor = "--flare-tabs-outlined-indicator-color";
+
+    // Compact tool-window presentation (FlareToolPanelGroup), per .flare-tabs--tool.
+    /// <summary>CSS custom-property name for the compact tool tab height.</summary>
+    public const string ToolHeight = "--flare-tabs-tool-height";
+    /// <summary>CSS custom-property name for the compact tool tab block padding.</summary>
+    public const string ToolPaddingBlock = "--flare-tabs-tool-padding-block";
+    /// <summary>CSS custom-property name for the compact tool tab inline padding.</summary>
+    public const string ToolPaddingInline = "--flare-tabs-tool-padding-inline";
+    /// <summary>CSS custom-property name for the compact tool tab radius.</summary>
+    public const string ToolRadius = "--flare-tabs-tool-radius";
+    /// <summary>CSS custom-property name for the compact tool tab border width.</summary>
+    public const string ToolBorderWidth = "--flare-tabs-tool-border-width";
+    /// <summary>CSS custom-property name for the compact tool tab inactive color.</summary>
+    public const string ToolInactiveColor = "--flare-tabs-tool-inactive-color";
+    /// <summary>CSS custom-property name for the compact tool tab active color.</summary>
+    public const string ToolActiveColor = "--flare-tabs-tool-active-color";
+    /// <summary>CSS custom-property name for the compact tool tab active fill.</summary>
+    public const string ToolActiveBg = "--flare-tabs-tool-active-bg";
+    /// <summary>CSS custom-property name for the compact tool tab active border color.</summary>
+    public const string ToolActiveBorderColor = "--flare-tabs-tool-active-border-color";
+    /// <summary>CSS custom-property name for the compact tool tab label font.</summary>
+    public const string ToolLabelFont = "--flare-tabs-tool-label-font";
+    /// <summary>CSS custom-property name for the compact tool tab label size.</summary>
+    public const string ToolLabelSize = "--flare-tabs-tool-label-size";
+    /// <summary>CSS custom-property name for the compact tool tab label weight.</summary>
+    public const string ToolLabelWeight = "--flare-tabs-tool-label-weight";
+    /// <summary>CSS custom-property name for the compact tool tab label line height.</summary>
+    public const string ToolLabelHeight = "--flare-tabs-tool-label-height";
+    /// <summary>CSS custom-property name for the compact tool tab label letter spacing.</summary>
+    public const string ToolLabelSpacing = "--flare-tabs-tool-label-spacing";
 }

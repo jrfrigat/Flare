@@ -5,6 +5,10 @@ public static class Tabs
 {
     /// <summary>The <c>flare-tabs</c> CSS class.</summary>
     public const string Root = "flare-tabs";
+    /// <summary>A tab set that renders the bar only, without panels (docking and tool strips).</summary>
+    public const string BarOnly = "flare-tabs--bar-only";
+    /// <summary>Compact tool-window presentation of the bar (FlareToolPanelGroup).</summary>
+    public const string Tool = "flare-tabs--tool";
     /// <summary>The <c>flare-tabs--vertical</c> CSS class.</summary>
     public const string Vertical = "flare-tabs--vertical";
     // Variant modifiers (FlareTabs.Variant).

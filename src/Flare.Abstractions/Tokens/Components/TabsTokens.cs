@@ -121,4 +121,47 @@ public sealed record TabsTokens
     /// <see cref="IndicatorThickness"/>. Defaults to the tab's own fill, which hides it, so the filled
     /// tab alone marks the selection.</summary>
     [CssVar(Tabs.OutlinedIndicatorColor)] public string OutlinedIndicatorColor { get; init; } = Var(Tabs.OutlinedActiveBg);
+
+    /// <summary>Compact tool-window tab height. Defaults to one spacing step, so a theme with a
+    /// taller or denser scale moves every tool tab with the spacing grid.</summary>
+    [CssVar(Tabs.ToolHeight)] public string ToolHeight { get; init; } = Var(Css.Tokens.Spacing.S6);
+
+    /// <summary>Block padding of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolPaddingBlock)] public string ToolPaddingBlock { get; init; } = Var(Css.Tokens.Spacing.S2);
+
+    /// <summary>Inline padding of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolPaddingInline)] public string ToolPaddingInline { get; init; } = Var(Css.Tokens.Spacing.S4);
+
+    /// <summary>Corner radius of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolRadius)] public string ToolRadius { get; init; } = Var(Css.Tokens.Shape.Small);
+
+    /// <summary>Border width of a compact tool tab; the selected tab carries the same width in the accent color.</summary>
+    [CssVar(Tabs.ToolBorderWidth)] public string ToolBorderWidth { get; init; } = Var(Css.Tokens.Border.Width);
+
+    /// <summary>Label and icon color of an inactive tool tab.</summary>
+    [CssVar(Tabs.ToolInactiveColor)] public string ToolInactiveColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
+
+    /// <summary>Label and icon color of the selected tool tab.</summary>
+    [CssVar(Tabs.ToolActiveColor)] public string ToolActiveColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
+
+    /// <summary>Optional fill of the selected tool tab. Defaults to transparent: the outline alone marks it.</summary>
+    [CssVar(Tabs.ToolActiveBg)] public string ToolActiveBg { get; init; } = "transparent";
+
+    /// <summary>Border color of the selected tool tab.</summary>
+    [CssVar(Tabs.ToolActiveBorderColor)] public string ToolActiveBorderColor { get; init; } = Var(Css.Tokens.Color.Primary);
+
+    /// <summary>Label font of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolLabelFont)] public string ToolLabelFont { get; init; } = Var(Css.Tokens.Typography.BodySmall.Font);
+
+    /// <summary>Label size of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolLabelSize)] public string ToolLabelSize { get; init; } = Var(Css.Tokens.Typography.BodySmall.Size);
+
+    /// <summary>Label weight of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolLabelWeight)] public string ToolLabelWeight { get; init; } = Var(Css.Tokens.Typography.BodySmall.Weight);
+
+    /// <summary>Label line height of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolLabelHeight)] public string ToolLabelHeight { get; init; } = Var(Css.Tokens.Typography.BodySmall.Height);
+
+    /// <summary>Label letter spacing of a compact tool tab.</summary>
+    [CssVar(Tabs.ToolLabelSpacing)] public string ToolLabelSpacing { get; init; } = Var(Css.Tokens.Typography.BodySmall.Spacing);
 }

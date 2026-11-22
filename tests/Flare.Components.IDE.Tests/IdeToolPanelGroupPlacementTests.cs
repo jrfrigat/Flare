@@ -79,8 +79,9 @@ public class IdeToolPanelGroupPlacementTests : FlareTestContext
         Assert.Equal(3, root.Children.Length);
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Header, root.Children[0].ClassName);
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Body, root.Children[1].ClassName);
-        Assert.Equal("tablist", root.Children[2].GetAttribute("role"));
-        Assert.Contains(Css.Classes.Ide.ToolPanelGroup.TabStripBottom, root.Children[2].ClassList);
+        var bottomTabs = root.Children[2].QuerySelector("[role=tablist]");
+        Assert.NotNull(bottomTabs);
+        Assert.Contains(Css.Classes.Ide.ToolPanelGroup.TabStripBottom, bottomTabs.ClassList);
 
         Assert.Single(cut.FindAll("[role=tablist]"));
         Assert.Empty(cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Header}")
@@ -97,7 +98,7 @@ public class IdeToolPanelGroupPlacementTests : FlareTestContext
         Assert.DoesNotContain(Css.Classes.Ide.ToolPanelGroup.TabsBottomRoot, root.ClassList);
         Assert.Equal(2, root.Children.Length);
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Header, root.Children[0].ClassName);
-        Assert.Equal("tablist", root.Children[0].Children[0].GetAttribute("role"));
+        Assert.NotNull(root.Children[0].QuerySelector("[role=tablist]"));
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Body, root.Children[1].ClassName);
         Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Title}"));
         Assert.Single(cut.FindAll("[role=tablist]"));
