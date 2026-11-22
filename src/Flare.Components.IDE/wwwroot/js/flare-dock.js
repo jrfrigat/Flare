@@ -1,5 +1,26 @@
 const workspaces = new WeakMap();
 
+// The header is as tall as the theme's tabs; the body needs that height in CSS. Measure each header
+// and publish it on the canvas, where the pane styles read it. Nothing here decides a height.
+function syncHeaders(canvas, state) {
+    if (!canvas) return;
+    for (const header of canvas.querySelectorAll('[data-flare-dock-header]')) {
+        const id = header.dataset.flareDockHeader;
+        if (!id || !header.isConnected) continue;
+        const height = header.getBoundingClientRect().height;
+        if (height <= 0) continue;
+        const property = '--flare-dock-' + id + '-header';
+        const value = Math.round(height * 100) / 100 + 'px';
+        if (canvas.style.getPropertyValue(property) !== value)
+            canvas.style.setProperty(property, value);
+    }
+    if (state) {
+        state.headerResize?.disconnect();
+        for (const header of canvas.querySelectorAll('[data-flare-dock-header]'))
+            state.headerResize?.observe(header);
+    }
+}
+
 // Layout lengths are resolved by the browser, not by C#: the tokens may be var() aliases or rem, and
 // only the cascade knows their pixels. Two probes read the effective gutter and group minimum.
 function measureTokens(canvas) {
@@ -20,7 +41,8 @@ function measureTokens(canvas) {
 export function register(canvas, callback) {
     unregister(canvas);
     if (!canvas || !callback) return;
-    const state = { resize: null, keyboard: null, focus: null, direction: [], outside: null };
+    const state = { resize: null, keyboard: null, focus: null, direction: [], outside: null,
+        headerResize: null, headerStyle: null };
     let last = null;
     const report = () => {
         const width = canvas.clientWidth;
@@ -29,6 +51,7 @@ export function register(canvas, callback) {
         const tokens = measureTokens(canvas);
         const gutter = Math.max(1, Math.round(tokens.gutter));
         const groupMin = Math.max(1, Math.round(tokens.groupMin));
+        syncHeaders(canvas, state);
         if (last && last.width === width && last.height === height && last.rtl === rtl &&
             last.gutter === gutter && last.groupMin === groupMin) return;
         last = { width, height, rtl, gutter, groupMin };
@@ -36,6 +59,15 @@ export function register(canvas, callback) {
     };
     state.resize = new ResizeObserver(report);
     state.resize.observe(canvas);
+    // Blazor owns the canvas style attribute; a re-render replaces it and drops the measured header
+    // variables. Measure again after such a change; the guard in syncHeaders prevents a write loop.
+    if (typeof ResizeObserver !== 'undefined') {
+        state.headerResize = new ResizeObserver(() => syncHeaders(canvas, state));
+    }
+    if (typeof MutationObserver !== 'undefined') {
+        state.headerStyle = new MutationObserver(() => syncHeaders(canvas, state));
+        state.headerStyle.observe(canvas, { attributes: true, attributeFilter: ['style'] });
+    }
     // A direction change does not resize the canvas, so the ResizeObserver never sees it. Watch every
     // ancestor that can carry dir/class/style, including the document, for a live theme or locale flip.
     // The canvas itself is watched for dir/class only: its style carries the splitter preview, and a
@@ -65,6 +97,7 @@ export function register(canvas, callback) {
         callback.invokeMethodAsync('CloseDockActions').catch(() => {});
     };
     document.addEventListener('pointerdown', state.outside, true);
+    syncHeaders(canvas, state);
     workspaces.set(canvas, state);
 }
 
@@ -72,6 +105,8 @@ export function unregister(canvas) {
     const state = canvas && workspaces.get(canvas);
     if (!state) return;
     state.resize.disconnect();
+    state.headerResize?.disconnect();
+    state.headerStyle?.disconnect();
     for (const observer of state.direction) observer.disconnect();
     document.removeEventListener('pointerdown', state.outside, true);
     canvas.removeEventListener('keydown', state.keyboard);

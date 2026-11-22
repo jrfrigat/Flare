@@ -191,12 +191,17 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
     }
 
     [Fact]
-    public void TheHeaderAndPaneShareTheTextScaledHeightVariable()
+    public void HeaderKeepsTheThemesHeightAndThePaneReadsTheMeasuredValue()
     {
         var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { });
 
-        Assert.Contains("--flare-dock-header-height", cut.Find(".flare-dock__header").GetAttribute("style"));
-        Assert.Contains("--flare-dock-header-height", cut.Find(".flare-dock__pane").GetAttribute("style"));
+        var header = cut.Find(".flare-dock__header");
+        Assert.NotNull(header.GetAttribute("data-flare-dock-header"));
+        Assert.Contains("block-size:auto", header.GetAttribute("style"));
+
+        var pane = cut.Find(".flare-dock__pane");
+        Assert.Contains("-header", pane.GetAttribute("style"));
+        Assert.DoesNotContain("flare-dock-header-height", cut.Markup);
     }
 
     [Fact]
@@ -419,12 +424,6 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
 
         Assert.Contains("flare-dock--no-guide", cut.Find(".flare-dock").ClassName);
         Assert.NotEmpty(cut.FindAll(".flare-dock__target"));
-    }
-
-    [Fact]
-    public void DockHeaderHeight_DefaultsToABaseSpacingToken()
-    {
-        Assert.Equal($"var({Css.Tokens.Spacing.S16})", new DockTokens().HeaderHeight);
     }
 
     private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange>? onChange,

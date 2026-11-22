@@ -6,10 +6,6 @@ namespace Flare.Components.IDE;
 /// <summary>Optional dock overrides. Defaults follow the base theme; map with <c>CssVarMap.FlattenTokens</c>.</summary>
 public sealed record DockTokens
 {
-    /// <summary>Design override for <c>--flare-dock-header-height</c>. Defaults to a base spacing step,
-    /// so the strip follows the theme's grid rather than a fixed em value.</summary>
-    [CssVar(DockTokenNames.HeaderHeight)] public string HeaderHeight { get; init; } = Var(Css.Tokens.Spacing.S16);
-
     /// <summary>Design override for <c>--flare-dock-min-block-size</c>.</summary>
     [CssVar(DockTokenNames.MinBlockSize)] public string MinBlockSize { get; init; } = Var(Css.Tokens.Spacing.S32);
 
@@ -27,7 +23,6 @@ public sealed record DockTokens
 // The package's token names, in the shape Flare.CssAudit reads: a constants class under Css/Tokens.
 internal static class DockTokenNames
 {
-    internal const string HeaderHeight = "--flare-dock-header-height";
     internal const string MinBlockSize = "--flare-dock-min-block-size";
     internal const string ActionsMaxSize = "--flare-dock-actions-max-size";
     internal const string Gutter = "--flare-dock-gutter";

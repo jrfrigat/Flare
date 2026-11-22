@@ -32,8 +32,6 @@ public static class Layout
     public const string StatusBarPadding = "--flare-ide-statusbar-padding";
     /// <summary>Gap between status-bar segments.</summary>
     public const string StatusBarGap = "--flare-ide-statusbar-gap";
-    /// <summary>Editor breadcrumb row height.</summary>
-    public const string BreadcrumbBarHeight = "--flare-ide-breadcrumb-bar-height";
     /// <summary>Inline padding of the editor breadcrumb area.</summary>
     public const string BreadcrumbBarPadding = "--flare-ide-breadcrumb-bar-padding";
     /// <summary>Inline padding of one editor breadcrumb segment.</summary>

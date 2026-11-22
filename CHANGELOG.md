@@ -19,8 +19,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
-- The dock tab strip no longer grows a vertical scrollbar when a theme gives its tabs a taller minimum. Dock tabs fill the header height, the header height follows the spacing grid instead of a fixed `2.5em`, and a tab bar never becomes a vertical scroll container.
-- The editor breadcrumb row height follows its content and the theme's typography instead of a fixed 22px; `--flare-ide-breadcrumb-bar-height` stays an optional override.
+- The dock tab strip takes its height from the theme's tab height, as FlareTabs does. The browser measures each group header and the panes follow it; the dock no longer owns a header height or a compact tab override, so a theme with taller tabs is not cut down. A tab bar never becomes a vertical scroll container.
+- The editor breadcrumb row height comes from the components it hosts and the theme's typography, not from a fixed 22px.
 
 ### Breaking changes
 
@@ -31,6 +31,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareToolPanel.Mode` and `FlareToolPanelGroup.ShowTabStripWhenFloating`/`ShowCollapseButton` are removed with the layout. A standalone `FlareToolPanel` keeps its own collapse toggle.
 - `FlareSplitter` no longer renders the `-`/`+` step controls and drops the `ShowStepButtons` parameter and the `StepDecrease`/`StepIncrease` class constants. Dragging and keyboard resizing on the separator are unchanged.
 - `FlareResizable` no longer renders the `-`/`+` step controls and drops the `ShowControls` parameter and the `Resizable.Controls`/`Control` class constants. `FlareScheduler` drops the matching `ShowResizeControls` parameter. Dragging and keyboard resizing are unchanged.
+- `--flare-dock-header-height` and `--flare-ide-breadcrumb-bar-height` are removed. The dock header follows the theme's tab height, so style the tab through the `--flare-tabs-*` roles; the breadcrumb row follows the components it hosts.
 
 ## [0.60.0] - 2026-11-20
 

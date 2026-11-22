@@ -461,15 +461,14 @@
     gap: var(--flare-ide-toolbar-group-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
 }
 
-/* Editor breadcrumb/toolbar row: the chrome strip under the document tabs. Its height follows the
-   theme's typography and the segments' padding; the host may pin it with the height token. The host
-   fills the leading slot with FlareEditorBreadcrumbSegment items and the trailing slot with commands;
-   every colour and metric is a public hook so a theme can restyle the row. */
+/* Editor breadcrumb/toolbar row: the chrome strip under the document tabs. Its height comes from the
+   components it hosts and the theme's typography; the host fills the leading slot with
+   FlareEditorBreadcrumbSegment items and the trailing slot with commands. Every colour and metric is
+   a public hook so a theme can restyle the row. */
 .flare-editor-breadcrumb-bar {
     display: flex;
     align-items: stretch;
     box-sizing: border-box;
-    min-block-size: var(--flare-ide-breadcrumb-bar-height, auto);
     min-inline-size: 0;
     border-block: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-breadcrumb-edge-color, var(--flare-ide-outline-variant, var(--flare-color-outline-variant)));
     background: var(--flare-ide-breadcrumb-surface, var(--flare-ide-surface, var(--flare-color-surface)));
@@ -851,15 +850,6 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-dock__tabs { scrollbar-width: thin; }
 .flare-dock__tab-wrap { flex: 0 0 auto; display: flex; }
 .flare-dock__tab-actions { display: flex; align-items: center; flex: none; }
-
-/* The dock strip is compact chrome, not a content tab row: its tabs fill the header instead of
-   carrying the theme's full tab minimum. The height then comes from the dock header token, and a
-   theme that makes its tabs taller cannot overflow the strip. */
-.flare-dock__header .flare-tabs__tab {
-    min-block-size: 0;
-    padding-block: 0;
-    align-self: stretch;
-}
 
 /* The label is the part a host may constrain; it shrinks and ellipsizes instead of pushing the
    actions out of the group. */

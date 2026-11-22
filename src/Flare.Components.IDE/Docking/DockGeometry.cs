@@ -8,10 +8,6 @@ internal sealed class DockGeometry
     internal const int Gutter = 12;
     internal const int GroupMin = 96;
 
-    // The header follows the theme's spacing grid; the token lets a host or a denser theme take it
-    // back without editing the package.
-    internal static readonly string HeaderHeight = "var(--flare-dock-header-height, var(--flare-spacing-16))";
-
     internal sealed record Entry(string Id, string Style, DockGroup? Group = null, DockSplit? Split = null,
         string? Item = null, double Size = 0, double Min = 0, double Max = 0, double Available = 0);
 
@@ -58,8 +54,11 @@ internal sealed class DockGeometry
         h = Variable(css, key, "h", h);
         if (node is DockGroup group)
         {
-            Entries.Add(new(key, Position(x, y, w, HeaderHeight), Group: group));
-            var body = Position(x, $"calc({y} + {HeaderHeight})", w, $"calc({h} - {HeaderHeight})");
+            // The header keeps the height the theme's tabs ask for; the browser measures it and writes
+            // the variable the body reads, so the dock never pins a tab height of its own.
+            var header = $"var({HeaderVar(key)}, var(--flare-spacing-16))";
+            Entries.Add(new(key, Position(x, y, w, "auto"), Group: group));
+            var body = Position(x, $"calc({y} + {header})", w, $"calc({h} - {header})");
             foreach (var item in group.Items)
                 Entries.Add(new(key, body, Group: group, Item: item));
             return;
@@ -96,6 +95,8 @@ internal sealed class DockGeometry
     }
 
     internal static string CssNumber(double value) => value.ToString("0.########", CultureInfo.InvariantCulture);
+
+    internal static string HeaderVar(string id) => $"--flare-dock-{id}-header";
 
     internal static string Preview(string id) => $"--flare-dock-preview-{id}";
 

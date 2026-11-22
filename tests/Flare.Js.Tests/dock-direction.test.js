@@ -76,7 +76,8 @@ it('reports a real size change once per new size', async () => {
     const callback = { invokeMethodAsync: vi.fn().mockResolvedValue(undefined) };
 
     register(canvas, callback);
-    const resize = ResizeObserverStub.callbacks.at(-1);
+    // The canvas observer is registered first; a second observer follows the measured headers.
+    const resize = ResizeObserverStub.callbacks[0];
     resize();
     await tick();
     width = 200;

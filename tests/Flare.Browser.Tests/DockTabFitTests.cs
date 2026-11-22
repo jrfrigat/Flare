@@ -34,5 +34,13 @@ public sealed class DockTabFitTests(BrowserFixture fixture) : IClassFixture<Brow
         Assert.NotNull(tabBox);
         Assert.True(tabBox!.Height <= headerBox!.Height + 1,
             $"{id} tab is {tabBox.Height}px in a {headerBox.Height}px header");
+        // The theme decides the tab height; the header is exactly that height, not a dock constant.
+        Assert.InRange(headerBox.Height, tabBox.Height - 1, tabBox.Height + 1);
+
+        await page.WaitForFunctionAsync(
+            "id => { const h = document.querySelector('#' + id + ' .flare-dock__header');" +
+            " const p = document.querySelector('#' + id + ' .flare-dock__pane');" +
+            " return !!(h && p) && p.getBoundingClientRect().top >= h.getBoundingClientRect().bottom - 1; }",
+            id);
     }
 }

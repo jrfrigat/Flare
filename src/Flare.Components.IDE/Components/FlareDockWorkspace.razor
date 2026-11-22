@@ -34,7 +34,7 @@
                 }
                 else if (entry.Group is { } group)
                 {
-                    <header @key="entry.Id" id="@HeaderId(group.Key)"
+                    <header @key="entry.Id" id="@HeaderId(group.Key)" data-flare-dock-header="@entry.Id"
                             class="@DockCss.Header @Css.Classes.Tabs.Root @Css.Classes.Tabs.BarOnly"
                             style="@entry.Style" tabindex="-1">
                         <div class="@Css.Classes.Tabs.BarWrap">

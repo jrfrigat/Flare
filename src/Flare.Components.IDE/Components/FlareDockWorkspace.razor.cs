@@ -170,9 +170,12 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     private static string Pixels(double size) => $"{DockGeometry.CssNumber(size)}px";
     private bool MayRequest(DockAction action, string? key, string target) =>
         OnChangeRequested.HasDelegate && (CanRequest?.Invoke(action, key, target) ?? true);
-    private static string BodyStyle(string id) =>
-        $"inset-inline-start:var(--flare-dock-{id}-x);inset-block-start:calc(var(--flare-dock-{id}-y) + {DockGeometry.HeaderHeight});" +
-        $"inline-size:var(--flare-dock-{id}-w);block-size:calc(var(--flare-dock-{id}-h) - {DockGeometry.HeaderHeight});";
+    private static string BodyStyle(string id)
+    {
+        var header = $"var({DockGeometry.HeaderVar(id)}, var(--flare-spacing-16))";
+        return $"inset-inline-start:var(--flare-dock-{id}-x);inset-block-start:calc(var(--flare-dock-{id}-y) + {header});" +
+               $"inline-size:var(--flare-dock-{id}-w);block-size:calc(var(--flare-dock-{id}-h) - {header});";
+    }
 
     private void ToggleActions(string group)
     {
