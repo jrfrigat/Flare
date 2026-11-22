@@ -127,14 +127,9 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
     if (!handle || !container) return;
     const horiz = edge === 'right' || edge === 'left';
     const dim = horiz ? 'width' : 'height';
-    const buttons = Array.from(container.querySelectorAll(':scope > [data-flare-resize-controls] > button'));
-    const controls = buttons[0]?.parentElement;
     const footprint = () => {
         const grip = handle.getBoundingClientRect();
-        const actions = controls?.getBoundingClientRect();
-        const inset = controls ? parseFloat(getComputedStyle(controls)[horiz ? 'insetInlineEnd' : 'insetBlockEnd']) || 0 : 0;
-        return Math.max(horiz ? grip.width : grip.height,
-            actions ? (horiz ? actions.width : actions.height) + 2 * inset : 0);
+        return horiz ? grip.width : grip.height;
     };
     let startSize = 0;
     const size = () => {
@@ -163,7 +158,6 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
         handle.setAttribute('aria-valuemax', String(Math.round(max)));
         handle.setAttribute('aria-valuenow', String(Math.round(value)));
         handle.setAttribute('aria-valuetext', Math.round(value) + 'px');
-        for (const button of buttons) button.disabled = Number(button.dataset.flareResizeStep) < 0 ? value <= min : value >= max;
     };
     const apply = value => {
         const { min, max } = bounds();
@@ -188,15 +182,7 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
         e.preventDefault();
         notify();
     };
-    const click = e => {
-        lengths.refresh();
-        const button = e.currentTarget;
-        apply(size() + Number(button.dataset.flareResizeStep) * step());
-        e.preventDefault();
-        notify();
-    };
     handle.addEventListener('keydown', keyboard);
-    for (const button of buttons) button.addEventListener('click', click);
     reflect(size());
     const off = startDrag(handle, {
         onStart() {
@@ -213,7 +199,6 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
     _resizeHandles.keep(handle, () => {
         off();
         handle.removeEventListener('keydown', keyboard);
-        for (const button of buttons) button.removeEventListener('click', click);
     });
 }
 

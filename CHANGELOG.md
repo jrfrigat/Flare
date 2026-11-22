@@ -12,6 +12,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Breaking changes
 
 - `FlareSplitter` no longer renders the `-`/`+` step controls and drops the `ShowStepButtons` parameter and the `StepDecrease`/`StepIncrease` class constants. Dragging and keyboard resizing on the separator are unchanged.
+- `FlareResizable` no longer renders the `-`/`+` step controls and drops the `ShowControls` parameter and the `Resizable.Controls`/`Control` class constants. `FlareScheduler` drops the matching `ShowResizeControls` parameter. Dragging and keyboard resizing are unchanged.
 
 ## [0.60.0] - 2026-11-20
 

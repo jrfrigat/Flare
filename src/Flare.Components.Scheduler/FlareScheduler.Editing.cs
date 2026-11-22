@@ -18,8 +18,6 @@ public partial class FlareScheduler<TItem>
 
     /// <summary>Enables event changes when an application persistence callback is supplied.</summary>
     [Parameter] public bool Editable { get; set; }
-    /// <summary>Shows the shared resizable's single-click controls in addition to its keyboard handle.</summary>
-    [Parameter] public bool ShowResizeControls { get; set; }
     /// <summary>Whether changes are enabled and have an application persistence callback.</summary>
     public bool CanEdit => Editable && OnChange.HasDelegate;
     /// <summary>Receives validated proposals. Persist in the application; set Cancel to refuse.</summary>

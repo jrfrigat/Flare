@@ -64,7 +64,7 @@ public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
         Date = _date, Culture = EffectiveCulture, Version = _version, View = _view,
         TimeZone = TimeZone, SlotDuration = SlotDuration, WorkDays = WorkDays, WorkStart = WorkStart,
         WorkEnd = WorkEnd, InitialScrollTime = InitialScrollTime, Resources = Resources,
-        CanEdit = CanEdit, ShowResizeControls = ShowResizeControls, AriaLabel = AriaLabel,
+        CanEdit = CanEdit, AriaLabel = AriaLabel,
         SelectedEvent = SelectedEvent, SelectedSlot = SelectedSlot, IsLoading = _loading, Error = _error,
         Focus = _focus, Edit = ActiveEdit, Announcement = _announcement
     };
