@@ -4,30 +4,25 @@ using Microsoft.AspNetCore.Components;
 namespace Flare.Components.IDE;
 
 /// <summary>
-/// A collapsible tool panel for the IDE sidebar. Wraps content with a header bar
-/// containing title, optional toolbar, and collapse button.
-/// Composed from base Flare components - no custom tokens.
-/// When placed inside a <see cref="FlareIdeLayout"/> region the layout owns the collapsed state and
-/// the thin rail / auto-hide flyout, so collapsing frees the docked space.
+/// A collapsible tool panel. Wraps content with a header bar containing title, optional toolbar and
+/// a collapse button. Composed from base Flare components - no custom tokens. Standalone, or as a tab
+/// inside <see cref="FlareToolPanelGroup"/>.
 /// </summary>
 public partial class FlareToolPanel : FlareLocalizedComponentBase
 {
     private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
-    /// <summary>The enclosing IDE layout, when this panel is used in one of its regions.</summary>
-    [CascadingParameter] internal FlareIdeLayout? Layout { get; set; }
 
     /// <summary>The enclosing tabbed group, when this panel is one of its tabs.</summary>
     [CascadingParameter] internal FlareToolPanelGroup? Group { get; set; }
 
-    /// <summary>Panel title displayed in the header (and on the collapsed rail inside a layout).</summary>
+    /// <summary>Panel title displayed in the header.</summary>
     [Parameter] public string? Title { get; set; }
 
     /// <summary>Icon that represents the tool. Inside a <see cref="FlareToolPanelGroup"/> it is shown in the
     /// tool's tab, and it is the only visible content of that tab once the tab is too narrow for text;
     /// with <see cref="FlareToolPanelGroup.TabStripPlacement"/> set to
     /// <see cref="Flare.Components.IDE.TabStripPlacement.Bottom"/> it is also shown beside the active tool's
-    /// title in the header. Inside a <see cref="FlareIdeLayout"/> it identifies the tool on the per-tool
-    /// auto-hide rail. Null renders no icon.</summary>
+    /// title in the header. Null renders no icon.</summary>
     [Parameter] public FlareIcon? Icon { get; set; }
 
     /// <summary>Stable key that <see cref="FlareToolPanelGroup.ActiveKey"/> uses to select this panel.
@@ -44,19 +39,14 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
     /// <summary>Whether to show the toolbar area.</summary>
     [Parameter] public bool ShowToolbar { get; set; }
 
-    /// <summary>Position of the panel in the IDE layout.</summary>
+    /// <summary>Position of the panel in the IDE chrome.</summary>
     [Parameter] public ToolPanelPosition Position { get; set; } = ToolPanelPosition.Left;
 
-    /// <summary>How the panel occupies space inside a <see cref="FlareIdeLayout"/>: <see cref="IdePanelMode.Docked"/>
-    /// (takes space when expanded) or <see cref="IdePanelMode.AutoHide"/> (flies out as an overlay).
-    /// Ignored when the panel is used standalone (outside a layout).</summary>
-    [Parameter] public IdePanelMode Mode { get; set; } = IdePanelMode.Docked;
-
-    /// <summary>Whether the panel is currently collapsed. Used for standalone (no-layout) collapsing;
-    /// inside a layout the layout owns the collapsed state.</summary>
+    /// <summary>Whether the panel is currently collapsed. Ignored while the panel is one tab of a
+    /// <see cref="FlareToolPanelGroup"/>.</summary>
     [Parameter] public bool Collapsed { get; set; }
 
-    /// <summary>Callback when the collapsed state changes (standalone use).</summary>
+    /// <summary>Callback when the collapsed state changes.</summary>
     [Parameter] public EventCallback<bool> CollapsedChanged { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Ide.ToolPanel.Root;
@@ -82,18 +72,12 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
             _registeredGroup = Group;
         }
         _registeredGroup?.Register(this);
-
-        // Inside a layout the panel only renders while expanded; report its title/mode so the layout
-        // can label the collapsed rail and decide docked-vs-flyout sizing. A group owns the region
-        // position, so its panels do not repeat it.
-        Layout?.RegisterPanel(this, Group?.Position ?? Position, Title, Mode, EffectiveKey, Icon);
     }
 
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
     {
         _registeredGroup?.Unregister(this);
-        Layout?.UnregisterPanel(this);
         return base.DisposeAsync();
     }
 
@@ -104,22 +88,15 @@ public partial class FlareToolPanel : FlareLocalizedComponentBase
         _ => Css.Classes.Ide.ToolPanel.Left
     };
 
-    // Standalone collapse only; inside a layout the panel is unmounted when collapsed.
-    private string? _collapsedClass => (Layout is null && Collapsed) ? Css.Classes.Ide.ToolPanel.Collapsed : null;
+    // Standalone collapse: the panel narrows to its header rail.
+    private string? _collapsedClass => Collapsed ? Css.Classes.Ide.ToolPanel.Collapsed : null;
 
-    private string? _rootStyle => (Layout is null && Collapsed)
+    private string? _rootStyle => Collapsed
         ? $"width:40px;min-width:40px;{Style}"
         : Style;
 
     private async Task ToggleCollapsed()
     {
-        if (Layout is not null)
-        {
-            // Hand off to the layout, which renders the rail and reclaims the docked space.
-            await Layout.CollapseAsync(Position);
-            return;
-        }
-
         Collapsed = !Collapsed;
         await CollapsedChanged.InvokeAsync(Collapsed);
     }

@@ -1872,8 +1872,6 @@ public static class ComponentApiRegistry
                 @"FlareDialogProvider",
                 @"FlareDivider",
                 @"FlareDockWorkspace",
-                @"FlareDocumentTab",
-                @"FlareDocumentTabs",
                 @"FlareDragContext",
                 @"FlareDragHandle",
                 @"FlareDraggable",
@@ -1902,7 +1900,6 @@ public static class ComponentApiRegistry
                 @"FlareHighlighter",
                 @"FlareIconButton",
                 @"FlareIconView",
-                @"FlareIdeLayout",
                 @"FlareImage",
                 @"FlareInfiniteScroll",
                 @"FlareKanban",
@@ -1912,8 +1909,6 @@ public static class ComponentApiRegistry
                 @"FlareLayoutDrawer",
                 @"FlareLazy",
                 @"FlareLink",
-                @"FlareLinkTab",
-                @"FlareLinkTabs",
                 @"FlareList",
                 @"FlareListItem",
                 @"FlareMarkdown",
@@ -1981,7 +1976,6 @@ public static class ComponentApiRegistry
                 @"FlareScrollTop",
                 @"FlareSection",
                 @"FlareSelect",
-                @"FlareSheetTabs",
                 @"FlareShortcutEditor",
                 @"FlareShortcuts",
                 @"FlareSignaturePad",
@@ -2853,96 +2847,6 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareLocalizedComponentBase",
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
-        c[@"FlareDocumentTab"] = new ApiComponentInfo(
-            @"FlareDocumentTab",
-            @"Flare.Components.IDE.FlareDocumentTab",
-            @"Flare.Components.IDE",
-            null,
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered inside the document panel.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"Closeable", @"bool", @"true", @"Whether the tab can be closed by the user.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"HeaderContent", @"RenderFragment?", null, @"Non-interactive content displayed in place of the visible title. Supply Title as the accessible name and overflow label. Icon is rendered separately.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in the tab header - any provider. Defaults to the built-in description icon.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"Key", @"string?", null, @"Stable document key used for selection, closing and ordering. Set it for dynamically rendered documents.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"Modified", @"bool", @"false", @"Whether the document has unsaved changes (shows a dot/asterisk indicator).", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"Title", @"string", @"""""", @"Text displayed when no custom header is supplied. Also labels the tab for accessibility and the overflow menu.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
-        c[@"FlareDocumentTabs"] = new ApiComponentInfo(
-            @"FlareDocumentTabs",
-            @"Flare.Components.IDE.FlareDocumentTabs",
-            @"Flare.Components.IDE",
-            @"Displays document tabs with optional controlled selection, ordering and retained panels.",
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"ActiveKey", @"string?", null, @"Active document key. Null starts with the first document and permits internal selection; with ControlledSelection set, null means no active tab and the value is authoritative.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"ActiveKeyChanged", @"EventCallback<string>", null, @"Reports the selected document's key.", null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declares the document tabs, using a Blazor key for each dynamically rendered document.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"ContextMenuContent", @"RenderFragment<string>?", null, @"Context menu entries rendered for the given document key.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"ControlledSelection", @"bool", @"false", @"Whether ActiveKey is the only source of the selection. When true, null means no document is active and a click or navigation key only reports the key through ActiveKeyChanged - the host selects it by setting ActiveKey. A key that matches no declared document also leaves every tab inactive. The default false keeps the uncontrolled behavior: null starts with the first document and clicks select internally.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"DockTargets", @"IReadOnlyList<FlareDocumentDockTarget>?", null, @"Destinations offered in each tab's move menu. Set OnDockRequested too; without it no menu is rendered. The strip does not move the document itself - the host updates its document list and layout selection.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"Dockable", @"bool", @"false", @"Makes every tab a drag source for FlareIdeLayout docking even when Reorderable is off. Each dockable tab needs an explicit Key; the key is what the layout receives through OnDocumentMove. The host must declare the same key in Documents. A drop is accepted only by the layout that contains the strip, so two layouts may use the same key without moving each other's document; a strip outside every layout cannot dock into one.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"KeepAlive", @"bool", @"false", @"Keeps previously activated panels mounted while hidden.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OnCloseRequested", @"EventCallback<string>", null, @"Reports a request to close the document by key. The host removes its declaration.", null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OnDockRequested", @"EventCallback<FlareDocumentDockRequest>", null, @"Reports the document key and the destination the user chose in a tab's move menu.", null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OnTabChanged", @"EventCallback<string>", null, @"Reports the title of the selected document.", null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, @"Reports the title of the document requested to close.", null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"OverflowBehavior", @"TabOverflowBehavior", @"TabOverflowBehavior.Scroll", @"How to navigate when the strip overflows.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"Reorderable", @"bool", @"false", @"Whether documents can be moved within the strip using drag or Alt+Arrow.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"StripOnly", @"bool", @"false", @"Renders only the tab strip and no panel region. The FlareDocumentTab children still declare the documents (key, title, icon, closeable) and stay mounted, but neither their content nor a tabpanel element is rendered - the host renders the document itself, so KeepAlive and each tab's content are ignored in this mode. Use it as CenterDockHeader: the layout then takes the Center selection only from ActiveDocuments, so write the key reported by ActiveKeyChanged into that selection, and return to the main content by setting the Center entry to null.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"TabOrder", @"IReadOnlyList<string>?", null, @"Controlled document key order. Unlisted documents follow in declaration order.", null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"TabOrderChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Reports a requested order containing the keys of the current documents.", null, false, true, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Handles the orientation-aware keys reported by the tab strip.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"key", @"string", null),
-                        new ApiMethodParameter(@"rtl", @"bool", null),
-                    }),
-                new ApiMethodInfo(@"OnTabReorder", @"OnTabReorder(string key, bool rtl)", @"Task", null, @"Moves the active tab by one position for an orientation-aware Alt+Arrow.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"key", @"string", null),
-                        new ApiMethodParameter(@"rtl", @"bool", null),
-                    }),
-                new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"Task", null, @"Receives changes to the measured scroll extent and its edges.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"overflowing", @"bool", null),
-                        new ApiMethodParameter(@"atStart", @"bool", null),
-                        new ApiMethodParameter(@"atEnd", @"bool", null),
-                    }),
-            },
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -4147,94 +4051,6 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
-        c[@"FlareIdeLayout"] = new ApiComponentInfo(
-            @"FlareIdeLayout",
-            @"Flare.Components.IDE.FlareIdeLayout",
-            @"Flare.Components.IDE",
-            @"Root layout component for an IDE-style interface. Arranges ribbon, menu bar, tool panels, document area, bottom panel, and status bar in a Visual Studio-style layout. All styling is composed from base Flare CSS classes and design tokens - no custom tokens. The layout owns each region's collapsed state so a collapsed panel frees its docked space (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels. The bottom region can draw a tool-window header with pin and collapse controls: pinned keeps it docked, unpinned turns it into an auto-hide flyout. The Center region draws its dock strip; a side region draws one only while it has documents, so an empty side reserves no strip row, and the strip's compact region control returns from a covering document to the tool group.",
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"ActiveDocuments", @"IReadOnlyDictionary<IdeDocumentRegion, string?>?", null, @"Controlled selection per region. A null value in the dictionary selects the existing tool or main content.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomCollapsed", @"bool", @"false", @"Whether the bottom region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomCollapsedChanged", @"EventCallback<bool>", null, @"Raised when BottomCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomHeaderContent", @"RenderFragment?", null, @"Host content rendered at the inline start of the bottom header - a title, tabs or the host's own commands. The typed pin and collapse controls follow it at the inline end; hide either with ShowBottomPin or ShowBottomCollapse and draw a custom replacement here.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomPanel", @"RenderFragment?", null, @"Bottom panel (e.g. Output, Terminal).", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomPanelHeight", @"string", @"""200px""", @"Height of the bottom panel. Default 200px.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomPinned", @"bool", @"true", @"Whether the bottom region is pinned. The default is true: a pinned bottom panel stays docked and open. Set it to false for an auto-hide bottom panel - while expanded it overlays the content above the rail, a pointer press outside it or Escape collapses it, and a rail click reopens it. Bind it with BottomPinnedChanged to persist the state. The pin is authoritative for the bottom region, whose content is often a host surface rather than a FlareToolPanel; the side regions keep using Mode.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomPinnedChanged", @"EventCallback<bool>", null, @"Reports the new bottom pin state when the built-in pin control changes it. Bind it to BottomPinned to persist the state.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"BottomResizable", @"bool", @"true", @"Whether the bottom region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"CenterDockHeader", @"RenderFragment?", null, @"Content rendered in place of the built-in Center dock strip - a host tab strip for the main document area. The fragment occupies the Center column of the layout's dock row. It wins over ShowCenterDockStrip; as with a suppressed strip, Center selection comes only from ActiveDocuments and the host supplies the return-to-main-content control.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main document/content area.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"DocumentContent", @"RenderFragment<IdeDocument>?", null, @"Renders each document. Which documents invoke it is chosen by DocumentMounting.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"DocumentContextMenu", @"RenderFragment<IdeDocument>?", null, @"Context menu entries rendered for a docked document when its dock tab is right-clicked. The host decides which actions to offer, including close variants or confirmation.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"DocumentHeaderContent", @"RenderFragment<IdeDocument>?", null, @"Non-interactive content displayed in place of the title in each built-in dock tab. The document title still supplies its accessible name. Use CenterDockHeader to supply a whole tab strip for the Center region.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"DocumentMounting", @"IdeDocumentMounting", @"IdeDocumentMounting.All", @"Whether every document mounts its content or only the active document of each region. The default, All, preserves each document's state at one content instance per document. ActiveOnly disposes the content of a document that becomes inactive, so its transient state is lost when it mounts again; a document that stays active across a region move remains mounted.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"Documents", @"IReadOnlyList<IdeDocument>?", null, @"Enables docking and supplies documents keyed within this layout. A side region draws its document tab strip only while it has documents, so an empty side never reserves a strip row; the strip is also the drop target for moving a document into the region. While a side document covers the tool group, that strip carries a compact control - named with the region's localized label - that returns to the tools. Without a strip the side tool body accepts the drop instead.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"Height", @"string?", null, @"Height of the layout frame as a CSS length (e.g. ""520px"" or ""100%""). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftActiveToolKey", @"string?", null, @"Controlled key of the tool selected in the left rail in PerTool mode. The key is the hosted tool's effective key (Key, or its title). Bind the same value to the hosted group's ActiveKey so the flyout shows the tool the rail selected; with it unset the rail marks the group's own selection. Bind it with LeftActiveToolKeyChanged to persist the selected tool in a host layout state.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftActiveToolKeyChanged", @"EventCallback<string?>", null, @"Reports the tool the user selected on the left rail. Bind it to LeftActiveToolKey and feed the value to the hosted group's ActiveKey.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftCollapsed", @"bool", @"false", @"Whether the left region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftCollapsedChanged", @"EventCallback<bool>", null, @"Raised when LeftCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftPanelWidth", @"string", @"""300px""", @"Width of the left tool panel. Default 300px.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftRegionVisible", @"bool", @"true", @"Whether the left region is rendered. When false, the layout draws no left panel, dock strip, documents or resizer, and its documents stay in Documents unmounted; the document area takes the freed space. Unlike LeftCollapsed, a hidden region keeps no rail, so it represents a View command that closes the dock. Default true.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftResizable", @"bool", @"true", @"Whether the left region can be drag-resized (a divider sits between it and the document).", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"LeftToolPanel", @"RenderFragment?", null, @"Left tool panel (e.g. Solution Explorer).", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"MenuBar", @"RenderFragment?", null, @"Menu bar rendered below the ribbon.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"MinPanelSize", @"int", @"120", @"Smallest size (px) a region can be dragged to. Default 120.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"OnActiveDocumentChanged", @"EventCallback<IdeDocumentSelection>", null, @"Reports the user's selection in a region.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"OnDocumentCloseRequested", @"EventCallback<IdeDocument>", null, @"Reports a request to close a document from its dock tab. Accept it by removing the document from Documents; the layout keeps the document until the host does so.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"OnDocumentMove", @"EventCallback<IdeDocumentMove>", null, @"Requests a move. Accept it by changing the document's region in Documents.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RailSize", @"string", @"""32px""", @"Width of the thin rail shown for a collapsed or auto-hidden panel. Default 32px.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RetainDocumentContent", @"Func<IdeDocument, bool>?", null, @"Documents whose content stays mounted in ActiveOnly mode even while they are not the active document of their region. Ignored when every document mounts.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"Ribbon", @"RenderFragment?", null, @"Top ribbon area rendered above the menu bar.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightActiveToolKey", @"string?", null, @"Controlled key of the tool selected in the right rail in PerTool mode; the counterpart of LeftActiveToolKey.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightActiveToolKeyChanged", @"EventCallback<string?>", null, @"Reports the tool the user selected on the right rail. Bind it to RightActiveToolKey and feed the value to the hosted group's ActiveKey.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightCollapsed", @"bool", @"false", @"Whether the right region is collapsed (only a thin rail is shown). Two-way bindable.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightCollapsedChanged", @"EventCallback<bool>", null, @"Raised when RightCollapsed changes.", null, false, true, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightPanelWidth", @"string", @"""300px""", @"Width of the right tool panel. Default 300px.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightRegionVisible", @"bool", @"true", @"Whether the right region is rendered. When false, the layout draws no right panel, dock strip, documents or resizer, and its documents stay in Documents unmounted; the document area takes the freed space. Unlike RightCollapsed, a hidden region keeps no rail, so it represents a View command that closes the dock. Default true.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightResizable", @"bool", @"true", @"Whether the right region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"RightToolPanel", @"RenderFragment?", null, @"Right tool panel (e.g. Properties).", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"ShowBottomCollapse", @"bool", @"true", @"Whether the bottom header draws the built-in collapse control. The default is true; it has no effect unless ShowBottomHeader is true. The control collapses the region through BottomCollapsed and the rail reopens it.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"ShowBottomHeader", @"bool", @"false", @"Whether the expanded bottom region draws the built-in tool-window header above its content. The default is false, so existing layouts keep their chrome. The header renders BottomHeaderContent, the typed pin control (see ShowBottomPin), the collapse control (see ShowBottomCollapse), and keeps the panel content, resizer, height and scrolling unchanged. Nothing is drawn while the region is collapsed or when BottomPanel is null.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"ShowBottomPin", @"bool", @"true", @"Whether the bottom header draws the built-in pin control. The default is true; it has no effect unless ShowBottomHeader is true. The control reflects BottomPinned and raises BottomPinnedChanged.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"ShowCenterDockStrip", @"bool", @"true", @"Whether the layout draws its built-in Center dock strip. Set it to false when the host renders the main document tabs in ChildContent. In that mode the Center region has no layout controls: its selection is read only from ActiveDocuments, and no entry (or a null one) shows ChildContent. The host must provide the control that returns to the main content, because the built-in Center button is gone.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"StatusBar", @"RenderFragment?", null, @"Status bar at the bottom of the IDE.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"ToolRailMode", @"IdeToolRailMode", @"IdeToolRailMode.Region", @"How a collapsed or auto-hidden side region lists its tools. Region (the default) keeps one button for the whole region. PerTool gives an auto-hide side region one rail entry per hosted tool group tab, with the tool's icon and label: selecting an entry opens that tool in the flyout, the active entry is marked, and selecting it again closes the flyout. Docked regions, the bottom region and regions without a hosted tool group keep the region button.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"OnFlyoutEscapeAsync", @"OnFlyoutEscapeAsync(string position)", @"Task", null, @"Called by the IDE's JS module when Escape is pressed while an auto-hide flyout is open. Collapses the region through LeftCollapsed, RightCollapsed or BottomCollapsed and returns focus to the active tool's rail entry, or to the region rail for the bottom, on the next render; a region the host already collapsed, and a docked region, are left alone. The bottom participates only while it is unpinned.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"position", @"string", @"The region whose flyout is open: Left, Right or Bottom."),
-                    }),
-                new ApiMethodInfo(@"OnFlyoutOutsidePressAsync", @"OnFlyoutOutsidePressAsync(string position)", @"Task", null, @"Called by the IDE's JS module when a pointer press lands outside an open auto-hide flyout and outside its rail. Collapses the region through LeftCollapsed, RightCollapsed or BottomCollapsed; a region the host already collapsed, and a docked region, are left alone. The bottom participates only while it is unpinned.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"position", @"string", @"The region whose flyout is open: Left, Right or Bottom."),
-                    }),
-                new ApiMethodInfo(@"ResizePanel", @"ResizePanel(string position, int sizePx)", @"void", null, @"Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"position", @"string", @"The region being resized."),
-                        new ApiMethodParameter(@"sizePx", @"int", @"The new size in pixels."),
-                    }),
-            },
-            new string[]
-            {
-                @"FlareLocalizedComponentBase",
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
         c[@"FlareImage"] = new ApiComponentInfo(
             @"FlareImage",
             @"Flare.Components.FlareImage",
@@ -4523,61 +4339,6 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Title", @"string?", null, @"Tooltip text rendered as the HTML title attribute for accessibility.", null, false, false, false, @"FlareLink"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional type-scale applied to the link text (font family/size/weight/line-height). When null (default) the link inherits the surrounding text's typography.", null, false, false, false, @"FlareLink"),
                 new ApiParameterInfo(@"Underline", @"LinkUnderline", @"LinkUnderline.Hover", @"Underline behavior: Always, Hover, or None.", null, false, false, false, @"FlareLink"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
-        c[@"FlareLinkTab"] = new ApiComponentInfo(
-            @"FlareLinkTab",
-            @"Flare.Components.FlareLinkTab",
-            @"Flare.Components",
-            null,
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Markup rendered as the tab label instead of Label. A link tab navigates rather than owning a panel, so its label is the whole of what it renders and content written between the tags binds here.", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents navigation and interaction when true.", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"Href", @"string?", null, @"URL this tab navigates to. Matched against the current route to derive the active state.", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"Label", @"string", @"""""", @"Link label shown in the tab. Ignored when ChildContent is set.", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered before the label.", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"Match", @"NavMatchMode", @"NavMatchMode.Prefix", @"Route matching strategy used to derive the active state - prefix or exact. Default Prefix.", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Invoked when the tab is clicked, before navigation would occur. When set, the default navigation is suppressed (mirrors OnClick) so the handler can decide whether/how to navigate.", null, false, true, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"Tooltip", @"string?", null, @"Tooltip text shown on hover/focus of the tab (native title).", null, false, false, false, @"FlareLinkTab"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
-        c[@"FlareLinkTabs"] = new ApiComponentInfo(
-            @"FlareLinkTabs",
-            @"Flare.Components.FlareLinkTabs",
-            @"Flare.Components",
-            null,
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, rendered as aria-label on the <nav>. Recommended when a page has more than one navigation region.", null, false, false, false, @"FlareLinkTabs"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"FlareLinkTab items rendered in the bar. Each renders its own <a> and determines its active state independently by comparing its Href against the current route - there is no parent-managed active index, since each tab is a real page navigation rather than an in-page panel switch.", null, false, false, false, @"FlareLinkTabs"),
-                new ApiParameterInfo(@"Variant", @"LinkTabsVariant", @"LinkTabsVariant.Default", @"Visual variant of the tab bar (theme-independent). Mirrors TabsVariant's pill styles so a set of route links can look like the same segmented control as an in-page FlareTabs. Default keeps a simple underline-only style.", null, false, false, false, @"FlareLinkTabs"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -7064,35 +6825,6 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
-        c[@"FlareSheetTabs"] = new ApiComponentInfo(
-            @"FlareSheetTabs",
-            @"Flare.Components.IDE.FlareSheetTabs",
-            @"Flare.Components.IDE",
-            null,
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"ActiveIndex", @"int", @"0", @"Zero-based index of the active sheet.", null, false, false, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"ActiveIndexChanged", @"EventCallback<int>", null, @"Raised when the active sheet changes. Supports two-way binding.", null, false, true, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"AddLabel", @"string?", null, @"Accessible label for the add button; defaults to the package's localized text.", null, false, false, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"OnAddSheet", @"EventCallback", null, @"Raised when the add button is clicked.", null, false, true, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"Sheets", @"IReadOnlyList<string>?", null, @"The sheet names rendered as tabs, in order.", null, false, false, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"ShowAddButton", @"bool", @"true", @"Whether the trailing ""add sheet"" button is shown (default true).", null, false, false, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareLocalizedComponentBase",
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
         c[@"FlareShortcutEditor"] = new ApiComponentInfo(
             @"FlareShortcutEditor",
             @"Flare.Components.IDE.FlareShortcutEditor",
@@ -8612,19 +8344,18 @@ public static class ComponentApiRegistry
             @"FlareToolPanel",
             @"Flare.Components.IDE.FlareToolPanel",
             @"Flare.Components.IDE",
-            @"A collapsible tool panel for the IDE sidebar. Wraps content with a header bar containing title, optional toolbar, and collapse button. Composed from base Flare components - no custom tokens. When placed inside a FlareIdeLayout region the layout owns the collapsed state and the thin rail / auto-hide flyout, so collapsing frees the docked space.",
+            @"A collapsible tool panel. Wraps content with a header bar containing title, optional toolbar and a collapse button. Composed from base Flare components - no custom tokens. Standalone, or as a tab inside FlareToolPanelGroup.",
             null,
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered inside the panel body.", null, false, false, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"Collapsed", @"bool", @"false", @"Whether the panel is currently collapsed. Used for standalone (no-layout) collapsing; inside a layout the layout owns the collapsed state.", null, false, false, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"CollapsedChanged", @"EventCallback<bool>", null, @"Callback when the collapsed state changes (standalone use).", null, false, true, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon that represents the tool. Inside a FlareToolPanelGroup it is shown in the tool's tab, and it is the only visible content of that tab once the tab is too narrow for text; with TabStripPlacement set to Bottom it is also shown beside the active tool's title in the header. Inside a FlareIdeLayout it identifies the tool on the per-tool auto-hide rail. Null renders no icon.", null, false, false, false, @"FlareToolPanel"),
+                new ApiParameterInfo(@"Collapsed", @"bool", @"false", @"Whether the panel is currently collapsed. Ignored while the panel is one tab of a FlareToolPanelGroup.", null, false, false, false, @"FlareToolPanel"),
+                new ApiParameterInfo(@"CollapsedChanged", @"EventCallback<bool>", null, @"Callback when the collapsed state changes.", null, false, true, false, @"FlareToolPanel"),
+                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon that represents the tool. Inside a FlareToolPanelGroup it is shown in the tool's tab, and it is the only visible content of that tab once the tab is too narrow for text; with TabStripPlacement set to Bottom it is also shown beside the active tool's title in the header. Null renders no icon.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"Key", @"string?", null, @"Stable key that ActiveKey uses to select this panel. When unset the panel is addressed by Title, which is enough for a fixed, untranslated title; set an explicit key when titles are localized, repeat or change at run time.", null, false, false, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"Mode", @"IdePanelMode", @"IdePanelMode.Docked", @"How the panel occupies space inside a FlareIdeLayout: Docked (takes space when expanded) or AutoHide (flies out as an overlay). Ignored when the panel is used standalone (outside a layout).", null, false, false, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Position of the panel in the IDE layout.", null, false, false, false, @"FlareToolPanel"),
+                new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Position of the panel in the IDE chrome.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"ShowToolbar", @"bool", @"false", @"Whether to show the toolbar area.", null, false, false, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"Title", @"string?", null, @"Panel title displayed in the header (and on the collapsed rail inside a layout).", null, false, false, false, @"FlareToolPanel"),
+                new ApiParameterInfo(@"Title", @"string?", null, @"Panel title displayed in the header.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Optional toolbar content in the header (e.g. filter, settings buttons).", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -8645,7 +8376,7 @@ public static class ComponentApiRegistry
             @"FlareToolPanelGroup",
             @"Flare.Components.IDE.FlareToolPanelGroup",
             @"Flare.Components.IDE",
-            @"Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a single visible panel and the panel bodies kept mounted while hidden. The strip never scrolls horizontally: tabs share one row and their labels ellipsize as the group narrows; a tab whose tool has an icon and which becomes too narrow for text keeps the icon alone while the accessible name stays on the tab. Inside a FlareIdeLayout region the hosted panels still report their titles and modes, so the region rail and auto-hide behavior are unchanged; the group draws the region's collapse button because the individual panel headers are replaced by the tabs (see ShowCollapseButton).",
+            @"Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a single visible panel and the panel bodies kept mounted while hidden. The strip never scrolls horizontally: tabs share one row and their labels ellipsize as the group narrows; a tab whose tool has an icon and which becomes too narrow for text keeps the icon alone while the accessible name stays on the tab. The group is standalone; host placement, docking and collapse are the application's composition.",
             null,
             new ApiParameterInfo[]
             {
@@ -8653,11 +8384,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ActiveKeyChanged", @"EventCallback<string?>", null, @"Reports the effective key of the panel the user activated. Bind it to ActiveKey to accept the choice; in controlled mode the group moves only after the parent sets the new key.", null, false, true, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Tool panels shown as tabs. Every child is a FlareToolPanel; its content stays mounted while another tab is active.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"OnActiveChanged", @"EventCallback<string?>", null, @"Reports the title of the panel the user activated, for a status line or command state. Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour.", null, false, true, false, @"FlareToolPanelGroup"),
-                new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Region that hosts the group inside a FlareIdeLayout. The hosted panels use this position for rail labels, auto-hide and collapse instead of their own Position.", null, false, false, false, @"FlareToolPanelGroup"),
-                new ApiParameterInfo(@"ShowCollapseButton", @"bool", @"true", @"Whether the group draws the region's collapse control in its header while it is inside a FlareIdeLayout. The default is true, so an existing consumer keeps the control. Set it to false when the host supplies its own pin/close actions for the region and the built-in chevron is redundant; the host can still collapse the region through FlareIdeLayout.BottomCollapsed and the side equivalents, and a rail click reopens it. Ignored outside a layout, which never draws the control.", null, false, false, false, @"FlareToolPanelGroup"),
-                new ApiParameterInfo(@"ShowTabStripWhenFloating", @"bool", @"true", @"Whether the tab strip stays visible while this group's region floats as an auto-hide flyout. The default is true. Set it to false for a single tool window whose header carries the active tool's title (and icon), the host ToolbarContent - for example a pin control - and the collapse button; the per-tool rail then switches tools. Ignored outside a FlareIdeLayout and outside a floating auto-hide region.", null, false, false, false, @"FlareToolPanelGroup"),
+                new ApiParameterInfo(@"Position", @"ToolPanelPosition", @"ToolPanelPosition.Left", @"Placement of the group in the application's chrome. The hosted panels use this position instead of their own Position.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"TabStripPlacement", @"TabStripPlacement", @"TabStripPlacement.Top", @"Which edge carries the tool tab strip. Top keeps the strip in the header above the body, the default and the only placement used before this parameter existed. Bottom renders the strip below the body and shows the active tool's title (and its icon, when set) in the header, so a pinned tool window keeps its name visible while the tabs sit at the bottom edge.", null, false, false, false, @"FlareToolPanelGroup"),
-                new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Host actions shown in the group header after the tab strip and before the collapse button - for example pin, close or other region commands. Inside a FlareIdeLayout the group still draws the region's collapse button unless ShowCollapseButton is false, so the slot adds controls rather than replacing them.", null, false, false, false, @"FlareToolPanelGroup"),
+                new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Host actions shown in the group header after the tab strip - for example pin, close or other application commands.", null, false, false, false, @"FlareToolPanelGroup"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -10769,71 +10498,6 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
-        e[@"IdeDocumentMounting"] = new ApiEnumInfo(
-            @"IdeDocumentMounting",
-            @"Flare.Components.IDE.IdeDocumentMounting",
-            @"Flare.Components.IDE",
-            @"How FlareIdeLayout mounts the content of docked documents.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"All", @"0", @"Every document in Documents invokes its content and stays mounted while it exists, hidden when inactive. State is preserved at one component instance per document."),
-                new ApiEnumMember(@"ActiveOnly", @"1", @"Only the active document of each region - plus documents retained by RetainDocumentContent - invokes its content. An inactive document's content is disposed, so its transient state is lost until it becomes active again. Keeps the cost of expensive editors proportional to the visible documents."),
-            },
-            new string[]
-            {
-                @"FlareIdeLayout",
-            });
-
-        e[@"IdeDocumentRegion"] = new ApiEnumInfo(
-            @"IdeDocumentRegion",
-            @"Flare.Components.IDE.IdeDocumentRegion",
-            @"Flare.Components.IDE",
-            @"Region in which an IDE document can be displayed.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Center", @"0", @"The main document area."),
-                new ApiEnumMember(@"Left", @"1", @"The left tool area."),
-                new ApiEnumMember(@"Right", @"2", @"The right tool area."),
-            },
-            new string[]
-            {
-                @"FlareIdeLayout",
-            });
-
-        e[@"IdePanelMode"] = new ApiEnumInfo(
-            @"IdePanelMode",
-            @"Flare.Components.IDE.IdePanelMode",
-            @"Flare.Components.IDE",
-            @"Controls how a docked tool panel in FlareIdeLayout behaves when expanded.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Docked", @"0", @"The panel occupies layout space when expanded (it pushes the document area); when collapsed it shrinks to a thin rail. This is the default."),
-                new ApiEnumMember(@"AutoHide", @"1", @"The panel never permanently occupies space: collapsed it shows only a thin rail, and when expanded it flies out as an overlay above the document area (auto-hide)."),
-            },
-            new string[]
-            {
-                @"FlareToolPanel",
-            });
-
-        e[@"IdeToolRailMode"] = new ApiEnumInfo(
-            @"IdeToolRailMode",
-            @"Flare.Components.IDE.IdeToolRailMode",
-            @"Flare.Components.IDE",
-            @"How the rail of a collapsed or auto-hidden side region lists its tools in a FlareIdeLayout.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Region", @"0", @"One button for the whole region: it labels every hosted tool and expands the region. This is the default and the behavior every consumer had before the option existed."),
-                new ApiEnumMember(@"PerTool", @"1", @"One entry per hosted tool in an auto-hide side region, with the tool's icon and rotated label. Selecting an entry opens that tool in the region's flyout; the active tool is marked and selecting it again closes the flyout. Regions in the docked mode, the bottom region and regions without a hosted tool group keep the region button."),
-            },
-            new string[]
-            {
-                @"FlareIdeLayout",
-            });
-
         e[@"ImageObjectFit"] = new ApiEnumInfo(
             @"ImageObjectFit",
             @"Flare.Components.ImageObjectFit",
@@ -10957,23 +10621,6 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareProgressLinear",
-            });
-
-        e[@"LinkTabsVariant"] = new ApiEnumInfo(
-            @"LinkTabsVariant",
-            @"Flare.Components.LinkTabsVariant",
-            @"Flare.Components",
-            @"Visual style of a FlareLinkTabs bar, independent of the active theme. Mirrors the pill-shaped variants of TabsVariant (Tonal/Filled) so a row of route links can read as the same segmented control as an in-page FlareTabs, reusing the same --flare-tabs-* design tokens.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Default", @"0", @"The active theme's default tab style (a simple underline indicator)."),
-                new ApiEnumMember(@"Tonal", @"1", @"Active link filled with a soft tonal pill."),
-                new ApiEnumMember(@"Filled", @"2", @"Active link filled with the solid accent as a pill / segmented control."),
-            },
-            new string[]
-            {
-                @"FlareLinkTabs",
             });
 
         e[@"LinkUnderline"] = new ApiEnumInfo(
@@ -11112,7 +10759,6 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareBottomNavItem",
-                @"FlareLinkTab",
                 @"FlareNavLink",
             });
 
@@ -11631,22 +11277,6 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareTabs",
-            });
-
-        e[@"TabOverflowBehavior"] = new ApiEnumInfo(
-            @"TabOverflowBehavior",
-            @"Flare.Components.IDE.TabOverflowBehavior",
-            @"Flare.Components.IDE",
-            @"Behaviour when document tabs overflow the available width.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Scroll", @"0", null),
-                new ApiEnumMember(@"Dropdown", @"1", null),
-            },
-            new string[]
-            {
-                @"FlareDocumentTabs",
             });
 
         e[@"TabStripPlacement"] = new ApiEnumInfo(

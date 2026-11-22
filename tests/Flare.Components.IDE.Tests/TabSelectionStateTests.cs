@@ -13,16 +13,6 @@ public class TabSelectionStateTests : FlareTestContext
     public TabSelectionStateTests() => Services.AddFlareIde();
 
     [Fact]
-    public void DocumentTabs_AnnounceSelectionAsText()
-    {
-        var cut = Render<FlareDocumentTabs>(p => p
-            .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "a.md"))
-            .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "b.md")));
-
-        Assert.Equal(["true", "false"], cut.FindAll("[role=tab]").Select(t => t.GetAttribute("aria-selected")));
-    }
-
-    [Fact]
     public void Ribbon_AnnouncesSelectionAsText()
     {
         var cut = Render<FlareRibbon>(p => p

@@ -5601,24 +5601,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareDocumentTabs - editor-style tabs with per-tab icons, a modified indicator, closeable and pinned tabs, and overflow handling..
-        /// </summary>
-        public static string Ide_DocTabs_Desc {
-            get {
-                return ResourceManager.GetString("Ide_DocTabs_Desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Document Tabs.
-        /// </summary>
-        public static string Ide_DocTabs_Title {
-            get {
-                return ResourceManager.GetString("Ide_DocTabs_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareFormulaBar - the Excel name box, fx marker, and formula editor, built on FlareField..
         /// </summary>
         public static string Ide_FormulaBar_Desc {
@@ -14733,44 +14715,6 @@ namespace Flare.Gallery.Resources {
         public static string Scheduler_MoreEvents { get { return ResourceManager.GetString("Scheduler_MoreEvents", resourceCulture); } }
         /// <summary>Close</summary>
         public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
-        /// <summary>Document workspace</summary>
-        public static string IdeWorkspace_Title { get { return ResourceManager.GetString("IdeWorkspace_Title", resourceCulture); } }
-        /// <summary>A host-owned tab strip controls the documents: drag a tab onto a side region or its collapsed rail (or use the tab's move menu), close it, or return to the main content; the left dock has tabbed tools and shortcuts can be edited without running commands.</summary>
-        public static string IdeWorkspace_Description { get { return ResourceManager.GetString("IdeWorkspace_Description", resourceCulture); } }
-        /// <summary>Activate document</summary>
-        public static string IdeWorkspace_Activate { get { return ResourceManager.GetString("IdeWorkspace_Activate", resourceCulture); } }
-        /// <summary>Close document</summary>
-        public static string IdeWorkspace_Close { get { return ResourceManager.GetString("IdeWorkspace_Close", resourceCulture); } }
-        /// <summary>Main</summary>
-        public static string IdeWorkspace_Main { get { return ResourceManager.GetString("IdeWorkspace_Main", resourceCulture); } }
-        /// <summary>Main content area</summary>
-        public static string IdeWorkspace_MainContent { get { return ResourceManager.GetString("IdeWorkspace_MainContent", resourceCulture); } }
-        /// <summary>Left</summary>
-        public static string IdeWorkspace_Left { get { return ResourceManager.GetString("IdeWorkspace_Left", resourceCulture); } }
-        /// <summary>Right</summary>
-        public static string IdeWorkspace_Right { get { return ResourceManager.GetString("IdeWorkspace_Right", resourceCulture); } }
-        /// <summary>Left region</summary>
-        public static string IdeWorkspace_LeftRegion { get { return ResourceManager.GetString("IdeWorkspace_LeftRegion", resourceCulture); } }
-        /// <summary>Right region</summary>
-        public static string IdeWorkspace_RightRegion { get { return ResourceManager.GetString("IdeWorkspace_RightRegion", resourceCulture); } }
-        /// <summary>Notes</summary>
-        public static string IdeWorkspace_Notes { get { return ResourceManager.GetString("IdeWorkspace_Notes", resourceCulture); } }
-        /// <summary>Commands</summary>
-        public static string IdeWorkspace_Commands { get { return ResourceManager.GetString("IdeWorkspace_Commands", resourceCulture); } }
-        /// <summary>Diagnostics</summary>
-        public static string IdeWorkspace_Diagnostics { get { return ResourceManager.GetString("IdeWorkspace_Diagnostics", resourceCulture); } }
-        /// <summary>Open</summary>
-        public static string IdeWorkspace_Open { get { return ResourceManager.GetString("IdeWorkspace_Open", resourceCulture); } }
-        /// <summary>Run</summary>
-        public static string IdeWorkspace_Run { get { return ResourceManager.GetString("IdeWorkspace_Run", resourceCulture); } }
-        /// <summary>Undefined symbol</summary>
-        public static string IdeWorkspace_ParseError { get { return ResourceManager.GetString("IdeWorkspace_ParseError", resourceCulture); } }
-        /// <summary>Missing heading</summary>
-        public static string IdeWorkspace_HeadingError { get { return ResourceManager.GetString("IdeWorkspace_HeadingError", resourceCulture); } }
-        /// <summary>Ready</summary>
-        public static string IdeWorkspace_Ready { get { return ResourceManager.GetString("IdeWorkspace_Ready", resourceCulture); } }
-        /// <summary>Show group handles</summary>
-        public static string IdeWorkspace_ReorderHandles { get { return ResourceManager.GetString("IdeWorkspace_ReorderHandles", resourceCulture); } }
         /// <summary>Window caption controls</summary>
         public static string Ide_Caption_Title { get { return ResourceManager.GetString("Ide_Caption_Title", resourceCulture); } }
         /// <summary>The host supplies the glyph, accessible label and window command. Size and visual states follow the base theme tokens. An app can override individual --flare-caption-* tokens on its title bar.</summary>

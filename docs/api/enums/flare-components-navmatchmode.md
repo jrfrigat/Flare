@@ -16,5 +16,4 @@ How a nav link's href is matched against the current URL to decide the active st
 ## Used by components
 
 - `FlareBottomNavItem`
-- `FlareLinkTab`
 - `FlareNavLink`

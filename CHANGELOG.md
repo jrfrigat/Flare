@@ -18,6 +18,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 - `FlareLinkTabs`, `FlareLinkTab` and `LinkTabsVariant` are removed. For route links styled as tabs, use `FlareNavLink` with the `flare-tabs__tab` classes in your own bar, or `FlareTabs` when the tabs own panels.
 - `FlareSheetTabs` is removed. Compose a sheet strip from `FlareToggleGroup` with `FlareToggleButton` items and an add button, or from `FlareTabs` when the sheet switcher owns panels.
+- `FlareIdeLayout` and its document-region API (`IdeDocument`, `IdeDocumentRegion`, `IdeDocumentMove`, `IdeDocumentSelection`, `IdeDocumentMounting`, `IdePanelMode`, `IdeToolRailMode`) are removed. Use `FlareDockWorkspace` for a dockable workspace and place `FlareToolPanel`/`FlareToolPanelGroup` directly in the page; the layout-owned auto-hide rails, flyouts and bottom tool-window header are gone.
+- `FlareDocumentTabs`, `FlareDocumentTab`, `FlareDocumentDockTarget`, `FlareDocumentDockRequest` and `TabOverflowBehavior` are removed. Use `FlareTabs`/`FlareTab`, which now supports `Key`, `Reorderable`, `TabOrder` and `TabOrderChanged`.
+- `FlareToolPanel.Mode` and `FlareToolPanelGroup.ShowTabStripWhenFloating`/`ShowCollapseButton` are removed with the layout. A standalone `FlareToolPanel` keeps its own collapse toggle.
 
 ## [0.60.0] - 2026-11-20
 

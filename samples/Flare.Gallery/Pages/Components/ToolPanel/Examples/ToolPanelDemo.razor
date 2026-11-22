@@ -1,9 +1,8 @@
 @using Flare.Components.IDE
 
-@* Standalone FlareToolPanel (outside a layout): a titled, collapsible dockable panel with an
-   optional header toolbar (ShowToolbar + ToolbarContent). Collapsing shrinks the panel to a thin
-   rail; bind Collapsed to drive it. Inside a FlareIdeLayout the layout owns collapse and the
-   auto-hide flyout instead - see the Full IDE Layout example. *@
+@* Standalone FlareToolPanel: a titled, collapsible panel with an optional header toolbar
+   (ShowToolbar + ToolbarContent). Collapsing shrinks the panel to a thin rail; bind Collapsed to
+   drive it. Inside a FlareToolPanelGroup the panel becomes one tab and the group owns the header. *@
 <FlareStack Row="true" Gap="FlareSpacing.Custom" GapValue="0.75rem" Height="280px" Align="FlareAlignItems.Stretch">
     <FlareCard Variant="CardVariant.Outlined" Width="240px" Padding="FlareSpacing.None">
         <FlareToolPanel Title="Explorer" ShowToolbar="true"

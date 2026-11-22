@@ -841,22 +841,16 @@
     <value>Data Grid</value>
   </data>
   <data name="Ide_Title" xml:space="preserve">
-    <value>IDE Layout</value>
+    <value>IDE Workspace</value>
   </data>
   <data name="Ide_Subtitle" xml:space="preserve">
-    <value>Compose a desktop-style IDE shell - ribbon, menu bar, document tabs, dockable tool panels, resizable splitter, and status bar - entirely from Flare components.</value>
+    <value>Compose a desktop-style IDE shell around FlareDockWorkspace - ribbon, menu bar, dockable groups, tool panels, splitter and status bar - entirely from Flare components.</value>
   </data>
   <data name="Ide_Ribbon_Title" xml:space="preserve">
     <value>Ribbon</value>
   </data>
   <data name="Ide_Ribbon_Desc" xml:space="preserve">
     <value>FlareRibbon - tabbed command groups with large and small buttons, separators, dropdown galleries, and a collapsible SizeMode.</value>
-  </data>
-  <data name="Ide_DocTabs_Title" xml:space="preserve">
-    <value>Document Tabs</value>
-  </data>
-  <data name="Ide_DocTabs_Desc" xml:space="preserve">
-    <value>FlareDocumentTabs - editor-style tabs with per-tab icons, a modified indicator, closeable and pinned tabs, and overflow handling.</value>
   </data>
   <data name="Ide_ToolPanel_Title" xml:space="preserve">
     <value>Tool Panel</value>
@@ -4986,25 +4980,6 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Scheduler_SaveRetained" xml:space="preserve"><value>The event was not saved. Check the values or allow saving, then try again. Your draft is retained.</value></data>
   <data name="Scheduler_MoreEvents" xml:space="preserve"><value>More events</value></data>
   <data name="Scheduler_Close" xml:space="preserve"><value>Close</value></data>
-  <data name="IdeWorkspace_Title" xml:space="preserve"><value>Document workspace</value></data>
-  <data name="IdeWorkspace_Description" xml:space="preserve"><value>A host-owned tab strip controls the documents: drag a tab onto a side region or its collapsed rail (or use the tab's move menu), close it, or return to the main content. A side region draws its tab strip only while it has documents, and the strip carries a compact control that returns to that region's tools. The left dock has tabbed tools and shortcuts can be edited without running commands.</value></data>
-  <data name="IdeWorkspace_Activate" xml:space="preserve"><value>Activate document</value></data>
-  <data name="IdeWorkspace_Close" xml:space="preserve"><value>Close document</value></data>
-  <data name="IdeWorkspace_Main" xml:space="preserve"><value>Main</value></data>
-  <data name="IdeWorkspace_MainContent" xml:space="preserve"><value>Main content area</value></data>
-  <data name="IdeWorkspace_Left" xml:space="preserve"><value>Left</value></data>
-  <data name="IdeWorkspace_Right" xml:space="preserve"><value>Right</value></data>
-  <data name="IdeWorkspace_LeftRegion" xml:space="preserve"><value>Left region</value></data>
-  <data name="IdeWorkspace_RightRegion" xml:space="preserve"><value>Right region</value></data>
-  <data name="IdeWorkspace_Notes" xml:space="preserve"><value>Notes</value></data>
-  <data name="IdeWorkspace_Commands" xml:space="preserve"><value>Commands</value></data>
-  <data name="IdeWorkspace_Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>
-  <data name="IdeWorkspace_Open" xml:space="preserve"><value>Open</value></data>
-  <data name="IdeWorkspace_Run" xml:space="preserve"><value>Run</value></data>
-  <data name="IdeWorkspace_ParseError" xml:space="preserve"><value>Undefined symbol</value></data>
-  <data name="IdeWorkspace_HeadingError" xml:space="preserve"><value>Missing heading</value></data>
-  <data name="IdeWorkspace_Ready" xml:space="preserve"><value>Ready</value></data>
-  <data name="IdeWorkspace_ReorderHandles" xml:space="preserve"><value>Show group handles</value></data>
   <data name="Ide_Caption_Title" xml:space="preserve"><value>Window caption controls</value></data>
   <data name="Ide_Caption_Desc" xml:space="preserve"><value>The host supplies the glyph, accessible label and window command. Size and visual states follow the base theme tokens. An app can override individual --flare-caption-* tokens on its title bar.</value></data>
   <data name="Ide_Caption_AppTitle" xml:space="preserve"><value>Contoso - Main</value></data>

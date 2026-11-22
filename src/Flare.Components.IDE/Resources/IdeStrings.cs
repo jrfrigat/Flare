@@ -20,29 +20,11 @@ public sealed class IdeStrings
     /// <summary>Accessible label of the backstage's back/close button.</summary>
     public static string BackstageClose => Get("Backstage_Close");
 
-    /// <summary>Accessible label of the rail that expands a collapsed layout panel.</summary>
-    public static string LayoutExpandPanel => Get("Layout_ExpandPanel");
-
-    /// <summary>Accessible name of the document tab strip.</summary>
-    public static string DocTabsLabel => Get("DocTabs_Label");
-
-    /// <summary>Accessible label of the modified-document marker.</summary>
-    public static string DocTabsModified => Get("DocTabs_Modified");
-
-    /// <summary>Accessible label of a document tab's close button.</summary>
-    public static string DocTabsClose => Get("DocTabs_Close");
-
-    /// <summary>Accessible label of the button listing tabs that overflow the strip.</summary>
-    public static string DocTabsHidden => Get("DocTabs_Hidden");
-
     /// <summary>Accessible label of the formula bar's name box.</summary>
     public static string FormulaBarNameBox => Get("FormulaBar_NameBox");
 
     /// <summary>Accessible label of the formula bar's editor.</summary>
     public static string FormulaBarFormula => Get("FormulaBar_Formula");
-
-    /// <summary>Accessible label of the sheet tabs' add button.</summary>
-    public static string SheetTabsAdd => Get("SheetTabs_Add");
 
     /// <summary>Accessible label of the control that expands a collapsed tool panel.</summary>
     public static string ToolPanelExpand => Get("ToolPanel_Expand");

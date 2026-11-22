@@ -3,10 +3,10 @@
 @using Flare.Icons
 
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
-    <FlareIdeLayout id="fitting" Height="420px" LeftPanelWidth="400px">
-        <ChildContent><p id="document">Document</p></ChildContent>
-        <LeftToolPanel>
-            <FlareToolPanelGroup id="top-group" Position="ToolPanelPosition.Left" ShowCollapseButton="false">
+    <div id="fitting" style="width:100%;min-height:420px;display:flex;flex-direction:column;gap:1rem">
+        <p id="document">Document</p>
+        <div id="top-group" style="width:var(--flare-ide-left-width,400px);max-width:100%;min-width:0">
+            <FlareToolPanelGroup Position="ToolPanelPosition.Left">
                 <FlareToolPanel Title="Solution Explorer" Key="explorer-top" Icon="@FlareIcons.Folder">
                     <p>Explorer body</p>
                 </FlareToolPanel>
@@ -14,10 +14,10 @@
                     <p>Files body</p>
                 </FlareToolPanel>
             </FlareToolPanelGroup>
-        </LeftToolPanel>
-        <BottomPanel>
-            <FlareToolPanelGroup id="bottom-group" Position="ToolPanelPosition.Bottom"
-                                 TabStripPlacement="TabStripPlacement.Bottom" ShowCollapseButton="false">
+        </div>
+        <div id="bottom-group" style="width:100%;max-width:100%;min-width:0">
+            <FlareToolPanelGroup Position="ToolPanelPosition.Bottom"
+                                 TabStripPlacement="TabStripPlacement.Bottom">
                 <FlareToolPanel Title="Solution Explorer" Key="explorer-bottom" Icon="@FlareIcons.Folder">
                     <p>Bottom explorer body</p>
                 </FlareToolPanel>
@@ -25,6 +25,6 @@
                     <p>Bottom files body</p>
                 </FlareToolPanel>
             </FlareToolPanelGroup>
-        </BottomPanel>
-    </FlareIdeLayout>
+        </div>
+    </div>
 </FlareThemeProvider>

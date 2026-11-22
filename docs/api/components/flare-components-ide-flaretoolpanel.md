@@ -4,21 +4,20 @@
 
 `Flare.Components.IDE.FlareToolPanel`
 
-A collapsible tool panel for the IDE sidebar. Wraps content with a header bar containing title, optional toolbar, and collapse button. Composed from base Flare components - no custom tokens. When placed inside a FlareIdeLayout region the layout owns the collapsed state and the thin rail / auto-hide flyout, so collapsing frees the docked space.
+A collapsible tool panel. Wraps content with a header bar containing title, optional toolbar and a collapse button. Composed from base Flare components - no custom tokens. Standalone, or as a tab inside FlareToolPanelGroup.
 
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the panel body. |
-| `Collapsed` | `bool` | `false` | Parameter |  | Whether the panel is currently collapsed. Used for standalone (no-layout) collapsing; inside a layout the layout owns the collapsed state. |
-| `CollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback when the collapsed state changes (standalone use). |
-| `Icon` | `FlareIcon?` | `` | Parameter |  | Icon that represents the tool. Inside a FlareToolPanelGroup it is shown in the tool's tab, and it is the only visible content of that tab once the tab is too narrow for text; with TabStripPlacement set to Bottom it is also shown beside the active tool's title in the header. Inside a FlareIdeLayout it identifies the tool on the per-tool auto-hide rail. Null renders no icon. |
+| `Collapsed` | `bool` | `false` | Parameter |  | Whether the panel is currently collapsed. Ignored while the panel is one tab of a FlareToolPanelGroup. |
+| `CollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback when the collapsed state changes. |
+| `Icon` | `FlareIcon?` | `` | Parameter |  | Icon that represents the tool. Inside a FlareToolPanelGroup it is shown in the tool's tab, and it is the only visible content of that tab once the tab is too narrow for text; with TabStripPlacement set to Bottom it is also shown beside the active tool's title in the header. Null renders no icon. |
 | `Key` | `string?` | `` | Parameter |  | Stable key that ActiveKey uses to select this panel. When unset the panel is addressed by Title, which is enough for a fixed, untranslated title; set an explicit key when titles are localized, repeat or change at run time. |
-| `Mode` | `IdePanelMode` | `IdePanelMode.Docked` | Parameter |  | How the panel occupies space inside a FlareIdeLayout: Docked (takes space when expanded) or AutoHide (flies out as an overlay). Ignored when the panel is used standalone (outside a layout). |
-| `Position` | `ToolPanelPosition` | `ToolPanelPosition.Left` | Parameter |  | Position of the panel in the IDE layout. |
+| `Position` | `ToolPanelPosition` | `ToolPanelPosition.Left` | Parameter |  | Position of the panel in the IDE chrome. |
 | `ShowToolbar` | `bool` | `false` | Parameter |  | Whether to show the toolbar area. |
-| `Title` | `string?` | `` | Parameter |  | Panel title displayed in the header (and on the collapsed rail inside a layout). |
+| `Title` | `string?` | `` | Parameter |  | Panel title displayed in the header. |
 | `ToolbarContent` | `RenderFragment?` | `` | Parameter |  | Optional toolbar content in the header (e.g. filter, settings buttons). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

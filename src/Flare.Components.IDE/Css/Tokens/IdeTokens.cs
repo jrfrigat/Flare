@@ -79,28 +79,14 @@ public static class Vars
     public const string MenuBarBg = "--flare-ide-menubar-bg";
     /// <summary>CSS custom property <c>--flare-ide-commandbar-bg</c>.</summary>
     public const string CommandBarBg = "--flare-ide-commandbar-bg";
-    /// <summary>CSS custom property <c>--flare-ide-tab-strip-bg</c>.</summary>
-    public const string TabStripBg = "--flare-ide-tab-strip-bg";
-    /// <summary>CSS custom property <c>--flare-ide-tab-active-bg</c>.</summary>
-    public const string TabActiveBg = "--flare-ide-tab-active-bg";
-    /// <summary>Foreground color of the active document tab.</summary>
-    public const string TabActiveColor = "--flare-ide-tab-active-color";
     /// <summary>CSS custom property <c>--flare-ide-editor-bg</c>.</summary>
     public const string EditorBg = "--flare-ide-editor-bg";
     /// <summary>CSS custom property <c>--flare-ide-tool-header-bg</c>.</summary>
     public const string ToolHeaderBg = "--flare-ide-tool-header-bg";
-    /// <summary>CSS custom property <c>--flare-ide-tool-tab-active-bg</c>.</summary>
-    public const string ToolTabActiveBg = "--flare-ide-tool-tab-active-bg";
-    /// <summary>CSS custom property <c>--flare-ide-bottom-tab-strip-bg</c>.</summary>
-    public const string BottomTabStripBg = "--flare-ide-bottom-tab-strip-bg";
     /// <summary>CSS custom property <c>--flare-ide-statusbar-bg</c>.</summary>
     public const string StatusBarBg = "--flare-ide-statusbar-bg";
     /// <summary>CSS custom property <c>--flare-ide-panel-bg</c>.</summary>
     public const string PanelBg = "--flare-ide-panel-bg";
-    /// <summary>Corner radius of IDE panels and document surfaces.</summary>
-    public const string PanelRadius = "--flare-ide-panel-radius";
-    /// <summary>CSS custom property <c>--flare-ide-panel-outline</c>.</summary>
-    public const string PanelOutline = "--flare-ide-panel-outline";
     /// <summary>CSS custom property <c>--flare-ide-motion-duration-enter-small</c>.</summary>
     public const string MotionDurationEnterSmall = "--flare-ide-motion-duration-enter-small";
     /// <summary>CSS custom property <c>--flare-ide-state-pressed-opacity</c>.</summary>

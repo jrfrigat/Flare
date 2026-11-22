@@ -213,9 +213,8 @@ public static class ComponentCatalog
         new ComponentEntry("components/shortcuts",         "Shortcuts",               "Shortcuts_Title",       ComponentGroup.Utilities),
 
         new ComponentEntry("components/backstage",            "Backstage",            "Ide_Backstage_Title",    ComponentGroup.Ide),
-        new ComponentEntry("components/document-tabs",        "Document Tabs",        "Ide_DocTabs_Title",      ComponentGroup.Ide),
         new ComponentEntry("components/formula-bar",          "Formula Bar",          "Ide_FormulaBar_Title",   ComponentGroup.Ide),
-        new ComponentEntry("components/ide",                  "IDE Layout",           "Ide_Title",              ComponentGroup.Ide),
+        new ComponentEntry("components/ide",                  "IDE Workspace",        "Ide_Title",              ComponentGroup.Ide),
         new ComponentEntry("components/menu-bar",             "Menu Bar",             "Ide_MenuBar_Title",      ComponentGroup.Ide),
         new ComponentEntry("components/property-grid",        "Property Grid",        "Ide_PropertyGrid_Title", ComponentGroup.Ide),
         new ComponentEntry("components/quick-access-toolbar", "Quick Access Toolbar", "Ide_Qat_Title",          ComponentGroup.Ide),

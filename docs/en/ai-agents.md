@@ -62,7 +62,7 @@ Opt-in heavier components live in their own packages - add only what you use:
 | `Flare.Components.Carousel` | `FlareCarousel` |
 | `Flare.Components.Transfer` | `FlareTransfer` |
 | `Flare.Components.QrCode` | `FlareQrCode` |
-| `Flare.Components.IDE` | IDE shell (`FlareIdeLayout`, ribbon, docking, ...) |
+| `Flare.Components.IDE` | IDE shell (`FlareDockWorkspace`, ribbon, tool panels, ...) |
 
 ---
 
@@ -253,10 +253,12 @@ All real component names (consult the [API Reference](../api/README.md) for each
 
 **Theming:** `FlareThemeProvider`, `FlareThemeScope`, `FlareColorModeToggle`, `FlareColorCustomizer`.
 
-**Office/IDE shell (`Flare.Components.IDE`):** `FlareIdeLayout`, `FlareDocumentTab`, `FlareDocumentTabs`,
-`FlareToolPanel`, `FlareRibbon` (+ `FlareRibbonTab`, `FlareRibbonGroup`, `FlareRibbonButton`,
-`FlareRibbonDropdown`, `FlareRibbonSeparator`), `FlareQuickAccessToolbar`, `FlareStatusBar`,
-`FlareFormulaBar`, `FlareSheetTabs`.
+**Office/IDE shell (`Flare.Components.IDE`):** `FlareDockWorkspace`, `FlareBackstage`, `FlareBackstageItem`,
+`FlareCaptionButton`, `FlareEditorBreadcrumbBar`, `FlareEditorBreadcrumbSegment`, `FlareMenuBar`,
+`FlareToolbar`, `FlareQuickAccessToolbar`, `FlareStatusBar`, `FlareToolPanel`, `FlareToolPanelGroup`,
+`FlarePropertyGrid`, `FlarePropertyGridItem`, `FlareDiagnosticList`, `FlareShortcutEditor`, `FlareFormulaBar`,
+`FlareRibbon` (+ `FlareRibbonTab`, `FlareRibbonGroup`, `FlareRibbonButton`, `FlareRibbonDropdown`,
+`FlareRibbonSeparator`).
 
 **Drag and drop:** `FlareDragContext`, `FlareDraggable`, `FlareDropZone`.
 

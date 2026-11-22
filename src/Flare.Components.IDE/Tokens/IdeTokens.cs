@@ -7,16 +7,8 @@ namespace Flare.Components.IDE;
 /// <summary>Optional Ide design overrides. Defaults follow the base theme; map with CssVarMap.FlattenTokens.</summary>
 public sealed record IdeTokens
 {
-    /// <summary>Design override for <c>--flare-ide-layout-gap</c>.</summary>
-    [CssVar(Css.Tokens.Ide.Layout.Gap)] public string LayoutGap { get; init; } = Var(Css.Tokens.Spacing.S0);
-    /// <summary>Design override for <c>--flare-ide-panel-radius</c>.</summary>
-    [CssVar(Names.PanelRadius)] public string PanelRadius { get; init; } = Var(Css.Tokens.Shape.None);
-    /// <summary>Optional outline color of IDE content surfaces. Unset leaves the surfaces without an outline.</summary>
-    [CssVar(Names.PanelOutline)] public string? PanelOutline { get; init; }
     /// <summary>Design override for <c>--flare-ide-menubar-gap</c>.</summary>
     [CssVar(Css.Tokens.Ide.Layout.MenuBarGap)] public string MenuBarGap { get; init; } = Var(Css.Tokens.Spacing.S1);
-    /// <summary>Design override for <c>--flare-ide-tab-active-color</c>.</summary>
-    [CssVar(Names.TabActiveColor)] public string TabActiveColor { get; init; } = $"var({Names.OnSurface}, {Var(Css.Tokens.Color.OnSurface)})";
     /// <summary>Design override for <c>--flare-ide-border-width</c>.</summary>
     [CssVar(Names.BorderWidth)] public string BorderWidth { get; init; } = Var(Css.Tokens.Border.Width);
     /// <summary>Design override for <c>--flare-ide-border-style</c>.</summary>

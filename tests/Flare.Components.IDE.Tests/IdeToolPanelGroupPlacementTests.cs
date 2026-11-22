@@ -198,16 +198,15 @@ public class IdeToolPanelGroupPlacementTests : FlareTestContext
     }
 
     [Fact]
-    public void BottomPlacement_KeepsActionsAndCollapseInTheHeader()
+    public void BottomPlacement_KeepsActionsInTheHeader()
     {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            Group(TabStripPlacement.Bottom, Panels(new Panel("Explorer", "Files")), toolbar: Actions())));
+        var cut = Render(Group(TabStripPlacement.Bottom,
+            Panels(new Panel("Explorer", "Files")), toolbar: Actions()));
 
         var header = cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Header}");
-        Assert.Equal(3, header.Children.Length);
+        Assert.Equal(2, header.Children.Length);
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Title, header.Children[0].ClassName);
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Actions, header.Children[1].ClassName);
-        Assert.Equal("button", header.Children[2].LocalName);
         Assert.Single(header.Children[1].QuerySelectorAll("button[aria-label='Pin panel']"));
         Assert.Empty(header.QuerySelectorAll("[role=tablist]"));
     }

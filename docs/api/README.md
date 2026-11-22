@@ -76,8 +76,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDialogProvider`](components/flare-components-flaredialogprovider.md)
 - [`FlareDivider`](components/flare-components-flaredivider.md)
 - [`FlareDockWorkspace`](components/flare-components-ide-flaredockworkspace.md) — Renders and coordinates dynamic tab groups and nested splits within one Blazor renderer.
-- [`FlareDocumentTab`](components/flare-components-ide-flaredocumenttab.md)
-- [`FlareDocumentTabs`](components/flare-components-ide-flaredocumenttabs.md) — Displays document tabs with optional controlled selection, ordering and retained panels.
 - [`FlareDragContext`](components/flare-components-flaredragcontext.md)
 - [`FlareDragHandle`](components/flare-components-flaredraghandle.md)
 - [`FlareDraggable`](components/flare-components-flaredraggable.md)
@@ -106,7 +104,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareHighlighter`](components/flare-components-flarehighlighter.md)
 - [`FlareIconButton`](components/flare-components-flareiconbutton.md)
 - [`FlareIconView`](components/flare-components-flareiconview.md)
-- [`FlareIdeLayout`](components/flare-components-ide-flareidelayout.md) — Root layout component for an IDE-style interface. Arranges ribbon, menu bar, tool panels, document area, bottom panel, and status bar in a Visual Studio-style layout. All styling is composed from base Flare CSS classes and design tokens - no custom tokens. The layout owns each region's collapsed state so a collapsed panel frees its docked space (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels. The bottom region can draw a tool-window header with pin and collapse controls: pinned keeps it docked, unpinned turns it into an auto-hide flyout. The Center region draws its dock strip; a side region draws one only while it has documents, so an empty side reserves no strip row, and the strip's compact region control returns from a covering document to the tool group.
 - [`FlareImage`](components/flare-components-flareimage.md)
 - [`FlareInfiniteScroll`](components/flare-components-flareinfinitescroll.md)
 - [`FlareKanban`](components/flare-components-flarekanban.md)
@@ -116,8 +113,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareLayoutDrawer`](components/flare-components-flarelayoutdrawer.md)
 - [`FlareLazy`](components/flare-components-flarelazy.md)
 - [`FlareLink`](components/flare-components-flarelink.md)
-- [`FlareLinkTab`](components/flare-components-flarelinktab.md)
-- [`FlareLinkTabs`](components/flare-components-flarelinktabs.md)
 - [`FlareList`](components/flare-components-flarelist.md)
 - [`FlareListItem`](components/flare-components-flarelistitem.md)
 - [`FlareLocalizationProvider`](components/flare-components-flarelocalizationprovider.md)
@@ -187,7 +182,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareScrollTop`](components/flare-components-flarescrolltop.md)
 - [`FlareSection`](components/flare-components-flaresection.md)
 - [`FlareSelect`](components/flare-components-flareselect.md) — Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned "no value" row, so a filter select expresses "all" without a sentinel value.
-- [`FlareSheetTabs`](components/flare-components-ide-flaresheettabs.md)
 - [`FlareShortcutEditor`](components/flare-components-ide-flareshortcuteditor.md) — Captures and validates a shortcut assignment without executing the associated command.
 - [`FlareShortcutEntry`](components/flare-components-flareshortcutentry.md) — One keyboard shortcut: a key combination, what it invokes, and the description the help overlay lists it under. It registers with the enclosing FlareShortcuts scope and renders nothing.
 - [`FlareShortcuts`](components/flare-components-flareshortcuts.md) — Keyboard-shortcut scope: the entries declared inside it register their key combinations here, and it listens for them, dispatches to the matching entry and can show the resulting list as a help overlay.
@@ -225,8 +219,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareTocLink`](components/flare-components-flaretoclink.md)
 - [`FlareToggleButton`](components/flare-components-flaretogglebutton.md)
 - [`FlareToggleGroup`](components/flare-components-flaretogglegroup.md)
-- [`FlareToolPanel`](components/flare-components-ide-flaretoolpanel.md) — A collapsible tool panel for the IDE sidebar. Wraps content with a header bar containing title, optional toolbar, and collapse button. Composed from base Flare components - no custom tokens. When placed inside a FlareIdeLayout region the layout owns the collapsed state and the thin rail / auto-hide flyout, so collapsing frees the docked space.
-- [`FlareToolPanelGroup`](components/flare-components-ide-flaretoolpanelgroup.md) — Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a single visible panel and the panel bodies kept mounted while hidden. The strip never scrolls horizontally: tabs share one row and their labels ellipsize as the group narrows; a tab whose tool has an icon and which becomes too narrow for text keeps the icon alone while the accessible name stays on the tab. Inside a FlareIdeLayout region the hosted panels still report their titles and modes, so the region rail and auto-hide behavior are unchanged; the group draws the region's collapse button because the individual panel headers are replaced by the tabs (see ShowCollapseButton).
+- [`FlareToolPanel`](components/flare-components-ide-flaretoolpanel.md) — A collapsible tool panel. Wraps content with a header bar containing title, optional toolbar and a collapse button. Composed from base Flare components - no custom tokens. Standalone, or as a tab inside FlareToolPanelGroup.
+- [`FlareToolPanelGroup`](components/flare-components-ide-flaretoolpanelgroup.md) — Presents several FlareToolPanel children as one tabbed tool area: a tab strip, a single visible panel and the panel bodies kept mounted while hidden. The strip never scrolls horizontally: tabs share one row and their labels ellipsize as the group narrows; a tab whose tool has an icon and which becomes too narrow for text keeps the icon alone while the accessible name stays on the tab. The group is standalone; host placement, docking and collapse are the application's composition.
 - [`FlareToolbar`](components/flare-components-ide-flaretoolbar.md)
 - [`FlareTooltip`](components/flare-components-flaretooltip.md)
 - [`FlareTransfer`](components/flare-components-flaretransfer.md)
@@ -342,17 +336,12 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.Gantt.GanttValidationCode`](enums/flare-components-gantt-ganttvalidationcode.md) — Why a proposed link was refused.
 - [`Flare.Components.GaugeShape`](enums/flare-components-gaugeshape.md) — How a FlareGauge lays its scale out. One component with three shapes rather than three components: the scale, bands, ticks, target marker and readout are the same in all three, and only the projection from value to screen differs.
 - [`Flare.Components.IDE.IdeDiagnosticSeverity`](enums/flare-components-ide-idediagnosticseverity.md) — Severity of a document diagnostic.
-- [`Flare.Components.IDE.IdeDocumentMounting`](enums/flare-components-ide-idedocumentmounting.md) — How FlareIdeLayout mounts the content of docked documents.
-- [`Flare.Components.IDE.IdeDocumentRegion`](enums/flare-components-ide-idedocumentregion.md) — Region in which an IDE document can be displayed.
-- [`Flare.Components.IDE.IdePanelMode`](enums/flare-components-ide-idepanelmode.md) — Controls how a docked tool panel in FlareIdeLayout behaves when expanded.
-- [`Flare.Components.IDE.IdeToolRailMode`](enums/flare-components-ide-idetoolrailmode.md) — How the rail of a collapsed or auto-hidden side region lists its tools in a FlareIdeLayout.
 - [`Flare.Components.ImageObjectFit`](enums/flare-components-imageobjectfit.md) — How a FlareImage is fitted into its box (maps to CSS object-fit).
 - [`Flare.Components.InputVariant`](enums/flare-components-inputvariant.md) — Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). Default keeps the theme's own field style; Filled and Outlined ask for the active theme's filled or outlined field, so the same variant follows each design language.
 - [`Flare.Components.LabelPlacement`](enums/flare-components-labelplacement.md) — Position of a control's label relative to the control (checkbox, radio, switch).
 - [`Flare.Components.LayoutContentAlignment`](enums/flare-components-layoutcontentalignment.md) — Horizontal placement of a width-capped content frame within the available area of FlareLayout / FlareLayoutContent. Only has a visible effect when the content is narrower than the available width (i.e. a ContainerMaxWidth cap is applied); at full width there is no free space to distribute.
 - [`Flare.Components.LayoutMotion`](enums/flare-components-layoutmotion.md) — How the shell moves when an in-flow drawer changes the grid track it reserves. A floating drawer - the Temporary variant, or any drawer once the layout is mobile - is an overlay and keeps its own slide in every mode.
 - [`Flare.Components.LinearProgressVariant`](enums/flare-components-linearprogressvariant.md) — Which of the linear track's three shapes FlareProgressLinear draws.
-- [`Flare.Components.LinkTabsVariant`](enums/flare-components-linktabsvariant.md) — Visual style of a FlareLinkTabs bar, independent of the active theme. Mirrors the pill-shaped variants of TabsVariant (Tonal/Filled) so a row of route links can read as the same segmented control as an in-page FlareTabs, reusing the same --flare-tabs-* design tokens.
 - [`Flare.Components.LinkUnderline`](enums/flare-components-linkunderline.md) — When a FlareLink shows its underline.
 - [`Flare.Components.MaskPreset`](enums/flare-components-maskpreset.md) — Ready-made mask patterns for FlareMaskedField. When set (and no explicit Mask is given), the corresponding pattern is used. Pattern tokens: # digit, A letter, * alphanumeric.
 - [`Flare.Components.MenuActivation`](enums/flare-components-menuactivation.md) — How a FlareMenu is opened from its activator.
@@ -391,7 +380,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.SwitchSize`](enums/flare-components-switchsize.md) — Size of FlareSwitch on the shared Xs..Xl scale; medium is the default. The steps are labels, not measurements - each theme maps them onto its own track and thumb tokens, and they differ: one theme's medium switch is not another's.
 - [`Flare.Components.TabInteractionType`](enums/flare-components-tabinteractiontype.md) — The kind of tab interaction reported to FlareTabs.OnPreviewInteraction.
 - [`Flare.Components.TabLabelRotation`](enums/flare-components-tablabelrotation.md) — Rotation applied to each tab's label in FlareTabs.
-- [`Flare.Components.IDE.TabOverflowBehavior`](enums/flare-components-ide-taboverflowbehavior.md) — Behaviour when document tabs overflow the available width.
 - [`Flare.Components.IDE.TabStripPlacement`](enums/flare-components-ide-tabstripplacement.md) — Which edge of a FlareToolPanelGroup carries its tool tab strip.
 - [`Flare.Components.TabsPlacement`](enums/flare-components-tabsplacement.md) — Side of the content the FlareTabs bar is placed on.
 - [`Flare.Components.TabsVariant`](enums/flare-components-tabsvariant.md) — Visual style of a FlareTabs bar, independent of the active theme. Each theme reskins the variants through its tokens, so a variant looks native everywhere (e.g. Filled is a solid accent pill). Four names mirror ButtonVariant (Text/Tonal/Filled/Outlined).

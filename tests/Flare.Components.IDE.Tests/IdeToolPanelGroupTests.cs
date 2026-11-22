@@ -7,8 +7,8 @@ using Microsoft.JSInterop;
 namespace Flare.Components.Tests;
 
 /// <summary>
-/// Several tool panels in one region share a tab strip and show one body at a time, while the panels
-/// keep reporting to the layout so the rail, collapse and auto-hide behavior do not change.
+/// Several tool panels in one group share a tab strip and show one body at a time; the group is
+/// standalone and the application composes its placement.
 /// </summary>
 public class IdeToolPanelGroupTests : FlareTestContext
 {
@@ -16,8 +16,7 @@ public class IdeToolPanelGroupTests : FlareTestContext
 
     private const string UiModule = "./_content/Flare.Components/js/flare-ui.js";
 
-    private sealed record Panel(string Title, string Text, IdePanelMode Mode = IdePanelMode.Docked,
-        string? Key = null, FlareIcon? Icon = null);
+    private sealed record Panel(string Title, string Text, string? Key = null, FlareIcon? Icon = null);
 
     private static RenderFragment Panels(params Panel[] panels) => builder =>
     {
@@ -26,7 +25,6 @@ public class IdeToolPanelGroupTests : FlareTestContext
         {
             builder.OpenComponent<FlareToolPanel>(sequence++);
             builder.AddAttribute(sequence++, nameof(FlareToolPanel.Title), panel.Title);
-            builder.AddAttribute(sequence++, nameof(FlareToolPanel.Mode), panel.Mode);
             if (panel.Key is not null)
                 builder.AddAttribute(sequence++, nameof(FlareToolPanel.Key), panel.Key);
             if (panel.Icon is not null)
@@ -35,13 +33,6 @@ public class IdeToolPanelGroupTests : FlareTestContext
                 (RenderFragment)(content => content.AddContent(0, panel.Text)));
             builder.CloseComponent();
         }
-    };
-
-    private static RenderFragment Group(RenderFragment panels) => builder =>
-    {
-        builder.OpenComponent<FlareToolPanelGroup>(0);
-        builder.AddAttribute(1, nameof(FlareToolPanelGroup.ChildContent), panels);
-        builder.CloseComponent();
     };
 
     private static RenderFragment Actions() => builder =>
@@ -53,12 +44,11 @@ public class IdeToolPanelGroupTests : FlareTestContext
         builder.CloseElement();
     };
 
-    private static RenderFragment GroupWithActions(RenderFragment panels, bool showCollapseButton = true) => builder =>
+    private static RenderFragment GroupWithActions(RenderFragment panels) => builder =>
     {
         builder.OpenComponent<FlareToolPanelGroup>(0);
         builder.AddAttribute(1, nameof(FlareToolPanelGroup.ChildContent), panels);
         builder.AddAttribute(2, nameof(FlareToolPanelGroup.ToolbarContent), Actions());
-        builder.AddAttribute(3, nameof(FlareToolPanelGroup.ShowCollapseButton), showCollapseButton);
         builder.CloseComponent();
     };
 
@@ -213,17 +203,15 @@ public class IdeToolPanelGroupTests : FlareTestContext
     }
 
     [Fact]
-    public void Group_ToolbarActionsRenderAfterTheTabsAndBeforeTheCollapseButton()
+    public void Group_ToolbarActionsRenderAfterTheTabStrip()
     {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            GroupWithActions(Panels(new Panel("Explorer", "Files")))));
+        var cut = RenderWithActions(new Panel("Explorer", "Files"));
 
         var header = cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Header}");
-        Assert.Equal(3, header.Children.Length);
+        Assert.Equal(2, header.Children.Length);
         Assert.Contains(Css.Classes.Tabs.Root, header.Children[0].ClassList);
         Assert.NotNull(header.Children[0].QuerySelector("[role=tablist]"));
         Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Actions, header.Children[1].ClassName);
-        Assert.Equal("button", header.Children[2].LocalName);
         Assert.Single(header.Children[1].QuerySelectorAll("button[aria-label='Pin panel']"));
     }
 
@@ -257,20 +245,6 @@ public class IdeToolPanelGroupTests : FlareTestContext
 
         await cut.InvokeAsync(() => cut.Instance.OnTabNavigation("End", rtl: false));
         Assert.Equal(["false", "false", "true"], Selected(cut));
-    }
-
-    [Fact]
-    public async Task Layout_GroupToolbarKeepsTheCollapseButton()
-    {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")))));
-
-        await cut.InvokeAsync(() => cut.Find(
-            $".{Css.Classes.Ide.ToolPanelGroup.Header} > button").ClickAsync(new()));
-
-        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
-        Assert.Equal(["Explorer", "Properties"],
-            cut.FindAll($".{Css.Classes.Ide.Layout.RailTitle}").Select(title => title.TextContent));
     }
 
     // The tab strip disconnects with the circuit; the keyboard unregistration in DisposeAsync then throws
@@ -313,43 +287,15 @@ public class IdeToolPanelGroupTests : FlareTestContext
     }
 
     [Fact]
-    public void Layout_GroupWithoutCollapseButtonKeepsTabsAndActions()
+    public void Group_TwoGroupsKeepUniqueIds()
     {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")), showCollapseButton: false)));
-
-        var header = cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Header}");
-        Assert.Equal(2, header.Children.Length);
-        Assert.Contains(Css.Classes.Tabs.Root, header.Children[0].ClassList);
-        Assert.NotNull(header.Children[0].QuerySelector("[role=tablist]"));
-        Assert.Equal(Css.Classes.Ide.ToolPanelGroup.Actions, header.Children[1].ClassName);
-        Assert.Single(header.Children[1].QuerySelectorAll("button[aria-label='Pin panel']"));
-        Assert.Empty(header.QuerySelectorAll(":scope > button"));
-    }
-
-    [Fact]
-    public void Layout_GroupWithoutCollapseButtonStillCollapsesThroughTheRegionState()
-    {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")), showCollapseButton: false)));
-        Assert.NotNull(cut.Find($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
-
-        cut.Render(p => p
-            .Add(x => x.LeftCollapsed, true)
-            .Add(x => x.LeftToolPanel,
-                GroupWithActions(Panels(new("Explorer", ""), new("Properties", "")), showCollapseButton: false)));
-
-        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
-        Assert.Equal(["Explorer", "Properties"],
-            cut.FindAll($".{Css.Classes.Ide.Layout.RailTitle}").Select(title => title.TextContent));
-    }
-
-    [Fact]
-    public void Layout_TwoGroupsWithToolbarsKeepUniqueIds()
-    {
-        var cut = Render<FlareIdeLayout>(p => p
-            .Add(x => x.LeftToolPanel, GroupWithActions(Panels(new Panel("Explorer", ""))))
-            .Add(x => x.RightToolPanel, GroupWithActions(Panels(new Panel("Properties", "")))));
+        var cut = Render(b =>
+        {
+            b.OpenElement(0, "div");
+            b.AddContent(1, GroupWithActions(Panels(new Panel("Explorer", ""))));
+            b.AddContent(2, GroupWithActions(Panels(new Panel("Properties", ""))));
+            b.CloseElement();
+        });
 
         var ids = cut.FindAll("[id]").Select(element => element.Id).ToArray();
         Assert.NotEmpty(ids);
@@ -373,50 +319,5 @@ public class IdeToolPanelGroupTests : FlareTestContext
         {
             CultureInfo.CurrentUICulture = previous;
         }
-    }
-
-    [Fact]
-    public async Task Layout_GroupHeaderCollapsesTheRegionAndLabelsEveryPanel()
-    {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            Group(Panels(new("Explorer", ""), new("Properties", "")))));
-
-        await cut.InvokeAsync(() => cut.Find(
-            $".{Css.Classes.Ide.ToolPanelGroup.Header} > button").ClickAsync(new()));
-
-        Assert.Empty(cut.FindAll($".{Css.Classes.Ide.ToolPanelGroup.Root}"));
-        Assert.Equal(["Explorer", "Properties"],
-            cut.FindAll($".{Css.Classes.Ide.Layout.RailTitle}").Select(title => title.TextContent));
-    }
-
-    [Fact]
-    public void Layout_GroupedAutoHidePanelsFloatTheRegion()
-    {
-        var cut = Render<FlareIdeLayout>(p => p.Add(x => x.LeftToolPanel,
-            Group(Panels(new("Explorer", "", IdePanelMode.AutoHide),
-                new("Properties", "", IdePanelMode.AutoHide)))));
-
-        Assert.Single(cut.FindAll($".{Css.Classes.Ide.Layout.PanelFloating}"));
-    }
-
-    [Fact]
-    public async Task Layout_RegionButtonReturnsToTheGroupTabChosenBeforeTheDocument()
-    {
-        var cut = Render<FlareIdeLayout>(p => p
-            .Add(x => x.Documents, [])
-            .Add(x => x.LeftToolPanel, Group(Panels(new("Explorer", "Files"), new("Properties", "Details")))));
-
-        await cut.InvokeAsync(() => cut.FindAll("[role=tab]")[1].ClickAsync(new()));
-
-        cut.Render(p => p.Add(x => x.Documents, [new("a", "A.cs", IdeDocumentRegion.Left)]));
-        var leftBody = $".{Css.Classes.Ide.Layout.PanelLeft} .{Css.Classes.Ide.Layout.PanelBody}";
-
-        Assert.True(cut.Find(leftBody).HasAttribute("inert"));
-        await cut.InvokeAsync(() => cut.Find(
-            $".{Css.Classes.Ide.Layout.DockTabs}[data-region=\"Left\"] button").ClickAsync(new()));
-
-        Assert.False(cut.Find(leftBody).HasAttribute("inert"));
-        Assert.Equal("true", cut.FindAll("[role=tab]")[1].GetAttribute("aria-selected"));
-        Assert.False(cut.FindAll("[role=tabpanel]")[1].HasAttribute("hidden"));
     }
 }

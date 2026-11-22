@@ -62,7 +62,7 @@ dotnet add package Flare.Theme.MaterialDesign3Expressive
 | `Flare.Components.Carousel` | `FlareCarousel` |
 | `Flare.Components.Transfer` | `FlareTransfer` |
 | `Flare.Components.QrCode` | `FlareQrCode` |
-| `Flare.Components.IDE` | оболочка IDE (`FlareIdeLayout`, ribbon, докинг, ...) |
+| `Flare.Components.IDE` | оболочка IDE (`FlareDockWorkspace`, ribbon, панели инструментов, ...) |
 
 ---
 
@@ -255,10 +255,12 @@ inline/batch-редактирование, выделение, переупор�
 
 **Темизация:** `FlareThemeProvider`, `FlareThemeScope`, `FlareColorModeToggle`, `FlareColorCustomizer`.
 
-**Office/IDE-оболочка (`Flare.Components.IDE`):** `FlareIdeLayout`, `FlareDocumentTab`, `FlareDocumentTabs`,
-`FlareToolPanel`, `FlareRibbon` (+ `FlareRibbonTab`, `FlareRibbonGroup`, `FlareRibbonButton`,
-`FlareRibbonDropdown`, `FlareRibbonSeparator`), `FlareQuickAccessToolbar`, `FlareStatusBar`,
-`FlareFormulaBar`, `FlareSheetTabs`.
+**Office/IDE-оболочка (`Flare.Components.IDE`):** `FlareDockWorkspace`, `FlareBackstage`, `FlareBackstageItem`,
+`FlareCaptionButton`, `FlareEditorBreadcrumbBar`, `FlareEditorBreadcrumbSegment`, `FlareMenuBar`,
+`FlareToolbar`, `FlareQuickAccessToolbar`, `FlareStatusBar`, `FlareToolPanel`, `FlareToolPanelGroup`,
+`FlarePropertyGrid`, `FlarePropertyGridItem`, `FlareDiagnosticList`, `FlareShortcutEditor`, `FlareFormulaBar`,
+`FlareRibbon` (+ `FlareRibbonTab`, `FlareRibbonGroup`, `FlareRibbonButton`, `FlareRibbonDropdown`,
+`FlareRibbonSeparator`).
 
 **Перетаскивание:** `FlareDragContext`, `FlareDraggable`, `FlareDropZone`.
 

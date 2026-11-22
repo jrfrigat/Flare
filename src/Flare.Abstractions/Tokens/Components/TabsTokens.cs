@@ -144,8 +144,8 @@ public sealed record TabsTokens
     /// <summary>Label and icon color of the selected tool tab.</summary>
     [CssVar(Tabs.ToolActiveColor)] public string ToolActiveColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
 
-    /// <summary>Optional fill of the selected tool tab. Defaults to transparent: the outline alone marks it.</summary>
-    [CssVar(Tabs.ToolActiveBg)] public string ToolActiveBg { get; init; } = "transparent";
+    /// <summary>Optional fill of the selected tool tab. Defaults to the surface role; the outline also marks it.</summary>
+    [CssVar(Tabs.ToolActiveBg)] public string ToolActiveBg { get; init; } = Var(Css.Tokens.Color.Surface);
 
     /// <summary>Border color of the selected tool tab.</summary>
     [CssVar(Tabs.ToolActiveBorderColor)] public string ToolActiveBorderColor { get; init; } = Var(Css.Tokens.Color.Primary);

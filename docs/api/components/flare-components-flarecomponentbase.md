@@ -89,8 +89,6 @@ This component exposes no documented public methods.
 - `FlareDialogProvider`
 - `FlareDivider`
 - `FlareDockWorkspace`
-- `FlareDocumentTab`
-- `FlareDocumentTabs`
 - `FlareDragContext`
 - `FlareDragHandle`
 - `FlareDraggable`
@@ -119,7 +117,6 @@ This component exposes no documented public methods.
 - `FlareHighlighter`
 - `FlareIconButton`
 - `FlareIconView`
-- `FlareIdeLayout`
 - `FlareImage`
 - `FlareInfiniteScroll`
 - `FlareKanban`
@@ -129,8 +126,6 @@ This component exposes no documented public methods.
 - `FlareLayoutDrawer`
 - `FlareLazy`
 - `FlareLink`
-- `FlareLinkTab`
-- `FlareLinkTabs`
 - `FlareList`
 - `FlareListItem`
 - `FlareMarkdown`
@@ -198,7 +193,6 @@ This component exposes no documented public methods.
 - `FlareScrollTop`
 - `FlareSection`
 - `FlareSelect`
-- `FlareSheetTabs`
 - `FlareShortcutEditor`
 - `FlareShortcuts`
 - `FlareSignaturePad`

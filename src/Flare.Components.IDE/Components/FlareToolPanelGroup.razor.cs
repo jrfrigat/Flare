@@ -11,26 +11,19 @@ namespace Flare.Components.IDE;
 /// visible panel and the panel bodies kept mounted while hidden. The strip never scrolls horizontally:
 /// tabs share one row and their labels ellipsize as the group narrows; a tab whose tool has an icon and
 /// which becomes too narrow for text keeps the icon alone while the accessible name stays on the tab.
-/// Inside a <see cref="FlareIdeLayout"/> region the hosted panels still report their titles and modes,
-/// so the region rail and auto-hide behavior are unchanged; the group draws the region's collapse
-/// button because the individual panel headers are replaced by the tabs (see
-/// <see cref="ShowCollapseButton"/>).
+/// The group is standalone; host placement, docking and collapse are the application's composition.
 /// </summary>
 public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 {
     [Inject] private IUiJsService Ui { get; set; } = default!;
     [Inject] private IJSRuntime Js { get; set; } = default!;
 
-    /// <summary>The enclosing IDE layout, when the group is used in one of its regions.</summary>
-    [CascadingParameter] internal FlareIdeLayout? Layout { get; set; }
-
     /// <summary>Tool panels shown as tabs. Every child is a <see cref="FlareToolPanel"/>; its content
     /// stays mounted while another tab is active.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Region that hosts the group inside a <see cref="FlareIdeLayout"/>. The hosted panels use
-    /// this position for rail labels, auto-hide and collapse instead of their own
-    /// <see cref="FlareToolPanel.Position"/>.</summary>
+    /// <summary>Placement of the group in the application's chrome. The hosted panels use this position
+    /// instead of their own <see cref="FlareToolPanel.Position"/>.</summary>
     [Parameter] public ToolPanelPosition Position { get; set; } = ToolPanelPosition.Left;
 
     /// <summary>Which edge carries the tool tab strip. <see cref="Flare.Components.IDE.TabStripPlacement.Top"/>
@@ -39,13 +32,6 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     /// the body and shows the active tool's title (and its icon, when set) in the header, so a pinned tool
     /// window keeps its name visible while the tabs sit at the bottom edge.</summary>
     [Parameter] public TabStripPlacement TabStripPlacement { get; set; } = TabStripPlacement.Top;
-
-    /// <summary>Whether the tab strip stays visible while this group's region floats as an auto-hide
-    /// flyout. The default is true. Set it to false for a single tool window whose header carries the
-    /// active tool's title (and icon), the host <see cref="ToolbarContent"/> - for example a pin control -
-    /// and the collapse button; the per-tool rail then switches tools. Ignored outside a
-    /// <see cref="FlareIdeLayout"/> and outside a floating auto-hide region.</summary>
-    [Parameter] public bool ShowTabStripWhenFloating { get; set; } = true;
 
     /// <summary>Effective key (<see cref="FlareToolPanel.Key"/>, or the title when that is unset) of the
     /// panel to show. Null or empty keeps the group's own selection. A key that matches no panel keeps
@@ -62,19 +48,9 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
     /// Not raised for parameter-driven changes or when the removal of a panel falls back to a neighbour.</summary>
     [Parameter] public EventCallback<string?> OnActiveChanged { get; set; }
 
-    /// <summary>Host actions shown in the group header after the tab strip and before the collapse button -
-    /// for example pin, close or other region commands. Inside a <see cref="FlareIdeLayout"/> the group still
-    /// draws the region's collapse button unless <see cref="ShowCollapseButton"/> is false, so the slot adds
-    /// controls rather than replacing them.</summary>
+    /// <summary>Host actions shown in the group header after the tab strip - for example pin, close or
+    /// other application commands.</summary>
     [Parameter] public RenderFragment? ToolbarContent { get; set; }
-
-    /// <summary>Whether the group draws the region's collapse control in its header while it is inside a
-    /// <see cref="FlareIdeLayout"/>. The default is true, so an existing consumer keeps the control. Set it
-    /// to false when the host supplies its own pin/close actions for the region and the built-in chevron
-    /// is redundant; the host can still collapse the region through <c>FlareIdeLayout.BottomCollapsed</c>
-    /// and the side equivalents, and a rail click reopens it. Ignored outside a layout, which never draws
-    /// the control.</summary>
-    [Parameter] public bool ShowCollapseButton { get; set; } = true;
 
     protected override string ComponentCssClass => Css.Classes.Ide.ToolPanelGroup.Root;
 
@@ -86,15 +62,11 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
 
     private bool TabsAtBottom => TabStripPlacement == TabStripPlacement.Bottom;
 
-    // A floating auto-hide region can ask for a single tool window: no horizontal strip, the rail
-    // is the switcher and the header keeps the active title.
-    private bool TabsVisible => ShowTabStripWhenFloating || Layout?.IsFloating(Position) != true;
+    private bool TitleInHeader => TabsAtBottom;
 
-    private bool TitleInHeader => TabsAtBottom || !TabsVisible;
+    private bool TabsInHeader => !TabsAtBottom;
 
-    private bool TabsInHeader => TabsVisible && !TabsAtBottom;
-
-    private bool TabsInFooter => TabsVisible && TabsAtBottom;
+    private bool TabsInFooter => TabsAtBottom;
 
     private string? _placementClass =>
         TabsAtBottom ? Css.Classes.Ide.ToolPanelGroup.TabsBottomRoot : null;
@@ -254,23 +226,8 @@ public partial class FlareToolPanelGroup : FlareLocalizedComponentBase
         if (target is not null) await SelectAsync(target, focus: true);
     });
 
-    private Task CollapseAsync() => Layout?.CollapseAsync(Position) ?? Task.CompletedTask;
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // The per-tool rail marks the active tool from the group's report while the host does not
-        // control the side's key.
-        Layout?.ReportActiveTool(Position, _active?.EffectiveKey);
-
-        if (!TabsVisible)
-        {
-            // The strip is suppressed while the region floats; the module must not hold an element
-            // that is no longer in the document.
-            await UnregisterTabKeyboardAsync();
-            await UnregisterTabFittingAsync();
-            return;
-        }
-
         await RegisterTabKeyboardAsync();
         await RegisterTabFittingAsync();
     }

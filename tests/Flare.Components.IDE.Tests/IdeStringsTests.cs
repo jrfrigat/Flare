@@ -15,31 +15,11 @@ public class IdeStringsTests : FlareTestContext
         {
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
             Assert.Equal("Закрыть", IdeStrings.BackstageClose);
-            Assert.Equal("Добавить лист", IdeStrings.SheetTabsAdd);
+            Assert.Equal("Поле имени", IdeStrings.FormulaBarNameBox);
 
             CultureInfo.CurrentUICulture = new CultureInfo("en-US");
             Assert.Equal("Close", IdeStrings.BackstageClose);
-            Assert.Equal("Add sheet", IdeStrings.SheetTabsAdd);
-        }
-        finally
-        {
-            CultureInfo.CurrentUICulture = previous;
-        }
-    }
-
-    [Fact]
-    public void DocumentTabs_UseTheLocalizedDefaultLabel()
-    {
-        var previous = CultureInfo.CurrentUICulture;
-        try
-        {
-            CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
-
-            var cut = Render<FlareDocumentTabs>(p => p
-                .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "readme.md")));
-
-            Assert.Equal("Вкладки документов",
-                cut.Find($".{Css.Classes.Ide.DocTabs.Bar}").GetAttribute("aria-label"));
+            Assert.Equal("Name box", IdeStrings.FormulaBarNameBox);
         }
         finally
         {

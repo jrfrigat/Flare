@@ -19,6 +19,9 @@
 
 - `FlareLinkTabs`, `FlareLinkTab` и `LinkTabsVariant` удалены. Для ссылок-маршрутов в виде вкладок используйте `FlareNavLink` с классами `flare-tabs__tab` в собственной полосе или `FlareTabs`, если вкладки владеют панелями.
 - `FlareSheetTabs` удален. Полосу листов собирайте из `FlareToggleGroup` с элементами `FlareToggleButton` и кнопкой добавления или из `FlareTabs`, если переключатель листов владеет панелями.
+- `FlareIdeLayout` и его API областей документов (`IdeDocument`, `IdeDocumentRegion`, `IdeDocumentMove`, `IdeDocumentSelection`, `IdeDocumentMounting`, `IdePanelMode`, `IdeToolRailMode`) удалены. Для докинга используйте `FlareDockWorkspace`, а `FlareToolPanel`/`FlareToolPanelGroup` размещайте прямо на странице; автоскрываемые рельсы, вылетающие панели и заголовок нижней панели, которыми владела раскладка, больше не существуют.
+- `FlareDocumentTabs`, `FlareDocumentTab`, `FlareDocumentDockTarget`, `FlareDocumentDockRequest` и `TabOverflowBehavior` удалены. Используйте `FlareTabs`/`FlareTab`: теперь они поддерживают `Key`, `Reorderable`, `TabOrder` и `TabOrderChanged`.
+- `FlareToolPanel.Mode` и `FlareToolPanelGroup.ShowTabStripWhenFloating`/`ShowCollapseButton` удалены вместе с раскладкой. У отдельного `FlareToolPanel` осталась собственная кнопка сворачивания.
 
 ## [0.60.0] - 2026-11-20
 

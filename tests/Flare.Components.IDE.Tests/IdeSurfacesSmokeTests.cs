@@ -11,8 +11,8 @@ namespace Flare.Components.Tests;
 public class IdeSurfacesSmokeTests : FlareTestContext
 {
     // The package registers its own services, which is the point of AddFlareIde: a consumer that never
-    // uses the IDE surfaces pays nothing for them. FlareIdeLayout injects one, so a test that renders it
-    // has to call the same registration a host would.
+    // uses the IDE surfaces pays nothing for them. A test that renders FlareDockWorkspace has to call
+    // the same registration a host would.
     public IdeSurfacesSmokeTests() => Services.AddFlareIde();
 
     [Fact]
@@ -41,15 +41,6 @@ public class IdeSurfacesSmokeTests : FlareTestContext
     }
 
     [Fact]
-    public void DocumentTabs_RendersATabPerDocument()
-    {
-        var cut = Render<FlareDocumentTabs>(p => p
-            .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "readme.md")));
-
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Ide.DocTabs.Root}"));
-    }
-
-    [Fact]
     public void PropertyGrid_RendersARowPerProperty()
     {
         var cut = Render<FlarePropertyGrid>(p => p
@@ -62,10 +53,6 @@ public class IdeSurfacesSmokeTests : FlareTestContext
     // The surfaces that stand on their own. One test each rather than a Theory over types, because the
     // component type is a type ARGUMENT here - a table of `typeof` would need a renderer that takes a
     // Type, and bUnit's does not.
-    [Fact]
-    public void IdeLayout_RendersItsRoot() =>
-        Assert.NotEmpty(Render<FlareIdeLayout>().FindAll($".{Css.Classes.Ide.Layout.Root}"));
-
     [Fact]
     public void MenuBar_RendersItsRoot() =>
         Assert.NotEmpty(Render<FlareMenuBar>().FindAll($".{Css.Classes.Ide.MenuBar.Root}"));
