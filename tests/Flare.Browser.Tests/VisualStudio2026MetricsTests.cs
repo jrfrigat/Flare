@@ -4,10 +4,10 @@ using static Microsoft.Playwright.Assertions;
 namespace Flare.Browser.Tests;
 
 /// <summary>
-/// The measured VS 2026 base-component metrics, read from the rendered shell: a 23px input well with
-/// a #353535 fill and a #454545 stroke on 4px corners, a 24px command button carrying a 16px glyph,
-/// a single 1px #9184EE focus line without a glow, a 2px square scrollbar thumb, and the tokens the
-/// theme leaves to an optional application shell.
+/// The measured VS 2026 base-component metrics, read from the rendered shell: a field on the VS button
+/// height grid (28px at the default step) with a #353535 fill and a #454545 stroke on 4px corners, a
+/// 24px command button carrying a 16px glyph, a single 1px #9184EE focus line without a glow, a 2px
+/// square scrollbar thumb, and the tokens the theme leaves to an optional application shell.
 /// </summary>
 public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
@@ -24,14 +24,14 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
     }
 
     [Fact]
-    public async Task FieldWell_IsTwentyThreePixelsOnFourPixelCorners()
+    public async Task FieldWell_IsTwentyEightPixelsOnFourPixelCorners()
     {
         await using var context = await OpenDarkContextAsync();
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
         var well = page.Locator($"#metric-field .{Css.Classes.Input.Field}");
 
-        await Expect(well).ToHaveCSSAsync("height", "23px");
+        await Expect(well).ToHaveCSSAsync("height", "28px");
         await Expect(well).ToHaveCSSAsync("border-radius", "4px");
         await Expect(well).ToHaveCSSAsync("background-color", "rgb(53, 53, 53)");
         await Expect(well).ToHaveCSSAsync("border-top-color", "rgb(69, 69, 69)");
@@ -61,7 +61,7 @@ public sealed class VisualStudio2026MetricsTests(BrowserFixture fixture) : IClas
         await page.GotoAsync($"{fixture.BaseUrl}/vs2026-metrics");
         var well = page.Locator($"#metric-combo .{Css.Classes.Input.Field}");
 
-        await Expect(well).ToHaveCSSAsync("height", "23px");
+        await Expect(well).ToHaveCSSAsync("height", "28px");
         await Expect(well).ToHaveCSSAsync("border-radius", "4px");
         await Expect(well).ToHaveCSSAsync("background-color", "rgb(53, 53, 53)");
     }

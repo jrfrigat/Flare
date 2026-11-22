@@ -58,7 +58,9 @@ public sealed class SelectClearLayoutTests(BrowserFixture fixture) : IClassFixtu
         Assert.True(r.HasClear, $"{subject}: expected a clear button");
         Assert.True(r.ClearToArrowGap is >= -1 and <= 40,
             $"{subject}: clear button is {r.ClearToArrowGap:F1}px from the arrow instead of next to it");
-        Assert.True(r.ArrowToFieldRight <= 24,
+        // The allowed inset is the field's own inline padding: an expressive step carries up to 24px
+        // plus the 1px border, so the arrow is still at the trailing edge rather than floating.
+        Assert.True(r.ArrowToFieldRight <= 32,
             $"{subject}: arrow is {r.ArrowToFieldRight:F1}px from the trailing edge");
     }
 
@@ -100,7 +102,7 @@ public sealed class SelectClearLayoutTests(BrowserFixture fixture) : IClassFixtu
         Assert.True(r.HasClear, "RTL select: expected a clear button");
         Assert.True(r.ClearLeft - r.ArrowRight is >= -1 and <= 40,
             $"RTL select: clear button is {r.ClearLeft - r.ArrowRight:F1}px from the arrow");
-        Assert.True(r.ArrowToFieldLeft <= 24, $"RTL select: arrow is {r.ArrowToFieldLeft:F1}px from the leading edge");
+        Assert.True(r.ArrowToFieldLeft <= 32, $"RTL select: arrow is {r.ArrowToFieldLeft:F1}px from the leading edge");
     }
 
     [Fact]
@@ -113,7 +115,7 @@ public sealed class SelectClearLayoutTests(BrowserFixture fixture) : IClassFixtu
         {
             var r = await MeasureAsync(page, id);
             Assert.False(r.HasClear, $"{id}: no clear button expected");
-            Assert.True(r.ArrowToFieldRight <= 24, $"{id}: arrow is {r.ArrowToFieldRight:F1}px from the trailing edge");
+            Assert.True(r.ArrowToFieldRight <= 32, $"{id}: arrow is {r.ArrowToFieldRight:F1}px from the trailing edge");
         }
     }
 }

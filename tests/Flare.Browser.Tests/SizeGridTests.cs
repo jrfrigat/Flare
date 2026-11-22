@@ -36,12 +36,29 @@ public sealed class SizeGridTests(BrowserFixture fixture) : IClassFixture<Browse
             var row = page.Locator($"#size-grid-{theme} .size-row[data-size={steps[index]}]");
             var button = row.Locator($".{Css.Classes.Button.Root}");
             var field = row.Locator($".{Css.Classes.Select.Control}");
-            var buttonBox = await button.BoundingBoxAsync();
-            var fieldBox = await field.BoundingBoxAsync();
-            Assert.NotNull(buttonBox);
-            Assert.NotNull(fieldBox);
-            Assert.InRange(fieldBox!.Height, buttonBox!.Height - 0.5, buttonBox.Height + 0.5);
-            Assert.InRange(buttonBox.Height, expected[index] - 0.5, expected[index] + 0.5);
+
+            // The scope applies its tokens after the first paint, so a height is read until both boxes
+            // settle on the same value instead of being sampled once mid-transition.
+            var deadline = DateTime.UtcNow.AddSeconds(5);
+            var buttonHeight = 0d;
+            var fieldHeight = 0d;
+            while (DateTime.UtcNow < deadline)
+            {
+                var buttonBox = await button.BoundingBoxAsync();
+                var fieldBox = await field.BoundingBoxAsync();
+                buttonHeight = buttonBox?.Height ?? 0;
+                fieldHeight = fieldBox?.Height ?? 0;
+                if (Math.Abs(buttonHeight - fieldHeight) <= 0.5
+                    && Math.Abs(buttonHeight - expected[index]) <= 0.5)
+                {
+                    break;
+                }
+
+                await Task.Delay(50);
+            }
+
+            Assert.InRange(fieldHeight, buttonHeight - 0.5, buttonHeight + 0.5);
+            Assert.InRange(buttonHeight, expected[index] - 0.5, expected[index] + 0.5);
         }
     }
 }
