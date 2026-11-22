@@ -16,6 +16,7 @@
 
 ### Изменено
 
+- Панель ColorPicker — это `FlarePopover`: позиционирование, backdrop, закрытие по клику вне и Escape приходят из общего popover, а собственный chrome панели и код dismiss удалены. В `colorpicker.css` остались только цвето-специфичные правила (canvas, hue/alpha-треки, чекерборд), eyedropper стал Text-кнопкой. У `FlarePopover` появился `AriaLabel` для popover-ов с собственной кнопкой-анкором.
 - Триггер ColorPicker — это общий `FlareButton`: цветной круг стал его leading icon, а отформатированное значение — label. Новые параметры `Variant` (по умолчанию Outlined) и `Size` позволяют совпасть с кнопками рядом; собственные surface, hover и focus-стили триггера удалены.
 - `ButtonTokens` получает цвет содержимого Text-варианта (`TextContent`), поэтому тема, у которой команды тулбара и меню — нейтральный chrome, задает их цвет текста вместо акцента. VisualStudio использует его вместе с нейтральной заливкой Filled по умолчанию.
 - `TabsTokens` получает отступ между иконкой и текстом вкладки и block-паддинги (`LabelGap`, `TabPaddingBlock`, `VerticalTabPaddingBlock`), поэтому тема настраивает их токенами, а не переопределением ядрового CSS. FluentUI2 задает через них свои 6px отступа и block-паддинги 12px/6px.

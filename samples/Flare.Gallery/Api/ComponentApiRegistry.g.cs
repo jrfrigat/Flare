@@ -1553,8 +1553,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"CloseFromOutside", @"CloseFromOutside()", @"Task", null, @"Closes the panel; invoked from JS when a pointer-down lands outside the picker.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnCanvasPick", @"OnCanvasPick(double saturation, double lightness)", @"Task", null, null,
                     new ApiMethodParameter[]
                     {
@@ -5620,6 +5618,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AnchorContent", @"RenderFragment?", null, @"The anchor element that the popover is attached to.", null, false, false, false, @"FlarePopover"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the dialog panel. Needed when the popover has no built-in click activator to borrow its label from, such as a Manual popover whose anchor is the caller's own button.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Arrow", @"bool", @"false", @"Shows a directional arrow pointing to the anchor.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered inside the popover panel.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Delay", @"int", @"0", @"For Hover: milliseconds to wait before opening on hover.", null, false, false, false, @"FlarePopover"),

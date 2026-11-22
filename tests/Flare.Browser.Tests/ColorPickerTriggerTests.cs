@@ -86,10 +86,49 @@ public sealed class ColorPickerTriggerTests(BrowserFixture fixture) : IClassFixt
         await Expect(page.Locator("#cp-md [role=dialog]")).ToBeVisibleAsync();
     }
 
+    [Fact]
+    public async Task PanelIsTheSharedPopoverAndClosesOnEscapeAndOutsideClick()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/colorpicker-trigger");
+
+        var trigger = page.Locator($"#cp-md .{Css.Classes.Colorpicker.Trigger}");
+        var panel = page.Locator($"#cp-md [role=dialog]");
+        await trigger.ClickAsync();
+        await Expect(panel).ToBeVisibleAsync();
+        Assert.Contains(Css.Classes.Popover.Paper, (await panel.GetAttributeAsync("class"))!);
+        Assert.False(string.IsNullOrEmpty(await panel.GetAttributeAsync("aria-label")),
+            "the picker dialog has no accessible name");
+
+        await page.Keyboard.PressAsync("Escape");
+        await Expect(panel).ToHaveCountAsync(0);
+
+        await trigger.ClickAsync();
+        await Expect(panel).ToBeVisibleAsync();
+        await page.Mouse.ClickAsync(5, 5);
+        await Expect(panel).ToHaveCountAsync(0);
+    }
+
     private static async Task ExpectSameCssAsync(ILocator a, ILocator b, string property)
     {
-        var left = await a.EvaluateAsync<string>($"el => getComputedStyle(el).getPropertyValue('{property}')");
-        var right = await b.EvaluateAsync<string>($"el => getComputedStyle(el).getPropertyValue('{property}')");
+        // The theme tokens land after the first paint and border colour transitions, so compare until
+        // both boxes settle instead of sampling once mid-transition.
+        var deadline = DateTime.UtcNow.AddSeconds(5);
+        var left = string.Empty;
+        var right = string.Empty;
+        while (DateTime.UtcNow < deadline)
+        {
+            left = await a.EvaluateAsync<string>($"el => getComputedStyle(el).getPropertyValue('{property}')");
+            right = await b.EvaluateAsync<string>($"el => getComputedStyle(el).getPropertyValue('{property}')");
+            if (left == right)
+            {
+                return;
+            }
+
+            await Task.Delay(50);
+        }
+
         Assert.Equal(right, left);
     }
 }

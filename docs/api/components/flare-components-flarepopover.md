@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AnchorContent` | `RenderFragment?` | `` | Parameter |  | The anchor element that the popover is attached to. |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the dialog panel. Needed when the popover has no built-in click activator to borrow its label from, such as a Manual popover whose anchor is the caller's own button. |
 | `Arrow` | `bool` | `false` | Parameter |  | Shows a directional arrow pointing to the anchor. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content rendered inside the popover panel. |
 | `Delay` | `int` | `0` | Parameter |  | For Hover: milliseconds to wait before opening on hover. |

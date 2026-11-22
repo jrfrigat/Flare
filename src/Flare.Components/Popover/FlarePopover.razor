@@ -38,6 +38,7 @@
         <div @ref="_floatingRef"
              id="@_paperId"
              role="dialog"
+             aria-label="@AriaLabel"
              aria-labelledby="@(Trigger == PopoverTrigger.Click ? _triggerId : null)"
              class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass @_matchWidthClass"
              data-flare-side="@_sideName"
@@ -68,6 +69,10 @@
     [Parameter] public PopoverTrigger       Trigger       { get; set; } = PopoverTrigger.Manual;
     /// <summary>Position of the panel relative to the anchor element.</summary>
     [Parameter] public Placement     Placement     { get; set; } = Placement.BottomStart;
+    /// <summary>Accessible name of the dialog panel. Needed when the popover has no built-in click
+    /// activator to borrow its label from, such as a <see cref="PopoverTrigger.Manual"/> popover whose
+    /// anchor is the caller's own button.</summary>
+    [Parameter] public string?              AriaLabel     { get; set; }
     /// <summary>CSS max-width applied to the popover panel.</summary>
     [Parameter] public string?              MaxWidth      { get; set; }
     /// <summary>CSS min-width applied to the popover panel.</summary>

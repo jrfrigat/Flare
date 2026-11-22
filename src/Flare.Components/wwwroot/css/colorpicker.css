@@ -19,10 +19,13 @@
     max-inline-size: 100%;
 }
 
-/* The trigger is a FlareButton; this wrapper only positions the popover anchor, so it carries no
-   surface, border, padding or state of its own. */
-.flare-colorpicker__trigger-wrap {
-    display: inline-flex;
+/* The panel is FlarePopover's paper; this wrapper only lays out the picker's own content. */
+.flare-colorpicker__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-5);
+    inline-size: 260px;
+    padding: var(--flare-spacing-6);
 }
 
 .flare-colorpicker__trigger-swatch {
@@ -55,23 +58,6 @@
 .flare-colorpicker__trigger-label {
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.01em;
-}
-
-
-.flare-colorpicker__panel {
-    /* Fixed + JS-positioned (positionAnchoredPanel) so the panel escapes a Card's overflow:hidden. */
-    position: fixed;
-    z-index: calc(var(--flare-z-dropdown) + 1);
-    background: var(--flare-popover-bg);
-    color: var(--flare-popover-color);
-    border: var(--flare-border-divider);
-    border-radius: var(--flare-popover-radius);
-    box-shadow: var(--flare-popover-shadow);
-    padding: var(--flare-spacing-6);
-    display: flex;
-    flex-direction: column;
-    gap: var(--flare-spacing-5);
-    width: 260px;
 }
 
 
@@ -321,39 +307,7 @@
     margin-top: var(--flare-spacing-4);
 }
 
+/* The eye-dropper is the shared Text button; this hook only keeps it at the row's end. */
 .flare-colorpicker__eyedropper-btn {
-    position: relative;
-    z-index: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--flare-spacing-3);
-    padding: var(--flare-spacing-3) var(--flare-spacing-5);
-    font: inherit;
-    color: var(--flare-color-on-surface);
-    background: var(--flare-color-surface-container-highest);
-    border: var(--flare-border-divider);
-    border-radius: var(--flare-shape-small);
-    cursor: pointer;
-    transition: background var(--flare-motion-duration-state-change);
-}
-
-/* State layer - the theme names the paint; core only says where it goes (see tabs.css). The wash is
-   content-coloured, where this rule used to mix PRIMARY over the button's own fill: an accent tint
-   core chose on every theme's behalf. */
-.flare-colorpicker__eyedropper-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    background: transparent;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
-}
-
-.flare-colorpicker__eyedropper-btn:hover::before {
-    background: var(--flare-state-hover-layer);
-    opacity: 1;
+    align-self: flex-end;
 }

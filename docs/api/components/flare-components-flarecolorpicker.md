@@ -25,11 +25,6 @@
 
 ## Methods
 
-### `CloseFromOutside()`
-
-Closes the panel; invoked from JS when a pointer-down lands outside the picker.
-Returns: `Task`.
-
 ### `OnCanvasPick(double saturation, double lightness)`
 
 Returns: `Task`.

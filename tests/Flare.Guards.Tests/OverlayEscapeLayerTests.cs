@@ -42,6 +42,7 @@ public sealed class OverlayEscapeLayerTests
             var source = markup + ReadCodeBehind(file);
             if (source.Contains("PushPopupLayerAsync", StringComparison.Ordinal)
                 || source.Contains("<FlarePopup", StringComparison.Ordinal)
+                || source.Contains("<FlarePopover", StringComparison.Ordinal)
                 || source.Contains("PickerPopup", StringComparison.Ordinal))
                 continue;
 
