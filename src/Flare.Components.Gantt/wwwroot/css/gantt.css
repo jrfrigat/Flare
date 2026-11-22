@@ -63,14 +63,6 @@
     background: transparent;
 }
 
-/* With a mouse the -/+ steps show on hover and focus; on a touch screen, where nothing hovers, they stay. */
-@media (hover: hover) {
-    .flare-gantt__side-splitter:not(:hover):not(:focus-visible) > .flare-splitter__step-decrease,
-    .flare-gantt__side-splitter:not(:hover):not(:focus-visible) > .flare-splitter__step-increase {
-        opacity: 0;
-    }
-}
-
 .flare-gantt__scale {
     position: relative;
     flex: none;

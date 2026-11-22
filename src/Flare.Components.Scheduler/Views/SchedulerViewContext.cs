@@ -27,8 +27,6 @@ public sealed record SchedulerViewContext<TItem>
     public IReadOnlyList<SchedulerResource> Resources { get; init; } = [];
     /// <summary>Whether the application accepts editing commands.</summary>
     public bool CanEdit { get; init; }
-    /// <summary>Displays the shared resizable's single-click controls.</summary>
-    public bool ShowResizeControls { get; init; }
     /// <summary>Accessible name for a projection.</summary>
     public string? AriaLabel { get; init; }
     /// <summary>Selected occurrence, independent of the rendered projection.</summary>

@@ -23,6 +23,11 @@
 - `FlareDocumentTabs`, `FlareDocumentTab`, `FlareDocumentDockTarget`, `FlareDocumentDockRequest` и `TabOverflowBehavior` удалены. Используйте `FlareTabs`/`FlareTab`: теперь они поддерживают `Key`, `Reorderable`, `TabOrder` и `TabOrderChanged`.
 - `FlareToolPanel.Mode` и `FlareToolPanelGroup.ShowTabStripWhenFloating`/`ShowCollapseButton` удалены вместе с раскладкой. У отдельного `FlareToolPanel` осталась собственная кнопка сворачивания.
 
+### Изменения совместимости
+
+- `FlareSplitter` больше не показывает кнопки шага `-`/`+`: удалены параметр `ShowStepButtons` и константы классов `StepDecrease`/`StepIncrease`. Перетаскивание и изменение размера с клавиатуры на разделителе не изменились.
+- `FlareResizable` больше не показывает кнопки шага `-`/`+`: удалены параметр `ShowControls` и константы классов `Resizable.Controls`/`Control`. У `FlareScheduler` удален связанный параметр `ShowResizeControls`. Перетаскивание и изменение размера с клавиатуры не изменились.
+
 ## [0.60.0] - 2026-11-20
 
 ### Добавлено

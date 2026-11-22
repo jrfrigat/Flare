@@ -14,15 +14,6 @@
          data-flare-resize-step-size="@Step"
          aria-label="@CoreText["Splitter_Resize"]"
          aria-orientation="@(Edge is ResizableEdge.Left or ResizableEdge.Right ? "vertical" : "horizontal")"></div>
-    @if (ShowControls)
-    {
-    <div class="@Css.Classes.Resizable.Controls" data-flare-resize-controls>
-        <button type="button" class="@Css.Classes.Resizable.Control" data-flare-resize-step="-1"
-                aria-label="@CoreText["Resize_Decrease"]">-</button>
-        <button type="button" class="@Css.Classes.Resizable.Control" data-flare-resize-step="1"
-                aria-label="@CoreText["Resize_Increase"]">+</button>
-    </div>
-    }
 </div>
 
 @code {
@@ -42,12 +33,10 @@
     /// <summary>Maximum size, with the same units and resolution as <see cref="MinSize"/>. A value
     /// below the resolved minimum is raised to it, so the range is never inverted.</summary>
     [Parameter] public string? MaxSize { get; set; }
-    /// <summary>Shows single-click size buttons. A compact composition can hide them while retaining the keyboard-accessible handle.</summary>
-    [Parameter] public bool ShowControls { get; set; } = true;
-    /// <summary>CSS length added by arrow keys and single-click controls. Null keeps the 16px step; supports token expressions.</summary>
+    /// <summary>CSS length added by arrow keys. Null keeps the 16px step; supports token expressions.</summary>
     [Parameter] public string? Step { get; set; }
-    /// <summary>Invoked with the resulting size in pixels (for example <c>256px</c>) after a drag, a
-    /// step button, or Home/End.</summary>
+    /// <summary>Invoked with the resulting size in pixels (for example <c>256px</c>) after a drag
+    /// or Home/End.</summary>
     [Parameter] public EventCallback<string> OnResized { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Resizable.Root;

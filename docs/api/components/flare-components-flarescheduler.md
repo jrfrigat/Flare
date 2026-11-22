@@ -30,7 +30,6 @@ Per-instance scheduling data and interaction scope, with optional ready-made com
 | `OnSlotSelected` | `EventCallback<SchedulerSlot>` | `` | Callback |  | Reports slot selection. |
 | `RecurrenceExpander` | `ISchedulerRecurrenceExpander?` | `` | Parameter |  | Optional client recurrence expansion. The default displays provider-owned occurrences unchanged. |
 | `Resources` | `IReadOnlyList<SchedulerResource>` | `` | Parameter |  | Resource rows. Unknown resource keys are retained as additional rows. |
-| `ShowResizeControls` | `bool` | `false` | Parameter |  | Shows the shared resizable's single-click controls in addition to its keyboard handle. |
 | `SlotDuration` | `TimeSpan` | `00:30:00` | Parameter |  | Duration of a time-grid slot; must divide one day and be at least five minutes. |
 | `TimeZone` | `TimeZoneInfo` | `` | Parameter |  | Display zone. Timed events keep their instants; all-day dates do not move. |
 | `View` | `SchedulerView` | `SchedulerView.Week` | Parameter |  | Initial or controlled projection. |
