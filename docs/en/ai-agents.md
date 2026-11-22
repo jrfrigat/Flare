@@ -238,7 +238,7 @@ All real component names (consult the [API Reference](../api/README.md) for each
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,
 `FlareSubMenu`, `FlareMenuBar`, `FlareToolbar`, `FlareLink`, `FlareOnThisPage`, `FlareTableOfContents`,
 `FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`, `FlareBottomNav`, `FlareBottomNavItem`,
-`FlareLinkTabs`, `FlareLinkTab`, `FlareNavigationGuard`.
+`FlareNavigationGuard`.
 
 **Overlays & feedback:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,

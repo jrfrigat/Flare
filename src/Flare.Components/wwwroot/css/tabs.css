@@ -157,7 +157,6 @@
   min-inline-size: var(--flare-tabs-tab-min-width);
   padding: var(--flare-spacing-6) var(--flare-tabs-tab-padding-inline);
   border: none;
-  text-decoration: none;  /* FlareLinkTab reuses this class on its <a> items. */
   /* Active-indicator height 3dp; inactive label = on-surface */
   border-bottom: var(--flare-tabs-indicator-thickness) solid transparent;
   margin-bottom: -1px;
@@ -183,7 +182,7 @@
   opacity: 1;
 }
 
-/* Active-tab color (FlareLinkTab reuses this class on its route links). */
+/* Active-tab color. */
 .flare-tabs__tab--active {
   color: var(--flare-tabs-active-color);
   border-bottom-color: var(--flare-tabs-active-color);
@@ -241,13 +240,9 @@
 .flare-tabs--tonal .flare-tabs__bar-wrap,
 .flare-tabs--filled .flare-tabs__bar-wrap { border-bottom: none; }
 
-/* Tonal/Filled pill track, shared by the FlareTabs bar and the FlareLinkTabs container (which is its
-   own bar). Only WHERE the divider is dropped differs (the bar-wrap for tabs, the container itself for
-   link tabs), so that stays each component's own rule. */
+/* Tonal/Filled pill track. The bar carries the track; only the strip above it drops the divider. */
 .flare-tabs--tonal .flare-tabs__bar,
-.flare-tabs--filled .flare-tabs__bar,
-.flare-link-tabs--tonal,
-.flare-link-tabs--filled {
+.flare-tabs--filled .flare-tabs__bar {
   gap: var(--flare-spacing-2);
   padding: var(--flare-spacing-2);
   background: var(--flare-tabs-track-bg);
@@ -255,9 +250,7 @@
 }
 
 .flare-tabs--tonal .flare-tabs__tab,
-.flare-tabs--filled .flare-tabs__tab,
-.flare-link-tabs--tonal .flare-tabs__tab,
-.flare-link-tabs--filled .flare-tabs__tab {
+.flare-tabs--filled .flare-tabs__tab {
   border-bottom: none;
   margin-bottom: 0;
   border-radius: var(--flare-tabs-pill-radius);
@@ -266,17 +259,13 @@
 .flare-tabs--filled .flare-tabs__tab--active::after { display: none; }
 
 .flare-tabs--tonal .flare-tabs__tab--active,
-.flare-tabs--tonal .flare-tabs__tab--active:hover,
-.flare-link-tabs--tonal .flare-tabs__tab--active,
-.flare-link-tabs--tonal .flare-tabs__tab--active:hover {
+.flare-tabs--tonal .flare-tabs__tab--active:hover {
   background: var(--flare-tabs-selected-bg);
   color: var(--flare-tabs-selected-fg);
   border-bottom-color: transparent;
 }
 .flare-tabs--filled .flare-tabs__tab--active,
-.flare-tabs--filled .flare-tabs__tab--active:hover,
-.flare-link-tabs--filled .flare-tabs__tab--active,
-.flare-link-tabs--filled .flare-tabs__tab--active:hover {
+.flare-tabs--filled .flare-tabs__tab--active:hover {
   background: var(--flare-tabs-filled-bg);
   color: var(--flare-tabs-filled-fg);
   border-bottom-color: transparent;
@@ -303,10 +292,8 @@
   box-shadow: inset 0 calc(var(--flare-tabs-indicator-thickness) * -1) 0 0 var(--flare-tabs-outlined-indicator-color);
 }
 
-/* Disabled: :disabled for the FlareTabs <button>, --disabled for the FlareLinkTab <a>
-   (an anchor cannot be :disabled, so pointer-events:none also blocks its hover/click). */
-.flare-tabs__tab:disabled,
-.flare-tabs__tab--disabled {
+/* Disabled: :disabled for the FlareTabs <button>. */
+.flare-tabs__tab:disabled {
   opacity: var(--flare-tabs-tab-disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;

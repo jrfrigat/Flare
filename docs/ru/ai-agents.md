@@ -240,7 +240,7 @@ inline/batch-редактирование, выделение, переупор�
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,
 `FlareSubMenu`, `FlareMenuBar`, `FlareToolbar`, `FlareLink`, `FlareOnThisPage`, `FlareTableOfContents`,
 `FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`, `FlareBottomNav`, `FlareBottomNavItem`,
-`FlareLinkTabs`, `FlareLinkTab`, `FlareNavigationGuard`.
+`FlareNavigationGuard`.
 
 **Оверлеи и обратная связь:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,
