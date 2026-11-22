@@ -7657,12 +7657,14 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ActiveIndex", @"int", @"0", @"Zero-based index of the active tab. Supports two-way binding (@bind-ActiveIndex).", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"ActiveIndexChanged", @"EventCallback<int>", null, @"Fired with the new active-tab index whenever the selection changes.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"FlareTab panels rendered inside the tab container.", null, false, false, false, @"FlareTabs"),
+                new ApiParameterInfo(@"Collapsible", @"bool", @"false", @"When true, the tab bar never scrolls: tabs that do not fit fold into a trailing three-dot overflow menu instead of showing scroll arrows, and the visible window keeps the active tab on screen. Default false keeps the scrolling bar.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"HeaderEnd", @"RenderFragment?", null, @"Custom content rendered at the end (right/bottom) of the tab header, after the tabs - e.g. action buttons. The tab bar grows to push this to the far edge.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"HeaderStart", @"RenderFragment?", null, @"Custom content rendered at the start (left/top) of the tab header, before the tabs - e.g. a title or action buttons.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"LabelRotation", @"TabLabelRotation", @"TabLabelRotation.None", @"Rotation applied to each tab label (0/90/180/270 degrees). Default none.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Lazy", @"bool", @"false", @"When true, only the active tab's panel content is rendered: switching tabs unmounts the previous panel and mounts the new one. Keeps heavy tab content (large forms, token editors, data grids) out of the DOM and the component tree until its tab is opened. Default false renders every panel up front (inactive ones hidden with CSS), which preserves transient panel state across switches at the cost of building all panels at once.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"OnPreviewInteraction", @"EventCallback<TabInteractionEventArgs>", null, @"Invoked before a tab is activated or closed. Set Cancel in the handler to veto the interaction (e.g. block switching away from a tab with unsaved changes). Async handlers are awaited before the interaction proceeds.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, @"Callback fired with the label of a closed tab.", null, false, true, false, @"FlareTabs"),
+                new ApiParameterInfo(@"OverflowLabel", @"string?", null, @"Accessible label of the overflow button. Null uses the built-in localized label.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Placement", @"TabsPlacement", @"TabsPlacement.Top", @"Side the tab bar is placed on (Top/Bottom/Left/Right). Left/Right render a vertical bar. Default Top.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Reorderable", @"bool", @"false", @"Enables dragging a tab to a new position and pressing Alt+ArrowLeft/Right while it is focused. The active tab stays selected and keyboard focus follows the moved tab.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"TabOrder", @"IReadOnlyList<string>?", null, @"Controlled order of tab keys (see Key). Unlisted tabs follow in declaration order. Null keeps the order inside the component.", null, false, false, false, @"FlareTabs"),
@@ -7687,6 +7689,12 @@ public static class ComponentApiRegistry
                     {
                         new ApiMethodParameter(@"key", @"string", @"The pressed arrow key."),
                         new ApiMethodParameter(@"rtl", @"bool", @"Whether the tab bar resolves to right-to-left in the browser."),
+                    }),
+                new ApiMethodInfo(@"OnTabsOverflowChanged", @"OnTabsOverflowChanged(int start, int visible)", @"void", null, @"Receives the visible window of a collapsible tab bar: the first visible index and how many tabs fit. Tabs outside the window are folded into the overflow menu.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"start", @"int", @"Zero-based index of the first visible tab."),
+                        new ApiMethodParameter(@"visible", @"int", @"How many tabs fit in the bar."),
                     }),
             },
             new string[]

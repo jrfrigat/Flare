@@ -524,3 +524,51 @@
 .flare-tabs--tool > .flare-tabs__bar-wrap {
   border-bottom: none;
 }
+
+/* Collapsible: the bar does not scroll and the tabs that do not fit fold into the trailing overflow
+   menu. The fold itself is an attribute the measurer writes; these rules only take the scroll
+   surfaces away and place the menu beside the bar (below it when the bar is vertical). */
+.flare-tabs--collapsible .flare-tabs__bar-wrap {
+  flex-wrap: nowrap;
+}
+
+.flare-tabs--collapsible .flare-scroller__content {
+  overflow: hidden;
+}
+
+.flare-tabs--collapsible .flare-tabs__bar {
+  overflow: hidden;
+}
+
+.flare-tabs--vertical.flare-tabs--collapsible .flare-scroller__content {
+  flex-direction: column;
+}
+
+.flare-tabs--collapsible [data-flare-tabs-hidden] {
+  display: none;
+}
+
+/* The overflow control is measured to reserve its room in the fold, so it must keep its width even
+   while the attribute hides it. */
+.flare-tabs__more {
+  flex: 0 0 auto;
+  align-self: stretch;
+  display: flex;
+}
+
+.flare-tabs__more > .flare-btn {
+  block-size: 100%;
+}
+
+.flare-tabs__overflow-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--flare-spacing-1);
+}
+
+.flare-tabs__overflow-tab {
+  justify-content: flex-start;
+  inline-size: 100%;
+}
+

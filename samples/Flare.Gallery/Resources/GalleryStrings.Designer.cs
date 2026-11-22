@@ -10559,6 +10559,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Tabs_Scrollable", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Collapsible overflow menu.
+        /// </summary>
+        public static string Tabs_Collapsible {
+            get {
+                return ResourceManager.GetString("Tabs_Collapsible", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareTabs - variants, closeable, vertical, scrollable, badges and header zones..

@@ -47,6 +47,17 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask RemoveButtonGroupCollapseAsync(ElementReference root) => InvokeVoidAsync("removeButtonGroupCollapse", root);
 
     /// <inheritdoc />
+    public ValueTask RegisterTabsCollapseAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("registerTabsCollapse", root, dotNetRef);
+
+    /// <inheritdoc />
+    public ValueTask ApplyTabsOverflowAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef, int activeIndex) where T : class
+        => InvokeVoidAsync("applyTabsOverflow", root, dotNetRef, activeIndex);
+
+    /// <inheritdoc />
+    public ValueTask RemoveTabsCollapseAsync(ElementReference root) => InvokeVoidAsync("removeTabsCollapse", root);
+
+    /// <inheritdoc />
     public ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerShortcutListener", id, dotNetRef);
 

@@ -396,6 +396,94 @@ export function removeButtonGroupCollapse(root) {
     _groupCollapsers.drop(root);
 }
 
+// A collapsible tab bar folds the tabs that no longer fit into its trailing overflow menu instead of
+// scrolling them. The bar never scrolls in this mode, so the menu is the only way to reach a folded
+// tab - which is why the visible window keeps the ACTIVE tab on screen, folding the leading tabs when
+// the selection sits past the fold. That is the tab-bar equivalent of scrolling the active tab into
+// view, and it is what makes a tab chosen from the menu land back in the bar.
+const TABS_HIDDEN_ATTR = 'data-flare-tabs-hidden';
+const _tabsCollapsers = new Map();
+
+function _applyTabsFold(root, dotNetRef, activeIndex) {
+    if (!root || !root.isConnected) return;
+    const bar = root.querySelector('.flare-tabs__bar');
+    if (!bar) return;
+    const more = root.querySelector('.flare-tabs__more');
+    const items = Array.from(bar.querySelectorAll(':scope > .flare-tabs__item'));
+    if (items.length === 0) return;
+    const vertical = root.classList.contains('flare-tabs--vertical');
+
+    // Measure with everything shown and the overflow control visible: a display:none element measures
+    // zero, and the control's own width is what the fold reserves.
+    items.forEach(el => el.removeAttribute(TABS_HIDDEN_ATTR));
+    if (more) more.removeAttribute(TABS_HIDDEN_ATTR);
+    const size = el => vertical ? el.offsetHeight : el.offsetWidth;
+    const available = vertical ? bar.clientHeight : bar.clientWidth;
+    const styles = getComputedStyle(bar);
+    const gap = parseFloat(vertical ? styles.rowGap : styles.columnGap) || 0;
+    const natural = items.map(size);
+    const total = natural.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
+
+    let visible = items.length;
+    if (total > available + 0.5) {
+        const reserve = more ? size(more) + gap : 0;
+        let used = 0;
+        visible = 0;
+        for (let i = 0; i < items.length; i++) {
+            const step = natural[i] + (i > 0 ? gap : 0);
+            if (used + step + reserve > available + 0.5) break;
+            used += step;
+            visible++;
+        }
+        // Folding everything away would leave a lone "..." with no way back; keep one tab.
+        if (visible === 0) visible = 1;
+    }
+
+    let start = 0;
+    if (visible < items.length && activeIndex >= visible) {
+        start = Math.min(activeIndex, items.length - 1) - visible + 1;
+        if (start < 0) start = 0;
+        if (start + visible > items.length) start = items.length - visible;
+    }
+
+    for (let i = 0; i < items.length; i++) {
+        if (i < start || i >= start + visible) items[i].setAttribute(TABS_HIDDEN_ATTR, '');
+    }
+    if (more && visible >= items.length) more.setAttribute(TABS_HIDDEN_ATTR, '');
+    if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabsOverflowChanged', start, visible).catch(() => { });
+}
+
+export function registerTabsCollapse(root, dotNetRef) {
+    if (!root) return;
+    removeTabsCollapse(root);
+    const state = { activeIndex: -1, dotNetRef, observer: null };
+    const run = () => _applyTabsFold(root, state.dotNetRef, state.activeIndex);
+    const ro = new ResizeObserver(run);
+    ro.observe(root);
+    if (root.parentElement) ro.observe(root.parentElement);
+    state.observer = ro;
+    _tabsCollapsers.set(root, state);
+    // No first pass from here: the component asks for one as soon as this call returns, and the
+    // observer schedules another only when the layout actually changes.
+}
+
+export function applyTabsOverflow(root, dotNetRef, activeIndex) {
+    if (!root) return;
+    const state = _tabsCollapsers.get(root);
+    if (state) {
+        state.activeIndex = activeIndex;
+        state.dotNetRef = dotNetRef;
+    }
+    _applyTabsFold(root, dotNetRef, activeIndex);
+}
+
+export function removeTabsCollapse(root) {
+    const state = _tabsCollapsers.get(root);
+    if (!state) return;
+    state.observer?.disconnect();
+    _tabsCollapsers.delete(root);
+}
+
 const _shortcutOwners = new Map();
 
 export function registerShortcutListener(id, dotNetRef) {

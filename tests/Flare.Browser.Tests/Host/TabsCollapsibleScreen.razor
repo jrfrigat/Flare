@@ -1,0 +1,42 @@
+@page "/tabs-collapsible"
+@using Flare.Abstractions.Tokens
+
+@* Collapsible folds the tabs that do not fit into the trailing overflow menu instead of scrolling.
+   The scrolling strip beside it is the unchanged default, and the vertical case proves the fold works
+   along the other axis. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
+        <div id="collapsible" style="width:340px">
+            <FlareTabs Collapsible>
+                @foreach (var t in _tabs)
+                {
+                    <FlareTab Label="@t"><span>@t</span></FlareTab>
+                }
+            </FlareTabs>
+        </div>
+        <div id="scrolling" style="width:340px;margin-top:24px">
+            <FlareTabs>
+                @foreach (var t in _tabs)
+                {
+                    <FlareTab Label="@t"><span>@t</span></FlareTab>
+                }
+            </FlareTabs>
+        </div>
+        <div id="vertical" style="height:160px;display:flex;margin-top:24px">
+            <FlareTabs Collapsible Placement="TabsPlacement.Left">
+                @foreach (var t in _tabs)
+                {
+                    <FlareTab Label="@t"><span>@t</span></FlareTab>
+                }
+            </FlareTabs>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>
+
+@code {
+    private readonly string[] _tabs =
+    [
+        "Overview", "Specifications", "Pricing", "Reviews",
+        "Shipping", "Warranty", "Support", "Accessories",
+    ];
+}

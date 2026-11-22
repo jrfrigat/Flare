@@ -3,8 +3,8 @@
 @implements IAsyncDisposable
 @inject Flare.Components.Services.IUiJsService Ui
 
-<div class="@BuildCssClass(_verticalClass, _placementClass, _variantClass, _rotatedClass, _fillClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
-    <FlareScroller Class="@Css.Classes.Tabs.BarWrap" HeaderStart="@HeaderStart" HeaderEnd="@HeaderEnd" Vertical="@_vertical">
+<div @ref="_rootRef" class="@BuildCssClass(_verticalClass, _placementClass, _variantClass, _rotatedClass, _fillClass, _collapsibleClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
+    <FlareScroller Class="@Css.Classes.Tabs.BarWrap" HeaderStart="@HeaderStart" HeaderEnd="@HeaderEnd" Vertical="@_vertical" HideArrows="@Collapsible">
     <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef"
          data-flare-keyboard-fallback="@(_jsKeyboardRegistered ? null : "true")"
          data-flare-tab-reorder="@(Reorderable ? "true" : null)"
@@ -53,6 +53,49 @@
             </div>
         }
     </div>
+    @if (Collapsible)
+    {
+        @* The overflow control sits beside the bar, outside role=tablist, because a tablist holds only
+           tabs. The panel is positioned by the shared anchored engine and raised into the top layer, so
+           the strip's clipping does not apply to it. The visible, unmounted state starts settled for
+           the frames before the measurer answers; the measurer owns data-flare-tabs-hidden from then
+           on and the component re-applies it after every render. *@
+        <FlareMenu @ref="_overflowMenu" Class="@Css.Classes.Tabs.More" FreeContent
+                   Anchor="@(_vertical ? MenuAnchor.BottomLeft : MenuAnchor.BottomRight)"
+                   AriaLabel="@_overflowLabel"
+                   data-flare-tabs-hidden="@(_hiddenCount == 0 ? "" : null)">
+            <Activator>
+                <FlareButton AriaLabel="@_overflowLabel" Variant="ButtonVariant.Text" @attributes="context.Attributes">
+                    <FlareIconView Value="@(_vertical ? FlareIcons.MoreHoriz : FlareIcons.MoreVert)" />
+                </FlareButton>
+            </Activator>
+            <ChildContent>
+                <div class="@Css.Classes.Tabs.OverflowList">
+                    @for (var i = 0; i < _tabs.Count; i++)
+                    {
+                        var tab = _tabs[i];
+                        if (!IsFolded(i)) continue;
+                        <button type="button" class="@Css.Classes.Tabs.TabButton @Css.Classes.Tabs.OverflowTab"
+                                disabled="@tab.Disabled" @onclick="@(() => SelectFromOverflowAsync(tab))">
+                            @if (tab.LeadingIcon is not null)
+                            {
+                                @tab.LeadingIcon
+                            }
+                            <span class="@Css.Classes.Tabs.Label">@tab.Label</span>
+                            @if (tab.BadgeDot)
+                            {
+                                <span class="@Css.Classes.Tabs.Badge @Css.Classes.Tabs.BadgeDot @tab.BadgeColor.CssClass" style="@tab.BadgeColor.StyleMainOn()"></span>
+                            }
+                            else if (!string.IsNullOrEmpty(tab.Badge))
+                            {
+                                <span class="@Css.Classes.Tabs.Badge @tab.BadgeColor.CssClass" style="@tab.BadgeColor.StyleMainOn()">@tab.Badge</span>
+                            }
+                        </button>
+                    }
+                </div>
+            </ChildContent>
+        </FlareMenu>
+    }
     </FlareScroller>
     <div class="@Css.Classes.Tabs.Panels">
         <CascadingValue Value="_context" IsFixed="false">
@@ -111,6 +154,14 @@
     /// <summary>Invoked with the new key order after a drag or an Alt+Arrow reorder.</summary>
     [Parameter] public EventCallback<IReadOnlyList<string>> TabOrderChanged { get; set; }
 
+    /// <summary>When true, the tab bar never scrolls: tabs that do not fit fold into a trailing
+    /// three-dot overflow menu instead of showing scroll arrows, and the visible window keeps the
+    /// active tab on screen. Default false keeps the scrolling bar.</summary>
+    [Parameter] public bool Collapsible { get; set; }
+
+    /// <summary>Accessible label of the overflow button. Null uses the built-in localized label.</summary>
+    [Parameter] public string? OverflowLabel { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Tabs.Root;
 
     private readonly List<FlareTab> _tabs = [];
@@ -155,6 +206,20 @@
     };
     private string? _rotatedClass => _rotationDeg is 90 or 270 ? Css.Classes.Tabs.Rotated : null;
     private string? _fillClass => FillHeight ? $"{Css.Classes.Fill.Root} {Css.Classes.Tabs.Fill}" : null;
+    private string? _collapsibleClass => Collapsible ? Css.Classes.Tabs.Collapsible : null;
+
+    // Collapsible state: the visible window reported by the measurer (first visible index and count).
+    // Until it answers, every tab counts as visible so nothing is folded and no menu promises a fold.
+    private ElementReference _rootRef;
+    private FlareMenu? _overflowMenu;
+    private bool _tabsCollapseRegistered;
+    private int _overflowStart;
+    private int _overflowVisible = int.MaxValue;
+    private string _overflowLabel => OverflowLabel ?? CoreText["Aria_MoreActions"];
+    private int _hiddenCount => _overflowVisible >= _tabs.Count ? 0 : Math.Max(0, _tabs.Count - _overflowVisible);
+
+    private bool IsFolded(int index) => _hiddenCount > 0
+        && (index < _overflowStart || index >= _overflowStart + _overflowVisible);
 
     // When Typo is set, repoint the tab-label font tokens at the chosen type scale.
     private string? _typoVars => Typo is { } t
@@ -199,6 +264,10 @@
             _retryKeyboardPending = false;
             await RegisterKeyboardAsync();
         }
+        // Re-applied after EVERY render: the fold is written into an attribute on tab items and on the
+        // overflow control, and a render can replace the element it was written on. It also has to run
+        // before a pending focus move so a tab revealed by the window shift is focusable.
+        await SyncTabsCollapseAsync();
         if (_focusPending is { } target)
         {
             _focusPending = null;
@@ -231,6 +300,13 @@
 
     public override async ValueTask DisposeAsync()
     {
+        if (_tabsCollapseRegistered)
+        {
+            try { await Ui.RemoveTabsCollapseAsync(_rootRef); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+        }
         try { await Ui.RemoveTabKeyboardAsync(_barRef); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
@@ -428,6 +504,63 @@
             _retryKeyboardPending = true;
             StateHasChanged();
         }
+    }
+
+    // Registers the fold measurer on first use and re-runs it once per render while Collapsible is on.
+    private async Task SyncTabsCollapseAsync()
+    {
+        if (!Collapsible)
+        {
+            if (!_tabsCollapseRegistered) return;
+            _tabsCollapseRegistered = false;
+            try { await Ui.RemoveTabsCollapseAsync(_rootRef); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+            return;
+        }
+
+        try
+        {
+            if (!_tabsCollapseRegistered)
+            {
+                await Ui.RegisterTabsCollapseAsync(_rootRef, _dotNetRef!);
+                _tabsCollapseRegistered = true;
+            }
+            await Ui.ApplyTabsOverflowAsync(_rootRef, _dotNetRef!, _currentIndex);
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (InvalidOperationException) { }
+    }
+
+    /// <summary>Receives the visible window of a collapsible tab bar: the first visible index and how
+    /// many tabs fit. Tabs outside the window are folded into the overflow menu.</summary>
+    /// <param name="start">Zero-based index of the first visible tab.</param>
+    /// <param name="visible">How many tabs fit in the bar.</param>
+    [JSInvokable]
+    public async Task OnTabsOverflowChanged(int start, int visible)
+    {
+        if (start == _overflowStart && visible == _overflowVisible) return;
+        var wasOverflowing = _hiddenCount > 0;
+        _overflowStart = start;
+        _overflowVisible = visible;
+        // Room came back while the panel was open: it now lists nothing, and the control it hangs from
+        // is display:none. Leaving it open would park an empty floating panel under a hidden button.
+        if (wasOverflowing && _hiddenCount == 0 && _overflowMenu is not null)
+        {
+            try { await _overflowMenu.CloseAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+        }
+        StateHasChanged();
+    }
+
+    private async Task SelectFromOverflowAsync(FlareTab tab)
+    {
+        if (_overflowMenu is not null) await _overflowMenu.CloseAsync();
+        await SelectTab(tab);
     }
 
     /// <summary>Activates and focuses the available tab addressed by an orientation-aware navigation key.</summary>

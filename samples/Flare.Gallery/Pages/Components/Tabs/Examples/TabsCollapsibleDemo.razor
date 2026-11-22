@@ -1,0 +1,20 @@
+@* Collapsible keeps the bar from scrolling: the tabs that do not fit fold into the three-dot menu,
+   and the visible window keeps the active tab on screen. Resize the window to see the fold follow. *@
+<FlareCard Variant="CardVariant.Outlined" MaxWidth="32rem" Padding="FlareSpacing.None">
+    <FlareTabs Collapsible>
+        @foreach (var t in _tabs)
+        {
+            <FlareTab Label="@t">
+                <FlareText Typo="TypographyScale.BodyMedium">Content for @t.</FlareText>
+            </FlareTab>
+        }
+    </FlareTabs>
+</FlareCard>
+
+@code {
+    private readonly string[] _tabs =
+    [
+        "Overview", "Specifications", "Pricing", "Reviews", "Shipping",
+        "Warranty", "Support", "Accessories", "Compare", "FAQ",
+    ];
+}

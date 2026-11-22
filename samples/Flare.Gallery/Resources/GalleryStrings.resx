@@ -2578,6 +2578,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Tabs_Scrollable" xml:space="preserve">
     <value>Overflow scroll arrows</value>
   </data>
+  <data name="Tabs_Collapsible" xml:space="preserve">
+    <value>Collapsible overflow menu</value>
+  </data>
   <data name="Tabs_Placement" xml:space="preserve">
     <value>Placement &amp; label rotation</value>
   </data>

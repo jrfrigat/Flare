@@ -72,4 +72,13 @@ public static class Tabs
     public const string Rotated = "flare-tabs--rotated";
     /// <summary>The <c>flare-tabs--fill</c> CSS class.</summary>
     public const string Fill = "flare-tabs--fill";
+    /// <summary>The <c>flare-tabs--collapsible</c> CSS class: the bar does not scroll, overflowing tabs
+    /// fold into the trailing overflow menu.</summary>
+    public const string Collapsible = "flare-tabs--collapsible";
+    /// <summary>The <c>flare-tabs__more</c> CSS class (the overflow menu beside the bar).</summary>
+    public const string More = "flare-tabs__more";
+    /// <summary>The <c>flare-tabs__overflow-list</c> CSS class (the menu panel's list of folded tabs).</summary>
+    public const string OverflowList = "flare-tabs__overflow-list";
+    /// <summary>The <c>flare-tabs__overflow-tab</c> CSS class (a folded tab's button inside the menu).</summary>
+    public const string OverflowTab = "flare-tabs__overflow-tab";
 }

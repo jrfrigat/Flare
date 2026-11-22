@@ -11,12 +11,14 @@
 | `ActiveIndex` | `int` | `0` | Parameter |  | Zero-based index of the active tab. Supports two-way binding (@bind-ActiveIndex). |
 | `ActiveIndexChanged` | `EventCallback<int>` | `` | Callback |  | Fired with the new active-tab index whenever the selection changes. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | FlareTab panels rendered inside the tab container. |
+| `Collapsible` | `bool` | `false` | Parameter |  | When true, the tab bar never scrolls: tabs that do not fit fold into a trailing three-dot overflow menu instead of showing scroll arrows, and the visible window keeps the active tab on screen. Default false keeps the scrolling bar. |
 | `HeaderEnd` | `RenderFragment?` | `` | Parameter |  | Custom content rendered at the end (right/bottom) of the tab header, after the tabs - e.g. action buttons. The tab bar grows to push this to the far edge. |
 | `HeaderStart` | `RenderFragment?` | `` | Parameter |  | Custom content rendered at the start (left/top) of the tab header, before the tabs - e.g. a title or action buttons. |
 | `LabelRotation` | `TabLabelRotation` | `TabLabelRotation.None` | Parameter |  | Rotation applied to each tab label (0/90/180/270 degrees). Default none. |
 | `Lazy` | `bool` | `false` | Parameter |  | When true, only the active tab's panel content is rendered: switching tabs unmounts the previous panel and mounts the new one. Keeps heavy tab content (large forms, token editors, data grids) out of the DOM and the component tree until its tab is opened. Default false renders every panel up front (inactive ones hidden with CSS), which preserves transient panel state across switches at the cost of building all panels at once. |
 | `OnPreviewInteraction` | `EventCallback<TabInteractionEventArgs>` | `` | Callback |  | Invoked before a tab is activated or closed. Set Cancel in the handler to veto the interaction (e.g. block switching away from a tab with unsaved changes). Async handlers are awaited before the interaction proceeds. |
 | `OnTabClose` | `EventCallback<string>` | `` | Callback |  | Callback fired with the label of a closed tab. |
+| `OverflowLabel` | `string?` | `` | Parameter |  | Accessible label of the overflow button. Null uses the built-in localized label. |
 | `Placement` | `TabsPlacement` | `TabsPlacement.Top` | Parameter |  | Side the tab bar is placed on (Top/Bottom/Left/Right). Left/Right render a vertical bar. Default Top. |
 | `Reorderable` | `bool` | `false` | Parameter |  | Enables dragging a tab to a new position and pressing Alt+ArrowLeft/Right while it is focused. The active tab stays selected and keyboard focus follows the moved tab. |
 | `TabOrder` | `IReadOnlyList<string>?` | `` | Parameter |  | Controlled order of tab keys (see Key). Unlisted tabs follow in declaration order. Null keeps the order inside the component. |
@@ -49,6 +51,16 @@ Returns: `Task`.
 | --- | --- | --- |
 | `key` | `string` | The pressed arrow key. |
 | `rtl` | `bool` | Whether the tab bar resolves to right-to-left in the browser. |
+
+### `OnTabsOverflowChanged(int start, int visible)`
+
+Receives the visible window of a collapsible tab bar: the first visible index and how many tabs fit. Tabs outside the window are folded into the overflow menu.
+Returns: `void`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `start` | `int` | Zero-based index of the first visible tab. |
+| `visible` | `int` | How many tabs fit in the bar. |
 
 
 ## Inheritance

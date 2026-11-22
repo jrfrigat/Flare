@@ -53,6 +53,24 @@ public interface IUiJsService : IAsyncDisposable
     /// <summary>Removes the collapse observer for <paramref name="root"/>.</summary>
     ValueTask RemoveButtonGroupCollapseAsync(ElementReference root);
 
+    /// <summary>Watches a collapsible tab container and folds the tabs that no longer fit into its
+    /// overflow menu, reporting the visible window via <c>OnTabsOverflowChanged(int,int)</c>.</summary>
+    /// <param name="root">The tab container element.</param>
+    /// <param name="dotNetRef">The component reference whose <c>OnTabsOverflowChanged(int,int)</c> is invoked.</param>
+    ValueTask RegisterTabsCollapseAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => ValueTask.CompletedTask;
+
+    /// <summary>Re-runs the fold for <paramref name="root"/> with the current active tab, so the visible
+    /// window keeps the active tab on screen. Needed after every render of the tabs.</summary>
+    /// <param name="root">The tab container element.</param>
+    /// <param name="dotNetRef">The component reference whose <c>OnTabsOverflowChanged(int,int)</c> is invoked.</param>
+    /// <param name="activeIndex">Zero-based index of the active tab, or -1 when none is active.</param>
+    ValueTask ApplyTabsOverflowAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef, int activeIndex) where T : class
+        => ValueTask.CompletedTask;
+
+    /// <summary>Removes the collapse observer for <paramref name="root"/>.</summary>
+    ValueTask RemoveTabsCollapseAsync(ElementReference root) => ValueTask.CompletedTask;
+
     /// <summary>Registers a global keydown listener that invokes <c>HandleKeyDown</c> with the combo string.</summary>
     /// <param name="id">Unique owner id; registering another owner does not replace this one.</param>
     /// <param name="dotNetRef">The component reference whose <c>HandleKeyDown(string)</c> is invoked.</param>

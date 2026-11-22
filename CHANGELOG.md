@@ -12,6 +12,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareSplitPane` composes `FlareSplitter` into a two-pane split with a controlled fraction, min/max sizes and a measured share a host can persist.
 - `FlareDockWorkspace` tabs render `DockItem` Icon, Badge and BadgeDot, accept a per-tab marker slot and an action slot beside the tab button, and can hide the base drop guide while keeping the drop zones active.
 - `FlareNavLink` renders a button when `Href` is null, so an in-page navigation item gets `OnClick` and a selected state without an anchor.
+- `FlareTabs` gains `Collapsible`: the bar stops scrolling and the tabs that do not fit fold into a trailing three-dot overflow menu, whose visible window keeps the active tab on screen. `OverflowLabel` names that button for assistive technology.
 
 ### Changed
 

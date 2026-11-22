@@ -2578,6 +2578,9 @@
   <data name="Tabs_Scrollable" xml:space="preserve">
     <value>Стрелки прокрутки при переполнении</value>
   </data>
+  <data name="Tabs_Collapsible" xml:space="preserve">
+    <value>Сворачивание в меню переполнения</value>
+  </data>
   <data name="Tabs_Placement" xml:space="preserve">
     <value>Расположение и поворот подписей</value>
   </data>
