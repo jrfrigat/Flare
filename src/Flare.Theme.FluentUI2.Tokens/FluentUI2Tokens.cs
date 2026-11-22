@@ -2,6 +2,7 @@ using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 
 namespace Flare.Theme.FluentUI2.Tokens;
 
@@ -542,20 +543,34 @@ public class FluentUI2Tokens
     {
         // Fluent tab icon: 20px at the medium tab.
         IconSize = "1.25rem",
-        ActiveWeight = "700",
+        // body1 in rest, body1Strong when selected (react-tabs v9 spec).
+        LabelFont = Var(Css.Tokens.Typography.BodyMedium.Font),
+        LabelSize = Var(Css.Tokens.Typography.BodyMedium.Size),
+        LabelWeight = Var(Css.Tokens.Typography.BodyMedium.Weight),
+        LabelSpacing = Var(Css.Tokens.Typography.BodyMedium.Spacing),
+        ActiveWeight = "600",
         CloseOpacity = "0.6",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
         // Fluent has no nested-tab level of its own, so the subordinate strip is expressed the way
         // this language expresses subordination anyway: a thinner rail and a neutral active label.
         SecondaryIndicatorThickness = "2px",
-        InactiveColor = "var(--flare-color-on-surface)",
+        InactiveColor = "var(--flare-fluent-tab-fg)",
+        InactiveHoverColor = "var(--flare-fluent-tab-fg-hover)",
+        // The selected label is foreground1 (#FFFFFF in dark, not the Flare dark on-surface #F0F0F0);
+        // the brand belongs to the icon and the indicator, which use the base primary role.
+        ActiveColor = "var(--flare-fluent-tab-selected-fg)",
+        // Fluent v9 draws no divider under the whole strip.
+        DividerColor = "transparent",
         TrackBg = "transparent",
         TabDisabledOpacity = "1",
         ScrollDisabledOpacity = "1",
         TabHeight = "auto",
         TabMinWidth = "0",
-        TabPaddingInline = "var(--flare-spacing-10)",
+        // Medium tab: spacingHorizontalMNudge = 10px inline; the block padding comes from spacing-6 = 12px.
+        TabPaddingInline = "10px",
+        // Insets the primary/selected indicator 12px from the tab edges, as the medium spec states.
+        PrimaryIndicatorInset = "12px",
         // Flare's own part sizes, which no Fluent table states.
         ScrollIconSize = "1.25rem",
         CloseSize = "1.25rem",
@@ -933,6 +948,14 @@ public class FluentUI2Tokens
         // Neutral stroke hover/pressed (colorNeutralStroke1Hover/Pressed) - subtle border darken.
         [FluentCssVars.StrokeHover] = "#C7C7C7",
         [FluentCssVars.StrokePressed] = "#B3B3B3",
+        // Fluent tabs (react-tabs v9): only the roles with no Flare base equivalent live here.
+        // The selected label, icon and indicator use the primary/on-surface base roles.
+        [FluentCssVars.TabFg] = "#424242",
+        [FluentCssVars.TabFgHover] = "#242424",
+        [FluentCssVars.TabSelectedFg] = "#242424",
+        [FluentCssVars.TabIndicatorHover] = "#115EA3",
+        [FluentCssVars.TabIndicatorPressed] = "#0F548C",
+        [FluentCssVars.Shadow4] = "0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14)",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         // The geometry (its compact ramp) lives in SwitchTokens now; only the non-geometry look stays here.
@@ -1678,6 +1701,13 @@ public class FluentUI2Tokens
             // Fluent dark neutral stroke hover/pressed.
             [FluentCssVars.StrokeHover] = "#757575",
             [FluentCssVars.StrokePressed] = "#6B6B6B",
+            // Fluent dark tabs.
+            [FluentCssVars.TabFg] = "#D6D6D6",
+            [FluentCssVars.TabFgHover] = "#FFFFFF",
+            [FluentCssVars.TabSelectedFg] = "#FFFFFF",
+            [FluentCssVars.TabIndicatorHover] = "#62ABF5",
+            [FluentCssVars.TabIndicatorPressed] = "#2886DE",
+            [FluentCssVars.Shadow4] = "0 0 2px rgba(0,0,0,0.24), 0 2px 4px rgba(0,0,0,0.28)",
         };
         return dict;
     }

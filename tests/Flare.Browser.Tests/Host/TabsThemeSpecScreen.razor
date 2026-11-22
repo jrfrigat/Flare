@@ -1,0 +1,25 @@
+@page "/tabs-theme-spec"
+@using Flare.Abstractions.Tokens
+@using Flare.Icons
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
+        <div id="tabs-light">
+            <FlareTabs>
+                <FlareTab Label="One">
+                    <LeadingIcon><FlareIconView Value="@FlareIcons.Settings" /></LeadingIcon>
+                    <ChildContent><p>One</p></ChildContent>
+                </FlareTab>
+                <FlareTab Label="Two"><ChildContent><p>Two</p></ChildContent></FlareTab>
+            </FlareTabs>
+        </div>
+    </FlareThemeScope>
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Dark">
+        <div id="tabs-dark">
+            <FlareTabs>
+                <FlareTab Label="One"><ChildContent><p>One</p></ChildContent></FlareTab>
+                <FlareTab Label="Two"><ChildContent><p>Two</p></ChildContent></FlareTab>
+            </FlareTabs>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>

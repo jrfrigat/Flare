@@ -1,0 +1,129 @@
+/* ==========================================================================
+   FLUENT UI 2 - TABS [react-tabs v9 spec]
+   The default (transparent) linear tab, its pending hover indicator and the
+   rounded selected indicator. Values come from the theme's Fluent roles; the
+   layout follows docs/spec/tabs/fluentui2-spec.md (medium size).
+   ========================================================================== */
+@scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
+
+    /* Default tabs only: Underline/Primary/Secondary/Text/Tonal/Filled/Outlined keep the core shape. */
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__bar-wrap {
+        border-bottom: none;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab {
+        gap: 6px;
+        border-bottom: none;
+        margin-bottom: 0;
+        border-radius: 4px;
+        /* The transparent appearance has no hover fill; the pending line is the affordance. */
+        --flare-state-hover-layer: transparent;
+        --flare-state-pressed-layer: transparent;
+    }
+
+    /* The state-layer pseudo becomes Fluent's pending indicator on an unselected tab. */
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab::before {
+        inset: auto var(--flare-tabs-primary-indicator-inset) 0 var(--flare-tabs-primary-indicator-inset);
+        block-size: var(--flare-fluent-stroke-width-thick);
+        border-radius: var(--flare-shape-full);
+        z-index: 0;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab:hover:not(:disabled):not(.flare-tabs__tab--active)::before {
+        background: var(--flare-fluent-stroke-hover);
+        opacity: 1;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab:active:not(:disabled):not(.flare-tabs__tab--active)::before {
+        background: var(--flare-fluent-stroke-pressed);
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active::before {
+        opacity: 0;
+    }
+
+    /* The selected indicator: a rounded 3px bar inset from the tab edges. */
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab::after {
+        content: '';
+        position: absolute;
+        inset-inline: var(--flare-tabs-primary-indicator-inset);
+        inset-block-end: 0;
+        block-size: var(--flare-tabs-indicator-thickness);
+        border-radius: var(--flare-shape-full);
+        background: var(--flare-color-primary);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active::after {
+        opacity: 1;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active:hover::after {
+        background: var(--flare-fluent-tab-indicator-hover);
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active:active::after {
+        background: var(--flare-fluent-tab-indicator-pressed);
+    }
+
+    /* body1Strong on the selected label and the brand on its icon. */
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active {
+        font-weight: var(--flare-tabs-active-weight);
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab--active .flare-icon {
+        color: var(--flare-color-primary);
+    }
+
+    /* createCustomFocusIndicatorStyle: shadow4 plus the 2px stroke colorStrokeFocus2. */
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined) .flare-tabs__tab:focus-visible {
+        outline: var(--flare-fluent-stroke-width-thick) solid var(--flare-fluent-focus-stroke-color);
+        outline-offset: calc(-1 * var(--flare-fluent-stroke-width-thick));
+        box-shadow: var(--flare-fluent-shadow-4);
+    }
+
+    /* Vertical tabs: no selected fill, the indicator moves to the inline edge. */
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__bar {
+        border-right: none;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__tab {
+        padding-block: 6px;
+        border-right: none;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__tab--active {
+        background-color: transparent;
+        border-right-color: transparent;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__tab::after {
+        inset-inline: auto 0;
+        inset-block: 8px;
+        inline-size: var(--flare-tabs-indicator-thickness);
+        block-size: auto;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical .flare-tabs__tab::before {
+        inset: 8px auto 8px 0;
+        inline-size: var(--flare-fluent-stroke-width-thick);
+        block-size: auto;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical.flare-tabs--right .flare-tabs__bar {
+        border-left: none;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical.flare-tabs--right .flare-tabs__tab--active {
+        border-left-color: transparent;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical.flare-tabs--right .flare-tabs__tab::after {
+        inset-inline: 0 auto;
+    }
+
+    .flare-tabs:not(.flare-tabs--underline):not(.flare-tabs--primary):not(.flare-tabs--secondary):not(.flare-tabs--text):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--outlined).flare-tabs--vertical.flare-tabs--right .flare-tabs__tab::before {
+        inset: 8px 0 8px auto;
+    }
+}

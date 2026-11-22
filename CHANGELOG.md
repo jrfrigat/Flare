@@ -19,6 +19,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- FluentUI2 tabs follow the react-tabs v9 spec: body1 in rest and body1Strong when selected, neutral foreground2/1 label colors, 10px inline padding, the rounded selected indicator inset from the tab edges, the pending hover line, no hover fill for the default appearance and the brand selected icon.
 - The dock tab strip takes its height from the theme's tab height, as FlareTabs does. The browser measures each group header and the panes follow it; the dock no longer owns a header height or a compact tab override, so a theme with taller tabs is not cut down. A tab bar never becomes a vertical scroll container.
 - The editor breadcrumb row height comes from the components it hosts and the theme's typography, not from a fixed 22px.
 

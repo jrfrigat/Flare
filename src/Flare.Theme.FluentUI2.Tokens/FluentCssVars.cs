@@ -31,4 +31,17 @@ public static class FluentCssVars
     public const string StrokeHover = "--flare-fluent-stroke-hover";
     /// <summary>Neutral stroke on press (colorNeutralStroke1Pressed).</summary>
     public const string StrokePressed = "--flare-fluent-stroke-pressed";
+
+    /// <summary>Resting tab label and icon color (colorNeutralForeground2).</summary>
+    public const string TabFg = "--flare-fluent-tab-fg";
+    /// <summary>Hovered and pressed tab label and icon color (colorNeutralForeground2Hover/Pressed).</summary>
+    public const string TabFgHover = "--flare-fluent-tab-fg-hover";
+    /// <summary>Selected tab label color (colorNeutralForeground1).</summary>
+    public const string TabSelectedFg = "--flare-fluent-tab-selected-fg";
+    /// <summary>Selected tab indicator on hover (colorCompoundBrandStrokeHover).</summary>
+    public const string TabIndicatorHover = "--flare-fluent-tab-indicator-hover";
+    /// <summary>Selected tab indicator on press (colorCompoundBrandStrokePressed).</summary>
+    public const string TabIndicatorPressed = "--flare-fluent-tab-indicator-pressed";
+    /// <summary>Fluent shadow4, used by the tab focus indicator.</summary>
+    public const string Shadow4 = "--flare-fluent-shadow-4";
 }
