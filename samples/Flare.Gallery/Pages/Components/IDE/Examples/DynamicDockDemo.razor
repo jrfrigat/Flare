@@ -1,12 +1,15 @@
 @using Flare.Components.IDE
+@using Flare.Icons
 @inherits LocalizedPage
 
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareSelect TValue="DockDropZones" @bind-Value="_dropZones" Items="_zoneModes"
                  ItemLabel="ZoneLabel" Label="@GalleryStrings.DockDemo_DropTargets"
                  data-testid="dock-drop-zones" />
+    <FlareCheckbox TValue="bool" @bind-Value="_showDropGuide" Label="@GalleryStrings.DockDemo_ShowGuide" />
     <FlareStack Height="24rem">
         <FlareDockWorkspace id="dynamic-dock-demo" Layout="_layout" Items="Items" DropZones="_dropZones"
+                            ShowDropGuide="_showDropGuide"
                             OnChangeRequested="Apply" GroupLabel="DescribeGroup">
             <ContentTemplate Context="item">
             @switch (item.Key)
@@ -42,6 +45,7 @@
         [DockDropZones.All, HorizontalZones, EdgesZones, DockDropZones.None];
 
     private DockDropZones _dropZones = DockDropZones.All;
+    private bool _showDropGuide = true;
 
     private DockNode _layout = new DockSplit("workspace", DockAxis.Horizontal,
         new DockGroup("reports", ["data", "draft"], "data"),
@@ -49,9 +53,9 @@
 
     private IReadOnlyList<DockItem> Items =>
     [
-        new("data", GalleryStrings.DockDemo_Data),
-        new("chart", GalleryStrings.DockDemo_Chart),
-        new("draft", GalleryStrings.DockDemo_Draft, KeepAlive: true)
+        new("data", GalleryStrings.DockDemo_Data, Icon: FlareIcons.Table),
+        new("chart", GalleryStrings.DockDemo_Chart, Icon: FlareIcons.GridOn),
+        new("draft", GalleryStrings.DockDemo_Draft, KeepAlive: true, Icon: FlareIcons.Description)
     ];
 
     private void Apply(DockLayoutChange change)

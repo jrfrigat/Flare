@@ -1,0 +1,27 @@
+.flare-split-pane {
+  display: flex;
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+.flare-split-pane--horizontal { flex-direction: row; }
+.flare-split-pane--vertical { flex-direction: column; }
+
+/* The first pane takes the controlled fraction; the splitter overwrites the variable with pixels
+   while the pointer moves, and the component writes the fraction back when the gesture ends. */
+.flare-split-pane__first {
+  flex: 0 0 var(--_flare-splitpane-first, 50%);
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+.flare-split-pane--horizontal > .flare-split-pane__first { block-size: 100%; }
+.flare-split-pane--vertical > .flare-split-pane__first { inline-size: 100%; }
+
+.flare-split-pane__second {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow: hidden;
+}

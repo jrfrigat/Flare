@@ -1,0 +1,131 @@
+@namespace Flare.Components
+@using Microsoft.JSInterop
+@inherits FlareComponentBase
+@inject Flare.Components.Services.ISplitterJsService SplitterJs
+
+@* Two panes and one resize handle. The component owns the layout and the persisted fraction; the
+   handle, its drag and its keyboard behavior are FlareSplitter's. *@
+<div class="@BuildCssClass(_orientationClass)"
+     style="@_rootStyle"
+     data-flare-splitpane
+     @ref="_root"
+     @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.SplitPane.First" data-flare-splitpane-first @ref="_first">
+        @FirstPaneContent
+    </div>
+    <FlareSplitter Orientation="@_splitterOrientation"
+                   MinSize="@MinSize"
+                   MaxSize="@MaxSize"
+                   AriaLabel="@AriaLabel"
+                   ValueScope="[data-flare-splitpane]"
+                   ValueTarget="[data-flare-splitpane-first]"
+                   ValueVariable="@FirstSizeVariable"
+                   OnSizeChanged="OnSplitChangedAsync" />
+    <div class="@Css.Classes.SplitPane.Second">
+        @SecondPaneContent
+    </div>
+</div>
+
+@code {
+    /// <summary>Content of the pane sized by <see cref="Fraction"/>.</summary>
+    [Parameter] public RenderFragment? FirstPaneContent { get; set; }
+
+    /// <summary>Content of the pane that fills the remaining space.</summary>
+    [Parameter] public RenderFragment? SecondPaneContent { get; set; }
+
+    /// <summary>Layout axis of the split. Horizontal places the panes side by side; vertical stacks them.</summary>
+    [Parameter] public SplitPaneOrientation Orientation { get; set; } = SplitPaneOrientation.Horizontal;
+
+    /// <summary>Share of the available length given to the first pane, from 0 to 1. Supports two-way
+    /// binding; the parameter is authoritative while <see cref="FractionChanged"/> is bound.</summary>
+    [Parameter] public double Fraction { get; set; } = 0.5;
+
+    /// <summary>Invoked with the new fraction after a drag or a keyboard resize. The value is the
+    /// measured share of the container along the split axis, not a pixel length.</summary>
+    [Parameter] public EventCallback<double> FractionChanged { get; set; }
+
+    /// <summary>Minimum size of either pane as a CSS length (for example <c>120px</c>). Optional.</summary>
+    [Parameter] public string? MinSize { get; set; }
+
+    /// <summary>Maximum size of the first pane as a CSS length. A percentage is relative to the pane
+    /// container. Optional.</summary>
+    [Parameter] public string? MaxSize { get; set; }
+
+    /// <summary>Accessible label of the resize handle. Null uses the localized default.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.SplitPane.Root;
+
+    // A runtime geometry channel, not a design token: the splitter writes it while the pointer moves
+    // and the component rewrites it to the controlled fraction when the gesture ends.
+    private const string FirstSizeVariable = "--_flare-splitpane-first";
+
+    private double _fraction = 0.5;
+    private double _lastFraction = 0.5;
+    private bool _initialized;
+    private ElementReference _root;
+    private ElementReference _first;
+
+    private bool _vertical => Orientation == SplitPaneOrientation.Vertical;
+
+    private string _orientationClass => _vertical
+        ? Css.Classes.SplitPane.Vertical
+        : Css.Classes.SplitPane.Horizontal;
+
+    // The pane layout axis and the handle axis run opposite ways: side-by-side panes resize widths,
+    // which FlareSplitter names Horizontal.
+    private FlareSplitter.SplitterOrientation _splitterOrientation => _vertical
+        ? FlareSplitter.SplitterOrientation.Vertical
+        : FlareSplitter.SplitterOrientation.Horizontal;
+
+    private string _axis => _vertical ? "vertical" : "horizontal";
+
+    private string _rootStyle =>
+        $"{FirstSizeVariable}:{Percent(_fraction)}%;{Style}";
+
+    // A two-way parameter follows the shared contract: the caller who listens is authoritative; an
+    // uncontrolled component keeps its own fraction and adopts only a real parameter change.
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (!_initialized)
+        {
+            _initialized = true;
+            _lastFraction = Fraction;
+            _fraction = Clamp(Fraction);
+            return;
+        }
+        if (FractionChanged.HasDelegate)
+        {
+            _fraction = Clamp(Fraction);
+        }
+        else if (Fraction != _lastFraction)
+        {
+            _fraction = Clamp(Fraction);
+        }
+        _lastFraction = Fraction;
+    }
+
+    private async Task OnSplitChangedAsync(string newSize)
+    {
+        if (string.IsNullOrWhiteSpace(newSize)) return;
+        double fraction;
+        try
+        {
+            fraction = await SplitterJs.MeasureFractionAsync(_root, _first, _axis);
+        }
+        catch (InvalidOperationException) { return; }
+        catch (JSDisconnectedException) { return; }
+        catch (JSException) { return; }
+
+        if (fraction <= 0) return;
+        _fraction = Clamp(fraction);
+        if (FractionChanged.HasDelegate) await FractionChanged.InvokeAsync(_fraction);
+    }
+
+    private static double Clamp(double value) =>
+        double.IsFinite(value) ? Math.Clamp(value, 0, 1) : 0.5;
+
+    private static string Percent(double value) =>
+        Math.Round(Clamp(value) * 100, 4).ToString("0.####", System.Globalization.CultureInfo.InvariantCulture);
+}

@@ -3,6 +3,7 @@ using System.Reflection;
 using Flare.Components;
 using Flare.Components.IDE;
 using Flare.Css;
+using Flare.Icons;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -360,20 +361,89 @@ public sealed class FlareDockWorkspaceTests : FlareTestContext
         Assert.Empty(readOnly.FindAll("[role=separator]"));
     }
 
+    [Fact]
+    public void TabMetadata_RendersIconAndBadgesInsideTheButton()
+    {
+        var items = new DockItem[]
+        {
+            new("a", "A", Icon: FlareIcons.Folder, Badge: "3"),
+            new("b", "B", BadgeDot: true)
+        };
+        var cut = RenderWorkspace(new DockGroup("first", ["a", "b"], "a"), _ => { }, items: items);
+
+        var tabA = cut.Find("button[role=tab][aria-label=A]");
+        Assert.NotEmpty(tabA.QuerySelectorAll($".{Css.Classes.Icon.Root}"));
+        Assert.Contains("3", tabA.TextContent);
+        Assert.NotEmpty(tabA.QuerySelectorAll($".{Css.Classes.Tabs.Badge}"));
+
+        var tabB = cut.Find("button[role=tab][aria-label=B]");
+        Assert.NotEmpty(tabB.QuerySelectorAll($".{Css.Classes.Tabs.BadgeDot}"));
+    }
+
+    [Fact]
+    public void TabActions_RenderBesideTheTabButtonAsRealControls()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { },
+            tabActions: item => builder =>
+            {
+                builder.OpenElement(0, "button");
+                builder.AddAttribute(1, "id", "action-" + item.Key);
+                builder.CloseElement();
+            });
+
+        var action = cut.Find("#action-a");
+        Assert.Equal("button", action.TagName.ToLowerInvariant());
+        Assert.Null(action.Closest("button[role=tab]"));
+        Assert.Contains("flare-dock__tab-actions", action.ParentElement!.ClassName ?? "");
+    }
+
+    [Fact]
+    public void TabMarkers_RenderInsideTheTabButton()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { },
+            tabMarkers: item => builder =>
+            {
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "id", "marker-" + item.Key);
+                builder.CloseElement();
+            });
+
+        var marker = cut.Find("#marker-a");
+        Assert.NotNull(marker.Closest("button[role=tab]"));
+    }
+
+    [Fact]
+    public void ShowDropGuideFalse_KeepsTheZonesAndSuppressesTheBaseGuide()
+    {
+        var cut = RenderWorkspace(new DockGroup("first", ["a"], "a"), _ => { }, showDropGuide: false);
+
+        Assert.Contains("flare-dock--no-guide", cut.Find(".flare-dock").ClassName);
+        Assert.NotEmpty(cut.FindAll(".flare-dock__target"));
+    }
+
     private IRenderedComponent<FlareDockWorkspace> RenderWorkspace(DockNode layout, Action<DockLayoutChange>? onChange,
         Func<DockAction, string?, string, bool>? canRequest = null,
-        DockDropZones dropZones = DockDropZones.All) =>
+        DockDropZones dropZones = DockDropZones.All,
+        IReadOnlyList<DockItem>? items = null,
+        RenderFragment<DockItem>? tabTemplate = null,
+        RenderFragment<DockItem>? tabActions = null,
+        RenderFragment<DockItem>? tabMarkers = null,
+        bool showDropGuide = true) =>
         Render<FlareDockWorkspace>(p =>
         {
             p.Add(x => x.Layout, layout)
-                .Add(x => x.Items, Catalog)
+                .Add(x => x.Items, items ?? Catalog)
                 .Add(x => x.DropZones, dropZones)
+                .Add(x => x.ShowDropGuide, showDropGuide)
                 .Add(x => x.ContentTemplate, (RenderFragment<DockItem>)(item => builder =>
                 {
                     builder.OpenComponent<Probe>(0);
                     builder.AddAttribute(1, nameof(Probe.ItemKey), item.Key);
                     builder.CloseComponent();
                 }));
+            if (tabTemplate is not null) p.Add(x => x.TabTemplate, tabTemplate);
+            if (tabActions is not null) p.Add(x => x.TabActionsTemplate, tabActions);
+            if (tabMarkers is not null) p.Add(x => x.TabMarkerTemplate, tabMarkers);
             if (onChange is not null)
                 p.Add(x => x.OnChangeRequested, EventCallback.Factory.Create(this, onChange));
             if (canRequest is not null)

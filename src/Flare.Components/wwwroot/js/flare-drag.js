@@ -567,6 +567,16 @@ export function removeSiblingSplitter(gutter) {
     _splitters.drop(gutter);
 }
 
+// Share of the container's axis length taken by one element. The split pane uses it to turn the
+// splitter's pixel report into the persisted fraction; it reads nothing but the two boxes.
+export function measureSplitFraction(scope, target, axis) {
+    if (!scope || !target) return 0;
+    const dim = axis === 'vertical' ? 'height' : 'width';
+    const total = scope.getBoundingClientRect()[dim];
+    const size = target.getBoundingClientRect()[dim];
+    return total > 0 ? Math.min(1, Math.max(0, size / total)) : 0;
+}
+
 export const flareColorPicker = (() => {
     const _state = new Map(); // canvas el -> { dotNetRef, hue, sat, l, _cleanup }
 

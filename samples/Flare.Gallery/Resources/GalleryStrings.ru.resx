@@ -4998,6 +4998,7 @@
   <data name="DockDemo_Total" xml:space="preserve"><value>Итого</value></data>
   <data name="DockDemo_Empty" xml:space="preserve"><value>Пустая группа</value></data>
   <data name="DockDemo_DropTargets" xml:space="preserve"><value>Зоны сброса</value></data>
+  <data name="DockDemo_ShowGuide" xml:space="preserve"><value>Показывать подсказку докинга</value></data>
   <data name="DockDemo_ZonesAll" xml:space="preserve"><value>Все зоны</value></data>
   <data name="DockDemo_ZonesHorizontal" xml:space="preserve"><value>Центр и боковые края</value></data>
   <data name="DockDemo_ZonesEdges" xml:space="preserve"><value>Только края</value></data>

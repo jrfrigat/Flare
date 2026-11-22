@@ -169,6 +169,16 @@
   transition: background-color var(--flare-motion-duration-state-change), color var(--flare-motion-duration-state-change);
 }
 
+/* An in-page nav item is the same surface rendered as a button; the reset only removes the browser's
+   button chrome, while every visual value stays in the rule above. */
+button.flare-nav-link {
+  inline-size: 100%;
+  border: none;
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+}
+
 /* The current destination is a state, not a target, so it never lights up - excluded here rather
    than switched off afterwards, so specificity cannot decide it the other way. */
 .flare-nav-link:hover:not(.flare-nav-link--active)::before {

@@ -162,4 +162,50 @@ public class FlareNavLinkTests : FlareTestContext
         Assert.Contains($"{Css.Tokens.LocalColor.Main}:#123456", style);
         Assert.Contains($"{Css.Tokens.LocalColor.On}:", style);
     }
+
+    // Without Href the item is an in-page action, so it must be a button, not an anchor pointing at
+    // about:blank. MudNavLink and FluentNavItem follow the same split.
+    [Fact]
+    public void HrefNull_RendersAButtonWithoutHref()
+    {
+        var cut = Render<FlareNavLink>(p => p.AddChildContent("Settings"));
+
+        var button = cut.Find("button");
+        Assert.Contains(Css.Classes.Navigation.NavLink, button.ClassName);
+        Assert.Null(button.GetAttribute("href"));
+        Assert.Empty(cut.FindAll("a"));
+    }
+
+    [Fact]
+    public void HrefNull_OnClickRunsAndActiveMarksCurrent()
+    {
+        var clicks = 0;
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Active, true)
+            .Add(x => x.OnClick, () => clicks++)
+            .AddChildContent("Settings"));
+
+        var button = cut.Find("button");
+        Assert.Equal("true", button.GetAttribute("aria-current"));
+        Assert.Contains(Css.Classes.Navigation.NavLinkActive, button.ClassName);
+
+        button.Click();
+        Assert.Equal(1, clicks);
+    }
+
+    [Fact]
+    public void HrefNull_DisabledDisablesTheButton()
+    {
+        var clicks = 0;
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Disabled, true)
+            .Add(x => x.OnClick, () => clicks++)
+            .AddChildContent("Settings"));
+
+        var button = cut.Find("button");
+        Assert.True(button.HasAttribute("disabled"));
+        Assert.Contains(Css.Classes.Navigation.NavLinkDisabled, button.ClassName);
+        button.Click();
+        Assert.Equal(0, clicks);
+    }
 }

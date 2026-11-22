@@ -36,4 +36,12 @@ public interface ISplitterJsService : IAsyncDisposable
     /// <summary>Detaches the drag handler from the splitter handle.</summary>
     /// <param name="gutter">The splitter handle element.</param>
     ValueTask RemoveAsync(ElementReference gutter);
+
+    /// <summary>Measures the share of the container's axis length taken by one element, so a pixel
+    /// report from the splitter can be persisted as a fraction.</summary>
+    /// <param name="scope">The container that defines the whole length along the axis.</param>
+    /// <param name="target">The element whose share is measured (the first pane).</param>
+    /// <param name="axis">"horizontal" for widths, "vertical" for heights.</param>
+    /// <returns>The share from 0 to 1, or 0 when the container has no length.</returns>
+    ValueTask<double> MeasureFractionAsync(ElementReference scope, ElementReference target, string axis);
 }

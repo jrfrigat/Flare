@@ -13,7 +13,7 @@
 | `BadgeContent` | `RenderFragment?` | `` | Parameter |  | Badge content rendered at the trailing edge. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Link label content. |
 | `Disabled` | `bool` | `false` | Parameter |  | Prevents navigation and interaction when true. |
-| `Href` | `string?` | `` | Parameter |  | URL the link navigates to. |
+| `Href` | `string?` | `` | Parameter |  | URL the link navigates to. When null the item renders as a button for an in-page action, and Active and OnClick describe its state. |
 | `IconContent` | `RenderFragment?` | `` | Parameter |  | Icon rendered before the link label. Kept separate from the label so the link can be trimmed to its icon in a mini-rail (Rail). |
 | `Match` | `NavMatchMode` | `NavMatchMode.Prefix` | Parameter |  | Route matching strategy - prefix or exact. |
 | `OnActiveChanged` | `EventCallback<bool>` | `` | Callback |  | Callback fired when the link's active state changes (true when it becomes active). |

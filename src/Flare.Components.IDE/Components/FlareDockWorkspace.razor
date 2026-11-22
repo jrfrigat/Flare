@@ -3,7 +3,7 @@
 
 <FlareDragContext TPayload="string" OnDrop="HandleDropAsync" OnDragStart="BeginDrag"
                   OnDragEnd="EndDrag" CanDrop="AllowsDrop" KeyboardReorder="false">
-    <div class="@BuildCssClass()" style="@Style" tabindex="-1" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass(_guideClass)" style="@Style" tabindex="-1" @attributes="AdditionalAttributes">
         <div class="@DockCss.Canvas" id="@_canvasId" @ref="_canvas" style="@_geometry.Style">
             @foreach (var entry in _geometry.Entries)
             {
@@ -59,9 +59,29 @@
                                             }
                                             else
                                             {
+                                                @if (tab.Icon is not null)
+                                                {
+                                                    <FlareIconView Value="tab.Icon" />
+                                                }
                                                 <span class="@DockCss.Label @Css.Classes.Tabs.Label">@tab.Title</span>
+                                                @if (tab.BadgeDot)
+                                                {
+                                                    <span class="@Css.Classes.Tabs.Badge @Css.Classes.Tabs.BadgeDot @tab.BadgeColor.CssClass" style="@tab.BadgeColor.StyleMainOn()"></span>
+                                                }
+                                                else if (!string.IsNullOrEmpty(tab.Badge))
+                                                {
+                                                    <span class="@Css.Classes.Tabs.Badge @tab.BadgeColor.CssClass" style="@tab.BadgeColor.StyleMainOn()">@tab.Badge</span>
+                                                }
+                                            }
+                                            @if (TabMarkerTemplate is { } markers)
+                                            {
+                                                @markers(tab)
                                             }
                                         </button>
+                                        @if (TabActionsTemplate is { } actions)
+                                        {
+                                            <div class="@DockCss.TabActions">@actions(tab)</div>
+                                        }
                                     </FlareDraggable>
                                 }
                             </div>

@@ -1,0 +1,20 @@
+@page "/split-pane"
+@using Flare.Components
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="pane-root" style="width:600px;height:300px">
+        <FlareSplitPane Fraction="_fraction" FractionChanged="value => _fraction = value" MinSize="100px">
+            <FirstPaneContent>
+                <div id="first-pane">First</div>
+            </FirstPaneContent>
+            <SecondPaneContent>
+                <div id="second-pane">Second</div>
+            </SecondPaneContent>
+        </FlareSplitPane>
+    </div>
+    <div id="fraction">@_fraction.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</div>
+</FlareThemeProvider>
+
+@code {
+    private double _fraction = 0.5;
+}

@@ -246,7 +246,7 @@ All real component names (consult the [API Reference](../api/README.md) for each
 
 **Layout & structure:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,
-`FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
+`FlareSplitPane`, `FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
 `FlareLazy`, `FlareMediaQuery`, `FlareHidden`, `FlareCollapse`, `FlarePullToRefresh`.
 
 **Content:** `FlareText`, `FlareCode`, `FlareMarkdown`, `FlareCodeBlock`.

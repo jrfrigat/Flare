@@ -14751,6 +14751,8 @@ namespace Flare.Gallery.Resources {
         public static string DockDemo_Empty { get { return ResourceManager.GetString("DockDemo_Empty", resourceCulture); } }
         /// <summary>Drop targets</summary>
         public static string DockDemo_DropTargets { get { return ResourceManager.GetString("DockDemo_DropTargets", resourceCulture); } }
+        /// <summary>Show the docking guide</summary>
+        public static string DockDemo_ShowGuide { get { return ResourceManager.GetString("DockDemo_ShowGuide", resourceCulture); } }
         /// <summary>All regions</summary>
         public static string DockDemo_ZonesAll { get { return ResourceManager.GetString("DockDemo_ZonesAll", resourceCulture); } }
         /// <summary>Center and inline edges</summary>

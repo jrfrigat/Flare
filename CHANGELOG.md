@@ -9,6 +9,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 - `FlareDockWorkspace` brings dynamic tab groups, nested splits, and state-preserving moves to `Flare.Components.IDE`. Applications control which layout changes to accept.
 - `FlareTabs` tabs can be reordered by dragging or with Alt+Arrow. `FlareTab` gains `Key`; `FlareTabs` gains `Reorderable`, `TabOrder` and `TabOrderChanged`.
+- `FlareSplitPane` composes `FlareSplitter` into a two-pane split with a controlled fraction, min/max sizes and a measured share a host can persist.
+- `FlareDockWorkspace` tabs render `DockItem` Icon, Badge and BadgeDot, accept a per-tab marker slot and an action slot beside the tab button, and can hide the base drop guide while keeping the drop zones active.
+- `FlareNavLink` renders a button when `Href` is null, so an in-page navigation item gets `OnClick` and a selected state without an anchor.
 
 ### Changed
 

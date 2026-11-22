@@ -24,6 +24,16 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// <summary>Optionally renders the non-interactive contents of a tab.</summary>
     [Parameter] public RenderFragment<DockItem>? TabTemplate { get; set; }
 
+    /// <summary>Optionally renders non-interactive markers inside a tab after its content - a pin, a
+    /// dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only
+    /// phrasing content; put controls in <see cref="TabActionsTemplate"/> instead.</summary>
+    [Parameter] public RenderFragment<DockItem>? TabMarkerTemplate { get; set; }
+
+    /// <summary>Optionally renders actions for a tab beside the tab button, outside it. A host command
+    /// belongs here so it can be a real button; the strip starts a drag only from the grip, so an action
+    /// never begins one.</summary>
+    [Parameter] public RenderFragment<DockItem>? TabActionsTemplate { get; set; }
+
     /// <summary>Provides a localized accessible label for a group.</summary>
     [Parameter] public Func<DockGroup, string>? GroupLabel { get; set; }
 
@@ -40,7 +50,14 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// <summary>Which body regions the workspace offers as drop targets. The tab row stays available for reordering.</summary>
     [Parameter] public DockDropZones DropZones { get; set; } = DockDropZones.All;
 
+    /// <summary>Whether the base guide is painted while a tab is dragged over a drop zone. False keeps
+    /// the zones active and the move possible but draws no candidate or over highlight, so a host can
+    /// present its own guide without overriding the workspace's internal classes.</summary>
+    [Parameter] public bool ShowDropGuide { get; set; } = true;
+
     protected override string ComponentCssClass => DockCss.Root;
+
+    private string? _guideClass => ShowDropGuide ? null : DockCss.NoGuide;
 
     private readonly string _canvasId = $"dock-{Guid.NewGuid():N}";
     private readonly Dictionary<string, string> _ids = new(StringComparer.Ordinal);

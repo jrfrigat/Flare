@@ -10,7 +10,11 @@ A presentation entry whose key can appear in a dock group.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
+| `Badge` | `string?` | `` | Optional badge text shown after the title. |
+| `BadgeColor` | `FlareColor` | `` | Color of the badge or dot. The default keeps the theme's error role. |
+| `BadgeDot` | `bool` | `` | Draws the badge as a small dot instead of text. |
 | `CanClose` | `bool` | `` | Whether the workspace offers a close action. |
+| `Icon` | `FlareIcon?` | `` | Optional icon drawn before the title, matching the FlareTab item contract. |
 | `KeepAlive` | `bool` | `` | Retain this item after the first activation until it leaves the workspace. |
 | `Key` | `string` | `` | A stable, non-empty key unique within the workspace catalog. |
 | `Title` | `string` | `` | The visible title and accessible name of the tab. |

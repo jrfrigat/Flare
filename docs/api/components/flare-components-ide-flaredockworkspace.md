@@ -17,6 +17,9 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 | `Items` | `IReadOnlyList<DockItem>` | `` | Parameter | Yes | Presentation entries for the keys placed in the workspace. |
 | `Layout` | `DockNode` | `` | Parameter | Yes | The accepted topology, supplied by the application each time it changes. |
 | `OnChangeRequested` | `EventCallback<DockLayoutChange>` | `` | Callback |  | Receives a proposed transition. Apply Proposed to Layout to accept it. After asynchronous approval, check that Previous is still current before applying the proposal. |
+| `ShowDropGuide` | `bool` | `true` | Parameter |  | Whether the base guide is painted while a tab is dragged over a drop zone. False keeps the zones active and the move possible but draws no candidate or over highlight, so a host can present its own guide without overriding the workspace's internal classes. |
+| `TabActionsTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders actions for a tab beside the tab button, outside it. A host command belongs here so it can be a real button; the strip starts a drag only from the grip, so an action never begins one. |
+| `TabMarkerTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders non-interactive markers inside a tab after its content - a pin, a dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only phrasing content; put controls in TabActionsTemplate instead. |
 | `TabTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders the non-interactive contents of a tab. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

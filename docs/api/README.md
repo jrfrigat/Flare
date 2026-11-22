@@ -191,6 +191,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareSnackbarProvider`](components/flare-components-flaresnackbarprovider.md)
 - [`FlareSpacer`](components/flare-components-flarespacer.md)
 - [`FlareSplitButton`](components/flare-components-flaresplitbutton.md)
+- [`FlareSplitPane`](components/flare-components-flaresplitpane.md)
 - [`FlareSplitter`](components/flare-components-flaresplitter.md)
 - [`FlareStack`](components/flare-components-flarestack.md)
 - [`FlareStat`](components/flare-components-flarestat.md)
@@ -375,6 +376,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Abstractions.SnackbarPosition`](enums/flare-abstractions-snackbarposition.md) — Anchor position of the snackbar stack on screen.
 - [`Flare.Abstractions.SnackbarSeverity`](enums/flare-abstractions-snackbarseverity.md) — Severity of a snackbar notification, controlling its accent color and icon.
 - [`Flare.Components.SortDirection`](enums/flare-components-sortdirection.md) — Sort direction applied to a data-grid column.
+- [`Flare.Components.SplitPaneOrientation`](enums/flare-components-splitpaneorientation.md) — Layout axis of a FlareSplitPane.
 - [`Flare.Components.StepperOrientation`](enums/flare-components-stepperorientation.md) — Layout orientation of a FlareStepper.
 - [`Flare.Components.SubmenuPlacement`](enums/flare-components-submenuplacement.md) — Placement of the submenu relative to the parent item.
 - [`Flare.Components.SwitchSize`](enums/flare-components-switchsize.md) — Size of FlareSwitch on the shared Xs..Xl scale; medium is the default. The steps are labels, not measurements - each theme maps them onto its own track and thumb tokens, and they differ: one theme's medium switch is not another's.

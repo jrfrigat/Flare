@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using Flare.Components;
+using Flare.Icons;
 
 namespace Flare.Components.IDE;
 
@@ -80,7 +82,19 @@ public sealed record DockSplit : DockNode
 /// <param name="Title">The visible title and accessible name of the tab.</param>
 /// <param name="KeepAlive">Retain this item after the first activation until it leaves the workspace.</param>
 /// <param name="CanClose">Whether the workspace offers a close action.</param>
-public sealed record DockItem(string Key, string Title, bool KeepAlive = false, bool CanClose = true);
+/// <param name="Icon">Optional icon drawn before the title, matching the <see cref="FlareTab"/> item contract.</param>
+/// <param name="Badge">Optional badge text shown after the title.</param>
+/// <param name="BadgeDot">Draws the badge as a small dot instead of text.</param>
+/// <param name="BadgeColor">Color of the badge or dot. The default keeps the theme's error role.</param>
+public sealed record DockItem(
+    string Key,
+    string Title,
+    bool KeepAlive = false,
+    bool CanClose = true,
+    FlareIcon? Icon = null,
+    string? Badge = null,
+    bool BadgeDot = false,
+    FlareColor BadgeColor = default);
 
 /// <summary>The kind of change proposed by the workspace.</summary>
 public enum DockAction

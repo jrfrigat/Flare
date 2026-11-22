@@ -1984,6 +1984,7 @@ public static class ComponentApiRegistry
                 @"FlareSnackbarProvider",
                 @"FlareSpacer",
                 @"FlareSplitButton",
+                @"FlareSplitPane",
                 @"FlareSplitter",
                 @"FlareStack",
                 @"FlareStat",
@@ -2841,6 +2842,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<DockItem>", null, @"Presentation entries for the keys placed in the workspace.", null, false, false, true, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"Layout", @"DockNode", null, @"The accepted topology, supplied by the application each time it changes.", null, false, false, true, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"OnChangeRequested", @"EventCallback<DockLayoutChange>", null, @"Receives a proposed transition. Apply Proposed to Layout to accept it. After asynchronous approval, check that Previous is still current before applying the proposal.", null, false, true, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"ShowDropGuide", @"bool", @"true", @"Whether the base guide is painted while a tab is dragged over a drop zone. False keeps the zones active and the move possible but draws no candidate or over highlight, so a host can present its own guide without overriding the workspace's internal classes.", null, false, false, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"TabActionsTemplate", @"RenderFragment<DockItem>?", null, @"Optionally renders actions for a tab beside the tab button, outside it. A host command belongs here so it can be a real button; the strip starts a drag only from the grip, so an action never begins one.", null, false, false, false, @"FlareDockWorkspace"),
+                new ApiParameterInfo(@"TabMarkerTemplate", @"RenderFragment<DockItem>?", null, @"Optionally renders non-interactive markers inside a tab after its content - a pin, a dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only phrasing content; put controls in TabActionsTemplate instead.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"TabTemplate", @"RenderFragment<DockItem>?", null, @"Optionally renders the non-interactive contents of a tab.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -5091,7 +5095,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"BadgeContent", @"RenderFragment?", null, @"Badge content rendered at the trailing edge.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Link label content.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents navigation and interaction when true.", null, false, false, false, @"FlareNavLink"),
-                new ApiParameterInfo(@"Href", @"string?", null, @"URL the link navigates to.", null, false, false, false, @"FlareNavLink"),
+                new ApiParameterInfo(@"Href", @"string?", null, @"URL the link navigates to. When null the item renders as a button for an in-page action, and Active and OnClick describe its state.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"IconContent", @"RenderFragment?", null, @"Icon rendered before the link label. Kept separate from the label so the link can be trimmed to its icon in a mini-rail (Rail).", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"Match", @"NavMatchMode", @"NavMatchMode.Prefix", @"Route matching strategy - prefix or exact.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"OnActiveChanged", @"EventCallback<bool>", null, @"Callback fired when the link's active state changes (true when it becomes active).", null, false, true, false, @"FlareNavLink"),
@@ -7123,6 +7127,36 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSplitPane"] = new ApiComponentInfo(
+            @"FlareSplitPane",
+            @"Flare.Components.FlareSplitPane",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label of the resize handle. Null uses the localized default.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"FirstPaneContent", @"RenderFragment?", null, @"Content of the pane sized by Fraction.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"Fraction", @"double", @"0.5", @"Share of the available length given to the first pane, from 0 to 1. Supports two-way binding; the parameter is authoritative while FractionChanged is bound.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"FractionChanged", @"EventCallback<double>", null, @"Invoked with the new fraction after a drag or a keyboard resize. The value is the measured share of the container along the split axis, not a pixel length.", null, false, true, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"MaxSize", @"string?", null, @"Maximum size of the first pane as a CSS length. A percentage is relative to the pane container. Optional.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"MinSize", @"string?", null, @"Minimum size of either pane as a CSS length (for example 120px). Optional.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"Orientation", @"SplitPaneOrientation", @"SplitPaneOrientation.Horizontal", @"Layout axis of the split. Horizontal places the panes side by side; vertical stacks them.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"SecondPaneContent", @"RenderFragment?", null, @"Content of the pane that fills the remaining space.", null, false, false, false, @"FlareSplitPane"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -11191,6 +11225,22 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Descending", @"2", @"Descending."),
             },
             System.Array.Empty<string>());
+
+        e[@"SplitPaneOrientation"] = new ApiEnumInfo(
+            @"SplitPaneOrientation",
+            @"Flare.Components.SplitPaneOrientation",
+            @"Flare.Components",
+            @"Layout axis of a FlareSplitPane.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Horizontal", @"0", @"Panes side by side, resized along the inline axis."),
+                new ApiEnumMember(@"Vertical", @"1", @"Panes stacked, resized along the block axis."),
+            },
+            new string[]
+            {
+                @"FlareSplitPane",
+            });
 
         e[@"StepperOrientation"] = new ApiEnumInfo(
             @"StepperOrientation",

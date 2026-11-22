@@ -849,6 +849,7 @@ button.flare-editor-breadcrumb-bar__segment-button {
 
 .flare-dock__tabs { scrollbar-width: thin; }
 .flare-dock__tab-wrap { flex: 0 0 auto; display: flex; }
+.flare-dock__tab-actions { display: flex; align-items: center; flex: none; }
 
 /* The label is the part a host may constrain; it shrinks and ellipsizes instead of pushing the
    actions out of the group. */
@@ -976,6 +977,16 @@ button.flare-editor-breadcrumb-bar__segment-button {
 
 .flare-dock__target[data-flare-dock-zone="start"].flare-drop-zone--over::after { inset-inline-end: 0; }
 .flare-dock__target[data-flare-dock-zone="end"].flare-drop-zone--over::after { inset-inline-start: 0; }
+
+/* The host drew its own guide: the zones stay active and the drop still happens, but the base guide
+   paints nothing. */
+.flare-dock--no-guide .flare-dock__target.flare-drop-zone--candidate,
+.flare-dock--no-guide .flare-dock__target.flare-drop-zone--over {
+    background: none;
+    outline: none;
+}
+
+.flare-dock--no-guide .flare-dock__target.flare-drop-zone--over::after { content: none; }
 
 .flare-dock__target[data-flare-dock-zone="top"],
 .flare-dock__target[data-flare-dock-zone="bottom"] { inset-inline: 20%; block-size: 20%; }

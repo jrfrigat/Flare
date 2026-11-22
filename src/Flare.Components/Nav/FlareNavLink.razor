@@ -3,29 +3,33 @@
 @inject NavigationManager Navigation
 @using Microsoft.AspNetCore.Components.Routing
 
-<a class="@BuildCssClass(_activeClass, _disabledClass)"
-   href="@(Disabled ? null : _safeHref)"
-   style="@Style"
-   title="@Tooltip"
-   aria-current="@(_isActive ? "page" : null)"
-   aria-disabled="@(Disabled ? "true" : null)"
-   tabindex="@(Disabled ? -1 : null)"
-   @onclick="HandleClick"
-   @onclick:preventDefault="@(OnClick.HasDelegate || Disabled)"
-   @attributes="AdditionalAttributes">
-    @if (IconContent is not null)
-    {
-        <span class="@Css.Classes.Navigation.NavLinkIcon">@IconContent</span>
-    }
-    <span class="@Css.Classes.Navigation.NavLinkText">@ChildContent</span>
-    @if (BadgeContent is not null)
-    {
-        <span class="@Css.Classes.Navigation.NavLinkBadge @BadgeColor.CssClass" style="@BadgeColor.StyleMainOn()">@BadgeContent</span>
-    }
-</a>
+@if (Href is not null)
+{
+    <a class="@BuildCssClass(_activeClass, _disabledClass)"
+       href="@(Disabled ? null : _safeHref)"
+       style="@Style"
+       title="@Tooltip"
+       aria-current="@(_isActive ? "page" : null)"
+       aria-disabled="@(Disabled ? "true" : null)"
+       tabindex="@(Disabled ? -1 : null)"
+       @onclick="HandleClick"
+       @onclick:preventDefault="@(OnClick.HasDelegate || Disabled)"
+       @attributes="AdditionalAttributes">@Content</a>
+}
+else
+{
+    <button type="button" class="@BuildCssClass(_activeClass, _disabledClass)"
+            style="@Style"
+            title="@Tooltip"
+            aria-current="@(_isActive ? "true" : null)"
+            disabled="@Disabled"
+            @onclick="HandleClick"
+            @attributes="AdditionalAttributes">@Content</button>
+}
 
 @code {
-    /// <summary>URL the link navigates to.</summary>
+    /// <summary>URL the link navigates to. When null the item renders as a button for an in-page
+    /// action, and <see cref="Active"/> and <see cref="OnClick"/> describe its state.</summary>
     [Parameter] public string? Href { get; set; }
     /// <summary>Link label content.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -59,6 +63,18 @@
     private bool _wasActive;
 
     private string _safeHref => CssValidator.IsHrefSafe(Href) ? (Href ?? string.Empty) : "about:blank";
+
+    private RenderFragment Content => @<text>
+        @if (IconContent is not null)
+        {
+            <span class="@Css.Classes.Navigation.NavLinkIcon">@IconContent</span>
+        }
+        <span class="@Css.Classes.Navigation.NavLinkText">@ChildContent</span>
+        @if (BadgeContent is not null)
+        {
+            <span class="@Css.Classes.Navigation.NavLinkBadge @BadgeColor.CssClass" style="@BadgeColor.StyleMainOn()">@BadgeContent</span>
+        }
+    </text>;
 
     private bool _isActive => Active || (Href is not null && IsHrefActive());
     private string _activeClass => _isActive ? Css.Classes.Navigation.NavLinkActive : string.Empty;

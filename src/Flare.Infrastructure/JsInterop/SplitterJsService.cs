@@ -24,4 +24,8 @@ public sealed class SplitterJsService : FlareJsModule, ISplitterJsService
     /// <inheritdoc />
     public ValueTask RemoveAsync(ElementReference gutter)
         => InvokeVoidAsync("removeSiblingSplitter", gutter);
+
+    /// <inheritdoc />
+    public ValueTask<double> MeasureFractionAsync(ElementReference scope, ElementReference target, string axis)
+        => InvokeAsync<double>("measureSplitFraction", scope, target, axis);
 }

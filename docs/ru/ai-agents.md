@@ -248,7 +248,7 @@ inline/batch-редактирование, выделение, переупор�
 
 **Раскладка и структура:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,
-`FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
+`FlareSplitPane`, `FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
 `FlareLazy`, `FlareMediaQuery`, `FlareHidden`, `FlareCollapse`, `FlarePullToRefresh`.
 
 **Контент:** `FlareText`, `FlareCode`, `FlareMarkdown`, `FlareCodeBlock`.

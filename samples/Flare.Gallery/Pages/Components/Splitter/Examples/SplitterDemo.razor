@@ -54,8 +54,34 @@
             </FlareStack>
         </FlareStack>
     </FlarePaper>
+
+    <FlareText Typo="TypographyScale.TitleMedium">FlareSplitPane</FlareText>
+    <FlarePaper Outlined Padding="FlareSpacing.None">
+        <FlareStack Height="14rem" Overflow="hidden">
+            <FlareSplitPane Fraction="_splitFraction" FractionChanged="value => _splitFraction = value" MinSize="120px">
+                <FirstPaneContent>
+                    <FlareStack Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                        <FlareText Typo="TypographyScale.TitleSmall">Navigator</FlareText>
+                        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                            The first pane keeps the bound fraction when the container changes size.
+                        </FlareText>
+                    </FlareStack>
+                </FirstPaneContent>
+                <SecondPaneContent>
+                    <FlareStack Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                        <FlareText Typo="TypographyScale.TitleSmall">Editor</FlareText>
+                        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                            The second pane fills the rest.
+                        </FlareText>
+                    </FlareStack>
+                </SecondPaneContent>
+            </FlareSplitPane>
+        </FlareStack>
+    </FlarePaper>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Fraction: @_splitFraction.ToString("P0")</FlareText>
 </FlareStack>
 
 @code {
     private string? _size;
+    private double _splitFraction = 0.35;
 }

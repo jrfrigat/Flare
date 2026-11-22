@@ -201,6 +201,7 @@ This component exposes no documented public methods.
 - `FlareSnackbarProvider`
 - `FlareSpacer`
 - `FlareSplitButton`
+- `FlareSplitPane`
 - `FlareSplitter`
 - `FlareStack`
 - `FlareStat`
