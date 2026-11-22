@@ -72,6 +72,10 @@ public class TokenParityTests
         Assert.Contains(Css.Tokens.Button.Radius.MdTopLeft, flat.Keys);
         Assert.Contains(Css.Tokens.Button.FocusOutline, flat.Keys);
         Assert.Contains(Css.Tokens.Button.IconSize.Md, flat.Keys);
+        Assert.Contains(Css.Tokens.Button.TextContent, flat.Keys);
+        // The Text variant keeps the accent unless a theme names its own content colour.
+        Assert.Equal(Flare.Css.Tokens.Vars.Var(Flare.Css.Tokens.Color.Primary),
+            CreateDefaultDesignTokens().Button.TextContent);
     }
 
     [Fact]

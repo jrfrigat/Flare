@@ -1,0 +1,46 @@
+@page "/vs-chrome"
+@using Flare.Abstractions.Tokens
+@using Flare.Components.IDE
+
+@* The VisualStudio shell runs on the neutral chrome palette: menu and tool-window commands are
+   neutral text on a neutral well, and a disabled control repaints from the shell surfaces instead of
+   the light Fluent fallbacks. The screen composes the exact surfaces Quas reported from Flare only. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="visualstudio" Palette="vs-blue" Mode="ThemeMode.Dark">
+        <div id="vs-chrome">
+            <FlareMenuBar>
+                <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="File menu">
+                    <Activator>
+                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                                     @attributes="context.Attributes">File</FlareButton>
+                    </Activator>
+                    <ChildContent>
+                        <FlareMenuItem OnClick="Noop">New</FlareMenuItem>
+                    </ChildContent>
+                </FlareMenu>
+            </FlareMenuBar>
+
+            <div id="vs-toolwindow" style="height:180px">
+                <FlareToolPanel Title="Toolbox" ShowToolbar="true">
+                    <ToolbarContent>
+                        <FlareButton Size="ButtonSize.Xs">Neutral</FlareButton>
+                        <FlareButton Variant="ButtonVariant.Filled" Color="FlareColor.Success" Size="ButtonSize.Xs"
+                                     Disabled="true">Execute</FlareButton>
+                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                     Disabled="true">Format</FlareButton>
+                    </ToolbarContent>
+                    <ChildContent>
+                        <FlareSelect TValue="string" Label="Database" Placeholder="No database"
+                                     Disabled="true" />
+                    </ChildContent>
+                </FlareToolPanel>
+            </div>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>
+
+@code {
+    private static void Noop()
+    {
+    }
+}

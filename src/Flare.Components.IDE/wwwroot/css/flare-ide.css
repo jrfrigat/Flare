@@ -186,6 +186,9 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+    /* A tool window is a surface of its own. The neutral variant is the same role the group header
+       already uses, so the panel, its header and its strip read as one window under every theme. */
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
 }
 
 /* A group keeps its inactive panels mounted and marks them with the hidden attribute. The author
@@ -203,6 +206,7 @@
     height: 100%;
     min-height: 0;
     overflow: hidden;
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
 }
 
 /* The tool-window title row: the measured 26px on the panel surface, with the host's pin/close

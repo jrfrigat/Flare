@@ -250,6 +250,9 @@ public sealed record ButtonTokens
     [CssVar(Button.FilledContainer)] public string FilledContainer { get; init; } = Var(Css.Tokens.Color.Primary);
     /// <summary>Label and icon colour of a Filled button with no Color set.</summary>
     [CssVar(Button.FilledContent)] public string FilledContent { get; init; } = Var(Css.Tokens.Color.OnPrimary);
+    /// <summary>Label and icon colour of a Text button with no Color set. A language whose toolbar and
+    /// menu commands are neutral chrome names its text colour here; a Color on the button still wins.</summary>
+    [CssVar(Button.TextContent)] public string TextContent { get; init; } = Var(Css.Tokens.Color.Primary);
     /// <summary>Fill of a Tonal button with no Color set.</summary>
     [CssVar(Button.TonalContainer)] public string TonalContainer { get; init; } = Var(Css.Tokens.Color.SecondaryContainer);
     /// <summary>Label and icon colour of a Tonal button with no Color set.</summary>

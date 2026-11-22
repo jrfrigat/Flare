@@ -205,6 +205,8 @@ public static class Button
     public const string FilledContainer = "--flare-btn-filled-container";
     /// <summary>Label and icon colour of a Filled button with no Color set.</summary>
     public const string FilledContent = "--flare-btn-filled-content";
+    /// <summary>Label and icon colour of a Text button with no Color set.</summary>
+    public const string TextContent = "--flare-btn-text-content";
     /// <summary>Fill of a Tonal button with no Color set.</summary>
     public const string TonalContainer = "--flare-btn-tonal-container";
     /// <summary>Label and icon colour of a Tonal button with no Color set.</summary>

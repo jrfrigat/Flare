@@ -151,7 +151,7 @@
 }
 
 .flare-btn--text {
-    --_flare-btn-content: var(--fc-main, var(--flare-color-primary));
+    --_flare-btn-content: var(--fc-main, var(--flare-btn-text-content));
     background-color: transparent;
     color: var(--_flare-btn-content);
 }

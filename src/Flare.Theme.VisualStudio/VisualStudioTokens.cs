@@ -252,18 +252,24 @@ internal class VisualStudioTokens
         TonalUnselectedBg = "var(--flare-color-secondary-container)",
         TonalUnselectedColor = "var(--flare-color-on-secondary-container)",
 
+        // A bare Filled button is a standard VS command: a neutral well on the chrome, not the accent.
+        // A command that is truly primary asks for Color="Primary" and takes the accent through --fc-main.
+        FilledContainer = "var(--flare-color-surface-container-high)",
+        FilledContent = "var(--flare-vs-chrome-text)",
+        // Toolbar and menu commands are neutral chrome text; the accent belongs to primary commands.
+        TextContent = "var(--flare-vs-chrome-text)",
         FocusOutline = "1px solid var(--flare-color-primary)",
         FocusOutlineOffset = "1px",
         // The measured VS 2026 focus is a single 1px accent line - no outer glow ring.
         FocusShadow = "none",
         FilledHoverShadow = "none",
-        // Fluent repaints disabled controls in a flat palette rather than fading them: the solid variants take
-        // the disabled fill, every variant the disabled foreground, the outlined one the disabled stroke.
+        // Disabled controls repaint flat from the shell's neutral roles rather than fading: the accent,
+        // a variant fill or the light Fluent fallbacks never survive into a disabled button.
         DisabledOpacity = "1",
         DisabledRepaint = "100%",
-        DisabledContainer = "var(--flare-fluent-disabled-bg, #F0F0F0)",
-        DisabledContent = "var(--flare-fluent-disabled-fg, #BDBDBD)",
-        DisabledStroke = "var(--flare-fluent-disabled-border, #E0E0E0)",
+        DisabledContainer = "var(--flare-color-surface-container)",
+        DisabledContent = "var(--flare-vs-chrome-text-disabled)",
+        DisabledStroke = "var(--flare-vs-chrome-divider)",
 
         IconSizeXs = "1rem",
         IconSizeSm = "1rem",
@@ -366,6 +372,7 @@ internal class VisualStudioTokens
         ItemRadiusEnd = "var(--flare-shape-small)",
         ItemShortcutColor = "var(--flare-vs-chrome-text-disabled)",
         ItemCheckColor = "var(--flare-vs-chrome-accent)",
+        ItemFocusRingColor = "var(--flare-vs-chrome-accent)",
         ItemDisabledOpacity = "1",
         SeparatorRule = "1px solid var(--flare-vs-chrome-divider)",
         SeparatorSpacing = "0.3125rem",
@@ -462,6 +469,9 @@ internal class VisualStudioTokens
         FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-outline)",
         StopSize = "2px",
+        // Disabled geometry keeps the shell's neutral ramp instead of the light Fluent fallbacks.
+        DisabledActiveColor = "var(--flare-vs-chrome-text-disabled)",
+        DisabledInactiveColor = "var(--flare-vs-chrome-divider)",
     };
 
     // Switch - the Fluent-derived record carries the MD3 grow-on-check thumb (16 -> 24px) that only
@@ -478,6 +488,9 @@ internal class VisualStudioTokens
         ThumbPressedOnSizeMd = "1rem",
         ThumbOffLeftMd = "0.1875rem",             // 3px from the leading edge
         ThumbOnLeftMd = "calc(100% - 1.0625rem)", // 14px thumb + 3px trailing margin
+        DisabledTrackBg = "var(--flare-color-surface-container)",
+        DisabledTrackBorder = "var(--flare-vs-chrome-divider)",
+        DisabledHandleBg = "var(--flare-vs-chrome-text-disabled)",
     };
 
     // Flat VS shadows; color comes from the active ColorScheme shadow vars.
@@ -521,6 +534,12 @@ internal class VisualStudioTokens
     internal static readonly InputTokens Input = FluentUI2Tokens.Design.Input with
     {
         FilledBg = "var(--flare-vs-chrome-field)",
+        // A disabled field drops to the shell's neutral container and its divider stroke, so the light
+        // Fluent disabled fallbacks never paint a white well in the dark shell.
+        DisabledBg = "var(--flare-color-surface-container)",
+        DisabledIndicator = "var(--flare-vs-chrome-divider)",
+        // Hovering a VS field firms the neutral stroke; the Fluent hover wash is not part of this shell.
+        HoverBorderBottomColor = "var(--flare-vs-chrome-outline)",
         OutlinedRadius = "var(--flare-shape-small)",
         BorderColor = "var(--flare-color-outline)",
         BorderBottomColor = "var(--flare-color-outline)",

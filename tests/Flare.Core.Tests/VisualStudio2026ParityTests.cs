@@ -304,6 +304,21 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
+    public void ThemeCss_EmitsTheNeutralButtonAndDisabledRoles()
+    {
+        var css = TokensToCss.ThemeCss(Theme);
+
+        // A bare Filled command is chrome, a Text command is chrome text, and neither is the accent.
+        Assert.Contains($"{Css.Tokens.Button.FilledContainer}:var({Css.Tokens.Color.SurfaceContainerHigh});", css);
+        Assert.Contains($"{Css.Tokens.Button.TextContent}:var({VisualStudioCssVars.ChromeText});", css);
+        Assert.Contains($"{Css.Tokens.Button.DisabledContainer}:var({Css.Tokens.Color.SurfaceContainer});", css);
+        Assert.Contains($"{Css.Tokens.Button.DisabledContent}:var({VisualStudioCssVars.ChromeTextDisabled});", css);
+        Assert.Contains($"{Css.Tokens.InputField.DisabledBg}:var({Css.Tokens.Color.SurfaceContainer});", css);
+        // The light Fluent disabled palette must never leak into the VS shell through a token default.
+        Assert.DoesNotContain("--flare-fluent-disabled-", css);
+    }
+
+    [Fact]
     public void Extended_DoesNotDeclareIdeTokens()
     {
         var light = VisualStudio.DesignReference.Extended;

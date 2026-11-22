@@ -47,6 +47,35 @@
         color: var(--flare-vs-chrome-text-disabled);
     }
 
+    /* Disabled fields repaint flat like the rest of the shell: the well and its stroke come from the
+       Input tokens, and every text slot takes the measured disabled foreground at full opacity. The
+       select value otherwise fades a second time through the core's state opacity. */
+    .flare-input--disabled :where(
+        .flare-input__control,
+        .flare-input__label,
+        .flare-input__label--floating,
+        .flare-input__helper,
+        .flare-input__adornment,
+        .flare-input__icon,
+        .flare-input__arrow,
+        .flare-input__placeholder,
+        .flare-select__value,
+        .flare-multiselect__value) {
+        color: var(--flare-vs-chrome-text-disabled) !important;
+        opacity: 1;
+    }
+
+    .flare-input--disabled .flare-numericfield__step,
+    .flare-numericfield__step:disabled {
+        color: var(--flare-vs-chrome-text-disabled) !important;
+    }
+
+    /* The boxed VS field carries its 1px stroke on every side, so the disabled stroke has to move
+       with the control instead of staying on the resting outline. */
+    .flare-input--disabled .flare-input__field {
+        border-color: var(--flare-vs-chrome-divider);
+    }
+
     /* The measured Solution Explorer row is 24px high. The row itself is the click target; the
        expander keeps its own 24px box and only the glyph shrinks to 16px (Tree tokens), so the row
        needs no block padding of its own. */
