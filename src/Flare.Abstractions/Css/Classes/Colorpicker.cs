@@ -51,12 +51,6 @@ public static class Colorpicker
     public const string SliderRow = "flare-colorpicker__slider-row";
     /// <summary>The <c>flare-colorpicker__sliders</c> CSS class.</summary>
     public const string Sliders = "flare-colorpicker__sliders";
-    /// <summary>The <c>flare-colorpicker__tab</c> CSS class.</summary>
-    public const string Tab = "flare-colorpicker__tab";
-    /// <summary>The <c>flare-colorpicker__tab--active</c> CSS class.</summary>
-    public const string TabActive = "flare-colorpicker__tab--active";
-    /// <summary>The <c>flare-colorpicker__tabs</c> CSS class.</summary>
-    public const string Tabs = "flare-colorpicker__tabs";
     /// <summary>The <c>flare-colorpicker__trigger</c> CSS class.</summary>
     public const string Trigger = "flare-colorpicker__trigger";
     /// <summary>The <c>flare-colorpicker__trigger-label</c> CSS class.</summary>

@@ -223,36 +223,6 @@
     gap: var(--flare-spacing-3);
 }
 
-.flare-colorpicker__tabs {
-    display: flex;
-    gap: var(--flare-spacing-1);
-}
-
-.flare-colorpicker__tab {
-    flex: 1;
-    padding: var(--flare-spacing-2) 0;
-    background: transparent;
-    border: none;
-    border-bottom: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline-variant);
-    color: var(--flare-color-on-surface-variant);
-    font-family: var(--flare-typescale-label-medium-font);
-    font-size: var(--flare-typescale-label-medium-size);
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: border-color var(--flare-motion-duration-state-change),
-                color var(--flare-motion-duration-state-change);
-}
-
-.flare-colorpicker__tab:hover {
-    color: var(--flare-color-on-surface);
-}
-
-.flare-colorpicker__tab--active {
-    border-bottom-color: var(--flare-colorpicker-accent);
-    color: var(--flare-colorpicker-accent);
-}
-
 .flare-colorpicker__input-row {
     display: flex;
     gap: var(--flare-spacing-3);

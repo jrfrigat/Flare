@@ -5,6 +5,7 @@
 @inject Flare.Components.Services.IColorCanvasJsService Canvas
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
 @implements IAsyncDisposable
 
 @if (Inline)
@@ -100,6 +101,10 @@ else
     private string _lInput = "50";
 
     private string _activeTab = "hex"; // hex | rgb | hsl
+    private static readonly string[] FormatTabs = ["hex", "rgb", "hsl"];
+    private readonly ElementReference[] _formatTabRefs = new ElementReference[3];
+    private string FormatTabId(string tab) => $"{_triggerId}-tab-{tab}";
+    private string FormatPanelId => $"{_triggerId}-format-panel";
     private bool _open;
 
     // Canvas element reference
@@ -276,6 +281,23 @@ else
     {
         _open = false;
         _canvasInitialized = false;
+    }
+
+    // The format switch is an APG tab list: arrows, Home and End move the selection and the focus.
+    private async Task HandleFormatTabKeyDown(KeyboardEventArgs e)
+    {
+        var index = Array.IndexOf(FormatTabs, _activeTab);
+        var target = e.Key switch
+        {
+            "ArrowRight" or "ArrowDown" => (index + 1) % FormatTabs.Length,
+            "ArrowLeft" or "ArrowUp" => (index - 1 + FormatTabs.Length) % FormatTabs.Length,
+            "Home" => 0,
+            "End" => FormatTabs.Length - 1,
+            _ => -1,
+        };
+        if (target < 0) return;
+        _activeTab = FormatTabs[target];
+        await _formatTabRefs[target].FocusAsync(preventScroll: true);
     }
 
 
@@ -650,20 +672,53 @@ else
         __builder.OpenElement(50, "div");
         __builder.AddAttribute(51, "class", Css.Classes.Colorpicker.Inputs);
 
-            // Tab buttons
+            // Tab strip: the shared FlareTabs item contract, so a theme styles the format switch
+            // with the same item as every other tab.
             __builder.OpenElement(52, "div");
-            __builder.AddAttribute(53, "class", Css.Classes.Colorpicker.Tabs);
-            foreach (var tab in new[] { "hex", "rgb", "hsl" })
-            {
-                var t = tab;
-                __builder.OpenElement(54, "button");
-                __builder.AddAttribute(55, "type", "button");
-                __builder.AddAttribute(56, "class", $"{Css.Classes.Colorpicker.Tab}{(_activeTab == t ? " " + Css.Classes.Colorpicker.TabActive : "")}");
-                __builder.AddAttribute(57, "onclick", EventCallback.Factory.Create(this, () => { _activeTab = t; }));
-                __builder.AddContent(58, t.ToUpper());
+            __builder.AddAttribute(53, "class", $"{Css.Classes.Tabs.Root} {Css.Classes.Tabs.BarOnly}");
+                __builder.OpenElement(54, "div");
+                __builder.AddAttribute(55, "class", Css.Classes.Tabs.BarWrap);
+                    __builder.OpenElement(56, "div");
+                    __builder.AddAttribute(57, "class", Css.Classes.Tabs.Strip);
+                        __builder.OpenElement(58, "div");
+                        __builder.AddAttribute(59, "class", Css.Classes.Tabs.Bar);
+                        __builder.AddAttribute(60, "role", "tablist");
+                        __builder.AddAttribute(61, "aria-label", CoreText["ColorPicker_FormatTabs"]);
+                        __builder.AddAttribute(62, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleFormatTabKeyDown));
+                        for (var i = 0; i < FormatTabs.Length; i++)
+                        {
+                            var index = i;
+                            var t = FormatTabs[index];
+                            var active = _activeTab == t;
+                            __builder.OpenElement(63, "div");
+                            __builder.AddAttribute(64, "class", Css.Classes.Tabs.Item);
+                            __builder.AddAttribute(65, "role", "presentation");
+                                __builder.OpenElement(66, "button");
+                                __builder.AddAttribute(67, "type", "button");
+                                __builder.AddAttribute(68, "class", $"{Css.Classes.Tabs.TabButton}{(active ? " " + Css.Classes.Tabs.TabActive : "")}");
+                                __builder.AddAttribute(69, "role", "tab");
+                                __builder.AddAttribute(70, "id", FormatTabId(t));
+                                __builder.AddAttribute(71, "aria-selected", active ? "true" : "false");
+                                __builder.AddAttribute(72, "aria-controls", FormatPanelId);
+                                __builder.AddAttribute(73, "tabindex", active ? 0 : -1);
+                                __builder.AddAttribute(74, "onclick", EventCallback.Factory.Create(this, () => { _activeTab = t; }));
+                                __builder.AddElementReferenceCapture(75, r => _formatTabRefs[index] = r);
+                                    __builder.OpenElement(76, "span");
+                                    __builder.AddAttribute(77, "class", Css.Classes.Tabs.Label);
+                                    __builder.AddContent(78, t.ToUpper());
+                                    __builder.CloseElement();
+                                __builder.CloseElement();
+                            __builder.CloseElement();
+                        }
+                    __builder.CloseElement();
                 __builder.CloseElement();
-            }
             __builder.CloseElement();
+            __builder.CloseElement();
+
+            __builder.OpenElement(80, "div");
+            __builder.AddAttribute(81, "role", "tabpanel");
+            __builder.AddAttribute(82, "id", FormatPanelId);
+            __builder.AddAttribute(83, "aria-labelledby", FormatTabId(_activeTab));
 
             // HEX input
             if (_activeTab == "hex")
@@ -745,6 +800,8 @@ else
                 }
                 __builder.CloseElement();
             }
+
+            __builder.CloseElement(); // tabpanel
 
         __builder.CloseElement(); // inputs
 

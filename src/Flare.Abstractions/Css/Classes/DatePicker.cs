@@ -142,12 +142,6 @@ public static class DateTimePicker
     public const string Panes = "flare-datetimepicker__panes";
     /// <summary>The <c>flare-datetimepicker__pane</c> CSS class.</summary>
     public const string Pane = "flare-datetimepicker__pane";
-    /// <summary>The <c>flare-datetimepicker__tabs</c> CSS class.</summary>
-    public const string Tabs = "flare-datetimepicker__tabs";
-    /// <summary>The <c>flare-datetimepicker__tab</c> CSS class.</summary>
-    public const string Tab = "flare-datetimepicker__tab";
-    /// <summary>The <c>flare-datetimepicker__tab--active</c> CSS class.</summary>
-    public const string TabActive = "flare-datetimepicker__tab--active";
     /// <summary>The <c>flare-datetimepicker__nav</c> CSS class.</summary>
     public const string Nav = "flare-datetimepicker__nav";
     /// <summary>The <c>flare-datetimepicker__nav-label</c> CSS class.</summary>

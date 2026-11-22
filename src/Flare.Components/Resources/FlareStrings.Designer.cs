@@ -361,6 +361,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Color format.
+        /// </summary>
+        public static string ColorPicker_FormatTabs {
+            get {
+                return ResourceManager.GetString("ColorPicker_FormatTabs", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Color picker.
         /// </summary>
         public static string ColorPicker_Label {

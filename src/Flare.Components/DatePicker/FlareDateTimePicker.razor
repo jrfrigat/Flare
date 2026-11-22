@@ -71,18 +71,29 @@
             }
             else
             {
-                <div class="@Css.Classes.DateTimePicker.Tabs" role="tablist" aria-label="@CoreText["DateTimePicker_Tabs"]"
-                     @onkeydown="HandleTabKeyDown">
-                    @for (var i = 0; i < 2; i++)
-                    {
-                        var tab = i;
-                        <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == tab ? Css.Classes.DateTimePicker.TabActive : "")"
-                                type="button" role="tab" id="@TabId(tab)" aria-selected="@(_activeTab == tab ? "true" : "false")"
-                                aria-controls="@TabPanelId" tabindex="@(_activeTab == tab ? 0 : -1)"
-                                @ref="_tabRefs[tab]" @onclick="() => _activeTab = tab">@(tab == 0 ? CoreText["DateTimePicker_DateTab"] : CoreText["DateTimePicker_TimeTab"])</button>
-                    }
+                <div class="@($"{Css.Classes.Tabs.Root} {Css.Classes.Tabs.BarOnly}")">
+                    <div class="@Css.Classes.Tabs.BarWrap">
+                        <div class="@Css.Classes.Tabs.Strip">
+                            <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1"
+                                 aria-orientation="horizontal" aria-label="@CoreText["DateTimePicker_Tabs"]"
+                                 @onkeydown="HandleTabKeyDown">
+                                @for (var i = 0; i < 2; i++)
+                                {
+                                    var tab = i;
+                                    <div class="@Css.Classes.Tabs.Item" role="presentation">
+                                        <button class="@Css.Classes.Tabs.TabButton @(_activeTab == tab ? Css.Classes.Tabs.TabActive : "")"
+                                                type="button" role="tab" id="@TabId(tab)" aria-selected="@(_activeTab == tab ? "true" : "false")"
+                                                aria-controls="@TabPanelId" tabindex="@(_activeTab == tab ? 0 : -1)"
+                                                @ref="_tabRefs[tab]" @onclick="() => _activeTab = tab">
+                                            <span class="@Css.Classes.Tabs.Label">@(tab == 0 ? CoreText["DateTimePicker_DateTab"] : CoreText["DateTimePicker_TimeTab"])</span>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div role="tabpanel" id="@TabPanelId" aria-labelledby="@TabId(_activeTab)">
+                <div role="tabpanel" id="@TabPanelId" aria-labelledby="@TabId(_activeTab)" class="@Css.Classes.Tabs.Panels">
                     @if (_activeTab == 0) { @_calendar } else { @_time }
                 </div>
                 @_footer

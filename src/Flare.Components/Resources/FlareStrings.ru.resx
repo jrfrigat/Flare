@@ -289,6 +289,7 @@
 
   <!-- ColorPicker -->
   <data name="ColorPicker_Label" xml:space="preserve"><value>Выбор цвета</value></data>
+  <data name="ColorPicker_FormatTabs" xml:space="preserve"><value>Формат цвета</value></data>
   <data name="ColorPicker_EyeDropperTitle" xml:space="preserve"><value>Выбрать цвет с экрана</value></data>
   <data name="ColorPicker_EyeDropperLabel" xml:space="preserve"><value>Выбрать цвет</value></data>
 

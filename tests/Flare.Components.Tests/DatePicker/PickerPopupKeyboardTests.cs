@@ -43,7 +43,7 @@ public class PickerPopupKeyboardTests : FlareTestContext
         Assert.Empty(cut.FindAll("[role='dialog']"));
 
         cut.Find($".{Css.Classes.Input.Toggle}").Click();
-        cut.FindAll($".{Css.Classes.DateTimePicker.Tab}")[1].Click();
+        cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].Click();
         cut.FindAll($".{Css.Classes.DateTimePicker.TimeInput}")[0].Change("11");
         cut.FindAll($".{Css.Classes.DateTimePicker.TimeInput}")[0].KeyDown(Escape);
 

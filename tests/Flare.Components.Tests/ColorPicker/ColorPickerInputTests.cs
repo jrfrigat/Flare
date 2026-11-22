@@ -3,6 +3,7 @@ using Flare.Abstractions;
 using Flare.Components;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
@@ -37,7 +38,7 @@ public class ColorPickerInputTests : FlareTestContext
         });
 
     private static void SwitchTab(IRenderedComponent<FlareColorPicker> cut, string tab)
-        => cut.FindAll($".{Css.Classes.Colorpicker.Tab}")
+        => cut.FindAll($".{Css.Classes.Tabs.TabButton}")
             .Single(b => b.TextContent.Trim() == tab)
             .Click();
 
@@ -157,6 +158,28 @@ public class ColorPickerInputTests : FlareTestContext
         await cut.InvokeAsync(() => cut.FindAll($".{Css.Classes.Colorpicker.Preset}")[1].Click());
 
         Assert.Equal("#00FF00", changed);
+    }
+
+    [Fact]
+    public async Task FormatSwitch_IsOneTabListThatNamesTheActivePanel()
+    {
+        var cut = RenderPicker();
+
+        var tabs = cut.FindAll("[role='tab']");
+        Assert.Equal(3, tabs.Count);
+        Assert.All(tabs, tab => Assert.Contains(Css.Classes.Tabs.TabButton, tab.ClassName));
+
+        var active = Assert.Single(tabs, tab => tab.GetAttribute("aria-selected") == "true");
+        var panel = cut.Find("[role='tabpanel']");
+        Assert.Equal(active.Id, panel.GetAttribute("aria-labelledby"));
+        Assert.Equal(panel.Id, active.GetAttribute("aria-controls"));
+
+        await cut.InvokeAsync(() =>
+            cut.Find("[role='tablist']").KeyDown(new KeyboardEventArgs { Key = "ArrowRight" }));
+
+        active = Assert.Single(cut.FindAll("[role='tab']"), tab => tab.GetAttribute("aria-selected") == "true");
+        Assert.Equal("RGB", active.TextContent.Trim());
+        Assert.Equal(active.Id, cut.Find("[role='tabpanel']").GetAttribute("aria-labelledby"));
     }
 
     [Fact]

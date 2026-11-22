@@ -22,32 +22,6 @@
    the panel is positioned by the shared overlay engine and no longer carries a measured inline width. */
 .flare-datetimepicker__panel:has(.flare-clock-dial) { min-width: var(--flare-datetimepicker-dial-panel-min-width); }
 
-/* Tabs */
-.flare-datetimepicker__tabs {
-  display: flex;
-  gap: var(--flare-spacing-4);
-  margin-bottom: var(--flare-spacing-6);
-  border-bottom: var(--flare-border-divider);
-}
-
-.flare-datetimepicker__tab {
-  background: none;
-  border: none;
-  padding: var(--flare-spacing-4) var(--flare-spacing-8);
-  cursor: pointer;
-  color: var(--flare-color-on-surface-variant);
-  border-bottom: var(--flare-border-width-emphasis) solid transparent;
-  font-family: var(--flare-typescale-label-large-font);
-  font-size: var(--flare-typescale-body-medium-size);
-  margin-bottom: calc(-1 * var(--flare-border-width));
-  transition: color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
-}
-
-.flare-datetimepicker__tab--active {
-  color: var(--flare-color-primary);
-  border-bottom-color: var(--flare-color-primary);
-}
-
 /* Calendar. The __nav layout is shared with DatePicker's __header (datepicker.css). */
 
 .flare-datetimepicker__nav-label {
