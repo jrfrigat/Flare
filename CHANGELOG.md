@@ -21,9 +21,6 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareIdeLayout` and its document-region API (`IdeDocument`, `IdeDocumentRegion`, `IdeDocumentMove`, `IdeDocumentSelection`, `IdeDocumentMounting`, `IdePanelMode`, `IdeToolRailMode`) are removed. Use `FlareDockWorkspace` for a dockable workspace and place `FlareToolPanel`/`FlareToolPanelGroup` directly in the page; the layout-owned auto-hide rails, flyouts and bottom tool-window header are gone.
 - `FlareDocumentTabs`, `FlareDocumentTab`, `FlareDocumentDockTarget`, `FlareDocumentDockRequest` and `TabOverflowBehavior` are removed. Use `FlareTabs`/`FlareTab`, which now supports `Key`, `Reorderable`, `TabOrder` and `TabOrderChanged`.
 - `FlareToolPanel.Mode` and `FlareToolPanelGroup.ShowTabStripWhenFloating`/`ShowCollapseButton` are removed with the layout. A standalone `FlareToolPanel` keeps its own collapse toggle.
-
-### Breaking changes
-
 - `FlareSplitter` no longer renders the `-`/`+` step controls and drops the `ShowStepButtons` parameter and the `StepDecrease`/`StepIncrease` class constants. Dragging and keyboard resizing on the separator are unchanged.
 - `FlareResizable` no longer renders the `-`/`+` step controls and drops the `ShowControls` parameter and the `Resizable.Controls`/`Control` class constants. `FlareScheduler` drops the matching `ShowResizeControls` parameter. Dragging and keyboard resizing are unchanged.
 
