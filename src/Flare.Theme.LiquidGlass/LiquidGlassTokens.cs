@@ -504,6 +504,18 @@ internal class LiquidGlassTokens
         OutlinedVariantFocusBorderBottomColor = "var(--flare-color-outline)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         DropdownMaxHeight = "16rem",
+        // The field family follows the Liquid Glass button ramp step for step (28/36/44/52/60), so a
+        // button and a field at the same Size match instead of inheriting the Material field ladder.
+        PaddingXs = "0.3125rem 0.5rem",
+        PaddingSm = "0.4375rem 0.625rem",
+        PaddingMd = "0.5625rem 1rem",
+        PaddingLg = "0.8125rem 1.125rem",
+        PaddingXl = "0.9375rem 1.25rem",
+        HeightXs = "1.75rem",  // 28px
+        HeightSm = "2.25rem",  // 36px
+        HeightMd = "2.75rem",  // 44px
+        HeightLg = "3.25rem",  // 52px
+        HeightXl = "3.75rem",  // 60px
     };
 
     // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).

@@ -550,18 +550,20 @@ internal class VisualStudioTokens
         // The resting stroke stays neutral on the default variant; the outline is the focus mark.
         FocusBorderColor = "var(--flare-color-outline)",
         FocusBorderBottomColor = "var(--flare-color-outline)",
-        // Height ramp measured from the 23px default: 20/22/23/26/30px. Block padding only places
-        // the line inside that definite height, so each step leaves room for text and stays ordered.
-        HeightXs = "1.25rem",   // 20px
-        HeightSm = "1.375rem",  // 22px
-        HeightMd = "1.4375rem", // 23px - the measured input/search/combobox well
-        HeightLg = "1.625rem",  // 26px
-        HeightXl = "1.875rem",  // 30px
-        PaddingXs = "0.0625rem 0.375rem",
-        PaddingSm = "0.09375rem 0.4375rem",
-        PaddingMd = "0.125rem 0.5rem",
-        PaddingLg = "0.1875rem 0.625rem",
-        PaddingXl = "0.25rem 0.75rem",
+        // The field family follows the VS button ramp step for step (24/24/28/36/44). This deliberately
+        // drops the measured 20/22/23/26/30px ladder: the owner rule is one Xs-Xl height grid per theme,
+        // and the README records the deviation from the measured shell. Block padding only places the
+        // line inside that definite height.
+        HeightXs = "1.5rem",    // 24px
+        HeightSm = "1.5rem",    // 24px
+        HeightMd = "1.75rem",   // 28px
+        HeightLg = "2.25rem",   // 36px
+        HeightXl = "2.75rem",   // 44px
+        PaddingXs = "0.1875rem 0.5rem",
+        PaddingSm = "0.125rem 0.625rem",
+        PaddingMd = "0.1875rem 1rem",
+        PaddingLg = "0.5rem 1.125rem",
+        PaddingXl = "0.6875rem 1.25rem",
         IconSize = "1rem",
         // An explicit variant draws its focus with the ring, so it drops the ring and recolors the
         // 1px stroke instead: the same single accent line as the default variant.

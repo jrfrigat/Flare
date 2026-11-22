@@ -449,6 +449,18 @@ internal class AeroTokens
         OutlinedVariantFocusBorderBottomColor = "var(--flare-color-outline)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         DropdownMaxHeight = "16rem",
+        // The field family follows Aero's button ramp step for step (22/24/28/36/44), so a button and a
+        // field at the same Size match instead of inheriting the Material field ladder.
+        PaddingXs = "0.125rem 0.5rem",
+        PaddingSm = "0.0625rem 0.625rem",
+        PaddingMd = "0.0625rem 1rem",
+        PaddingLg = "0.3125rem 1.125rem",
+        PaddingXl = "0.4375rem 1.25rem",
+        HeightXs = "1.375rem",  // 22px
+        HeightSm = "1.5rem",    // 24px
+        HeightMd = "1.75rem",   // 28px
+        HeightLg = "2.25rem",   // 36px
+        HeightXl = "2.75rem",   // 44px
     };
 
     // Progress - thin classic bar; flat (no MD3 Expressive wavy/round-cap indicator).

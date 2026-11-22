@@ -14,6 +14,10 @@ public sealed class SizeGridTests(BrowserFixture fixture) : IClassFixture<Browse
     [InlineData("fluent2", 24, 24, 32, 40, 48)]
     [InlineData("md3", 32, 36, 40, 48, 56)]
     [InlineData("md3e", 32, 40, 56, 96, 136)]
+    [InlineData("md2", 28, 32, 36, 44, 52)]
+    [InlineData("aero", 22, 24, 28, 36, 44)]
+    [InlineData("liquidglass", 28, 36, 44, 52, 60)]
+    [InlineData("visualstudio", 24, 24, 28, 36, 44)]
     public async Task FieldsMatchButtonsStepForStep(string theme, int xs, int sm, int md, int lg, int xl)
     {
         await using var context = await fixture.Browser.NewContextAsync();

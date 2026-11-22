@@ -70,8 +70,9 @@ declare them: an application that wants the measured IDE surfaces sets those tok
 
 ## VS 2026 component metrics
 
-- **Fields.** A 23px well with a `#353535` fill, a 1px `#454545` stroke, 4px corners and an 8px text
-  inset. The Xs..Xl ramp is 20/22/23/26/30px.
+- **Fields.** A `#353535` well with a 1px `#454545` stroke, 4px corners and an 8px text inset. The
+  Xs..Xl ramp is 24/24/28/36/44px - the same as the buttons, a Flare decision (2026-11-22) that
+  replaces the measured 20/22/23/26/30px ladder.
 - **Buttons.** 24px square, 16px glyph, 4px corners.
 - **Focus.** A single 1px `#9184EE` accent line on fields, buttons, checkboxes and radios; no outer
   glow.

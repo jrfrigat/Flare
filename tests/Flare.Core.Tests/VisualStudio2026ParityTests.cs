@@ -134,15 +134,17 @@ public sealed class VisualStudio2026ParityTests
     }
 
     [Fact]
-    public void FieldMetrics_MatchTheMeasuredVs2026Well()
+    public void FieldMetrics_FollowTheButtonHeightGrid()
     {
         var input = VisualStudio.DesignReference.Input;
 
-        Assert.Equal("1.4375rem", input.HeightMd); // 23px
-        Assert.Equal("1.25rem", input.HeightXs);
-        Assert.Equal("1.375rem", input.HeightSm);
-        Assert.Equal("1.625rem", input.HeightLg);
-        Assert.Equal("1.875rem", input.HeightXl);
+        // Owner decision 2026-11-22: one Xs..Xl height grid per theme. The measured 23px well becomes
+        // the button ramp, so the deviation is deliberate and the README records it.
+        Assert.Equal("1.75rem", input.HeightMd); // 28px
+        Assert.Equal("1.5rem", input.HeightXs);
+        Assert.Equal("1.5rem", input.HeightSm);
+        Assert.Equal("2.25rem", input.HeightLg);
+        Assert.Equal("2.75rem", input.HeightXl);
         Assert.Equal($"var({Css.Tokens.Shape.Small})", input.OutlinedRadius);
         Assert.Equal($"var({Css.Tokens.Shape.Small})", input.FilledVariantRadius);
         Assert.Equal($"var({Css.Tokens.Shape.Small})", input.OutlinedVariantRadius);
@@ -150,7 +152,7 @@ public sealed class VisualStudio2026ParityTests
         Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.FilledVariantBg);
         Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.OutlinedVariantBg);
         Assert.Equal($"var({Css.Tokens.Color.Outline})", input.BorderColor);
-        Assert.Equal("0.125rem 0.5rem", input.PaddingMd);
+        Assert.Equal("0.1875rem 1rem", input.PaddingMd);
         Assert.Equal("1rem", input.IconSize);
     }
 
@@ -189,11 +191,12 @@ public sealed class VisualStudio2026ParityTests
         Assert.Equal("#333333", dark[VisualStudioCssVars.ChromeCommandWell]);
         Assert.Equal("#353535", dark[VisualStudioCssVars.ChromeCommandWellBorder]);
 
-        // The form-field well keeps its measured #353535 fill and #454545 stroke.
+        // The form-field well keeps its measured #353535 fill and #454545 stroke; its height follows the
+        // button grid under the one-size-grid rule.
         var input = VisualStudio.DesignReference.Input;
         Assert.Equal($"var({VisualStudioCssVars.ChromeField})", input.FilledBg);
         Assert.Equal($"var({Css.Tokens.Color.Outline})", input.BorderColor);
-        Assert.Equal("1.4375rem", input.HeightMd);
+        Assert.Equal("1.75rem", input.HeightMd);
     }
 
     [Fact]
@@ -295,7 +298,7 @@ public sealed class VisualStudio2026ParityTests
 
         Assert.Contains($"{Css.Tokens.Button.Height.Xs}:1.5rem;", css);
         Assert.Contains($"{Css.Tokens.Button.IconSize.Xs}:1rem;", css);
-        Assert.Contains($"{Css.Tokens.InputField.HeightMd}:1.4375rem;", css);
+        Assert.Contains($"{Css.Tokens.InputField.HeightMd}:1.75rem;", css);
         Assert.Contains($"{Css.Tokens.Scrollbar.Size}:2px;", css);
         Assert.Contains($"{Css.Tokens.Scrollbar.Radius}:0px;", css);
         Assert.Contains($"{Css.Tokens.MenuPanel.Radius}:var({Css.Tokens.Shape.Large});", css);

@@ -557,21 +557,18 @@ internal static class MaterialDesign2Tokens
         FocusOutline = "none",
         FocusOutlineOffset = "0",
         FocusBorderBottomColor = "var(--flare-input-border-bottom-color)",
-        PaddingXs = "0.1875rem 0.5rem",
-        PaddingSm = "0.375rem 0.625rem",
-        PaddingMd = "1rem 1rem",                      // the M3 56dp field
-        // Large and extra-large are measured up from the 56dp medium, so neither is shorter than medium
-        // under this theme.
-        PaddingLg = "1.25rem 1.125rem",
-        PaddingXl = "1.5rem 1.25rem",
-        // Height ramp. M3 puts the text field AND the select at 56dp, so Md is the spec number and the
-        // rest are measured off the padding ramp above - each step is the tallest control of that size, so
-        // the family converges upward and no control shrinks.
-        HeightXs = "1.875rem", // 30px
-        HeightSm = "2.25rem",  // 36px
-        HeightMd = "3.5rem",   // 56px - the M3 field height
-        HeightLg = "4rem",     // 64px
-        HeightXl = "4.75rem",  // 76px
+        PaddingXs = "0.3125rem 0.5rem",
+        PaddingSm = "0.3125rem 0.625rem",
+        PaddingMd = "0.3125rem 1rem",
+        PaddingLg = "0.5625rem 1.125rem",
+        PaddingXl = "0.6875rem 1.25rem",
+        // The field family follows the button ramp step for step (28/32/36/44/52), so a button and a
+        // field at the same Size match.
+        HeightXs = "1.75rem",  // 28px
+        HeightSm = "2rem",     // 32px
+        HeightMd = "2.25rem",  // 36px
+        HeightLg = "2.75rem",  // 44px
+        HeightXl = "3.25rem",  // 52px
         IconSize = "1.5rem",                          // leading/trailing icon 24dp
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
         FocusBorderColor = "transparent",
