@@ -25,11 +25,7 @@ public sealed class ColorPickerTriggerTests(BrowserFixture fixture) : IClassFixt
         var reference = row.Locator("button").Last;
         await Expect(trigger).ToBeVisibleAsync();
 
-        var triggerBox = await trigger.BoundingBoxAsync();
-        var referenceBox = await reference.BoundingBoxAsync();
-        Assert.NotNull(triggerBox);
-        Assert.NotNull(referenceBox);
-        Assert.InRange(triggerBox!.Height, referenceBox!.Height - 0.5, referenceBox.Height + 0.5);
+        await ExpectSameHeightAsync(trigger, reference);
 
         await ExpectSameCssAsync(trigger, reference, "padding-left");
         await ExpectSameCssAsync(trigger, reference, "border-top-left-radius");
@@ -61,12 +57,9 @@ public sealed class ColorPickerTriggerTests(BrowserFixture fixture) : IClassFixt
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/colorpicker-trigger");
 
-        var small = await page.Locator($"#cp-sm .{Css.Classes.Colorpicker.TriggerSwatch}").BoundingBoxAsync();
-        var large = await page.Locator($"#cp-xl .{Css.Classes.Colorpicker.TriggerSwatch}").BoundingBoxAsync();
-        Assert.NotNull(small);
-        Assert.NotNull(large);
-        Assert.InRange(small!.Width, small.Height - 0.5, small.Height + 0.5);
-        Assert.True(large!.Width > small.Width, "the swatch does not grow with the button size");
+        var smallSwatch = page.Locator($"#cp-sm .{Css.Classes.Colorpicker.TriggerSwatch}");
+        var largeSwatch = page.Locator($"#cp-xl .{Css.Classes.Colorpicker.TriggerSwatch}");
+        await SwatchesSettleAsync(smallSwatch, largeSwatch);
     }
 
     [Fact]
@@ -108,6 +101,59 @@ public sealed class ColorPickerTriggerTests(BrowserFixture fixture) : IClassFixt
         await Expect(panel).ToBeVisibleAsync();
         await page.Mouse.ClickAsync(5, 5);
         await Expect(panel).ToHaveCountAsync(0);
+    }
+
+    private static async Task ExpectSameHeightAsync(ILocator a, ILocator b)
+    {
+        // The theme tokens land after the first paint, so a single sample can catch the trigger
+        // unstyled (about 18px) while the reference is already themed. Compare until both settle.
+        var deadline = DateTime.UtcNow.AddSeconds(5);
+        double left = 0;
+        double right = 0;
+        while (DateTime.UtcNow < deadline)
+        {
+            var boxA = await a.BoundingBoxAsync();
+            var boxB = await b.BoundingBoxAsync();
+            if (boxA is not null && boxB is not null)
+            {
+                left = boxA.Height;
+                right = boxB.Height;
+                if (Math.Abs(left - right) <= 0.5)
+                {
+                    return;
+                }
+            }
+
+            await Task.Delay(50);
+        }
+
+        Assert.InRange(left, right - 0.5, right + 0.5);
+    }
+
+    private static async Task SwatchesSettleAsync(ILocator small, ILocator large)
+    {
+        // Same theme-token race: the swatch size comes from the button's icon tokens.
+        var deadline = DateTime.UtcNow.AddSeconds(5);
+        while (DateTime.UtcNow < deadline)
+        {
+            var smallBox = await small.BoundingBoxAsync();
+            var largeBox = await large.BoundingBoxAsync();
+            if (smallBox is not null && largeBox is not null
+                && Math.Abs(smallBox.Width - smallBox.Height) <= 0.5
+                && largeBox.Width > smallBox.Width)
+            {
+                return;
+            }
+
+            await Task.Delay(50);
+        }
+
+        var settledSmall = await small.BoundingBoxAsync();
+        var settledLarge = await large.BoundingBoxAsync();
+        Assert.NotNull(settledSmall);
+        Assert.NotNull(settledLarge);
+        Assert.InRange(settledSmall!.Width, settledSmall.Height - 0.5, settledSmall.Height + 0.5);
+        Assert.True(settledLarge!.Width > settledSmall.Width, "the swatch does not grow with the button size");
     }
 
     private static async Task ExpectSameCssAsync(ILocator a, ILocator b, string property)
