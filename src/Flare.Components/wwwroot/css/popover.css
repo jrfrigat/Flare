@@ -3,11 +3,10 @@
     display: inline-flex;
 }
 
-.flare-popover__backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: var(--flare-z-dropdown);
-    background: transparent;
+/* Keep placement measurable, but do not expose a popover before outside-click dismissal and Escape
+   are registered: a panel the user can see must be a panel an outside click can close. */
+[data-flare-popover-pending] {
+    visibility: hidden !important;
 }
 
 /* Built-in click activator: focusable, keyboard-operable text/anchor content. */

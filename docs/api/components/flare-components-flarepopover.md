@@ -29,6 +29,11 @@
 
 ## Methods
 
+### `CloseFromDismiss()`
+
+Closes the popover when a pointer-down lands outside it or focus leaves it.
+Returns: `Task`.
+
 ### `CloseFromEscape()`
 
 Closes the popover when the shared overlay Escape layer selects it.

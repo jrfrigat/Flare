@@ -103,6 +103,42 @@ public sealed class ColorPickerTriggerTests(BrowserFixture fixture) : IClassFixt
         await Expect(panel).ToHaveCountAsync(0);
     }
 
+    [Fact]
+    public async Task PanelClosesOnAClickOutsideAContainedDemoBox()
+    {
+        // The Gallery wraps every demo in FlareLazy (content-visibility: auto), which confines a
+        // fixed backdrop to the box. Dismissal must not depend on that backdrop geometry.
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/colorpicker-trigger");
+
+        var trigger = page.Locator($"#cp-contained .{Css.Classes.Colorpicker.Trigger}");
+        await Expect(trigger).ToBeVisibleAsync();
+        await trigger.ClickAsync();
+
+        var panel = page.Locator("#cp-contained [role=dialog]");
+        await Expect(panel).ToBeVisibleAsync();
+
+        await page.Mouse.ClickAsync(5, 5);
+        await Expect(panel).ToHaveCountAsync(0);
+    }
+
+    [Fact]
+    public async Task ClickInsideThePanelKeepsItOpen()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/colorpicker-trigger");
+
+        var trigger = page.Locator($"#cp-md .{Css.Classes.Colorpicker.Trigger}");
+        await trigger.ClickAsync();
+        var panel = page.Locator("#cp-md [role=dialog]");
+        await Expect(panel).ToBeVisibleAsync();
+
+        await panel.ClickAsync(new() { Position = new() { X = 6, Y = 6 } });
+        await Expect(panel).ToBeVisibleAsync();
+    }
+
     private static async Task ExpectSameHeightAsync(ILocator a, ILocator b)
     {
         // The theme tokens land after the first paint, so a single sample can catch the trigger

@@ -5,8 +5,6 @@ public static class Popover
 {
     /// <summary>The <c>flare-popover-anchor</c> CSS class.</summary>
     public const string Anchor = "flare-popover-anchor";
-    /// <summary>The <c>flare-popover__backdrop</c> CSS class.</summary>
-    public const string Backdrop = "flare-popover__backdrop";
     /// <summary>The <c>flare-popover__trigger</c> CSS class (the built-in click activator).</summary>
     public const string Trigger = "flare-popover__trigger";
     /// <summary>The <c>flare-popover__scroll</c> CSS class (the panel's scrolling inner box).</summary>

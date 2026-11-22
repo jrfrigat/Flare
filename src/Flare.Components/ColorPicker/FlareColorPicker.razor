@@ -21,7 +21,7 @@ else
             <label class="@Css.Classes.Colorpicker.Label" for="@_triggerId">@Label</label>
         }
         @* The picker is a FlareButton anchored by the shared popover: the button opens it, and the
-           popover owns placement, the backdrop, outside-click dismissal and Escape. *@
+           popover owns placement, outside-click dismissal and Escape. *@
         <FlarePopover Open="_open"
                       OpenChanged="HandleOpenChanged"
                       Trigger="PopoverTrigger.Manual"

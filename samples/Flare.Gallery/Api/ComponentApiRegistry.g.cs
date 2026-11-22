@@ -5639,6 +5639,8 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"CloseFromDismiss", @"CloseFromDismiss()", @"Task", null, @"Closes the popover when a pointer-down lands outside it or focus leaves it.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the popover when the shared overlay Escape layer selects it.",
                     System.Array.Empty<ApiMethodParameter>()),
             },

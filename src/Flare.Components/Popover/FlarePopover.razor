@@ -29,15 +29,12 @@
     }
     @if (Open)
     {
-        @if (Trigger != PopoverTrigger.Hover)
-        {
-            <div data-flare-backdrop class="@Css.Classes.Popover.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
-        }
         @* data-flare-side starts at the requested side and is rewritten by the placement engine with the
            side the panel actually landed on, which is what the arrow points away from. *@
         <div @ref="_floatingRef"
              id="@_paperId"
              role="dialog"
+             data-flare-popover-pending="@(!_ready ? "" : null)"
              aria-label="@AriaLabel"
              aria-labelledby="@(Trigger == PopoverTrigger.Click ? _triggerId : null)"
              class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass @_matchWidthClass"
@@ -99,7 +96,8 @@
     private ElementReference _floatingRef;
     private ElementReference _anchorRef;
     private readonly AnchoredLayer _layer = new();
-    private bool _wasOpen;
+    private bool _ready;
+    private bool _trapRegistered;
     // Debounce guard: each hover enter/leave bumps this so a stale delayed open/close is discarded.
     private int _hoverGen;
     private readonly string _id = "flare-popover-" + Guid.NewGuid().ToString("N")[..8];
@@ -107,6 +105,7 @@
     private string _paperId => $"flare-popover-paper-{_id}";
     private DotNetObjectReference<FlarePopover>? _selfRef;
     private bool _escapeLayerRegistered;
+    private bool _dismissRegistered;
 
     private string _placementClass => Placement switch
     {
@@ -157,6 +156,9 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // True when the previous render already exposed the panel (see the pending gate below).
+        var panelWasExposed = _ready;
+
         // Placed against the anchor and raised into the top layer whenever it is open, so a popover on a
         // button inside a card, a grid cell or a dialog is readable rather than half of one. Collision
         // handling is not a switch any more: a panel that hangs off the screen is never what was wanted.
@@ -167,22 +169,6 @@
             GapToken = Offset is null ? Css.Tokens.PopoverPopup.Offset : null,
             MatchWidth = MatchAnchorWidth,
         });
-
-        if (Open && !_wasOpen)
-        {
-            _wasOpen = true;
-            // A hover popover is not modal: it must not trap focus (that would steal focus on hover).
-            // Click/Manual popovers trap Tab focus and refocus the trigger on close.
-            if (Trigger != PopoverTrigger.Hover)
-            {
-                try { await Overlay.TrapFocusAsync(_id, _floatingRef); } catch { }
-            }
-        }
-        else if (!Open && _wasOpen)
-        {
-            _wasOpen = false;
-            try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
-        }
 
         // The open panel owns Escape: it registers as the topmost layer, so a dialog around it stays
         // open even though focus is inside the panel. Every trigger registers - a hover panel is just
@@ -206,6 +192,57 @@
             catch (JSDisconnectedException) { }
             catch (JSException) { }
             _escapeLayerRegistered = false;
+        }
+
+        // Outside dismissal is a document-level pointerdown outside this widget, not a full-screen
+        // backdrop: a fixed backdrop is confined to the nearest containing block, so a popover inside
+        // content-visibility (FlareLazy), a container query box or a transformed ancestor would never
+        // see a click outside that box. A hover panel keeps closing on mouseleave only.
+        if (Open && Trigger != PopoverTrigger.Hover && !_dismissRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.RegisterDismissAsync(_id, _anchorRef, _selfRef, nameof(CloseFromDismiss));
+                _dismissRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if ((!Open || Trigger == PopoverTrigger.Hover) && _dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _dismissRegistered = false;
+        }
+
+        // Expose the panel only once dismissal and Escape are registered: a panel the user can see must
+        // be a panel an outside click can close. Rendering it pending (visibility: hidden) keeps the
+        // placement measurable, and closes the window where a click lands before the JS is armed.
+        if (Open && !_ready)
+        {
+            _ready = true;
+            StateHasChanged();
+        }
+        else if (!Open && _ready)
+        {
+            _ready = false;
+        }
+
+        // The focus trap needs a visible panel - a visibility: hidden element cannot take focus - so it
+        // is applied on the render pass after the panel is exposed. A hover popover is not modal: it
+        // must not trap focus (that would steal focus on hover). Click/Manual popovers trap Tab focus
+        // and refocus the trigger on close.
+        if (Open && panelWasExposed && Trigger != PopoverTrigger.Hover && !_trapRegistered)
+        {
+            try { await Overlay.TrapFocusAsync(_id, _floatingRef); } catch { }
+            _trapRegistered = true;
+        }
+        else if (!Open && _trapRegistered)
+        {
+            try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
+            _trapRegistered = false;
         }
     }
 
@@ -282,6 +319,14 @@
         await OpenChanged.InvokeAsync(false);
     });
 
+    /// <summary>Closes the popover when a pointer-down lands outside it or focus leaves it.</summary>
+    [JSInvokable]
+    public Task CloseFromDismiss() => InvokeAsync(async () =>
+    {
+        ++_hoverGen;
+        await OpenChanged.InvokeAsync(false);
+    });
+
     public override async ValueTask DisposeAsync()
     {
         if (_escapeLayerRegistered)
@@ -290,8 +335,14 @@
             catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
+        if (_dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
         _selfRef?.Dispose();
-        if (_wasOpen)
+        if (_trapRegistered)
         {
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
         }

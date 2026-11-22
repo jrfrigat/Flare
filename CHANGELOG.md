@@ -31,6 +31,7 @@ All notable changes to Flare are documented here. This project adheres to
 - VisualStudio paints its neutral chrome and disabled states from its own palette. A default Filled button is a neutral command well, a Text command and the menu bar keep neutral chrome text, and a disabled button, field or select keeps the muted shell surface with disabled text instead of Fluent's light disabled fill. The tool window paints its own surface.
 - The dock tab strip takes its height from the theme's tab height, as FlareTabs does. The browser measures each group header and the panes follow it; the dock no longer owns a header height or a compact tab override, so a theme with taller tabs is not cut down. A tab bar never becomes a vertical scroll container.
 - The editor breadcrumb row height comes from the components it hosts and the theme's typography, not from a fixed 22px.
+- `FlarePopover` and the ColorPicker close on a click anywhere outside the panel again. Outside dismissal is a document-level pointerdown instead of a full-screen backdrop, so a popover inside a FlareLazy demo, a container query box or a transformed ancestor no longer keeps the rest of the page from dismissing it.
 
 ### Breaking changes
 
@@ -43,6 +44,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareSplitter` no longer renders the `-`/`+` step controls and drops the `ShowStepButtons` parameter and the `StepDecrease`/`StepIncrease` class constants. Dragging and keyboard resizing on the separator are unchanged.
 - `FlareResizable` no longer renders the `-`/`+` step controls and drops the `ShowControls` parameter and the `Resizable.Controls`/`Control` class constants. `FlareScheduler` drops the matching `ShowResizeControls` parameter. Dragging and keyboard resizing are unchanged.
 - `--flare-dock-header-height` and `--flare-ide-breadcrumb-bar-height` are removed. The dock header follows the theme's tab height, so style the tab through the `--flare-tabs-*` roles; the breadcrumb row follows the components it hosts.
+- The popover's backdrop element is gone, and with it the `Popover.Backdrop` CSS class constant: outside-click dismissal no longer renders a `flare-popover__backdrop` element or rule. A popover inside a contained box also lets the dismissing click reach the element under it now, as the select and picker popups already did.
 
 ## [0.60.0] - 2026-11-20
 

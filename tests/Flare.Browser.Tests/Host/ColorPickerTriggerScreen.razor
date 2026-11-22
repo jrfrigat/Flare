@@ -23,5 +23,13 @@
                 <FlareButton Variant="ButtonVariant.Text">Reference</FlareButton>
             </div>
         </div>
+        @* content-visibility applies containment, so this box is a containing block for fixed
+           descendants - the same shape as the Gallery, where every demo sits inside FlareLazy.
+           The popover must still dismiss on a click outside the box. *@
+        <div id="cp-contained"
+             style="content-visibility:auto;min-height:120px;display:flex;gap:12px;align-items:center;margin-top:24px">
+            <FlareColorPicker id="cp-contained-picker" Value="#1188ee" />
+            <FlareButton Variant="ButtonVariant.Outlined">Contained reference</FlareButton>
+        </div>
     </FlareThemeScope>
 </FlareThemeProvider>

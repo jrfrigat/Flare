@@ -297,8 +297,10 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.AnchorContent, Markup("<span>a</span>"))
             .Add(x => x.ChildContent, Markup("<span>c</span>")));
 
-        // A hover popover is not modal, so it must not render the dismiss backdrop.
-        Assert.Empty(cut.FindAll($".{Css.Classes.Popover.Backdrop}"));
+        // A popover dismisses from a document-level pointerdown, never a backdrop element: a hover
+        // panel is not modal and closes on mouseleave, and a fixed backdrop would be confined to the
+        // nearest containing block anyway.
+        Assert.Empty(cut.FindAll("[data-flare-backdrop]"));
     }
 
     // -- Dialog ----------------------------------------------------------------
