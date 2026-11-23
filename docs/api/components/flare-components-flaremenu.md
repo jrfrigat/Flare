@@ -31,6 +31,11 @@ A dropdown menu: an activator slot opens a panel of FlareMenuItem entries with a
 Closes the menu (also callable programmatically), clears registered items and keyboard focus, and raises OnToggle.
 Returns: `Task`.
 
+### `CloseFromDismiss()`
+
+Closes the menu when a pointer-down lands outside it or focus leaves it.
+Returns: `Task`.
+
 ### `CloseFromEscape()`
 
 Closes the menu when the overlay layer receives Escape.

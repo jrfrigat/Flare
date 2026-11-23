@@ -103,9 +103,12 @@ public class FlareMenuBarTests : FlareTestContext
         await cut.InvokeAsync(() => cut.Find(activator).Click());
         var panels = cut.FindAll($".{Css.Classes.Menu.Panel}");
         Assert.Equal(new[] { "File panel", "Export menu" }, panels.Select(p => p.GetAttribute("aria-label")));
-        Assert.Equal(2, cut.FindAll($".{Css.Classes.Menu.Backdrop}").Count);
+        // The bar renders one shared backdrop for its coordinated menus; a nested menu is outside the
+        // coordination and dismisses through the document listener instead of a backdrop of its own.
+        Assert.Single(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
 
-        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Panel} .{Css.Classes.Menu.Backdrop}").Click());
+        var export = cut.FindComponents<FlareMenu>().Single(m => m.Instance.AriaLabel == "Export menu");
+        await cut.InvokeAsync(() => export.Instance.CloseFromDismiss());
         Assert.Equal("File panel", OpenPanelLabel(cut));
         Assert.Single(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
     }

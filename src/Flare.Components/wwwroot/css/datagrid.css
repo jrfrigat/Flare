@@ -819,13 +819,6 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   flex: 1 1 auto;
 }
 
-/* Full-viewport click-catcher that closes an open popover (filter builder, column picker). */
-.flare-datagrid__backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 9;
-}
-
 .flare-datagrid__detail-row {
   background-color: var(--flare-color-surface-container-low);
 }

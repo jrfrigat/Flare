@@ -55,7 +55,6 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
 
         cut.Find($".{Css.Classes.Tooltip.Root}").Click();
         Assert.Contains(Css.Classes.Tooltip.Open, cut.Find($".{Css.Classes.Tooltip.Root}").ClassList);
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tooltip.Backdrop}"));
     }
 
     [Fact]

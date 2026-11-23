@@ -80,7 +80,7 @@ public class FlareMenuDisposalTests : FlareTestContext
     {
         var cut = Render<MenuHost>();
         await OpenMenuAsync(cut);
-        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Backdrop}").Click());
+        await cut.InvokeAsync(() => cut.FindComponent<FlareMenu>().Instance.CloseFromDismiss());
         cut.WaitForAssertion(() => Assert.Single(LayerIds("removeAnchoredPanel")));
 
         SetShown(cut, false);

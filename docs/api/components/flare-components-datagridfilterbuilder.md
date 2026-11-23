@@ -22,7 +22,11 @@ An editor for the grid's advanced filter: a tree of conditions joined by And or 
 
 ## Methods
 
-This component exposes no documented public methods.
+### `CloseFromDismiss()`
+
+Closes the builder when a pointer-down lands outside it or focus leaves it.
+Returns: `Task`.
+
 
 ## Inheritance
 

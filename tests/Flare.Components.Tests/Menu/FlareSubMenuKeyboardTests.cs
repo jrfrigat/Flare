@@ -230,7 +230,7 @@ public class FlareSubMenuKeyboardTests : FlareTestContext
         await OpenSubmenuAsync(cut);
         cut.WaitForAssertion(() => Assert.True(SubmenuLayerPushed()));
 
-        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Backdrop}").Click());
+        await cut.InvokeAsync(() => cut.Instance.CloseFromDismiss());
 
         cut.WaitForAssertion(() =>
         {

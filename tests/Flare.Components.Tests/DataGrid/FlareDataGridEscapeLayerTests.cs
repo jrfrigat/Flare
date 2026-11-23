@@ -48,7 +48,7 @@ public sealed class FlareDataGridEscapeLayerTests : FlareTestContext
         cut.Find($".{Css.Classes.DataGrid.ColumnPickerWrap} button").Click();
         cut.WaitForAssertion(() => Assert.Contains("pushPopupLayer", Names()));
 
-        cut.Find($".{Css.Classes.DataGrid.Backdrop}").Click();
+        cut.Find($".{Css.Classes.DataGrid.ColumnPickerWrap} button").Click();
         cut.WaitForAssertion(() => Assert.Contains("removePopupLayer", Names()));
 
         Assert.True(Names().IndexOf("removePopupLayer") > Names().IndexOf("pushPopupLayer"),

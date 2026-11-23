@@ -27,7 +27,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `CloseFromDismiss()`
+
+Closes a click-opened bubble when a pointer-down lands outside it or focus leaves it.
+Returns: `Task`.
+
 
 ## Inheritance
 

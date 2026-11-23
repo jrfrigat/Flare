@@ -175,15 +175,15 @@ public sealed class FlareMenuOpenAtTests : FlareTestContext
     }
 
     [Fact]
-    public async Task APointOpenKeepsTheBackdropDismissal()
+    public async Task APointOpenKeepsTheOutsideDismissal()
     {
         var cut = RenderMenu();
         await cut.InvokeAsync(() => cut.Instance.OpenAtAsync(10, 20));
 
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
         _runtime.Calls.Clear();
 
-        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Backdrop}").Click());
+        await cut.InvokeAsync(() => cut.Instance.CloseFromDismiss());
 
         Assert.Empty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
         var restore = Assert.Single(_runtime.Calls, c => c.Identifier == "restoreRememberedFocus");
@@ -191,7 +191,7 @@ public sealed class FlareMenuOpenAtTests : FlareTestContext
     }
 
     [Fact]
-    public async Task ACoordinatedOpenJoinsTheBarAndDropsItsOwnBackdrop()
+    public async Task ACoordinatedOpenJoinsTheBarAndKeepsItsDismissalWithTheBar()
     {
         var bar = new FlareMenuBarContext();
         var cut = Render<FlareMenu>(p => p
@@ -201,7 +201,7 @@ public sealed class FlareMenuOpenAtTests : FlareTestContext
         await cut.InvokeAsync(() => cut.Instance.OpenAtAsync(10, 20));
 
         Assert.True(bar.HasOpenMenu);
-        Assert.Empty(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
 
         await cut.InvokeAsync(() => cut.Instance.CloseAsync());
 

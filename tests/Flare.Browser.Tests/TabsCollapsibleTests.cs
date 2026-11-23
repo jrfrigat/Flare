@@ -52,6 +52,30 @@ public sealed class TabsCollapsibleTests(BrowserFixture fixture) : IClassFixture
     }
 
     [Fact]
+    public async Task CollapsibleMenuClosesOnAClickOutsideAContainedBox()
+    {
+        // The Gallery wraps every demo in FlareLazy (content-visibility: auto), which confines a fixed
+        // backdrop to the box. The overflow menu must dismiss from a click outside it regardless.
+        await using var context = await fixture.Browser.NewContextAsync(new()
+        {
+            ViewportSize = new() { Width = 900, Height = 700 },
+        });
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/tabs-collapsible");
+
+        var section = page.Locator("#contained-collapsible");
+        var more = section.Locator($".{Css.Classes.Tabs.More}");
+        await Expect(more).ToBeVisibleAsync();
+
+        await more.Locator("button").ClickAsync();
+        var menu = section.Locator($".{Css.Classes.Menu.Panel}");
+        await Expect(menu).ToBeVisibleAsync();
+
+        await page.Mouse.ClickAsync(5, 5);
+        await Expect(menu).ToHaveCountAsync(0);
+    }
+
+    [Fact]
     public async Task ScrollingTabsKeepTheArrowsAndGetNoOverflowControl()
     {
         await using var context = await fixture.Browser.NewContextAsync(new()

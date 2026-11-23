@@ -27,8 +27,6 @@ public static class Tooltip
     public const string Disabled = "flare-tooltip--disabled";
     /// <summary>The <c>flare-tooltip--dismissed</c> modifier applied after Escape until fresh hover/focus.</summary>
     public const string Dismissed = "flare-tooltip--dismissed";
-    /// <summary>The <c>flare-tooltip__backdrop</c> CSS class (outside-click catcher for the click trigger).</summary>
-    public const string Backdrop = "flare-tooltip__backdrop";
     /// <summary>The <c>flare-tooltip__content</c> CSS class.</summary>
     public const string Content = "flare-tooltip__content";
     /// <summary>The <c>flare-tooltip__content--rich</c> CSS class.</summary>

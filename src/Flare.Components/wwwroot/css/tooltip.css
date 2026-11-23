@@ -7,14 +7,6 @@
   cursor: pointer;
 }
 
-/* Transparent full-screen catcher so an outside click/tap dismisses a click-triggered tooltip. */
-.flare-tooltip__backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: var(--flare-z-tooltip);
-  background: transparent;
-}
-
 .flare-tooltip__content {
   position: absolute;
   z-index: calc(var(--flare-z-tooltip) + 1);

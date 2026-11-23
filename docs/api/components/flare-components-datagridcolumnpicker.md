@@ -22,6 +22,11 @@ A button with a menu of the grid's columns, where each column is shown or hidden
 
 ## Methods
 
+### `CloseFromDismiss()`
+
+Closes the picker when a pointer-down lands outside it or focus leaves it.
+Returns: `Task`.
+
 ### `CloseFromEscape()`
 
 Closes the picker when the overlay layer receives Escape.

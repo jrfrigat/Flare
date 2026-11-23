@@ -19,8 +19,6 @@ public static class DataGrid
     public const string CloseIcon = "flare-datagrid__close-icon";
     /// <summary>The <c>flare-datagrid__spacer</c> CSS class.</summary>
     public const string Spacer = "flare-datagrid__spacer";
-    /// <summary>The <c>flare-datagrid__backdrop</c> CSS class.</summary>
-    public const string Backdrop = "flare-datagrid__backdrop";
     /// <summary>The <c>flare-datagrid--striped</c> CSS class.</summary>
     public const string Striped = "flare-datagrid--striped";
     /// <summary>The <c>flare-datagrid--hoverable</c> CSS class.</summary>

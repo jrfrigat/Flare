@@ -50,6 +50,8 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"CloseFromDismiss", @"CloseFromDismiss()", @"Task", null, @"Closes the picker when a pointer-down lands outside it or focus leaves it.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the picker when the overlay layer receives Escape.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -113,7 +115,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CloseFromDismiss", @"CloseFromDismiss()", @"Task", null, @"Closes the builder when a pointer-down lands outside it or focus leaves it.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareDataGridControl",
@@ -4573,6 +4579,8 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the menu (also callable programmatically), clears registered items and keyboard focus, and raises OnToggle.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"CloseFromDismiss", @"CloseFromDismiss()", @"Task", null, @"Closes the menu when a pointer-down lands outside it or focus leaves it.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the menu when the overlay layer receives Escape.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the menu programmatically (no-op if already open) and raises OnToggle.",
@@ -8540,7 +8548,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CloseFromDismiss", @"CloseFromDismiss()", @"Task", null, @"Closes a click-opened bubble when a pointer-down lands outside it or focus leaves it.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

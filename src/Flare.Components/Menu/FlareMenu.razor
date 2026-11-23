@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes" @ref="_rootEl">
     @* The wrapper owns activation and positioning. The slot applies ARIA to its focusable element. *@
     <div class="@Css.Classes.Menu.Activator" @ref="_activatorEl"
          @onclick="HandleActivatorClick"
@@ -11,11 +11,6 @@
          @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)">
         @Activator?.Invoke(ActivatorContext)
     </div>
-    @* Only top-level menus in a coordinating bar share its backdrop. *@
-    @if (_open && MenuBarContext is null)
-    {
-        <div data-flare-backdrop class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
-    }
     @if (_open)
     {
         <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
@@ -123,6 +118,8 @@
     // together with its parent, and a fresh dictionary every frame would allocate for three values that
     // did not change.
     private FlareMenuActivatorContext? _activatorContext;
+    private ElementReference _rootEl;
+    private bool _dismissRegistered;
 
     private FlareMenuActivatorContext ActivatorContext =>
         _activatorContext is { } ctx && ctx.Open == _open
@@ -236,11 +233,40 @@
             catch (JSException) { }
             _escapeLayerRegistered = false;
         }
+
+        // Outside dismissal is a document-level pointerdown outside this menu, not a full-screen
+        // backdrop: a fixed backdrop is confined to the nearest containing block, so a menu inside a
+        // FlareLazy demo, a container query box or a transformed ancestor stopped closing on clicks
+        // outside that box. A menu that belongs to a menu bar keeps its dismissal with the bar, which
+        // coordinates which menu is open.
+        var hasOwnDismissal = _open && MenuBarContext is null;
+        if (hasOwnDismissal && !_dismissRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.RegisterDismissAsync(_panelId + "-dismiss", _rootEl, _selfRef, nameof(CloseFromDismiss));
+                _dismissRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!hasOwnDismissal && _dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_panelId + "-dismiss"); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _dismissRegistered = false;
+        }
     }
 
     /// <summary>Closes the menu when the overlay layer receives Escape.</summary>
     [JSInvokable]
     public Task CloseFromEscape() => InvokeAsync(CloseAsync);
+
+    /// <summary>Closes the menu when a pointer-down lands outside it or focus leaves it.</summary>
+    [JSInvokable]
+    public Task CloseFromDismiss() => InvokeAsync(CloseAsync);
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
@@ -260,6 +286,12 @@
         if (_escapeLayerRegistered)
         {
             try { await Overlay.RemovePopupLayerAsync(_panelId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        if (_dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_panelId + "-dismiss"); }
             catch (JSDisconnectedException) { }
             catch (JSException) { }
         }

@@ -88,7 +88,7 @@ public sealed class FlareMenuFocusRestoreTests : FlareTestContext
         await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Activator} button").Click());
         _runtime.Calls.Clear();
 
-        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Backdrop}").Click());
+        await cut.InvokeAsync(() => cut.Instance.CloseFromDismiss());
 
         cut.WaitForAssertion(() => Assert.Equal(["focusFirstInDialog"], FocusCalls()));
     }

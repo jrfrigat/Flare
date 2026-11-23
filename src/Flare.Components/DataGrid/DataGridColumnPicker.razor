@@ -21,7 +21,6 @@
                 </div>
             }
         </div>
-        <div data-flare-backdrop class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
     }
 </div>
 
@@ -49,6 +48,7 @@
     private readonly AnchoredLayer _layer = new();
     private DotNetObjectReference<DataGridColumnPicker<TItem>>? _selfRef;
     private bool _escapeLayerRegistered;
+    private bool _dismissRegistered;
     private readonly string _escapeLayerId = "flare-datagrid-columns-" + Guid.NewGuid().ToString("N")[..8];
 
     // The picker lives in the grid's toolbar, so the grid's own scroll container never reached it - but a
@@ -80,7 +80,36 @@
             catch (JSException) { }
             _escapeLayerRegistered = false;
         }
+
+        // Outside dismissal is a document-level pointerdown outside the picker, not a full-screen
+        // backdrop, which an ancestor's containment would confine to its own box.
+        if (_open && !_dismissRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.RegisterDismissAsync(_escapeLayerId + "-dismiss", _wrapRef, _selfRef, nameof(CloseFromDismiss));
+                _dismissRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!_open && _dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_escapeLayerId + "-dismiss"); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _dismissRegistered = false;
+        }
     }
+
+    /// <summary>Closes the picker when a pointer-down lands outside it or focus leaves it.</summary>
+    [JSInvokable]
+    public Task CloseFromDismiss() => InvokeAsync(() =>
+    {
+        Close();
+        StateHasChanged();
+    });
 
     /// <summary>Closes the picker when the overlay layer receives Escape.</summary>
     [JSInvokable]
@@ -98,6 +127,12 @@
         if (_escapeLayerRegistered)
         {
             try { await Overlay.RemovePopupLayerAsync(_escapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        if (_dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_escapeLayerId + "-dismiss"); }
             catch (JSDisconnectedException) { }
             catch (JSException) { }
         }

@@ -34,6 +34,7 @@ All notable changes to Flare are documented here. This project adheres to
 - The editor breadcrumb row height comes from the components it hosts and the theme's typography, not from a fixed 22px.
 - `FlarePopover` and the ColorPicker close on a click anywhere outside the panel again. Outside dismissal is a document-level pointerdown instead of a full-screen backdrop, so a popover inside a FlareLazy demo, a container query box or a transformed ancestor no longer keeps the rest of the page from dismissing it.
 - FluentUI2 vertical tabs paint the hover line and the selected indicator on the same edge: the pending line sat on the physical left whatever the placement, while the selection followed the inline end, so hovering a left-placed tab hinted at the opposite side.
+- Menus, the data-grid column picker and filter builder, and click-triggered tooltips close on a click anywhere outside them again: their dismissal is a document-level pointerdown instead of a full-screen backdrop, which a contained ancestor (a FlareLazy demo, a container query box, a transformed ancestor) confined to its own box.
 
 ### Breaking changes
 
@@ -47,6 +48,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareResizable` no longer renders the `-`/`+` step controls and drops the `ShowControls` parameter and the `Resizable.Controls`/`Control` class constants. `FlareScheduler` drops the matching `ShowResizeControls` parameter. Dragging and keyboard resizing are unchanged.
 - `--flare-dock-header-height` and `--flare-ide-breadcrumb-bar-height` are removed. The dock header follows the theme's tab height, so style the tab through the `--flare-tabs-*` roles; the breadcrumb row follows the components it hosts.
 - The popover's backdrop element is gone, and with it the `Popover.Backdrop` CSS class constant: outside-click dismissal no longer renders a `flare-popover__backdrop` element or rule. A popover inside a contained box also lets the dismissing click reach the element under it now, as the select and picker popups already did.
+- The data-grid popover and click-tooltip backdrop elements are gone, and with them the `DataGrid.Backdrop` and `Tooltip.Backdrop` CSS class constants and their CSS rules. Outside dismissal no longer renders a backdrop; a contained box also lets the dismissing click reach the element under it.
 
 ## [0.60.0] - 2026-11-20
 

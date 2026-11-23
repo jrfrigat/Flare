@@ -29,7 +29,7 @@ public sealed class FlareMenuEscapeLayerTests : FlareTestContext
     };
 
     [Fact]
-    public void OpeningRegistersTheLayerAndClosingRemovesIt()
+    public async Task OpeningRegistersTheLayerAndClosingRemovesIt()
     {
         var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, ActivatorButton())
@@ -38,7 +38,7 @@ public sealed class FlareMenuEscapeLayerTests : FlareTestContext
         cut.Find($".{Css.Classes.Menu.Activator}").Click();
         cut.WaitForAssertion(() => Assert.Contains("pushPopupLayer", _runtime.Calls));
 
-        cut.Find($".{Css.Classes.Menu.Backdrop}").Click();
+        await cut.InvokeAsync(() => cut.Instance.CloseFromDismiss());
         cut.WaitForAssertion(() => Assert.Contains("removePopupLayer", _runtime.Calls));
 
         var pushAt = _runtime.Calls.IndexOf("pushPopupLayer");

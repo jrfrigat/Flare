@@ -30,6 +30,17 @@
                 }
             </FlareTabs>
         </div>
+        @* content-visibility confines a fixed backdrop to this box - the Gallery's FlareLazy shape.
+           The overflow menu must still dismiss from a click outside the box. *@
+        <div id="contained-collapsible"
+             style="content-visibility:auto;width:340px;min-height:120px;margin-top:24px">
+            <FlareTabs Collapsible>
+                @foreach (var t in _tabs)
+                {
+                    <FlareTab Label="@t"><span>@t</span></FlareTab>
+                }
+            </FlareTabs>
+        </div>
     </FlareThemeScope>
 </FlareThemeProvider>
 

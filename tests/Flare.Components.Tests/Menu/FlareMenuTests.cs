@@ -93,13 +93,13 @@ public class FlareMenuTests : FlareTestContext
     }
 
     [Fact]
-    public void RendersBackdrop_WhenOpen()
+    public void RendersPanel_WhenOpen()
     {
         var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, MenuActivator("<button>Open</button>")));
 
         cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
     }
 }

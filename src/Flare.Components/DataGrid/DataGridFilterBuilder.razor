@@ -29,7 +29,6 @@
                 <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Sm" OnClick="Apply">@CoreText["DataGrid_ApplyFilters"]</FlareButton>
             </div>
         </div>
-        <div data-flare-backdrop class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
     }
 </div>
 
@@ -58,6 +57,9 @@
     private ElementReference _wrapRef;
     private ElementReference _panelRef;
     private readonly AnchoredLayer _layer = new();
+    private DotNetObjectReference<DataGridFilterBuilder<TItem>>? _selfRef;
+    private bool _dismissRegistered;
+    private readonly string _dismissId = "flare-datagrid-filters-" + Guid.NewGuid().ToString("N")[..8];
 
     // The widest panel the grid has (34rem) opening from a toolbar button. It has always escaped the
     // grid's own scroll container and never escaped a card around it.
@@ -67,13 +69,49 @@
         await base.OnAfterRenderAsync(firstRender);
         await _layer.SyncAsync(Overlay, _open, _wrapRef, _panelRef,
             new AnchoredPanelOptions { Placement = PanelPlacement.BottomEnd });
+
+        // Outside dismissal is a document-level pointerdown outside the builder, not a full-screen
+        // backdrop, which an ancestor's containment would confine to its own box.
+        if (_open && !_dismissRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.RegisterDismissAsync(_dismissId, _wrapRef, _selfRef, nameof(CloseFromDismiss));
+                _dismissRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!_open && _dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_dismissId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _dismissRegistered = false;
+        }
     }
+
+    /// <summary>Closes the builder when a pointer-down lands outside it or focus leaves it.</summary>
+    [JSInvokable]
+    public Task CloseFromDismiss() => InvokeAsync(() =>
+    {
+        Close();
+        StateHasChanged();
+    });
 
     /// <summary>Releases the panel's placement listeners.</summary>
     /// <returns>A task that completes when the layer has been released.</returns>
     public override async ValueTask DisposeAsync()
     {
         await base.DisposeAsync();
+        if (_dismissRegistered)
+        {
+            try { await Overlay.RemoveDismissAsync(_dismissId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
         await _layer.ReleaseAsync(Overlay);
     }
 
