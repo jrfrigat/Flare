@@ -13,7 +13,7 @@ namespace Flare.Components.Tests;
 /// </summary>
 public class FlareSplitPaneTests : FlareTestContext
 {
-    private const string FirstSizeVariable = "--_flare-splitpane-first";
+    private const string FractionVariable = "--_flare-splitpane-fraction";
     private readonly StubSplitterJs _splitter = new();
 
     public FlareSplitPaneTests()
@@ -61,17 +61,17 @@ public class FlareSplitPaneTests : FlareTestContext
     {
         var cut = RenderPane(this, fraction: 0.25);
 
-        Assert.Contains($"{FirstSizeVariable}:25%", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
+        Assert.Contains($"{FractionVariable}:0.25", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
     }
 
     [Theory]
-    [InlineData(2.0, "100%")]
-    [InlineData(-1.0, "0%")]
+    [InlineData(2.0, "1")]
+    [InlineData(-1.0, "0")]
     public void Fraction_IsClamped(double fraction, string expected)
     {
         var cut = RenderPane(this, fraction: fraction);
 
-        Assert.Contains($"{FirstSizeVariable}:{expected}", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
+        Assert.Contains($"{FractionVariable}:{expected}", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
     }
 
     // The splitter reports pixels; the pane turns them into the share of the container, which is what
@@ -84,7 +84,7 @@ public class FlareSplitPaneTests : FlareTestContext
 
         await cut.InvokeAsync(() => cut.FindComponent<FlareSplitter>().Instance.OnSplitChanged("300px"));
 
-        Assert.Contains($"{FirstSizeVariable}:70%", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
+        Assert.Contains($"{FractionVariable}:0.7", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public class FlareSplitPaneTests : FlareTestContext
         cut.Render(p => p
             .Add(x => x.Fraction, 0.5)
             .Add(x => x.FractionChanged, changed));
-        Assert.Contains($"{FirstSizeVariable}:50%", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
+        Assert.Contains($"{FractionVariable}:0.5", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
     }
 
     [Fact]
@@ -127,13 +127,23 @@ public class FlareSplitPaneTests : FlareTestContext
             .Add(x => x.Fraction, 0.3)
             .Add(x => x.FractionChanged, changed));
 
-        Assert.Contains($"{FirstSizeVariable}:30%", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
+        Assert.Contains($"{FractionVariable}:0.3", cut.Find($".{Css.Classes.SplitPane.Root}").GetAttribute("style"));
     }
 
-    private sealed class StubSplitterJs : ISplitterJsService
+    [Fact]
+    public async Task ACustomAdapterCanOmitFractionMeasurement()
     {
-        public double Fraction { get; set; } = 0.5;
+        Services.AddScoped<ISplitterJsService>(_ => new LegacySplitterJs());
+        var raised = false;
+        var cut = RenderPane(this, changed: EventCallback.Factory.Create<double>(this, _ => raised = true));
 
+        await cut.InvokeAsync(() => cut.FindComponent<FlareSplitter>().Instance.OnSplitChanged("300px"));
+
+        Assert.False(raised);
+    }
+
+    private class LegacySplitterJs : ISplitterJsService
+    {
         public ValueTask RegisterAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(
             ElementReference gutter, string axis, string? minSize, string? maxSize, DotNetObjectReference<T> dotNetRef)
             where T : class => ValueTask.CompletedTask;
@@ -144,9 +154,14 @@ public class FlareSplitPaneTests : FlareTestContext
 
         public ValueTask RemoveAsync(ElementReference gutter) => ValueTask.CompletedTask;
 
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    }
+
+    private sealed class StubSplitterJs : LegacySplitterJs, ISplitterJsService
+    {
+        public double Fraction { get; set; } = 0.5;
+
         public ValueTask<double> MeasureFractionAsync(ElementReference scope, ElementReference target, string axis) =>
             ValueTask.FromResult(Fraction);
-
-        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 }

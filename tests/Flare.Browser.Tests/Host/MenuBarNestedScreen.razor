@@ -19,4 +19,13 @@
             </ChildContent>
         </FlareMenu>
     </FlareMenuBar>
+    <FlareMenu AriaLabel="Standalone panel" FreeContent="true">
+        <Activator>
+            <FlareButton @attributes="context.Attributes">Standalone menu</FlareButton>
+        </Activator>
+        <ChildContent>
+            <input id="menu-input" aria-label="Inside" />
+        </ChildContent>
+    </FlareMenu>
+    <input id="outside-input" aria-label="Outside" />
 </FlareThemeProvider>

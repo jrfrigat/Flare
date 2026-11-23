@@ -175,7 +175,7 @@ public sealed class FlareMenuOpenAtTests : FlareTestContext
     }
 
     [Fact]
-    public async Task APointOpenKeepsTheOutsideDismissal()
+    public async Task OutsideDismissalOfAPointMenuRestoresOnlyUnclaimedFocus()
     {
         var cut = RenderMenu();
         await cut.InvokeAsync(() => cut.Instance.OpenAtAsync(10, 20));
@@ -187,7 +187,7 @@ public sealed class FlareMenuOpenAtTests : FlareTestContext
 
         Assert.Empty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
         var restore = Assert.Single(_runtime.Calls, c => c.Identifier == "restoreRememberedFocus");
-        Assert.False(Assert.IsType<bool>(restore.Arguments![1]));
+        Assert.True(Assert.IsType<bool>(restore.Arguments![1]));
     }
 
     [Fact]

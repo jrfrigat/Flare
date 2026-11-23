@@ -42,6 +42,8 @@ public interface ISplitterJsService : IAsyncDisposable
     /// <param name="scope">The container that defines the whole length along the axis.</param>
     /// <param name="target">The element whose share is measured (the first pane).</param>
     /// <param name="axis">"horizontal" for widths, "vertical" for heights.</param>
-    /// <returns>The share from 0 to 1, or 0 when the container has no length.</returns>
-    ValueTask<double> MeasureFractionAsync(ElementReference scope, ElementReference target, string axis);
+    /// <returns>The share from 0 to 1, or -1 when measurement is unavailable. The default
+    /// implementation returns -1, so existing splitter adapters can continue to resize siblings.</returns>
+    ValueTask<double> MeasureFractionAsync(ElementReference scope, ElementReference target, string axis) =>
+        ValueTask.FromResult(-1d);
 }

@@ -413,44 +413,39 @@ function _applyTabsFold(root, dotNetRef, activeIndex) {
     if (items.length === 0) return;
     const vertical = root.classList.contains('flare-tabs--vertical');
 
-    // Measure with everything shown and the overflow control visible: a display:none element measures
-    // zero, and the control's own width is what the fold reserves.
+    // Test whether every tab fits before letting the overflow button take space from the bar.
     items.forEach(el => el.removeAttribute(TABS_HIDDEN_ATTR));
-    if (more) more.removeAttribute(TABS_HIDDEN_ATTR);
+    more?.setAttribute(TABS_HIDDEN_ATTR, '');
     const size = el => vertical ? el.offsetHeight : el.offsetWidth;
-    const available = vertical ? bar.clientHeight : bar.clientWidth;
+    const available = () => vertical ? bar.clientHeight : bar.clientWidth;
     const styles = getComputedStyle(bar);
     const gap = parseFloat(vertical ? styles.rowGap : styles.columnGap) || 0;
     const natural = items.map(size);
     const total = natural.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
 
-    let visible = items.length;
-    if (total > available + 0.5) {
-        const reserve = more ? size(more) + gap : 0;
-        let used = 0;
-        visible = 0;
-        for (let i = 0; i < items.length; i++) {
-            const step = natural[i] + (i > 0 ? gap : 0);
-            if (used + step + reserve > available + 0.5) break;
-            used += step;
-            visible++;
-        }
-        // Folding everything away would leave a lone "..." with no way back; keep one tab.
-        if (visible === 0) visible = 1;
-    }
-
     let start = 0;
-    if (visible < items.length && activeIndex >= visible) {
-        start = Math.min(activeIndex, items.length - 1) - visible + 1;
-        if (start < 0) start = 0;
-        if (start + visible > items.length) start = items.length - visible;
+    let end = items.length;
+    if (total > available() + 0.5 && items.length > 1) {
+        more?.removeAttribute(TABS_HIDDEN_ATTR);
+        const limit = available() + 0.5;
+
+        // Fit the actual tabs around the selection. Keep the active tab even when it alone is
+        // wider than the bar. The leading neighbors take priority, as in the default tab order.
+        start = Math.min(Math.max(activeIndex, 0), items.length - 1);
+        end = start + 1;
+        let used = natural[start];
+        while (start > 0 && used + gap + natural[start - 1] <= limit) {
+            used += gap + natural[--start];
+        }
+        while (end < items.length && used + gap + natural[end] <= limit) {
+            used += gap + natural[end++];
+        }
     }
 
     for (let i = 0; i < items.length; i++) {
-        if (i < start || i >= start + visible) items[i].setAttribute(TABS_HIDDEN_ATTR, '');
+        if (i < start || i >= end) items[i].setAttribute(TABS_HIDDEN_ATTR, '');
     }
-    if (more && visible >= items.length) more.setAttribute(TABS_HIDDEN_ATTR, '');
-    if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabsOverflowChanged', start, visible).catch(() => { });
+    if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabsOverflowChanged', start, end - start).catch(() => { });
 }
 
 export function registerTabsCollapse(root, dotNetRef) {

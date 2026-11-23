@@ -1,4 +1,8 @@
 .flare-split-pane {
+  --_flare-splitpane-gutter: var(--flare-splitter-gutter-size);
+  --_flare-splitpane-available: max(0px, calc(100% - var(--_flare-splitpane-gutter)));
+  --_flare-splitpane-lower: max(0px, min(var(--_flare-splitpane-min, 0px), calc(var(--_flare-splitpane-available) / 2)));
+  --_flare-splitpane-upper: min(var(--_flare-splitpane-max, 100%), calc(var(--_flare-splitpane-available) - var(--_flare-splitpane-lower)));
   display: flex;
   min-inline-size: 0;
   min-block-size: 0;
@@ -7,10 +11,22 @@
 .flare-split-pane--horizontal { flex-direction: row; }
 .flare-split-pane--vertical { flex-direction: column; }
 
-/* The first pane takes the controlled fraction; the splitter overwrites the variable with pixels
-   while the pointer moves, and the component writes the fraction back when the gesture ends. */
+.flare-split-pane--horizontal > .flare-splitter { inline-size: var(--_flare-splitpane-gutter); }
+.flare-split-pane--vertical > .flare-splitter { block-size: var(--_flare-splitpane-gutter); }
+
+@media (pointer: coarse) {
+  .flare-split-pane {
+    --_flare-splitpane-gutter: max(var(--flare-splitter-gutter-size), var(--flare-touch-target-min));
+  }
+}
+
+/* Both the requested fraction and a live pixel preview use the same pane limits. */
 .flare-split-pane__first {
-  flex: 0 0 var(--_flare-splitpane-first, 50%);
+  flex: 0 0 clamp(
+    var(--_flare-splitpane-lower),
+    var(--_flare-splitpane-preview, calc(var(--_flare-splitpane-fraction, 0.5) * var(--_flare-splitpane-available))),
+    var(--_flare-splitpane-upper)
+  );
   min-inline-size: 0;
   min-block-size: 0;
   overflow: hidden;

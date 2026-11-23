@@ -19,9 +19,9 @@
                    AriaLabel="@AriaLabel"
                    ValueScope="[data-flare-splitpane]"
                    ValueTarget="[data-flare-splitpane-first]"
-                   ValueVariable="@FirstSizeVariable"
+                   ValueVariable="--_flare-splitpane-preview"
                    OnSizeChanged="OnSplitChangedAsync" />
-    <div class="@Css.Classes.SplitPane.Second">
+    <div class="@Css.Classes.SplitPane.Second" data-flare-splitpane-second>
         @SecondPaneContent
     </div>
 </div>
@@ -41,10 +41,11 @@
     [Parameter] public double Fraction { get; set; } = 0.5;
 
     /// <summary>Invoked with the new fraction after a drag or a keyboard resize. The value is the
-    /// measured share of the container along the split axis, not a pixel length.</summary>
+    /// measured share of the space available to the two panes along the split axis.</summary>
     [Parameter] public EventCallback<double> FractionChanged { get; set; }
 
-    /// <summary>Minimum size of either pane as a CSS length (for example <c>120px</c>). Optional.</summary>
+    /// <summary>Minimum size of either pane as a CSS length (for example <c>120px</c>). When
+    /// there is not enough room for both minima, the panes split the available space evenly.</summary>
     [Parameter] public string? MinSize { get; set; }
 
     /// <summary>Maximum size of the first pane as a CSS length. A percentage is relative to the pane
@@ -55,10 +56,6 @@
     [Parameter] public string? AriaLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.SplitPane.Root;
-
-    // A runtime geometry channel, not a design token: the splitter writes it while the pointer moves
-    // and the component rewrites it to the controlled fraction when the gesture ends.
-    private const string FirstSizeVariable = "--_flare-splitpane-first";
 
     private double _fraction = 0.5;
     private double _lastFraction = 0.5;
@@ -81,28 +78,19 @@
     private string _axis => _vertical ? "vertical" : "horizontal";
 
     private string _rootStyle =>
-        $"{FirstSizeVariable}:{Percent(_fraction)}%;{Style}";
+        $"--_flare-splitpane-fraction:{_fraction.ToString(System.Globalization.CultureInfo.InvariantCulture)};" +
+        $"--_flare-splitpane-min:{CssLimit(MinSize, "0px")};--_flare-splitpane-max:{CssLimit(MaxSize, "100%")};{Style}";
 
     // A two-way parameter follows the shared contract: the caller who listens is authoritative; an
     // uncontrolled component keeps its own fraction and adopts only a real parameter change.
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        if (!_initialized)
-        {
-            _initialized = true;
-            _lastFraction = Fraction;
-            _fraction = Clamp(Fraction);
-            return;
-        }
-        if (FractionChanged.HasDelegate)
+        if (!_initialized || FractionChanged.HasDelegate || Fraction != _lastFraction)
         {
             _fraction = Clamp(Fraction);
         }
-        else if (Fraction != _lastFraction)
-        {
-            _fraction = Clamp(Fraction);
-        }
+        _initialized = true;
         _lastFraction = Fraction;
     }
 
@@ -118,14 +106,16 @@
         catch (JSDisconnectedException) { return; }
         catch (JSException) { return; }
 
-        if (fraction <= 0) return;
-        _fraction = Clamp(fraction);
-        if (FractionChanged.HasDelegate) await FractionChanged.InvokeAsync(_fraction);
+        if (!double.IsFinite(fraction) || fraction < 0 || fraction > 1) return;
+        if (FractionChanged.HasDelegate) await FractionChanged.InvokeAsync(fraction);
+        else _fraction = fraction;
     }
 
     private static double Clamp(double value) =>
         double.IsFinite(value) ? Math.Clamp(value, 0, 1) : 0.5;
 
-    private static string Percent(double value) =>
-        Math.Round(Clamp(value) * 100, 4).ToString("0.####", System.Globalization.CultureInfo.InvariantCulture);
+    private static string CssLimit(string? value, string fallback) =>
+        string.IsNullOrWhiteSpace(value) || value.AsSpan().IndexOfAny(';', '{', '}') >= 0
+            ? fallback
+            : Flare.Components.Security.CssValidator.StripDangerous(value) ?? fallback;
 }

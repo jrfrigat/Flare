@@ -11,9 +11,9 @@
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label of the resize handle. Null uses the localized default. |
 | `FirstPaneContent` | `RenderFragment?` | `` | Parameter |  | Content of the pane sized by Fraction. |
 | `Fraction` | `double` | `0.5` | Parameter |  | Share of the available length given to the first pane, from 0 to 1. Supports two-way binding; the parameter is authoritative while FractionChanged is bound. |
-| `FractionChanged` | `EventCallback<double>` | `` | Callback |  | Invoked with the new fraction after a drag or a keyboard resize. The value is the measured share of the container along the split axis, not a pixel length. |
+| `FractionChanged` | `EventCallback<double>` | `` | Callback |  | Invoked with the new fraction after a drag or a keyboard resize. The value is the measured share of the space available to the two panes along the split axis. |
 | `MaxSize` | `string?` | `` | Parameter |  | Maximum size of the first pane as a CSS length. A percentage is relative to the pane container. Optional. |
-| `MinSize` | `string?` | `` | Parameter |  | Minimum size of either pane as a CSS length (for example 120px). Optional. |
+| `MinSize` | `string?` | `` | Parameter |  | Minimum size of either pane as a CSS length (for example 120px). When there is not enough room for both minima, the panes split the available space evenly. |
 | `Orientation` | `SplitPaneOrientation` | `SplitPaneOrientation.Horizontal` | Parameter |  | Layout axis of the split. Horizontal places the panes side by side; vertical stacks them. |
 | `SecondPaneContent` | `RenderFragment?` | `` | Parameter |  | Content of the pane that fills the remaining space. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

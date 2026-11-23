@@ -53,6 +53,7 @@
 
     private ElementReference _rootRef;
     private DotNetObjectReference<FlareScroller>? _dotNetRef;
+    private bool _scrollerRegistered;
     private bool _overflowing;
     private bool _atStart = true;
     private bool _atEnd;
@@ -60,19 +61,25 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender || Vertical)
+        if (Vertical)
         {
+            _overflowing = false;
+            _atStart = true;
+            _atEnd = false;
+            await RemoveScrollerAsync();
             return;
         }
+        if (_scrollerRegistered) return;
 
-        _dotNetRef = DotNetObjectReference.Create(this);
+        _dotNetRef ??= DotNetObjectReference.Create(this);
+        _scrollerRegistered = true;
         try
         {
             await Ui.RegisterTabScrollerAsync(_rootRef, _dotNetRef);
         }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        catch (InvalidOperationException) { _scrollerRegistered = false; }
+        catch (JSDisconnectedException) { _scrollerRegistered = false; }
+        catch (JSException) { _scrollerRegistered = false; }
     }
 
     /// <summary>Receives the overflow and edge state from the shared scroller module.</summary>
@@ -82,6 +89,7 @@
     [JSInvokable]
     public void OnTabScrollState(bool overflowing, bool atStart, bool atEnd)
     {
+        if (Vertical) return;
         _overflowing = overflowing;
         _atStart = atStart;
         _atEnd = atEnd;
@@ -95,6 +103,15 @@
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        await RemoveScrollerAsync();
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
+    }
+
+    private async ValueTask RemoveScrollerAsync()
+    {
+        if (!_scrollerRegistered) return;
+        _scrollerRegistered = false;
         try
         {
             await Ui.RemoveTabScrollerAsync(_rootRef);
@@ -102,7 +119,5 @@
         catch (JSDisconnectedException) { }
         catch (JSException) { }
         catch (InvalidOperationException) { }
-        _dotNetRef?.Dispose();
-        await base.DisposeAsync();
     }
 }

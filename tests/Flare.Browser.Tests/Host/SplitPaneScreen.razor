@@ -13,8 +13,28 @@
         </FlareSplitPane>
     </div>
     <div id="fraction">@_fraction.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</div>
+    <div id="horizontal-limits" style="width:600px">
+        <FlareSplitPane Fraction="0.9" MinSize="100px">
+            <FirstPaneContent>First</FirstPaneContent>
+            <SecondPaneContent>Second</SecondPaneContent>
+        </FlareSplitPane>
+    </div>
+    <div id="vertical-limits" style="height:300px">
+        <FlareSplitPane Fraction="0.9" MinSize="60px" MaxSize="50%" Orientation="SplitPaneOrientation.Vertical" Style="height:100%">
+            <FirstPaneContent>First</FirstPaneContent>
+            <SecondPaneContent>Second</SecondPaneContent>
+        </FlareSplitPane>
+    </div>
+    <div id="controlled-limits" style="width:600px">
+        <FlareSplitPane Fraction="0.5" FractionChanged="value => _declined = value">
+            <FirstPaneContent>First</FirstPaneContent>
+            <SecondPaneContent>Second</SecondPaneContent>
+        </FlareSplitPane>
+    </div>
+    <div id="declined">@_declined?.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</div>
 </FlareThemeProvider>
 
 @code {
     private double _fraction = 0.5;
+    private double? _declined;
 }

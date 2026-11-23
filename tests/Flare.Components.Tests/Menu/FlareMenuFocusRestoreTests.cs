@@ -8,9 +8,9 @@ namespace Flare.Components.Tests;
 
 /// <summary>
 /// An item's action runs before its menu closes, so the close must not pull focus back from a dialog or
-/// a field that action moved it into. An item-triggered close asks the overlay for a guarded restore;
-/// Escape and an outside click keep the unconditional one. The browser-side decision itself is covered
-/// by the vitest suite for <c>flare-overlay.js</c>.
+/// a field that action moved it into. An item-triggered close asks the overlay for a guarded restore.
+/// Outside dismissal uses the same guard. Escape keeps unconditional restoration. The browser-side
+/// decision is covered by the vitest suite for <c>flare-overlay.js</c>.
 /// </summary>
 public sealed class FlareMenuFocusRestoreTests : FlareTestContext
 {
@@ -82,7 +82,7 @@ public sealed class FlareMenuFocusRestoreTests : FlareTestContext
     }
 
     [Fact]
-    public async Task AnOutsideClick_KeepsTheUnconditionalRestore()
+    public async Task OutsideDismissal_AsksForTheGuardedRestore()
     {
         var cut = RenderMenu();
         await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Activator} button").Click());
@@ -90,7 +90,7 @@ public sealed class FlareMenuFocusRestoreTests : FlareTestContext
 
         await cut.InvokeAsync(() => cut.Instance.CloseFromDismiss());
 
-        cut.WaitForAssertion(() => Assert.Equal(["focusFirstInDialog"], FocusCalls()));
+        cut.WaitForAssertion(() => Assert.Equal(["focusFirstIfUnclaimed"], FocusCalls()));
     }
 
     // A submenu item closes its own panel and the menu that holds it. The submenu leaves the tree with

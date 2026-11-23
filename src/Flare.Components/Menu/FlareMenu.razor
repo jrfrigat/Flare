@@ -185,8 +185,8 @@
             // holding a reference of its own, because which element the activator is belongs to whoever
             // filled the slot. A point-opened menu instead returns focus to the element remembered before
             // the panel took it, because its wrapper may be empty. A menu that closed because another took
-            // over skips this: the new menu owns the focus now. An item close restores only an unclaimed
-            // focus, so a dialog or a field the action opened keeps it.
+            // over skips this: the new menu owns the focus now. An item or outside dismissal restores
+            // only unclaimed focus, so a dialog or field that received focus keeps it.
             if (!_suppressActivatorFocus)
             {
                 try
@@ -266,7 +266,7 @@
 
     /// <summary>Closes the menu when a pointer-down lands outside it or focus leaves it.</summary>
     [JSInvokable]
-    public Task CloseFromDismiss() => InvokeAsync(CloseAsync);
+    public Task CloseFromDismiss() => InvokeAsync(() => CloseCoreAsync(restoreFocusIfUnclaimed: true));
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
@@ -423,16 +423,16 @@
 
     /// <summary>Closes the menu (also callable programmatically), clears registered items and keyboard
     /// focus, and raises <see cref="OnToggle"/>.</summary>
-    public Task CloseAsync() => CloseCoreAsync(itemActivated: false);
+    public Task CloseAsync() => CloseCoreAsync(restoreFocusIfUnclaimed: false);
 
     // An item's action has already run by the time its menu closes. That action may have moved the focus
     // into a dialog or a field, so the close asks the browser to restore only an unclaimed focus.
-    internal Task CloseFromItemAsync() => CloseCoreAsync(itemActivated: true);
+    internal Task CloseFromItemAsync() => CloseCoreAsync(restoreFocusIfUnclaimed: true);
 
-    private async Task CloseCoreAsync(bool itemActivated)
+    private async Task CloseCoreAsync(bool restoreFocusIfUnclaimed)
     {
         if (!_open) return;
-        _restoreFocusIfUnclaimed = itemActivated;
+        _restoreFocusIfUnclaimed = restoreFocusIfUnclaimed;
         _open = false;
         _openedByHover = false;
         _openedAtPoint = false;

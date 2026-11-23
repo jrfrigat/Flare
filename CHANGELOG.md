@@ -3,6 +3,17 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.61.1] - 2026-11-24
+
+### Fixed
+
+- Collapsible tabs reserve room for the overflow button only when needed and fit the visible tabs around the active one. Choosing a tab from the menu invokes its `OnClick` before activation.
+- `FlareSplitPane` applies its limits in both orientations, including before the first resize. Its fraction measures the space used by the two panes, excluding the handle. A rejected resize restores the controlled size.
+- Standalone menus preserve focus on the element a user clicks or tabs to outside the menu. Escape still returns focus to the trigger.
+- `FlareScroller` restores its arrows when a tab strip changes from vertical to horizontal.
+- Existing custom `ISplitterJsService` implementations compile without adding `MeasureFractionAsync`. Adapters used by `FlareSplitPane` can implement it to report the pane fraction.
+- The `FlareSize` reference describes the matching button and field heights and the separate dimensions used by other component families.
+
 ## [0.61.0] - 2026-11-23
 
 ### Added

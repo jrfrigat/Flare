@@ -2,8 +2,9 @@ namespace Flare.Components;
 
 /// <summary>
 /// The one size scale every Flare control uses (Xs..Xl; Md is the default unless a component says
-/// otherwise). A step names the same height for every full-scale family - button, input, select,
-/// avatar, chip, pagination, switch and track - so a row that mixes them never jumps.
+/// otherwise). Each theme uses the same height for buttons and form fields at a given step.
+/// Other families, including avatars, chips, switches and tracks, use the same size names
+/// with dimensions from their own theme tokens.
 ///
 /// The height itself is theme-owned: Md and larger meet the WCAG 2.5.8 target minimum of 24x24 CSS px
 /// in every built-in theme. Xs is the smallest target a theme's design system defines rather than an

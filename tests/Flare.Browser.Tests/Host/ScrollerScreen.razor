@@ -29,5 +29,18 @@
                 }
             </FlareTabs>
         </div>
+        <button id="change-placement" @onclick="() => _vertical = !_vertical">Change placement</button>
+        <div id="scroller-placement" style="width:260px">
+            <FlareTabs Placement="@(_vertical ? TabsPlacement.Left : TabsPlacement.Top)">
+                @for (var i = 0; i < 8; i++)
+                {
+                    <FlareTab Label="@($"Document {i}")"><ChildContent><span>Panel @i</span></ChildContent></FlareTab>
+                }
+            </FlareTabs>
+        </div>
     </FlareThemeScope>
 </FlareThemeProvider>
+
+@code {
+    private bool _vertical = true;
+}

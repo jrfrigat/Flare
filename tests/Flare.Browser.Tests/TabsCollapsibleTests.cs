@@ -113,4 +113,55 @@ public sealed class TabsCollapsibleTests(BrowserFixture fixture) : IClassFixture
         await Expect(page.Locator($"#vertical .{Css.Classes.Tabs.Item}[data-flare-tabs-hidden]").First)
             .ToHaveCountAsync(1);
     }
+
+    [Fact]
+    public async Task TabsThatFitWithoutTheOverflowButtonStayVisible()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/tabs-collapsible");
+
+        var section = page.Locator("#collapsible");
+        var more = section.Locator($".{Css.Classes.Tabs.More}");
+        await Expect(more).ToBeVisibleAsync();
+        await SetTabWidthsAsync(section, 27);
+
+        await Expect(more).ToBeHiddenAsync();
+        await Expect(section.Locator($".{Css.Classes.Tabs.Item}[data-flare-tabs-hidden]")).ToHaveCountAsync(0);
+    }
+
+    [Fact]
+    public async Task OverflowWindowFitsTheWidthsAroundTheSelectedTab()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/tabs-collapsible");
+
+        var section = page.Locator("#collapsible");
+        await Expect(section.Locator($".{Css.Classes.Tabs.More}")).ToBeVisibleAsync();
+        await SetTabWidthsAsync(section, 30, 160);
+        await section.Locator("[role=tab][aria-selected=true]").PressAsync("End");
+
+        var selected = section.Locator("[role=tab][aria-selected=true]");
+        await Expect(selected).ToHaveTextAsync("Accessories");
+        await Expect(selected).ToBeVisibleAsync();
+        Assert.True(await section.Locator("[role=tablist]").EvaluateAsync<bool>(
+            "bar => bar.scrollWidth <= bar.clientWidth + 1"));
+    }
+
+    private static Task SetTabWidthsAsync(ILocator section, int width, int? lastWidth = null) =>
+        section.EvaluateAsync(
+            """
+            (section, { width, lastWidth }) => {
+                const bar = section.querySelector('[role=tablist]');
+                bar.style.gap = '0';
+                const items = [...bar.children];
+                items.forEach((item, index) => {
+                    const basis = index === items.length - 1 ? (lastWidth ?? width) : width;
+                    item.style.cssText = `flex: 0 0 ${basis}px; min-inline-size: 0; overflow: hidden`;
+                });
+                section.querySelector('.flare-tabs__more').style.inlineSize = '36px';
+                section.style.inlineSize = '240px';
+            }
+            """, new { width, lastWidth });
 }

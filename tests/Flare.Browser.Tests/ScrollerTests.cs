@@ -65,6 +65,34 @@ public sealed class ScrollerTests(BrowserFixture fixture) : IClassFixture<Browse
     }
 
     [Fact]
+    public async Task SwitchingPlacementKeepsTheHorizontalArrowsWorking()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/scroller");
+
+        var strip = page.Locator("#scroller-placement");
+        var bar = strip.Locator("[role=tablist]");
+        var arrows = strip.Locator($".{Css.Classes.Tabs.Scroll}");
+        var toggle = page.Locator("#change-placement");
+        await Expect(bar).ToHaveAttributeAsync("aria-orientation", "vertical");
+        await Expect(arrows).ToHaveCountAsync(0);
+
+        for (var turn = 0; turn < 2; turn++)
+        {
+            await toggle.ClickAsync();
+            await Expect(bar).ToHaveAttributeAsync("aria-orientation", "horizontal");
+            await Expect(arrows).ToHaveCountAsync(2);
+            await strip.Locator($".{Css.Classes.Tabs.ScrollNext}").ClickAsync();
+            await ExpectScrollAsync(bar);
+
+            await toggle.ClickAsync();
+            await Expect(bar).ToHaveAttributeAsync("aria-orientation", "vertical");
+            await Expect(arrows).ToHaveCountAsync(0);
+        }
+    }
+
+    [Fact]
     public async Task DockStripUsesArrowsInsteadOfAScrollbar()
     {
         await using var context = await fixture.Browser.NewContextAsync();

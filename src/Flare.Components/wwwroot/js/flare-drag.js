@@ -123,6 +123,15 @@ export function startDrag(handle, opts) {
 
 const _resizeHandles = registry();
 
+function reflectResizeRange(handle, horizontal, value, range, valueText) {
+    handle.setAttribute('aria-orientation', horizontal ? 'vertical' : 'horizontal');
+    handle.setAttribute('aria-valuemin', String(Math.round(range.min)));
+    if (Number.isFinite(range.max)) handle.setAttribute('aria-valuemax', String(Math.round(range.max)));
+    else handle.removeAttribute('aria-valuemax');
+    handle.setAttribute('aria-valuenow', String(Math.round(value)));
+    handle.setAttribute('aria-valuetext', valueText ? valueText(value) : Math.round(value) + 'px');
+}
+
 // One length dragged by a focusable handle: FlareResizable's own edge and FlareSplitter's value mode
 // differ in what the length means and where it is stored, but the gesture, the keys, the clamping and
 // the aria range are the same. The spec supplies the length; this owns the rest.
@@ -132,14 +141,7 @@ function oneLengthResize(handle, spec) {
         const clamped = Math.max(range.min, Math.min(value, range.max));
         return spec.round ? spec.round(clamped) : clamped;
     };
-    const reflect = (value, range) => {
-        handle.setAttribute('aria-orientation', spec.horiz() ? 'vertical' : 'horizontal');
-        handle.setAttribute('aria-valuemin', String(Math.round(range.min)));
-        if (Number.isFinite(range.max)) handle.setAttribute('aria-valuemax', String(Math.round(range.max)));
-        else handle.removeAttribute('aria-valuemax');
-        handle.setAttribute('aria-valuenow', String(Math.round(value)));
-        handle.setAttribute('aria-valuetext', spec.valueText ? spec.valueText(value) : Math.round(value) + 'px');
-    };
+    const reflect = (value, range) => reflectResizeRange(handle, spec.horiz(), value, range, spec.valueText);
     const write = value => {
         const range = spec.range();
         const clamped = clamp(value, range);
@@ -459,9 +461,33 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
     const max = () => d.flareSplitterMax?.endsWith('%')
         ? (scope()?.getBoundingClientRect()[horiz ? 'width' : 'height'] || 0) * parseFloat(d.flareSplitterMax) / 100
         : _flareParsePx(d.flareSplitterMax) || Infinity;
-    const current = () => (d.flareSplitterTarget && scope()?.querySelector(d.flareSplitterTarget)?.getBoundingClientRect()[horiz ? 'width' : 'height'])
-        || Number(d.flareSplitterValue) || 0;
-    const home = () => (d.flareSplitterDefault ? Number(d.flareSplitterDefault) : min());
+    const pane = d.flareSplitterVariable === '--_flare-splitpane-preview' ? scope() : null;
+    const current = () => {
+        const target = d.flareSplitterTarget && scope()?.querySelector(d.flareSplitterTarget);
+        const length = target ? target.getBoundingClientRect()[horiz ? 'width' : 'height'] : undefined;
+        if (pane && length !== undefined) return length;
+        return length || Number(d.flareSplitterValue) || 0;
+    };
+    let paneBounds, previewRevision = 0;
+    const prepare = () => {
+        axis();
+        if (!pane) return;
+        // Read the same CSS limits used for the resting fraction, including relative lengths.
+        // Resolve the two extremes at gesture start, then reuse the result during the drag.
+        const preview = d.flareSplitterVariable;
+        const previous = pane.style.getPropertyValue(preview);
+        pane.style.setProperty(preview, '0px');
+        const lower = current();
+        pane.style.setProperty(preview, '100%');
+        paneBounds = { min: lower, max: current() };
+        if (previous) pane.style.setProperty(preview, previous);
+        else pane.style.removeProperty(preview);
+    };
+    prepare();
+    const range = () => paneBounds ?? { min: min(), max: max() };
+    const home = () => d.flareSplitterDefault ? Number(d.flareSplitterDefault) : range().min;
+    const valueText = value => value + ' px';
+    const reflectPane = () => reflectResizeRange(gutter, horiz, current(), range(), valueText);
     const off = oneLengthResize(gutter, {
         horiz: () => horiz,
         read: current,
@@ -469,26 +495,58 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
             // ValueVariable is optional: without it the size still changes and is reported, the consumer
             // just applies it itself instead of reading a live CSS variable.
             if (d.flareSplitterVariable) scope()?.style.setProperty(d.flareSplitterVariable, value + 'px');
+            if (pane) previewRevision++;
             d.flareSplitterValue = String(value);
         },
-        range: () => ({ min: min(), max: max() }),
+        range,
         round: Math.round,
         step: large => Math.max(1, Number(large ? d.flareSplitterLargeStep || d.flareSplitterKeyboardStep : d.flareSplitterKeyboardStep) || 16),
         sign: () => _flareVisualSign(gutter, horiz) * (d.flareSplitterReverse === 'true' ? -1 : 1),
         home,
-        end: () => (max() === Infinity ? current() : max()),
+        end: () => {
+            const upper = range().max;
+            return Number.isFinite(upper) ? upper : current();
+        },
         reset: home,
-        prepare: axis,
+        prepare,
         prepareMove: axis,
-        valueText: value => value + ' px',
+        valueText,
         notify: value => {
-            if (dotNetRef) dotNetRef.invokeMethodAsync('OnSplitChanged', value + 'px').catch(() => { });
+            if (!pane) {
+                dotNetRef?.invokeMethodAsync('OnSplitChanged', value + 'px').catch(() => { });
+                return;
+            }
+            const revision = previewRevision;
+            const report = dotNetRef?.invokeMethodAsync('OnSplitChanged', value + 'px');
+            const settle = () => {
+                if (revision !== previewRevision) return;
+                pane.style.removeProperty(d.flareSplitterVariable);
+                reflectPane();
+            };
+            if (report) report.then(settle, settle);
+            else settle();
         },
         notifyDragEnd: 'changed',
         onDragStart: () => { document.body.style.cursor = horiz ? 'col-resize' : 'row-resize'; },
         onDragEnd: () => { document.body.style.cursor = ''; },
     });
-    _splitters.keep(gutter, _flareWatchAxis(gutter, orientation, off));
+    // Themes can apply their gutter token after registration. Re-read the initial limits once its
+    // geometry arrives, and again when the pane is resized from outside the handle.
+    let observer;
+    if (pane && typeof ResizeObserver !== 'undefined') {
+        observer = new ResizeObserver(() => {
+            if (pane.style.getPropertyValue(d.flareSplitterVariable)) return;
+            prepare();
+            reflectPane();
+        });
+        observer.observe(pane);
+        observer.observe(gutter);
+        if (gutter.previousElementSibling) observer.observe(gutter.previousElementSibling);
+    }
+    _splitters.keep(gutter, _flareWatchAxis(gutter, orientation, () => {
+        observer?.disconnect();
+        off();
+    }));
 }
 
 export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, dotNetRef) {
@@ -567,14 +625,14 @@ export function removeSiblingSplitter(gutter) {
     _splitters.drop(gutter);
 }
 
-// Share of the container's axis length taken by one element. The split pane uses it to turn the
-// splitter's pixel report into the persisted fraction; it reads nothing but the two boxes.
+// Share of the available axis length taken by the first pane. The two pane boxes exclude the gutter.
 export function measureSplitFraction(scope, target, axis) {
-    if (!scope || !target) return 0;
+    if (!scope || !target) return -1;
     const dim = axis === 'vertical' ? 'height' : 'width';
-    const total = scope.getBoundingClientRect()[dim];
     const size = target.getBoundingClientRect()[dim];
-    return total > 0 ? Math.min(1, Math.max(0, size / total)) : 0;
+    const other = scope.querySelector(':scope > [data-flare-splitpane-second]');
+    const total = other ? size + other.getBoundingClientRect()[dim] : scope.getBoundingClientRect()[dim];
+    return total > 0 ? Math.min(1, Math.max(0, size / total)) : -1;
 }
 
 export const flareColorPicker = (() => {

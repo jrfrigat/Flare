@@ -560,7 +560,7 @@
     private async Task SelectFromOverflowAsync(FlareTab tab)
     {
         if (_overflowMenu is not null) await _overflowMenu.CloseAsync();
-        await SelectTab(tab);
+        await OnTabClick(tab);
     }
 
     /// <summary>Activates and focuses the available tab addressed by an orientation-aware navigation key.</summary>
