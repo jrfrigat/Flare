@@ -1,0 +1,28 @@
+@page "/dock-tab-context-menu"
+@using Flare.Abstractions.Tokens
+@using Flare.Components.IDE
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareThemeScope Theme="fluent2" Palette="fluent-blue" Mode="ThemeMode.Light">
+        <div style="position:fixed;inset-inline:0;inset-block-end:0;height:140px">
+            <FlareDockWorkspace id="context-dock" Layout="_layout" Items="Items" UseTabContextMenu="true"
+                                GroupLabel="@(group => group.Key)"
+                                OnChangeRequested="@(change => _layout = change.Proposed)">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+    </FlareThemeScope>
+</FlareThemeProvider>
+
+@code {
+    private DockNode _layout = new DockSplit("split", DockAxis.Horizontal,
+        new DockGroup("target", ["c"], "c"),
+        new DockGroup("source", ["a", "b"], "a"));
+
+    private static readonly DockItem[] Items =
+    [
+        new("a", "A"),
+        new("b", "B"),
+        new("c", "A particularly long destination tab name that must stay readable inside the context menu")
+    ];
+}

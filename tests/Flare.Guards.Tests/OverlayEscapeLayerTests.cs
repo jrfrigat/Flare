@@ -15,6 +15,7 @@ public sealed class OverlayEscapeLayerTests
     private static readonly Dictionary<string, string> Allowed = new(StringComparer.Ordinal)
     {
         ["FlareSubMenu.razor"] = "part of a FlareMenu; the parent registers the layer",
+        ["FlareDockWorkspace.razor"] = "its context-menu popup is a FlareMenu, which registers the layer",
         ["FlareOptionList.razor"] = "rendered inside FlarePopup, which registers the layer",
         ["FlareFloatingActionMenu.razor"] = "passive markup; the FlareFloatingActionButton owns the state and registers the layer",
         ["FlareCodeBlock.razor"] = "role=menu is not a popup here",

@@ -43,6 +43,10 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// never begins one.</summary>
     [Parameter] public RenderFragment<DockItem>? TabActionsTemplate { get; set; }
 
+    /// <summary>Moves the tab actions from the end of each strip to a menu on the invoked tab.
+    /// Right-click, the context-menu key, or Shift+F10 opens that menu.</summary>
+    [Parameter] public bool UseTabContextMenu { get; set; }
+
     /// <summary>Provides a localized accessible label for a group.</summary>
     [Parameter] public Func<DockGroup, string>? GroupLabel { get; set; }
 
@@ -382,6 +386,11 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
                 group is null ? null : HeaderId(group.Key);
             await CallJsAsync("restoreFocus", _canvas, fallback);
         }
+        if (UseTabContextMenu && _contextTab is { } key && !_index.Owners.ContainsKey(key) && _tabContextMenu is { } menu)
+        {
+            await menu.CloseAsync();
+        }
+
         if (_focusMenu && _openActions is not null)
         {
             _focusMenu = false;

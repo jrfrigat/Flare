@@ -192,7 +192,18 @@ export function register(canvas, callback) {
             watch(element, ['dir', 'class', 'style']);
     }
     state.keyboard = event => {
-        if (event.defaultPrevented || !event.target.closest?.('[data-flare-dock-tabs] [role="tab"]')) return;
+        const tab = event.target.closest?.('[data-flare-dock-tabs] [role="tab"]');
+        if (event.defaultPrevented || !tab) return;
+        if (tab.getAttribute('aria-haspopup') === 'menu' &&
+            (event.key === 'ContextMenu' || (event.key === 'F10' && event.shiftKey))) {
+            event.preventDefault();
+            const rect = tab.getBoundingClientRect();
+            const clientX = getComputedStyle(tab).direction === 'rtl' ? rect.right : rect.left;
+            tab.dispatchEvent(new MouseEvent('contextmenu', {
+                bubbles: true, cancelable: true, button: 2, clientX, clientY: rect.bottom
+            }));
+            return;
+        }
         if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) event.preventDefault();
     };
     canvas.addEventListener('keydown', state.keyboard);

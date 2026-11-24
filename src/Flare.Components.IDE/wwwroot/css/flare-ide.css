@@ -974,6 +974,19 @@ button.flare-editor-breadcrumb-bar__segment-button {
 
 .flare-dock__actions button { padding-block: var(--flare-ide-spacing-2, var(--flare-spacing-2)); text-align: start; }
 
+.flare-dock__tab-menu { position: absolute; inset-block-start: 0; inset-inline-start: 0; }
+
+.flare-dock__tab-menu > .flare-menu__panel {
+    inline-size: max-content;
+    min-inline-size: min(var(--flare-menu-panel-min-width), var(--flare-anchored-width, 100dvw));
+    max-inline-size: var(--flare-anchored-width, 100dvw);
+}
+
+.flare-dock__tab-menu .flare-menu-item__label {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
 /* Docking targets. Hit testing still uses the same five regions; the visual is a single restrained
    highlight of the region under the pointer rather than a grid of candidate rectangles. */
 .flare-dock__targets { pointer-events: none; z-index: 2; }

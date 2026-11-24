@@ -23,6 +23,7 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 | `TabActionsTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders actions for a tab beside the tab button, outside it. A host command belongs here so it can be a real button; the strip starts a drag only from the grip, so an action never begins one. |
 | `TabMarkerTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders non-interactive markers inside a tab after its content - a pin, a dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only phrasing content; put controls in TabActionsTemplate instead. |
 | `TabTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders the non-interactive contents of a tab. |
+| `UseTabContextMenu` | `bool` | `false` | Parameter |  | Moves the tab actions from the end of each strip to a menu on the invoked tab. Right-click, the context-menu key, or Shift+F10 opens that menu. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
