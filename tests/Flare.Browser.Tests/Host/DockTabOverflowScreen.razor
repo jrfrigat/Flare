@@ -47,6 +47,13 @@
                 </TabActionsTemplate>
             </FlareDockWorkspace>
         </div>
+        <button type="button" @onclick="() => _compressLeft = !_compressLeft">Switch compressed group</button>
+        <div style="width:320px;height:200px">
+            <FlareDockWorkspace id="dock-selective" Layout="_selective" Items="_adaptiveItems"
+                                AdaptiveTabCompression="true" AdaptiveTabCompressionForGroup="CompressGroup">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
     </FlareThemeScope>
 </FlareThemeProvider>
 
@@ -66,9 +73,15 @@
         new("three", "Notes without a document icon"),
         new("four", "Fourth long database report", Icon: FlareIcons.GridOn)
     ];
+    private static readonly DockNode _selective = new DockSplit("selective", DockAxis.Horizontal,
+        new DockGroup("left", ["one", "two"], "one"),
+        new DockGroup("right", ["three", "four"], "four"));
     private DockNode _standard = _initial;
     private DockNode _custom = _initial;
     private bool _compressCustom = true;
+    private bool _compressLeft = true;
+
+    private bool CompressGroup(DockGroup group) => group.Key == (_compressLeft ? "left" : "right");
 
     private void CloseCustom(string key)
     {

@@ -5,7 +5,7 @@
                   OnDragEnd="EndDrag" CanDrop="AllowsDrop" KeyboardReorder="false">
     <div class="@BuildCssClass(_guideClass)" style="@Style" tabindex="-1" @attributes="AdditionalAttributes">
         <div class="@DockCss.Canvas" id="@_canvasId" @ref="_canvas" style="@_geometry.Style"
-             data-flare-dock-adaptive-tabs="@(AdaptiveTabCompression ? "" : null)">
+             data-flare-dock-adaptive-tabs="@(AdaptiveTabCompression || AdaptiveTabCompressionForGroup is not null ? "" : null)">
             @foreach (var entry in _geometry.Entries)
             {
                 if (entry.Split is { } split)
@@ -35,8 +35,10 @@
                 }
                 else if (entry.Group is { } group)
                 {
+                    var adaptiveTabs = AdaptiveTabCompressionForGroup?.Invoke(group) ?? AdaptiveTabCompression;
                     <header @key="entry.Id" id="@HeaderId(group.Key)" data-flare-dock-header="@entry.Id"
                             class="@DockCss.Header @Css.Classes.Tabs.Root @Css.Classes.Tabs.BarOnly"
+                            data-flare-dock-fit-enabled="@(adaptiveTabs ? "" : null)"
                             style="@entry.Style" tabindex="-1">
                         <FlareScroller Class="@Css.Classes.Tabs.BarWrap">
                         <ChildContent>
@@ -50,10 +52,10 @@
                                     <FlareDraggable @key="tabKey" Id="@DragId(tabKey)" Payload="@tabKey"
                                                     Class="@($"{DockCss.TabWrap} {Css.Classes.Tabs.TabButton} {(group.ActiveKey == tabKey ? Css.Classes.Tabs.TabActive : null)}")">
                                         <button type="button" class="@DockCss.Tab" role="tab" id="@TabId(tabKey)"
-                                                aria-label="@tab.Title" title="@(AdaptiveTabCompression ? tab.Title : null)"
+                                                aria-label="@tab.Title" title="@(adaptiveTabs ? tab.Title : null)"
                                                 aria-controls="@PanelId(tabKey)"
                                                 aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
-                                                data-flare-dock-has-icon="@(AdaptiveTabCompression && tab.Icon is not null ? "" : null)"
+                                                data-flare-dock-has-icon="@(adaptiveTabs && tab.Icon is not null ? "" : null)"
                                                 tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"
                                                 @onkeydown="args => TabKeyAsync(args, group, tabKey)">
                                             <span @onclick="() => { }" @onclick:stopPropagation="true">
@@ -61,7 +63,7 @@
                                             </span>
                                             @if (TabTemplate is { } template)
                                             {
-                                                @if (AdaptiveTabCompression)
+                                                @if (adaptiveTabs)
                                                 {
                                                     @if (tab.Icon is not null)
                                                     {
@@ -87,7 +89,7 @@
                                                     <FlareIconView Value="tab.Icon" />
                                                 }
                                                 <span class="@DockCss.Label @Css.Classes.Tabs.Label">
-                                                    @if (AdaptiveTabCompression)
+                                                    @if (adaptiveTabs)
                                                     {
                                                         <span>@tab.Title</span>
                                                     }

@@ -889,7 +889,7 @@ button.flare-editor-breadcrumb-bar__segment-button {
     cursor: pointer;
 }
 
-@scope ([data-flare-dock-adaptive-tabs] > .flare-dock__header) {
+@scope (.flare-dock__header[data-flare-dock-fit-enabled]) {
     .flare-dock__tab-wrap { flex: 0 1 auto; }
     .flare-dock__tab-wrap, .flare-dock__tab { min-inline-size: min-content; }
     .flare-dock__tab > :not(.flare-dock__label),

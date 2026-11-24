@@ -120,6 +120,35 @@ public sealed class DockTabCompressionTests(BrowserFixture fixture) : IClassFixt
         await Expect(next).ToBeHiddenAsync();
     }
 
+    [Fact]
+    public async Task SelectedGroupsCompressIndependentlyWithoutRemounting()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/dock-tab-overflow");
+        var workspace = page.Locator("#dock-selective");
+        var left = workspace.GetByRole(AriaRole.Tab, new() { Name = First });
+        var right = workspace.GetByRole(AriaRole.Tab, new() { Name = Fourth });
+        var leftLabel = left.Locator(".flare-dock__label");
+        var rightLabel = right.Locator(".flare-dock__label");
+        var leftBar = left.Locator("xpath=ancestor::*[@role='tablist']");
+
+        await Expect(left).ToHaveAttributeAsync("title", First);
+        await Expect(leftLabel).ToBeHiddenAsync();
+        await Expect(right).Not.ToHaveAttributeAsync("title", Fourth);
+        await Expect(rightLabel).ToBeVisibleAsync();
+        var leftId = await left.GetAttributeAsync("id");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Switch compressed group" }).ClickAsync();
+
+        await Expect(left).ToHaveAttributeAsync("id", leftId!);
+        await Expect(left).Not.ToHaveAttributeAsync("title", First);
+        await Expect(leftLabel).ToBeVisibleAsync();
+        await Expect(leftBar).Not.ToHaveAttributeAsync("data-flare-dock-compact", string.Empty);
+        await Expect(right).ToHaveAttributeAsync("title", Fourth);
+        await Expect(rightLabel).ToBeHiddenAsync();
+    }
+
     private static Task SetWidthAsync(ILocator frame, int width) =>
         frame.EvaluateAsync("(el, width) => { el.style.width = width + 'px'; }", width);
 }

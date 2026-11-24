@@ -3,6 +3,7 @@ const workspaces = new WeakMap();
 function observeTabFit(canvas) {
     const headers = new Map();
     const pending = new Set();
+    const enabled = 'data-flare-dock-fit-enabled';
     let frame = 0;
 
     function update() {
@@ -42,15 +43,22 @@ function observeTabFit(canvas) {
         for (const { strip } of headers.values()) queue(strip);
     };
 
+    function clearFit(strip) {
+        pending.delete(strip);
+        strip.removeAttribute('data-flare-dock-fits');
+        strip.querySelector('[data-flare-dock-tabs]')?.removeAttribute('data-flare-dock-compact');
+    }
+
     function sync() {
         for (const [header, { strip, content }] of headers) {
-            if (header.parentElement === canvas) continue;
+            if (header.parentElement === canvas && header.hasAttribute(enabled)) continue;
             resize.unobserve(strip);
             content.disconnect();
+            clearFit(strip);
             headers.delete(header);
         }
         for (const header of canvas.children) {
-            if (!header.hasAttribute('data-flare-dock-header') || headers.has(header)) continue;
+            if (!header.hasAttribute(enabled) || headers.has(header)) continue;
             const strip = header.querySelector('.flare-tabs__strip');
             if (!strip) continue;
             const content = new MutationObserver(() => queue(strip));
@@ -65,17 +73,19 @@ function observeTabFit(canvas) {
 
     const layout = new MutationObserver(sync);
     layout.observe(canvas, { childList: true });
+    const policy = new MutationObserver(sync);
+    policy.observe(canvas, { subtree: true, attributes: true, attributeFilter: [enabled] });
     document.fonts?.addEventListener('loadingdone', refresh);
     sync();
     return {
         refresh,
         dispose() {
             layout.disconnect();
+            policy.disconnect();
             resize.disconnect();
             for (const { strip, content } of headers.values()) {
                 content.disconnect();
-                strip.removeAttribute('data-flare-dock-fits');
-                strip.querySelector('[data-flare-dock-tabs]')?.removeAttribute('data-flare-dock-compact');
+                clearFit(strip);
             }
             document.fonts?.removeEventListener('loadingdone', refresh);
             cancelAnimationFrame(frame);

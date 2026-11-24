@@ -29,6 +29,10 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// for items without an icon. The default is false, which keeps full labels and scrolls.</summary>
     [Parameter] public bool AdaptiveTabCompression { get; set; }
 
+    /// <summary>Decides whether each group uses adaptive tab compression.
+    /// When supplied, its result overrides <see cref="AdaptiveTabCompression"/> for that group.</summary>
+    [Parameter] public Func<DockGroup, bool>? AdaptiveTabCompressionForGroup { get; set; }
+
     /// <summary>Optionally renders non-interactive markers inside a tab after its content - a pin, a
     /// dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only
     /// phrasing content; put controls in <see cref="TabActionsTemplate"/> instead.</summary>
