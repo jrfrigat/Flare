@@ -444,6 +444,8 @@
 .flare-toolbar {
     display: flex;
     align-items: center;
+    min-inline-size: 0;
+    box-sizing: border-box;
     gap: var(--flare-ide-toolbar-gap, var(--flare-ide-spacing-2, var(--flare-spacing-2)));
     padding: var(--flare-ide-toolbar-padding, var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4)));
     min-height: var(--flare-ide-toolbar-height, 36px);
@@ -454,15 +456,28 @@
 
 .flare-toolbar--dense {
     gap: var(--flare-ide-toolbar-dense-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
-    padding: var(--flare-ide-toolbar-dense-padding, var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-2, var(--flare-spacing-2)));
+    padding: var(--flare-ide-toolbar-dense-padding, var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-spacing-2, var(--flare-spacing-2)));
     min-height: var(--flare-ide-toolbar-dense-height, 28px);
 }
 
 /* A group can carry its own surface so a theme can paint the command-bar fill per group and leave the
    toolbar's backdrop visible in the gaps between them. */
 .flare-toolbar__group {
-    background: var(--flare-ide-toolbar-group-surface, transparent);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    background: var(--flare-ide-toolbar-group-surface, var(--flare-color-surface));
     gap: var(--flare-ide-toolbar-group-gap, var(--flare-ide-spacing-1, var(--flare-spacing-1)));
+    padding: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    border: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-ide-shape-small, var(--flare-shape-small));
+}
+
+.flare-toolbar__group:has(> .flare-menu > .flare-menu__activator > .flare-toolbar__handle) {
+    padding-inline-start: 0;
 }
 
 /* Editor breadcrumb/toolbar row: the chrome strip under the document tabs. Its height comes from the
@@ -790,19 +805,36 @@ button.flare-editor-breadcrumb-bar__segment-button {
     cursor: default;
 }
 
-/* Structural corrections the components need in every theme: the reorderable group's menu wrapper
-   must not add a line box around its handle, the handle centers its glyph in its own box, tool titles
-   keep sentence case, and sheet tabs fill the strip while the add button stays centered. Colours and
-   measured sizes stay in the theme or in the application's token overrides. */
-.flare-toolbar__group > .flare-menu {
+.flare-toolbar__group > .flare-menu:has(> .flare-menu__activator > .flare-toolbar__handle),
+.flare-toolbar__group > .flare-menu > .flare-menu__activator:has(> .flare-toolbar__handle) {
     display: flex;
+    align-self: stretch;
 }
 
 .flare-toolbar__handle {
-    display: inline-flex;
-    align-items: center;
+    display: flex;
+    align-items: stretch;
     justify-content: center;
+    inline-size: var(--flare-ide-spacing-2, var(--flare-spacing-2));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: grab;
 }
+
+.flare-toolbar__handle::after {
+    content: "";
+    inline-size: var(--flare-border-width-emphasis);
+    border-radius: var(--flare-ide-shape-small, var(--flare-shape-small));
+    background: var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+}
+
+.flare-toolbar__handle:is(:hover, :focus-visible, :active):not(:disabled)::after {
+    background: var(--flare-ide-primary, var(--flare-color-primary));
+}
+
+.flare-toolbar__handle:active:not(:disabled) { cursor: grabbing; }
+.flare-toolbar__handle:disabled { cursor: default; }
 
 .flare-toolpanel__title {
     text-transform: none;

@@ -16,9 +16,7 @@
                         <button type="button" @ref="_handles[group.Key]" @attributes="menu.Attributes"
                                 class="@Css.Classes.Ide.Toolbar.Handle" aria-label="@($"{Text["Group_Move"]}: {group.Label}")"
                                 disabled="@(!CanReorder)" draggable="@(CanReorder ? "true" : null)"
-                                @ondragstart="@(() => BeginDrag(group))" @ondragend="@EndDrag">
-                            <FlareIconView Value="FlareIcons.MoreVert" />
-                        </button>
+                                @ondragstart="@(() => BeginDrag(group))" @ondragend="@EndDrag"></button>
                     </Activator>
                     <ChildContent>
                         <FlareMenuItem Disabled="@(position == 0 || !CanReorder)"
@@ -51,7 +49,7 @@
     /// <summary>Enables group drag handles and accessible move actions.</summary>
     [Parameter] public bool Reorderable { get; set; }
 
-    /// <summary>Whether each reorderable group renders its drag/move handle (the <c>MoreVert</c> button).
+    /// <summary>Whether each reorderable group renders its drag and move handle.
     /// The default is true. Set it to false when the host hides per-group chrome: the groups and their
     /// content stay, no handle element is rendered (so no space is reserved), and user-initiated
     /// reordering is unavailable because the handle is its only activator. A controlled

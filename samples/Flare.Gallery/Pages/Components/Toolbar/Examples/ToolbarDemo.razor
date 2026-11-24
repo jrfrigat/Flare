@@ -1,33 +1,10 @@
 @using Flare.Components.IDE
 
-@* FlareToolbar: a classic icon command bar (Visual Studio / Access). A single dense row of buttons
-   and small controls with in-row separators (FlareRibbonSeparator), plus pinned trailing content
-   pushed to the end by a spacer. Toggle Dense to tighten it. *@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareSwitch @bind-Value="_dense" Label="Dense" />
 
     <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
-        <FlareToolbar Dense="_dense">
-            <ChildContent>
-                <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Xs" OnClick="@(() => Set("Start"))">
-                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
-                    <ChildContent>Start</ChildContent>
-                </FlareButton>
-                <FlareRibbonSeparator />
-                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
-                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" />
-                </FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
-                    <FlareIconView Value="@MaterialDesign3Icons.Regular.BugReport" />
-                </FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
-                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
-                </FlareButton>
-                <FlareRibbonSeparator />
-                <FlareStack Width="180px">
-                    <FlareField TValue="string" Size="FlareSize.Sm" Placeholder="Search (Ctrl+,)" />
-                </FlareStack>
-            </ChildContent>
+        <FlareToolbar Dense="_dense" Groups="_groups" Reorderable="true">
             <TrailingContent>
                 <FlareSpacer />
                 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
@@ -44,8 +21,42 @@
 </FlareStack>
 
 @code {
+    private IReadOnlyList<IdeToolbarGroup> _groups = [];
     private bool _dense = true;
     private string _status = "(none)";
+
+    protected override void OnInitialized()
+    {
+        _groups =
+        [
+            new("run", "Start", RunCommands),
+            new("build", "Build", BuildCommands),
+            new("search", "Search (Ctrl+,)", SearchControl),
+        ];
+    }
+
+    private RenderFragment RunCommands => @<text>
+        <FlareButton Variant="ButtonVariant.Filled" Size="FlareSize.Xs" OnClick="@(() => Set("Start"))">
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
+            <ChildContent>Start</ChildContent>
+        </FlareButton>
+        <FlareRibbonSeparator />
+        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
+            <FlareIconView Value="@MaterialDesign3Icons.Regular.BugReport" />
+        </FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
+            <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
+        </FlareButton>
+    </text>;
+
+    private RenderFragment BuildCommands => @<FlareButton Variant="ButtonVariant.Text" Size="FlareSize.Xs"
+            AriaLabel="Build" OnClick="@(() => Set("Build"))">
+        <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" />
+    </FlareButton>;
+
+    private RenderFragment SearchControl => @<FlareStack Width="180px">
+        <FlareField TValue="string" Size="FlareSize.Xs" Placeholder="Search (Ctrl+,)" />
+    </FlareStack>;
 
     private void Set(string action) => _status = action;
 }

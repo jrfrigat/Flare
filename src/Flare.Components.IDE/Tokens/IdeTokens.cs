@@ -102,7 +102,7 @@ public sealed record IdeTokens
     /// <summary>Design override for <c>--flare-ide-toolbar-surface</c>.</summary>
     [CssVar(Names.ToolbarSurface)] public string ToolbarSurface { get; init; } = "transparent";
     /// <summary>Design override for <c>--flare-ide-toolbar-group-surface</c>.</summary>
-    [CssVar(Names.ToolbarGroupSurface)] public string ToolbarGroupSurface { get; init; } = "transparent";
+    [CssVar(Names.ToolbarGroupSurface)] public string ToolbarGroupSurface { get; init; } = Var(Css.Tokens.Color.Surface);
     /// <summary>Design override for <c>--flare-ide-toolbar-group-gap</c>.</summary>
     [CssVar(Names.ToolbarGroupGap)] public string ToolbarGroupGap { get; init; } = $"var({Names.Spacing1}, {Var(Css.Tokens.Spacing.S1)})";
     /// <summary>Design override for <c>--flare-ide-toolbar-gap</c>.</summary>
