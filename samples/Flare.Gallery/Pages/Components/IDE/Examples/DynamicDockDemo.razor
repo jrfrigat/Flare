@@ -9,7 +9,7 @@
     <FlareCheckbox TValue="bool" @bind-Value="_showDropGuide" Label="@GalleryStrings.DockDemo_ShowGuide" />
     <FlareStack Height="24rem">
         <FlareDockWorkspace id="dynamic-dock-demo" Layout="_layout" Items="Items" DropZones="_dropZones"
-                            ShowDropGuide="_showDropGuide"
+                            ShowDropGuide="_showDropGuide" AdaptiveTabCompression="true"
                             OnChangeRequested="Apply" GroupLabel="DescribeGroup">
             <ContentTemplate Context="item">
             @switch (item.Key)
@@ -55,7 +55,7 @@
     [
         new("data", GalleryStrings.DockDemo_Data, Icon: FlareIcons.Table),
         new("chart", GalleryStrings.DockDemo_Chart, Icon: FlareIcons.GridOn),
-        new("draft", GalleryStrings.DockDemo_Draft, KeepAlive: true, Icon: FlareIcons.Description)
+        new("draft", GalleryStrings.DockDemo_Draft, KeepAlive: true)
     ];
 
     private void Apply(DockLayoutChange change)

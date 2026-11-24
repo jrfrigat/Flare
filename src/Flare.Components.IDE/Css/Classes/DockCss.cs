@@ -14,6 +14,9 @@ internal static class DockCss
     internal const string Tab = "flare-dock__tab";
     internal const string TabActions = "flare-dock__tab-actions";
     internal const string Label = "flare-dock__label";
+    internal const string TabTemplate = "flare-dock__tab-template";
+    internal const string CompactIcon = "flare-dock__compact-icon";
+    internal const string CompactTitle = "flare-dock__compact-title";
     internal const string Control = "flare-dock__control";
     internal const string Actions = "flare-dock__actions";
     internal const string NoGuide = "flare-dock--no-guide";

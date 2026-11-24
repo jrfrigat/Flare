@@ -1,6 +1,7 @@
 @page "/dock-tab-overflow"
 @using Flare.Abstractions.Tokens
 @using Flare.Components.IDE
+@using Flare.Icons
 
 @* A deliberately narrow dock group: the tab strip must overflow, show FlareScroller's arrows rather
    than a browser scrollbar, and keep the drag grips. *@
@@ -9,6 +10,41 @@
         <div style="width:260px;height:200px">
             <FlareDockWorkspace id="dock-overflow" Layout="_layout" Items="_items">
                 <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+        <div id="dock-adaptive-frame" style="width:1200px;height:200px">
+            <FlareDockWorkspace id="dock-adaptive" Layout="_standard" Items="_adaptiveItems"
+                                AdaptiveTabCompression="true"
+                                OnChangeRequested="@(change => _standard = change.Proposed)">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+            </FlareDockWorkspace>
+        </div>
+        <button type="button" @onclick="() => _compressCustom = !_compressCustom">Toggle tab compression</button>
+        <div id="dock-custom-frame" style="width:1200px;height:200px">
+            <FlareDockWorkspace id="dock-custom" Layout="_custom" Items="_adaptiveItems"
+                                AdaptiveTabCompression="_compressCustom"
+                                OnChangeRequested="@(change => _custom = change.Proposed)">
+                <ContentTemplate Context="item"><FlareText>@item.Title</FlareText></ContentTemplate>
+                <TabTemplate Context="item">
+                    @if (item.Icon is { } icon)
+                    {
+                        <FlareIconView Value="icon" Size="0.875rem" />
+                    }
+                    <span data-test-title>@item.Title</span>
+                </TabTemplate>
+                <TabMarkerTemplate Context="item">
+                    @if (item.BadgeDot)
+                    {
+                        <FlareIconView Value="FlareIcons.PushPin" Size="0.75rem" />
+                    }
+                </TabMarkerTemplate>
+                <TabActionsTemplate Context="item">
+                    @if (item.Key == "one")
+                    {
+                        <button type="button" aria-label="Close from template"
+                                @onclick="() => CloseCustom(item.Key)">X</button>
+                    }
+                </TabActionsTemplate>
             </FlareDockWorkspace>
         </div>
     </FlareThemeScope>
@@ -21,4 +57,22 @@
         new("a", "Alpha"), new("b", "Beta"), new("c", "Gamma"), new("d", "Delta"),
         new("e", "Epsilon"), new("f", "Zeta"), new("g", "Eta"), new("h", "Theta"),
     ];
+
+    private static readonly DockGroup _initial = new("root", ["one", "two", "three", "four"], "one");
+    private static readonly DockItem[] _adaptiveItems =
+    [
+        new("one", "First long database report", Icon: FlareIcons.Table, BadgeDot: true),
+        new("two", "Second long database report", Icon: FlareIcons.Description),
+        new("three", "Notes without a document icon"),
+        new("four", "Fourth long database report", Icon: FlareIcons.GridOn)
+    ];
+    private DockNode _standard = _initial;
+    private DockNode _custom = _initial;
+    private bool _compressCustom = true;
+
+    private void CloseCustom(string key)
+    {
+        if (_custom is DockGroup group)
+            _custom = new DockGroup(group.Key, group.Items.Remove(key), group.ActiveKey == key ? "two" : group.ActiveKey);
+    }
 }

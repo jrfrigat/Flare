@@ -2842,6 +2842,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AdaptiveTabCompression", @"bool", @"false", @"Truncates tab labels and then switches to compact tabs as each group narrows. The compact view uses Icon or a short Title for items without an icon. The default is false, which keeps full labels and scrolls.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"CanRequest", @"Func<DockAction, string?, string, bool>?", null, @"Declares which operations the application currently offers. Actual approval belongs to the callback.", null, false, false, false, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"ContentTemplate", @"RenderFragment<DockItem>?", null, @"Renders content for a mounted item. Keep the type of the root component stable across moves.", null, false, false, true, @"FlareDockWorkspace"),
                 new ApiParameterInfo(@"DropZones", @"DockDropZones", @"DockDropZones.All", @"Which body regions the workspace offers as drop targets. The tab row stays available for reordering.", null, false, false, false, @"FlareDockWorkspace"),

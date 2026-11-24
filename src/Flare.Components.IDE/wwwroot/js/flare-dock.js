@@ -1,5 +1,88 @@
 const workspaces = new WeakMap();
 
+function observeTabFit(canvas) {
+    const headers = new Map();
+    const pending = new Set();
+    let frame = 0;
+
+    function update() {
+        frame = 0;
+        const rows = [];
+        for (const strip of pending) {
+            const bar = strip.querySelector('[data-flare-dock-tabs]');
+            if (!strip.isConnected || !bar) continue;
+            bar.removeAttribute('data-flare-dock-compact');
+            rows.push({ strip, bar });
+        }
+        pending.clear();
+
+        // The strip includes the width taken by any arrows. Compare against that width so an
+        // arrow cannot keep itself visible, or keep labels hidden, once the tabs fit without it.
+        for (const row of rows) {
+            row.limit = row.strip.clientWidth + 1;
+            row.compact = row.bar.scrollWidth > row.limit;
+        }
+        for (const { bar, compact } of rows)
+            bar.toggleAttribute('data-flare-dock-compact', compact);
+        for (const row of rows)
+            row.fits = !row.compact || row.bar.scrollWidth <= row.limit;
+        for (const { strip, fits } of rows)
+            strip.toggleAttribute('data-flare-dock-fits', fits);
+    }
+
+    function queue(strip) {
+        pending.add(strip);
+        if (!frame) frame = requestAnimationFrame(update);
+    }
+
+    const resize = new ResizeObserver(entries => {
+        for (const { target } of entries) queue(target);
+    });
+    const refresh = () => {
+        for (const { strip } of headers.values()) queue(strip);
+    };
+
+    function sync() {
+        for (const [header, { strip, content }] of headers) {
+            if (header.parentElement === canvas) continue;
+            resize.unobserve(strip);
+            content.disconnect();
+            headers.delete(header);
+        }
+        for (const header of canvas.children) {
+            if (!header.hasAttribute('data-flare-dock-header') || headers.has(header)) continue;
+            const strip = header.querySelector('.flare-tabs__strip');
+            if (!strip) continue;
+            const content = new MutationObserver(() => queue(strip));
+            content.observe(header, {
+                subtree: true, childList: true, characterData: true,
+                attributes: true, attributeFilter: ['class', 'style', 'dir', 'hidden']
+            });
+            headers.set(header, { strip, content });
+            resize.observe(strip);
+        }
+    }
+
+    const layout = new MutationObserver(sync);
+    layout.observe(canvas, { childList: true });
+    document.fonts?.addEventListener('loadingdone', refresh);
+    sync();
+    return {
+        refresh,
+        dispose() {
+            layout.disconnect();
+            resize.disconnect();
+            for (const { strip, content } of headers.values()) {
+                content.disconnect();
+                strip.removeAttribute('data-flare-dock-fits');
+                strip.querySelector('[data-flare-dock-tabs]')?.removeAttribute('data-flare-dock-compact');
+            }
+            document.fonts?.removeEventListener('loadingdone', refresh);
+            cancelAnimationFrame(frame);
+        }
+    };
+}
+
 // The header is as tall as the theme's tabs; the body needs that height in CSS. Measure each header
 // and publish it on the canvas, where the pane styles read it. Nothing here decides a height.
 function syncHeaders(canvas, state) {
@@ -42,7 +125,16 @@ export function register(canvas, callback) {
     unregister(canvas);
     if (!canvas || !callback) return;
     const state = { resize: null, keyboard: null, focus: null, direction: [], outside: null,
-        headerResize: null, headerStyle: null };
+        headerResize: null, headerStyle: null, tabFit: null };
+    const syncTabFit = () => {
+        if (canvas.hasAttribute('data-flare-dock-adaptive-tabs')) {
+            state.tabFit ??= observeTabFit(canvas);
+        } else if (state.tabFit) {
+            state.tabFit.dispose();
+            state.tabFit = null;
+        }
+    };
+    syncTabFit();
     let last = null;
     const report = () => {
         const width = canvas.clientWidth;
@@ -52,6 +144,7 @@ export function register(canvas, callback) {
         const gutter = Math.max(1, Math.round(tokens.gutter));
         const groupMin = Math.max(1, Math.round(tokens.groupMin));
         syncHeaders(canvas, state);
+        state.tabFit?.refresh();
         if (last && last.width === width && last.height === height && last.rtl === rtl &&
             last.gutter === gutter && last.groupMin === groupMin) return;
         last = { width, height, rtl, gutter, groupMin };
@@ -65,8 +158,13 @@ export function register(canvas, callback) {
         state.headerResize = new ResizeObserver(() => syncHeaders(canvas, state));
     }
     if (typeof MutationObserver !== 'undefined') {
-        state.headerStyle = new MutationObserver(() => syncHeaders(canvas, state));
-        state.headerStyle.observe(canvas, { attributes: true, attributeFilter: ['style'] });
+        state.headerStyle = new MutationObserver(() => {
+            syncTabFit();
+            syncHeaders(canvas, state);
+        });
+        state.headerStyle.observe(canvas, {
+            attributes: true, attributeFilter: ['style', 'data-flare-dock-adaptive-tabs']
+        });
     }
     // A direction change does not resize the canvas, so the ResizeObserver never sees it. Watch every
     // ancestor that can carry dir/class/style, including the document, for a live theme or locale flip.
@@ -107,6 +205,7 @@ export function unregister(canvas) {
     state.resize.disconnect();
     state.headerResize?.disconnect();
     state.headerStyle?.disconnect();
+    state.tabFit?.dispose();
     for (const observer of state.direction) observer.disconnect();
     document.removeEventListener('pointerdown', state.outside, true);
     canvas.removeEventListener('keydown', state.keyboard);

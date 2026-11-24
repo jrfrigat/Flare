@@ -10,6 +10,7 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AdaptiveTabCompression` | `bool` | `false` | Parameter |  | Truncates tab labels and then switches to compact tabs as each group narrows. The compact view uses Icon or a short Title for items without an icon. The default is false, which keeps full labels and scrolls. |
 | `CanRequest` | `Func<DockAction, string?, string, bool>?` | `` | Parameter |  | Declares which operations the application currently offers. Actual approval belongs to the callback. |
 | `ContentTemplate` | `RenderFragment<DockItem>?` | `` | Parameter | Yes | Renders content for a mounted item. Keep the type of the root component stable across moves. |
 | `DropZones` | `DockDropZones` | `DockDropZones.All` | Parameter |  | Which body regions the workspace offers as drop targets. The tab row stays available for reordering. |

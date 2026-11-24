@@ -4,7 +4,8 @@
 <FlareDragContext TPayload="string" OnDrop="HandleDropAsync" OnDragStart="BeginDrag"
                   OnDragEnd="EndDrag" CanDrop="AllowsDrop" KeyboardReorder="false">
     <div class="@BuildCssClass(_guideClass)" style="@Style" tabindex="-1" @attributes="AdditionalAttributes">
-        <div class="@DockCss.Canvas" id="@_canvasId" @ref="_canvas" style="@_geometry.Style">
+        <div class="@DockCss.Canvas" id="@_canvasId" @ref="_canvas" style="@_geometry.Style"
+             data-flare-dock-adaptive-tabs="@(AdaptiveTabCompression ? "" : null)">
             @foreach (var entry in _geometry.Entries)
             {
                 if (entry.Split is { } split)
@@ -41,15 +42,18 @@
                         <ChildContent>
                         <FlareDropZone Target="@ZoneId(group.Key, "row")" Placement="DropPlacement.Between"
                                        Class="@DockCss.TabZone">
-                            <div role="tablist" aria-label="@TabListLabel(group)" class="@DockCss.Tabs @Css.Classes.Tabs.Bar" data-flare-dock-tabs>
+                            <div role="tablist" aria-label="@TabListLabel(group)" class="@DockCss.Tabs @Css.Classes.Tabs.Bar"
+                                 data-flare-dock-tabs data-flare-reveal-active>
                                 @foreach (var tabKey in group.Items)
                                 {
                                     var tab = _catalog[tabKey];
                                     <FlareDraggable @key="tabKey" Id="@DragId(tabKey)" Payload="@tabKey"
                                                     Class="@($"{DockCss.TabWrap} {Css.Classes.Tabs.TabButton} {(group.ActiveKey == tabKey ? Css.Classes.Tabs.TabActive : null)}")">
                                         <button type="button" class="@DockCss.Tab" role="tab" id="@TabId(tabKey)"
-                                                aria-label="@tab.Title" aria-controls="@PanelId(tabKey)"
+                                                aria-label="@tab.Title" title="@(AdaptiveTabCompression ? tab.Title : null)"
+                                                aria-controls="@PanelId(tabKey)"
                                                 aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
+                                                data-flare-dock-has-icon="@(AdaptiveTabCompression && tab.Icon is not null ? "" : null)"
                                                 tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"
                                                 @onkeydown="args => TabKeyAsync(args, group, tabKey)">
                                             <span @onclick="() => { }" @onclick:stopPropagation="true">
@@ -57,7 +61,24 @@
                                             </span>
                                             @if (TabTemplate is { } template)
                                             {
-                                                @template(tab)
+                                                @if (AdaptiveTabCompression)
+                                                {
+                                                    @if (tab.Icon is not null)
+                                                    {
+                                                        <span class="@DockCss.CompactIcon" hidden><FlareIconView Value="tab.Icon" /></span>
+                                                    }
+                                                    <span class="@DockCss.Label @Css.Classes.Tabs.Label">
+                                                        <span class="@DockCss.TabTemplate">@template(tab)</span>
+                                                        @if (tab.Icon is null)
+                                                        {
+                                                            <span class="@DockCss.CompactTitle" hidden>@tab.Title</span>
+                                                        }
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    @template(tab)
+                                                }
                                             }
                                             else
                                             {
@@ -65,7 +86,16 @@
                                                 {
                                                     <FlareIconView Value="tab.Icon" />
                                                 }
-                                                <span class="@DockCss.Label @Css.Classes.Tabs.Label">@tab.Title</span>
+                                                <span class="@DockCss.Label @Css.Classes.Tabs.Label">
+                                                    @if (AdaptiveTabCompression)
+                                                    {
+                                                        <span>@tab.Title</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @tab.Title
+                                                    }
+                                                </span>
                                                 @if (tab.BadgeDot)
                                                 {
                                                     <span class="@Css.Classes.Tabs.Badge @Css.Classes.Tabs.BadgeDot @tab.BadgeColor.CssClass" style="@tab.BadgeColor.StyleMainOn()"></span>

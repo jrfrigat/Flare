@@ -24,6 +24,11 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// <summary>Optionally renders the non-interactive contents of a tab.</summary>
     [Parameter] public RenderFragment<DockItem>? TabTemplate { get; set; }
 
+    /// <summary>Truncates tab labels and then switches to compact tabs as each group narrows.
+    /// The compact view uses <see cref="DockItem.Icon"/> or a short <see cref="DockItem.Title"/>
+    /// for items without an icon. The default is false, which keeps full labels and scrolls.</summary>
+    [Parameter] public bool AdaptiveTabCompression { get; set; }
+
     /// <summary>Optionally renders non-interactive markers inside a tab after its content - a pin, a
     /// dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only
     /// phrasing content; put controls in <see cref="TabActionsTemplate"/> instead.</summary>

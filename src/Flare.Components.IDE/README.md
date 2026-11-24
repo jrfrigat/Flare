@@ -42,6 +42,13 @@ Drag a tab to a group edge to create a split. The tab actions menu also supports
 reordering, and splitting by click, tap, or keyboard. Each group keeps its own selection.
 Use unique item and node keys. A group can be empty when it is the root.
 
+Set `AdaptiveTabCompression="true"` to fit tabs to each group. It is off by default.
+As a group narrows, tab labels truncate, then give way to the icons supplied in `DockItem.Icon`.
+Tabs without an icon keep a short label and every tab keeps `DockItem.Title` as its accessible name.
+The scroll arrows appear when the compact tabs need more room. Widen the group to restore the labels.
+With a custom `TabTemplate`, supply `DockItem.Icon` and `DockItem.Title` for the compact view.
+Use `TabMarkerTemplate` for indicators that should stay visible and `TabActionsTemplate` for tab controls.
+
 The application owns the accepted layout. It can reject a request by keeping its current
 layout. After an asynchronous confirmation, check that the request's `Previous` layout
 is still current. Save your own layout representation and application data as needed.

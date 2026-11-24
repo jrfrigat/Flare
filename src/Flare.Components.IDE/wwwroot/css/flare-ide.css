@@ -855,8 +855,6 @@ button.flare-editor-breadcrumb-bar__segment-button {
 .flare-dock__tab-actions { display: flex; align-items: center; flex: none; }
 .flare-dock__tab-actions:empty { display: none; }
 
-/* The label is the part a host may constrain; it shrinks and ellipsizes instead of pushing the
-   actions out of the group. */
 .flare-dock__label {
     min-inline-size: 0;
     overflow: hidden;
@@ -889,6 +887,32 @@ button.flare-editor-breadcrumb-bar__segment-button {
     letter-spacing: inherit;
     white-space: inherit;
     cursor: pointer;
+}
+
+@scope ([data-flare-dock-adaptive-tabs] > .flare-dock__header) {
+    .flare-dock__tab-wrap { flex: 0 1 auto; }
+    .flare-dock__tab-wrap, .flare-dock__tab { min-inline-size: min-content; }
+    .flare-dock__tab > :not(.flare-dock__label),
+    .flare-tabs__header-end { flex: none; }
+
+    /* The grid gives labels distinct minimum and natural widths. Flexbox spends the space between
+       them on text while the icon, grip, markers and actions retain their own widths. */
+    .flare-dock__label {
+        display: inline-grid;
+        grid-template-columns: minmax(4ch, max-content);
+        min-inline-size: min-content;
+    }
+
+    .flare-dock__label > span { overflow: hidden; text-overflow: ellipsis; }
+    [data-flare-dock-compact] .flare-dock__label { grid-template-columns: 4ch; }
+    [data-flare-dock-compact] [data-flare-dock-has-icon] > .flare-dock__label,
+    [data-flare-dock-compact] .flare-dock__tab-template { display: none; }
+    [data-flare-dock-compact] .flare-dock__compact-icon { display: inline-flex; }
+    [data-flare-dock-compact] .flare-dock__compact-title { display: block; }
+
+    .flare-tabs__scroll { max-inline-size: 25%; padding-inline: 0; }
+    /* The arrows would otherwise hold the scroller narrower than a newly fitting run of tabs. */
+    [data-flare-dock-fits] > .flare-tabs__scroll { display: none; }
 }
 
 /* Keep the frame padding clickable below the tab content and its independent action controls. */
