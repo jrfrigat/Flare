@@ -45,8 +45,9 @@
                                 @foreach (var tabKey in group.Items)
                                 {
                                     var tab = _catalog[tabKey];
-                                    <FlareDraggable @key="tabKey" Id="@DragId(tabKey)" Payload="@tabKey" Class="@DockCss.TabWrap">
-                                        <button type="button" class="@DockCss.Tab @Css.Classes.Tabs.TabButton @(group.ActiveKey == tabKey ? Css.Classes.Tabs.TabActive : null)" role="tab" id="@TabId(tabKey)"
+                                    <FlareDraggable @key="tabKey" Id="@DragId(tabKey)" Payload="@tabKey"
+                                                    Class="@($"{DockCss.TabWrap} {Css.Classes.Tabs.TabButton} {(group.ActiveKey == tabKey ? Css.Classes.Tabs.TabActive : null)}")">
+                                        <button type="button" class="@DockCss.Tab" role="tab" id="@TabId(tabKey)"
                                                 aria-label="@tab.Title" aria-controls="@PanelId(tabKey)"
                                                 aria-selected="@(group.ActiveKey == tabKey ? "true" : "false")"
                                                 tabindex="@TabIndex(group, tabKey)" @onclick="() => ActivateAsync(group, tabKey)"

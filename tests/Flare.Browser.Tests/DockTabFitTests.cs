@@ -27,7 +27,7 @@ public sealed class DockTabFitTests(BrowserFixture fixture) : IClassFixture<Brow
         Assert.False(overflow, $"{id} tab strip overflows vertically");
 
         var header = page.Locator($"#{id} .flare-dock__header").First;
-        var tab = page.Locator($"#{id} [role=tab]").First;
+        var tab = bar.Locator(".flare-dock__tab-wrap").First;
         var headerBox = await header.BoundingBoxAsync();
         var tabBox = await tab.BoundingBoxAsync();
         Assert.NotNull(headerBox);

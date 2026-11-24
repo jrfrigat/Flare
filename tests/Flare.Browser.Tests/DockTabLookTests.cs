@@ -18,7 +18,7 @@ public sealed class DockTabLookTests(BrowserFixture fixture) : IClassFixture<Bro
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/dock-tab-look");
 
-        var dockTab = page.Locator("#dock-vs [role=tab][aria-selected=true]");
+        var dockTab = page.Locator($"#dock-vs [role=tablist] .{Css.Classes.Tabs.TabActive}");
         var referenceTab = page.Locator("#tabs-vs [role=tab][aria-selected=true]");
         await Expect(dockTab).ToBeVisibleAsync();
         await Expect(referenceTab).ToBeVisibleAsync();

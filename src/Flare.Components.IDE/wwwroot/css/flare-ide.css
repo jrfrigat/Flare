@@ -851,8 +851,9 @@ button.flare-editor-breadcrumb-bar__segment-button {
     min-inline-size: 0;
 }
 
-.flare-dock__tab-wrap { flex: 0 0 auto; display: flex; }
+.flare-dock__tab-wrap { flex: 0 0 auto; }
 .flare-dock__tab-actions { display: flex; align-items: center; flex: none; }
+.flare-dock__tab-actions:empty { display: none; }
 
 /* The label is the part a host may constrain; it shrinks and ellipsizes instead of pushing the
    actions out of the group. */
@@ -872,10 +873,30 @@ button.flare-editor-breadcrumb-bar__segment-button {
     padding-inline: var(--flare-ide-spacing-2, var(--flare-spacing-2));
 }
 
-/* The tab item itself is the shared FlareTabs element (flare-tabs__tab); only the drag grip and
-   the label ellipsis are docking structure. */
+/* The wrapper carries the shared tab styling. The selector and actions remain separate controls. */
 .flare-dock__tab {
     appearance: none;
+    display: inline-flex;
+    align-items: center;
+    align-self: stretch;
+    justify-content: inherit;
+    gap: inherit;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    white-space: inherit;
+    cursor: pointer;
+}
+
+/* Keep the frame padding clickable below the tab content and its independent action controls. */
+.flare-dock__tab::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: "";
 }
 
 /* The grip is the only place a tab starts a drag, so the rest of the tab keeps the browser's
