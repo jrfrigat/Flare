@@ -77,6 +77,30 @@
    of its own and just carries the expand origin. */
 .flare-menu__panel--at-cursor { position: fixed; transform-origin: top left; }
 
+.flare-menu__panel--context,
+.flare-menu__panel--context .flare-submenu__panel {
+    box-sizing: border-box;
+    inline-size: max-content;
+    min-inline-size: min(var(--flare-menu-panel-min-width), var(--flare-anchored-width, 100dvw));
+    max-inline-size: var(--flare-anchored-width, 100dvw);
+}
+
+/* Let a viewport-capped context menu scroll at the theme's row height. */
+.flare-menu__panel--context :is(.flare-menu-item, .flare-submenu) {
+    flex-shrink: 0;
+}
+
+.flare-menu__panel--context .flare-menu-item__label {
+    min-inline-size: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.flare-menu__panel--context .flare-menu-item:not(:has(> .flare-menu-item__icon, > .flare-menu-item__check)) {
+    padding-inline-start: calc(var(--_flare-menu-item-padding-inline-start, var(--flare-menu-item-padding-inline))
+        + var(--flare-menu-item-icon-size) + var(--flare-menu-item-gap));
+}
+
 /* A MaxHeight-capped menu scrolls its items instead of overflowing the viewport. */
 .flare-menu__panel--scroll { overflow-y: auto; }
 

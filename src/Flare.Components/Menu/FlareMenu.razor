@@ -13,7 +13,7 @@
     </div>
     @if (_open)
     {
-        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
+        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_contextClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
              aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
              @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="_ownsKeyboard"
              @onkeydown:stopPropagation="@(ParentMenuContext is not null)">
@@ -299,6 +299,9 @@
         await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }
+
+    private string? _contextClass => _openedAtPoint || Activation == MenuActivation.RightClick
+        ? Css.Classes.Menu.PanelContext : null;
 
     // The anchor class now carries only the corner the open animation expands FROM; where the panel
     // actually lands is the placement engine's answer, and it can differ (a menu near the bottom of the
