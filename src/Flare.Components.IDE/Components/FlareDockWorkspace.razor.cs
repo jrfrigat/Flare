@@ -21,12 +21,18 @@ public partial class FlareDockWorkspace : FlareLocalizedComponentBase
     /// <summary>Renders content for a mounted item. Keep the type of the root component stable across moves.</summary>
     [Parameter, EditorRequired] public RenderFragment<DockItem>? ContentTemplate { get; set; }
 
-    /// <summary>Optionally renders the non-interactive contents of a tab.</summary>
+    /// <summary>Replaces the full non-interactive tab content and leaves a separate drag grip.
+    /// Use <see cref="TabLabelTemplate"/> to keep the draggable item icon outside custom content.</summary>
     [Parameter] public RenderFragment<DockItem>? TabTemplate { get; set; }
 
+    /// <summary>Replaces the content after the draggable icon, including the title and badge.
+    /// The leading icon comes from <see cref="DockItem.Icon"/>, or defaults to a vertical ellipsis.
+    /// When both templates are supplied, this template takes precedence over <see cref="TabTemplate"/>.</summary>
+    [Parameter] public RenderFragment<DockItem>? TabLabelTemplate { get; set; }
+
     /// <summary>Truncates tab labels and then switches to compact tabs as each group narrows.
-    /// The compact view uses <see cref="DockItem.Icon"/> or a short <see cref="DockItem.Title"/>
-    /// for items without an icon. The default is false, which keeps full labels and scrolls.</summary>
+    /// Compact tabs show the draggable icon. A full <see cref="TabTemplate"/> uses a short
+    /// <see cref="DockItem.Title"/> when it has no icon. The default is false, which scrolls full labels.</summary>
     [Parameter] public bool AdaptiveTabCompression { get; set; }
 
     /// <summary>Decides whether each group uses adaptive tab compression.

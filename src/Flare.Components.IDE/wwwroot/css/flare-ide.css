@@ -928,7 +928,7 @@ button.flare-editor-breadcrumb-bar__segment-button {
     .flare-tabs__header-end { flex: none; }
 
     /* The grid gives labels distinct minimum and natural widths. Flexbox spends the space between
-       them on text while the icon, grip, markers and actions retain their own widths. */
+       them on text while the drag icon, markers and actions retain their own widths. */
     .flare-dock__label {
         display: inline-grid;
         grid-template-columns: minmax(4ch, max-content);

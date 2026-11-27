@@ -43,10 +43,12 @@ reordering, and splitting by click, tap, or keyboard. Each group keeps its own s
 Use unique item and node keys. A group can be empty when it is the root.
 
 Set `AdaptiveTabCompression="true"` to fit tabs to each group. It is off by default.
-As a group narrows, tab labels truncate, then give way to the icons supplied in `DockItem.Icon`.
-Tabs without an icon keep a short label and every tab keeps `DockItem.Title` as its accessible name.
-The scroll arrows appear when the compact tabs need more room. Widen the group to restore the labels.
-With a custom `TabTemplate`, supply `DockItem.Icon` and `DockItem.Title` for the compact view.
+As a group narrows, tab labels truncate, then give way to the draggable icons.
+The icon comes from `DockItem.Icon` and defaults to a vertical ellipsis. Each tab keeps
+`DockItem.Title` as its accessible name. The scroll arrows appear when the compact tabs
+need more room. Widen the group to restore the labels.
+Use `TabLabelTemplate` to customize the contents after the icon. The full `TabTemplate`
+keeps its separate grip and uses `DockItem.Icon` or a short title in the compact view.
 Use `TabMarkerTemplate` for indicators that should stay visible and `TabActionsTemplate` for tab controls.
 
 The application owns the accepted layout. It can reject a request by keeping its current

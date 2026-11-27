@@ -10,7 +10,7 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AdaptiveTabCompression` | `bool` | `false` | Parameter |  | Truncates tab labels and then switches to compact tabs as each group narrows. The compact view uses Icon or a short Title for items without an icon. The default is false, which keeps full labels and scrolls. |
+| `AdaptiveTabCompression` | `bool` | `false` | Parameter |  | Truncates tab labels and then switches to compact tabs as each group narrows. Compact tabs show the draggable icon. A full TabTemplate uses a short Title when it has no icon. The default is false, which scrolls full labels. |
 | `AdaptiveTabCompressionForGroup` | `Func<DockGroup, bool>?` | `` | Parameter |  | Decides whether each group uses adaptive tab compression. When supplied, its result overrides AdaptiveTabCompression for that group. |
 | `CanRequest` | `Func<DockAction, string?, string, bool>?` | `` | Parameter |  | Declares which operations the application currently offers. Actual approval belongs to the callback. |
 | `ContentTemplate` | `RenderFragment<DockItem>?` | `` | Parameter | Yes | Renders content for a mounted item. Keep the type of the root component stable across moves. |
@@ -21,8 +21,9 @@ Renders and coordinates dynamic tab groups and nested splits within one Blazor r
 | `OnChangeRequested` | `EventCallback<DockLayoutChange>` | `` | Callback |  | Receives a proposed transition. Apply Proposed to Layout to accept it. After asynchronous approval, check that Previous is still current before applying the proposal. |
 | `ShowDropGuide` | `bool` | `true` | Parameter |  | Whether the base guide is painted while a tab is dragged over a drop zone. False keeps the zones active and the move possible but draws no candidate or over highlight, so a host can present its own guide without overriding the workspace's internal classes. |
 | `TabActionsTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders actions for a tab beside the tab button, outside it. A host command belongs here so it can be a real button; the strip starts a drag only from the grip, so an action never begins one. |
+| `TabLabelTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Replaces the content after the draggable icon, including the title and badge. The leading icon comes from Icon, or defaults to a vertical ellipsis. When both templates are supplied, this template takes precedence over TabTemplate. |
 | `TabMarkerTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders non-interactive markers inside a tab after its content - a pin, a dirty dot, a preview state. The fragment is drawn inside the tab button, so it may contain only phrasing content; put controls in TabActionsTemplate instead. |
-| `TabTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Optionally renders the non-interactive contents of a tab. |
+| `TabTemplate` | `RenderFragment<DockItem>?` | `` | Parameter |  | Replaces the full non-interactive tab content and leaves a separate drag grip. Use TabLabelTemplate to keep the draggable item icon outside custom content. |
 | `UseTabContextMenu` | `bool` | `false` | Parameter |  | Moves the tab actions from the end of each strip to a menu on the invoked tab. Right-click, the context-menu key, or Shift+F10 opens that menu. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

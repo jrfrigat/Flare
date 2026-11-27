@@ -37,15 +37,23 @@ public sealed class DockTabCompressionTests(BrowserFixture fixture) : IClassFixt
 
         await SetWidthAsync(frame, compactWidth);
         await Expect(label).ToBeHiddenAsync();
-        var icon = custom ? $".flare-dock__compact-icon .{Css.Classes.Icon.Root}" : $":scope > .{Css.Classes.Icon.Root}";
+        var icon = custom ? $".flare-dock__compact-icon .{Css.Classes.Icon.Root}" : $".flare-dock__grip .{Css.Classes.Icon.Root}";
         await Expect(tab.Locator(icon)).ToBeVisibleAsync();
         await Expect(tab).ToHaveAttributeAsync("title", First);
         var iconless = workspace.GetByRole(AriaRole.Tab, new() { Name = Iconless });
-        await Expect(iconless.GetByText(Iconless, new() { Exact = true }).Filter(new() { Visible = true }))
-            .ToBeVisibleAsync();
+        if (custom)
+        {
+            await Expect(iconless.GetByText(Iconless, new() { Exact = true }).Filter(new() { Visible = true }))
+                .ToBeVisibleAsync();
+        }
+        else
+        {
+            await Expect(iconless.Locator(".flare-dock__label")).ToBeHiddenAsync();
+            await Expect(iconless.Locator(icon)).ToBeVisibleAsync();
+        }
         await Expect(next).ToBeHiddenAsync();
 
-        await SetWidthAsync(frame, 220);
+        await SetWidthAsync(frame, custom ? 220 : 120);
         await Expect(next).ToBeEnabledAsync();
         await next.ClickAsync();
         var bar = workspace.GetByRole(AriaRole.Tablist);
@@ -78,7 +86,7 @@ public sealed class DockTabCompressionTests(BrowserFixture fixture) : IClassFixt
         await Expect(second).ToBeFocusedAsync();
         await second.PressAsync("Enter");
         await Expect(second).ToHaveAttributeAsync("aria-selected", "true");
-        await Expect(first.Locator($":scope > .{Css.Classes.Icon.Root}")).ToBeVisibleAsync();
+        await Expect(first.Locator($".flare-dock__compact-icon .{Css.Classes.Icon.Root}")).ToBeVisibleAsync();
 
         var source = (await first.Locator(".flare-dock__grip").BoundingBoxAsync())!;
         var fourth = workspace.GetByRole(AriaRole.Tab, new() { Name = Fourth });
