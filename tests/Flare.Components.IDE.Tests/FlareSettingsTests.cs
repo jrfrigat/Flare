@@ -1,4 +1,5 @@
 using Flare.Components.IDE;
+using Flare.Css;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -36,7 +37,7 @@ public class FlareSettingsTests : FlareTestContext
             .Add(x => x.Categories, Categories)
             .Add(x => x.PageContent, Content));
         var editor = "[role=treeitem][aria-label=Editor]";
-        cut.Find(editor + " > .flare-tree-item__row").Click();
+        cut.Find($"{editor} > .{Css.Classes.Tree.ItemRow}").Click();
 
         cut.Find("input[type=search]").Input(" font SIZE ");
 
