@@ -65,6 +65,18 @@ jobs:
       - name: Pack
         run: dotnet pack Flare.slnx -c Release --no-build -o artifacts
 
+      - name: Collect release notes
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v heading="## [$version] - " '
+            /^## / {
+              if (section) exit
+              section = index($0, heading) == 1
+              next
+            }
+            section { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/flare-release-notes.md"
+
       # Trusted Publishing: exchange the GitHub OIDC token for a short-lived NuGet API key.
       # Requires a Trusted Publisher policy on nuget.org for this repo + workflow (see below),
       # and the nuget.org account username in the NUGET_USER repository variable.
@@ -84,4 +96,10 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ github.ref_name }}" artifacts/*.nupkg --generate-notes --title "${{ github.ref_name }}"
+        run: |
+          release_notes="$RUNNER_TEMP/flare-release-notes.md"
+          notes=(--generate-notes)
+          if grep -q '[^[:space:]]' "$release_notes"; then
+            notes=(--notes-file "$release_notes")
+          fi
+          gh release create "$GITHUB_REF_NAME" artifacts/*.nupkg "${notes[@]}" --title "$GITHUB_REF_NAME"
