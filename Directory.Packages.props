@@ -39,7 +39,7 @@
          net11.0, so its WebAssembly runtime is the .NET 11 one. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="11.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="11.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" Condition="'$(TargetFramework)' != 'net11.0'" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0" Condition="'$(TargetFramework)' == 'net11.0'" />
