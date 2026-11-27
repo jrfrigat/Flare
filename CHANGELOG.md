@@ -3,6 +3,25 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.62.0] - 2026-11-27
+
+### Added
+
+- `FlareSettings` gives IDE hosts a settings document with searchable categories, resizable navigation and a page slot for editors or custom content. The IDE Gallery includes an editable example.
+- `FlareDockWorkspace.AdaptiveTabCompression` lets tabs fit narrower groups by truncating labels and then switching to icon-only tabs. `AdaptiveTabCompressionForGroup` can override the setting for each group.
+- `FlareDockWorkspace.UseTabContextMenu` puts tab actions on the invoked tab. Open the menu with a right-click, the context menu key or Shift+F10.
+- `FlareDockWorkspace.TabLabelTemplate` customizes a tab's label and badge area while keeping its draggable icon.
+
+### Changed
+
+- The leading icon is the drag handle for standard dock tabs and tabs with `TabLabelTemplate`. Tabs without an icon show a vertical ellipsis, and a full `TabTemplate` keeps its separate grip.
+- `FlareToolbar` group spacing and reorder grips follow the active theme.
+- Contextual `FlareMenu` panels share sizing and spacing, align the icon column and wrap long labels. Dock tab menus use the same style.
+
+### Fixed
+
+- Dock tab actions fit inside the tab frame and leave room for the active label.
+
 ## [0.61.1] - 2026-11-24
 
 ### Fixed
