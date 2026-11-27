@@ -1983,6 +1983,7 @@ public static class ComponentApiRegistry
                 @"FlareScroller",
                 @"FlareSection",
                 @"FlareSelect",
+                @"FlareSettings",
                 @"FlareShortcutEditor",
                 @"FlareShortcuts",
                 @"FlareSignaturePad",
@@ -6871,6 +6872,35 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSettings"] = new ApiComponentInfo(
+            @"FlareSettings",
+            @"Flare.Components.IDE.FlareSettings",
+            @"Flare.Components.IDE",
+            @"Displays an IDE settings document with searchable navigation and a page supplied by the host.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Categories", @"IReadOnlyList<FlareSettingsCategory>", null, @"The settings categories. IDs must be unique throughout the tree and stable across updates.", null, false, false, true, @"FlareSettings"),
+                new ApiParameterInfo(@"EmptyContent", @"RenderFragment?", null, @"Content shown when there are no selectable categories.", null, false, false, false, @"FlareSettings"),
+                new ApiParameterInfo(@"NavigationLabel", @"string?", null, @"Accessible name of the category tree. When omitted it uses the localized settings label.", null, false, false, false, @"FlareSettings"),
+                new ApiParameterInfo(@"PageContent", @"RenderFragment<FlareSettingsCategory>?", null, @"Content of the selected category. Compose property editors with FlarePropertyGrid or supply a page.", null, false, false, true, @"FlareSettings"),
+                new ApiParameterInfo(@"SelectedId", @"string?", null, @"The ID of the selected category. A missing or invalid ID displays the first selectable category.", null, false, false, false, @"FlareSettings"),
+                new ApiParameterInfo(@"SelectedIdChanged", @"EventCallback<string>", null, @"Requests selection of a category. The host accepts it by updating SelectedId.", null, false, true, false, @"FlareSettings"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
                 @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",

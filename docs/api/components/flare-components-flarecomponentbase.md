@@ -194,6 +194,7 @@ This component exposes no documented public methods.
 - `FlareScroller`
 - `FlareSection`
 - `FlareSelect`
+- `FlareSettings`
 - `FlareShortcutEditor`
 - `FlareShortcuts`
 - `FlareSignaturePad`

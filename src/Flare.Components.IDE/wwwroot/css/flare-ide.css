@@ -1095,3 +1095,41 @@ button.flare-editor-breadcrumb-bar__segment-button {
     overflow: hidden;
     clip-path: inset(50%);
 }
+
+/* Settings document */
+.flare-settings {
+    block-size: 100%;
+    min-block-size: 0;
+}
+
+.flare-settings__navigation,
+.flare-settings__page {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+    min-block-size: 0;
+    gap: var(--flare-spacing-4);
+    padding: var(--flare-spacing-4);
+}
+
+.flare-settings__category-list,
+.flare-settings__page {
+    overflow: auto;
+}
+
+.flare-settings__category-list .flare-tree-view {
+    --flare-tree-toggle-size: var(--flare-spacing-8);
+    --flare-tree-icon-size: var(--flare-spacing-6);
+    --flare-tree-indent: var(--flare-spacing-6);
+    font-family: var(--flare-typescale-body-small-font);
+    font-size: var(--flare-typescale-body-small-size);
+    font-weight: var(--flare-typescale-body-small-weight);
+    line-height: var(--flare-typescale-body-small-height);
+    letter-spacing: var(--flare-typescale-body-small-spacing);
+}
+
+.flare-settings__category-list .flare-tree-item__row {
+    padding-block: var(--flare-spacing-2);
+    padding-inline: var(--flare-spacing-2);
+}

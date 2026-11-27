@@ -55,4 +55,7 @@
   <data name="Dock_CloseTab" xml:space="preserve"><value>Close {0}</value></data>
   <data name="Dock_Invalid" xml:space="preserve"><value>The workspace layout is invalid.</value></data>
   <data name="Dock_Empty" xml:space="preserve"><value>Empty tab group</value></data>
+  <data name="Settings_Search" xml:space="preserve"><value>Search settings</value></data>
+  <data name="Settings_Categories" xml:space="preserve"><value>Settings categories</value></data>
+  <data name="Settings_NoResults" xml:space="preserve"><value>No matching settings</value></data>
 </root>

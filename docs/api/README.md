@@ -183,6 +183,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareScroller`](components/flare-components-flarescroller.md)
 - [`FlareSection`](components/flare-components-flaresection.md)
 - [`FlareSelect`](components/flare-components-flareselect.md) — Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned "no value" row, so a filter select expresses "all" without a sentinel value.
+- [`FlareSettings`](components/flare-components-ide-flaresettings.md) — Displays an IDE settings document with searchable navigation and a page supplied by the host.
 - [`FlareShortcutEditor`](components/flare-components-ide-flareshortcuteditor.md) — Captures and validates a shortcut assignment without executing the associated command.
 - [`FlareShortcutEntry`](components/flare-components-flareshortcutentry.md) — One keyboard shortcut: a key combination, what it invokes, and the description the help overlay lists it under. It registers with the enclosing FlareShortcuts scope and renders nothing.
 - [`FlareShortcuts`](components/flare-components-flareshortcuts.md) — Keyboard-shortcut scope: the entries declared inside it register their key combinations here, and it listens for them, dispatches to the matching entry and can show the resulting list as a help overlay.

@@ -1,0 +1,56 @@
+@namespace Flare.Components.IDE
+@inherits FlareLocalizedComponentBase
+
+<FlareSplitPane Class="@BuildCssClass()" Style="@Style" Fraction="0.25" MaxSize="22rem" @attributes="AdditionalAttributes">
+    <FirstPaneContent>
+        <div class="@Css.Classes.Ide.Settings.Navigation">
+            <FlareTextField Size="FlareSize.Sm" Type="search" Immediate="true"
+                            Label="@IdeText["Settings_Search"]" Value="@_query" ValueChanged="SetQuery" />
+            <div class="@Css.Classes.Ide.Settings.CategoryList">
+                @if (_visible.Count > 0)
+                {
+                    <FlareTreeView AriaLabel="@(NavigationLabel ?? IdeText["Settings_Categories"].Value)">
+                        @RenderNodes(_visible)
+                    </FlareTreeView>
+                }
+                else if (!string.IsNullOrWhiteSpace(_query))
+                {
+                    <FlareText role="status" Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                        @IdeText["Settings_NoResults"]
+                    </FlareText>
+                }
+            </div>
+        </div>
+    </FirstPaneContent>
+    <SecondPaneContent>
+        <div class="@Css.Classes.Ide.Settings.Page">
+            @if (_selected is { } category)
+            {
+                <FlareText Element="h3" Typo="TypographyScale.TitleSmall">@category.Label</FlareText>
+                @if (!string.IsNullOrWhiteSpace(category.Description))
+                {
+                    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@category.Description</FlareText>
+                }
+                <div @key="category.Id">@PageContent?.Invoke(category)</div>
+            }
+            else
+            {
+                @EmptyContent
+            }
+        </div>
+    </SecondPaneContent>
+</FlareSplitPane>
+
+@code {
+    private RenderFragment RenderNodes(IReadOnlyList<FlareSettingsCategory> categories) => @<text>
+        @foreach (var category in categories)
+        {
+            <FlareTreeItem @key="category.Id" Label="@category.Label" aria-label="@category.Label"
+                           Selected="@(_selected?.Id == category.Id)"
+                           SelectedChanged="selected => SelectAsync(category, selected)"
+                           Expanded="@IsExpanded(category)"
+                           ExpandedChanged="expanded => SetExpanded(category, expanded)"
+                           ChildContent="@(category.Children.Count == 0 ? null : RenderNodes(category.Children))" />
+        }
+    </text>;
+}
