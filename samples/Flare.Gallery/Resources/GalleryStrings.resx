@@ -5006,4 +5006,31 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DockDemo_ZonesHorizontal" xml:space="preserve"><value>Center and inline edges</value></data>
   <data name="DockDemo_ZonesEdges" xml:space="preserve"><value>Edges only</value></data>
   <data name="DockDemo_ZonesNone" xml:space="preserve"><value>Tab row only</value></data>
+  <data name="Ide_Settings_Title" xml:space="preserve">
+    <value>Settings document</value>
+  </data>
+  <data name="Ide_Settings_Desc" xml:space="preserve">
+    <value>Find a setting in the category tree, edit its value, or open a custom settings page.</value>
+  </data>
+  <data name="Ide_Settings_Editor" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="Ide_Settings_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Ide_Settings_FontSize" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="Ide_Settings_LineNumbers" xml:space="preserve">
+    <value>Show line numbers</value>
+  </data>
+  <data name="Ide_Settings_Workspace" xml:space="preserve">
+    <value>Workspace</value>
+  </data>
+  <data name="Ide_Settings_RestoreTabs" xml:space="preserve">
+    <value>Restore open documents</value>
+  </data>
+  <data name="Ide_Settings_WorkspaceHelp" xml:space="preserve">
+    <value>Restore the documents that were open when the workspace last closed.</value>
+  </data>
 </root>

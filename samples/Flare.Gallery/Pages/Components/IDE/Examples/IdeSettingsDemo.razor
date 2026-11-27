@@ -1,0 +1,58 @@
+@using Flare.Components.IDE
+@inherits LocalizedPage
+
+<FlareStack Height="24rem">
+    <FlareSettings Categories="@Categories" @bind-SelectedId="_selected">
+        <PageContent Context="category">
+            @if (category.Id == "appearance")
+            {
+                <FlarePropertyGrid>
+                    <FlarePropertyGridItem Name="@GalleryStrings.Ide_Settings_FontSize">
+                        <FlareNumericField TValue="int" Size="FlareSize.Sm" Min="8" Max="32"
+                                           InputAttributes="@AccessibleInput(GalleryStrings.Ide_Settings_FontSize)"
+                                           @bind-Value="_fontSize" />
+                    </FlarePropertyGridItem>
+                    <FlarePropertyGridItem Name="@GalleryStrings.Ide_Settings_LineNumbers">
+                        <FlareCheckbox TValue="bool" Size="FlareSize.Sm"
+                                       InputAttributes="@AccessibleInput(GalleryStrings.Ide_Settings_LineNumbers)"
+                                       @bind-Value="_lineNumbers" />
+                    </FlarePropertyGridItem>
+                </FlarePropertyGrid>
+            }
+            else
+            {
+                <FlareCheckbox TValue="bool" Label="@GalleryStrings.Ide_Settings_RestoreTabs"
+                               @bind-Value="_restoreTabs" />
+            }
+        </PageContent>
+    </FlareSettings>
+</FlareStack>
+
+@code {
+    private int _fontSize = 14;
+    private bool _lineNumbers = true;
+    private bool _restoreTabs = true;
+    private string? _selected = "appearance";
+
+    private IReadOnlyList<FlareSettingsCategory> Categories =>
+    [
+        new("editor", GalleryStrings.Ide_Settings_Editor)
+        {
+            Selectable = false,
+            Children =
+            [
+                new("appearance", GalleryStrings.Ide_Settings_Appearance)
+                {
+                    SearchTerms = [GalleryStrings.Ide_Settings_FontSize, GalleryStrings.Ide_Settings_LineNumbers]
+                }
+            ]
+        },
+        new("workspace", GalleryStrings.Ide_Settings_Workspace)
+        {
+            Description = GalleryStrings.Ide_Settings_WorkspaceHelp,
+            SearchTerms = [GalleryStrings.Ide_Settings_RestoreTabs]
+        }
+    ];
+
+    private static Dictionary<string, object> AccessibleInput(string label) => new() { ["aria-label"] = label };
+}

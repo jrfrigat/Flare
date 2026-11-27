@@ -5645,6 +5645,33 @@ namespace Flare.Gallery.Resources {
             }
         }
         
+        /// <summary>Localized text for settings document.</summary>
+        public static string Ide_Settings_Title => ResourceManager.GetString("Ide_Settings_Title", resourceCulture);
+
+        /// <summary>Localized text for find a setting in the category tree, edit its value, or open a custom settings page.</summary>
+        public static string Ide_Settings_Desc => ResourceManager.GetString("Ide_Settings_Desc", resourceCulture);
+
+        /// <summary>Localized text for editor.</summary>
+        public static string Ide_Settings_Editor => ResourceManager.GetString("Ide_Settings_Editor", resourceCulture);
+
+        /// <summary>Localized text for appearance.</summary>
+        public static string Ide_Settings_Appearance => ResourceManager.GetString("Ide_Settings_Appearance", resourceCulture);
+
+        /// <summary>Localized text for font size.</summary>
+        public static string Ide_Settings_FontSize => ResourceManager.GetString("Ide_Settings_FontSize", resourceCulture);
+
+        /// <summary>Localized text for show line numbers.</summary>
+        public static string Ide_Settings_LineNumbers => ResourceManager.GetString("Ide_Settings_LineNumbers", resourceCulture);
+
+        /// <summary>Localized text for workspace.</summary>
+        public static string Ide_Settings_Workspace => ResourceManager.GetString("Ide_Settings_Workspace", resourceCulture);
+
+        /// <summary>Localized text for restore open documents.</summary>
+        public static string Ide_Settings_RestoreTabs => ResourceManager.GetString("Ide_Settings_RestoreTabs", resourceCulture);
+
+        /// <summary>Localized text for restore the documents that were open when the workspace last closed.</summary>
+        public static string Ide_Settings_WorkspaceHelp => ResourceManager.GetString("Ide_Settings_WorkspaceHelp", resourceCulture);
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Property Grid.
         /// </summary>
